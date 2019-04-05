@@ -3,28 +3,26 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@graphql-codegen/cli": "^1.0.6",
+    "@graphql-codegen/schema-ast": "^1.0.6",
+    "@graphql-codegen/typescript": "^1.0.6",
+    "@graphql-codegen/typescript-operations": "^1.0.6",
+    "@graphql-codegen/typescript-resolvers": "^1.0.6",
+    "apollo-utilities": "^1.2.1",
+    "change-case": "^3.1.0",
+    "fs-extra": "^7.0.1",
+    "gql-tag": "^1.0.1",
+    "graphql-tag": "^2.10.1",
+    "jest": "^24.7.1",
+    "ts-jest": "^24.0.1"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^5.0.5",
+    "@types/graphql": "^14.2.0",
     "@types/jest": "24.0.11",
     "@types/node": "11.13.0",
-    "@types/react": "16.8.12",
-    "@types/react-dom": "16.8.3",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-scripts": "2.1.8",
+    "graphql": "^14.2.1",
+    "ts-node": "^8.0.3",
     "typescript": "3.4.1"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  }
 }
