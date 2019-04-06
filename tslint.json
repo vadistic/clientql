@@ -1,0 +1,22 @@
+{
+  "extends": ["tslint:latest", "tslint-react", "tslint-config-prettier"],
+  "rules": {
+    "no-console": false,
+    "object-literal-sort-keys": false,
+    "no-object-literal-type-assertion": false,
+    "interface-name": [true, "never-prefix"],
+    "no-empty-interface": true,
+    "ordered-imports": true,
+    "only-arrow-functions": true,
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-pascal-case"
+    ],
+    "no-implicit-dependencies": [true, ["graphql"]]
+  },
+  "linterOptions": {
+    "exclude": ["**/generated/**", "**/node_modules/**"]
+  }
+}

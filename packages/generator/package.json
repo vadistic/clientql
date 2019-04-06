@@ -1,0 +1,44 @@
+{
+  "name": "@graphql-clientgen/generator",
+  "version": "0.1.0",
+  "private": false,
+  "repository": "https://github.com/vadistic/graphql-client-generator",
+  "author": "Jakub Wadas <vadistic@gmail.com>",
+  "license": "MIT",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
+  "source": "src/index.ts",
+  "scripts": {
+    "build:esm": "tsc -p . -m esnext --outDir dist/esm",
+    "build:cjs": "tsc -p . -m commonjs --outDir dist/cjs",
+    "build:types": "tsc -p . --emitDeclarationOnly -d true --outDir dist/types",
+    "build": "yarn build:esm && yarn build:cjs && yarn build:types",
+    "clean": "rm -rf dist",
+    "prepare": "yarn clean && yarn build",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@graphql-clientgen/shared": "^0.1.0",
+    "@graphql-codegen/cli": "^1.0.6",
+    "@graphql-codegen/schema-ast": "^1.0.6",
+    "@graphql-codegen/typescript": "^1.0.6",
+    "@graphql-codegen/typescript-operations": "^1.0.6",
+    "@graphql-codegen/typescript-resolvers": "^1.0.6",
+    "apollo-utilities": "^1.2.1",
+    "change-case": "^3.1.0",
+    "fs-extra": "^7.0.1",
+    "graphql": "^14.2.1",
+    "graphql-tag": "^2.10.1"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^5.0.5",
+    "@types/graphql": "^14.2.0",
+    "@types/jest": "24.0.11",
+    "@types/node": "11.13.0",
+    "typescript": "3.4.1"
+  },
+  "resolutions": {
+    "graphql": "14.2.1"
+  }
+}
