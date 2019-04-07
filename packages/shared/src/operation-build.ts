@@ -41,7 +41,7 @@ export const buildOperation = (
     )
   }
 
-  /**
+  /*
    * tricky part, this needs to go from top (array start / root operation)
    * because it's hard to determine nested typename
    * I'll reverse it in the next step
@@ -49,7 +49,7 @@ export const buildOperation = (
 
   const selectionData = paths
     .reduce(
-      (acc, fieldname, i, arr) => {
+      (acc, fieldname, i) => {
         const isRoot = i === 0
 
         let typename: string
@@ -105,7 +105,7 @@ export const buildOperation = (
 
       let fragments: FragmentDefinitionNode[] | undefined
 
-      if(isBase ) {
+      if(isBase) {
         const base = buildOperationBaseSelection(map, typename, opts)
         selections = base.selection
         fragments = base.fragments

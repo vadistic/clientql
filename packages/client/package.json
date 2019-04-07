@@ -19,7 +19,8 @@
     "test": "jest"
   },
   "dependencies": {
-    "@graphql-clientgen/shared": "^0.1.0"
+    "@graphql-clientgen/shared": "^0.1.0",
+    "apollo-client": "^2.5.1"
   },
   "devDependencies": {
     "@types/graphql": "^14.2.0",
