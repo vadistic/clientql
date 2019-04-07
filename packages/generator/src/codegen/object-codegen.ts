@@ -1,15 +1,16 @@
-import {
-  isNotEmpty,
-  ObjectTypeDefinitionNodeMeta
-} from '@graphql-clientgen/shared'
+import { isNotEmpty } from '@graphql-clientgen/shared'
 import { codegenFieldMetaToType } from './field-codegen'
+import { ObjectTypeDefinitionNodeMeta } from './object-meta'
 
+/**
+ * codegen to TYPE => as response shape, not as functions
+ */
 export const codegenObjectMetaToType = ({
   typename,
   interfaces,
   fields
 }: ObjectTypeDefinitionNodeMeta) => {
-  // here will go any name transformation like interface prefix
+  // here can go any name transformation like interface prefix
   const name = typename
 
   let result = ''

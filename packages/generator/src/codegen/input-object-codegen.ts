@@ -1,6 +1,6 @@
 import { isNotEmpty } from '@graphql-clientgen/shared'
-import { codegenInputValueMeta } from './field-codegen'
 import { InputObjectTypeDefinitionNodeMeta } from './input-object-meta'
+import { codegenInputValueMeta } from './input-value-codegen'
 
 export const codegenInputObjectMetaToType = ({
   typename,

@@ -1,2 +1,4 @@
 export * from './typescript-types'
-export * from './schema'
+export * from './client'
+export * from './fragments'
+export * from './typedefs'

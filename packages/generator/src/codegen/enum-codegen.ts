@@ -1,7 +1,5 @@
-import {
-  EnumTypeDefinitionNodeMeta,
-  isNotEmpty
-} from '@graphql-clientgen/shared'
+import { isNotEmpty } from '@graphql-clientgen/shared'
+import { EnumTypeDefinitionNodeMeta } from './enum-meta'
 
 export const codegenEnumMeta = ({
   typename,

@@ -1,7 +1,10 @@
-import { getFieldDefinitionNodeMeta } from '@graphql-clientgen/shared'
 import { DocumentNode, ObjectTypeDefinitionNode } from 'graphql'
 import gql from 'graphql-tag'
-import { codegenFieldMetaToFunction, codegenFieldMetaToType } from '../../src'
+import {
+  codegenFieldMetaToFunction,
+  codegenFieldMetaToType,
+  getFieldDefinitionNodeMeta
+} from '../../src'
 
 const getFields = (doc: DocumentNode) =>
   (doc.definitions[0] as ObjectTypeDefinitionNode)!.fields!

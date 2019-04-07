@@ -1,13 +1,9 @@
-import {
-  areArgsNullable,
-  FieldDefinitionNodeMeta,
-  InputValueDefinitionNodeMeta,
-  isNotEmpty,
-  isNullable,
-  TypeNodeMeta
-} from '@graphql-clientgen/shared'
+import { isNotEmpty } from '@graphql-clientgen/shared'
+import { areArgsNullable, FieldDefinitionNodeMeta } from './field-meta'
+import { indent } from './indent'
 import { codegenInputValueMeta } from './input-value-codegen'
 import { codegenTypeMeta } from './type-codegen'
+import { isNullable, TypeNodeMeta } from './type-meta'
 
 /*
  * Single argument could be lifter to be in non-parametric fashion
@@ -41,19 +37,15 @@ const codegenFieldMetaArguments = (fieldMeta: FieldDefinitionNodeMeta) => {
     return '(' + codegenInputValueMeta(fieldMeta.arguments[0]) + ')'
   }
 
-  // print not inline^^
-
-  let result = ''
-
-  result += '(\n'
-  result += '  args' + (areArgsNullable(fieldMeta) ? '?: ' : ': ') + '{' + '\n'
+  let result = '(args'
+  result += areArgsNullable(fieldMeta) ? '?: ' : ': '
+  result += '{' + '\n'
 
   fieldMeta.arguments.forEach(inputValueMeta => {
-    result += '    ' + codegenInputValueMeta(inputValueMeta) + '\n'
+    result += '    ' + indent(codegenInputValueMeta(inputValueMeta), 2) + '\n'
   })
 
-  result += '  }\n'
-  result += ')'
+  result += '  })'
 
   return result
 }

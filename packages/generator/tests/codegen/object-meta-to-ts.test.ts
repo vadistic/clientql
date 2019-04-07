@@ -1,12 +1,10 @@
-import {
-  getInputObjectTypeDefinitionNodeMeta,
-  getObjectTypeDefinitionNodeMeta
-} from '@graphql-clientgen/shared'
 import { DocumentNode } from 'graphql'
 import gql from 'graphql-tag'
 import {
   codegenInputObjectMetaToType,
-  codegenObjectMetaToType
+  codegenObjectMetaToType,
+  getInputObjectTypeDefinitionNodeMeta,
+  getObjectTypeDefinitionNodeMeta
 } from '../../src'
 
 const docToObjectTypescript = (doc: DocumentNode) => {

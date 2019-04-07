@@ -1,4 +1,4 @@
-import { ScalarTypeDefinitionNodeMeta } from '@graphql-clientgen/shared'
+import { ScalarTypeDefinitionNodeMeta } from './scalar-meta'
 
 const defaultScalarValues = (scalarMeta: ScalarTypeDefinitionNodeMeta) => {
   switch (scalarMeta.typename) {

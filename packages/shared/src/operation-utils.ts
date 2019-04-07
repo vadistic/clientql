@@ -6,7 +6,7 @@ import {
   OperationTypeNode,
   VariableDefinitionNode
 } from 'graphql'
-import { createField } from './create'
+import { createField } from './graphql-create'
 import { AstMap, Typename } from './map-build'
 import { hasTypeDefinition } from './map-utils'
 import { BuildOperationOptions } from './operation-build'
@@ -73,7 +73,7 @@ export const buildOperationName = (
 export enum FragmentType {
   DEFAULT = '',
   FLAT = 'Flat',
-  Deep = 'Deep'
+  DEEP = 'Deep'
 }
 
 export const buildOperationFragment = (

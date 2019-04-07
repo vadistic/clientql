@@ -1,4 +1,4 @@
-import { isNullable, TypeNodeMeta } from '@graphql-clientgen/shared'
+import { isNullable, TypeNodeMeta } from './type-meta'
 
 const mapScalarNameToTypescript = (typename: string) => {
   switch (typename) {

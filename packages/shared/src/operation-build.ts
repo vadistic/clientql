@@ -7,7 +7,7 @@ import {
   SelectionNode,
   VariableDefinitionNode
 } from 'graphql'
-import { createField } from './create'
+import { createField } from './graphql-create'
 import { wrapDocument } from './graphql-utils';
 import { AstMap, Fieldname, Typename } from './map-build'
 import { getRootOperationType } from './map-utils'

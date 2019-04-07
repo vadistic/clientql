@@ -1,17 +1,15 @@
 import { FragmentDefinitionNode, print } from 'graphql'
-import {
-  getFragmentConstName,
-  getFragmentDependencies
-} from './object-to-fragment'
+import { GeneratorProps } from '../config'
+import { getFragmentDependencies } from './object-to-fragment'
 
-const fragmentJSTemplate = (
+const fragmentJSTemplate = ({ naming }: GeneratorProps) => (
   fragmentName: string,
   fragmentDeps: string[],
   body: string
 ) => {
   const deps = fragmentDeps
     ? fragmentDeps
-        .map(dep => '${' + getFragmentConstName(dep) + '}')
+        .map(dep => '${' + naming.getFragmentConstantName(dep) + '}')
         .join('\n  ')
     : ''
 
@@ -22,7 +20,7 @@ const fragmentJSTemplate = (
   `.trim()
 
   const all = `
-export const ${getFragmentConstName(fragmentName)} = gql\`
+export const ${naming.getFragmentConstantName(fragmentName)} = gql\`
   ${bodyAndDeps}
 \`
 `
@@ -30,14 +28,14 @@ export const ${getFragmentConstName(fragmentName)} = gql\`
   return all
 }
 
-export const printFragmentsToJs = (
+export const printFragmentsToJs = (props: GeneratorProps) => (
   fragments: ReadonlyArray<FragmentDefinitionNode>
 ) => {
   const imports = `import gql from 'graphql-tag'`
 
   const body = fragments
     .map(fragment =>
-      fragmentJSTemplate(
+      fragmentJSTemplate(props)(
         fragment.name.value,
         getFragmentDependencies(fragment),
         print(fragment)

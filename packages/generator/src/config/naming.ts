@@ -1,3 +1,4 @@
+import { FragmentType } from '@graphql-clientgen/shared'
 import changeCase from 'change-case'
 import { GeneratorConfig } from './config'
 
@@ -13,8 +14,8 @@ export const constantCase = (...inputs: string[]) =>
 export type Naming = ReturnType<typeof getNaming>
 
 export const getNaming = (config: GeneratorConfig) => {
-  const getClientName = (typename: string) => typename + 'Promise'
-  const getRootClientName = () => 'Client'
+  const getClientName = (typename: string) => typename + 'Client'
+  const getRootClientName = () => 'RootClient'
 
   const getFragmentName = (typename: string, fragmentType: FragmentType) =>
     pascalCase(typename, fragmentType)
@@ -22,13 +23,13 @@ export const getNaming = (config: GeneratorConfig) => {
     constantCase(fragmentname)
 
   // interface prefix and stuff, for now uniform
-  const getTypescriptName = (typename: string) => typename
+  const getTsInterfaceName = (typename: string) => typename
 
   return {
     getClientName,
     getRootClientName,
     getFragmentName,
     getFragmentConstantName,
-    getTypescriptName
+    getTsInterfaceName
   }
 }

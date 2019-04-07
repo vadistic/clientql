@@ -1,12 +1,10 @@
-import { createField, getTypeNodeMeta } from '@graphql-clientgen/shared'
-import changeCase from 'change-case'
+import { createField, FragmentType } from '@graphql-clientgen/shared'
 import {
   ExecutableDefinitionNode,
   FieldDefinitionNode,
   FieldNode,
   FragmentDefinitionNode,
   FragmentSpreadNode,
-  GraphQLSchema,
   GraphQLType,
   isEnumType,
   isObjectType,
@@ -15,7 +13,8 @@ import {
   ObjectTypeDefinitionNode,
   SelectionNode
 } from 'graphql'
-import { FragmentType } from '../config'
+import { getTypeNodeMeta } from '../codegen'
+import { GeneratorProps } from '../config'
 
 /**
  *  kind for flat fragment
@@ -47,7 +46,7 @@ export const createFragmentSpread = (
  */
 
 const objectTypeFieldsToFragmentSelections = (
-  schema: GraphQLSchema,
+  { schema, naming }: GeneratorProps,
   nodes: ReadonlyArray<FieldDefinitionNode>,
   fragmentType: FragmentType
 ): SelectionNode[] =>
@@ -82,7 +81,7 @@ const objectTypeFieldsToFragmentSelections = (
         ) {
           const spreadFragmentType = FragmentType.FLAT
 
-          const spreadFragmentName = getFragmentName(
+          const spreadFragmentName = naming.getFragmentName(
             fieldTarget.name,
             spreadFragmentType
           )
@@ -109,7 +108,7 @@ const objectTypeFieldsToFragmentSelections = (
         if (fragmentType === FragmentType.DEEP && isNestedType(fieldTarget)) {
           const spreadFragmentType = FragmentType.DEFAULT
 
-          const spreadFragmentName = getFragmentName(
+          const spreadFragmentName = naming.getFragmentName(
             fieldTarget.name,
             spreadFragmentType
           )
@@ -157,7 +156,7 @@ export const getFragmentDependencies = (node: ExecutableDefinitionNode) =>
  * TODO: Maybe suppport fragment variables?
  */
 export const objectTypeToFragment = (
-  schema: GraphQLSchema,
+  props: GeneratorProps,
   fragmentType: FragmentType
 ) => (node: ObjectTypeDefinitionNode): FragmentDefinitionNode | null => {
   // return null without fields/selections since empty fragment does not make sense
@@ -166,7 +165,7 @@ export const objectTypeToFragment = (
   }
 
   const selections = objectTypeFieldsToFragmentSelections(
-    schema,
+    props,
     node.fields,
     fragmentType
   )
@@ -179,7 +178,7 @@ export const objectTypeToFragment = (
     kind: Kind.FRAGMENT_DEFINITION,
     name: {
       kind: Kind.NAME,
-      value: getFragmentName(node.name.value, fragmentType)
+      value: props.naming.getFragmentName(node.name.value, fragmentType)
     },
     directives: node.directives,
     typeCondition: {

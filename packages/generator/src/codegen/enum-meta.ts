@@ -1,4 +1,4 @@
-import { EnumTypeDefinitionNode, EnumValueDefinitionNode } from 'graphql'
+import { EnumTypeDefinitionNode } from 'graphql'
 
 export interface EnumTypeDefinitionNodeMeta {
   typename: string

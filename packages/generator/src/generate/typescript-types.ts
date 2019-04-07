@@ -1,8 +1,4 @@
 import {
-  getEnumTypeDefinitionNodeMeta,
-  getInputObjectTypeDefinitionNodeMeta,
-  getObjectTypeDefinitionNodeMeta,
-  getScalarTypeDefinitionNodeMeta,
   isEnumTypeDefinitionNode,
   isInputObjectTypeDefinitionNode,
   isObjectTypeDefinitionNode,
@@ -11,7 +7,11 @@ import {
 } from '@graphql-clientgen/shared'
 import {
   codegenInputObjectMetaToType,
-  codegenObjectMetaToType
+  codegenObjectMetaToType,
+  getEnumTypeDefinitionNodeMeta,
+  getInputObjectTypeDefinitionNodeMeta,
+  getObjectTypeDefinitionNodeMeta,
+  getScalarTypeDefinitionNodeMeta
 } from '../codegen'
 import { codegenEnumMeta } from '../codegen/enum-codegen'
 import { codegenScalarMeta } from '../codegen/scalar-codegen'

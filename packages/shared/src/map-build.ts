@@ -1,6 +1,7 @@
 import {
   DocumentNode,
   FieldDefinitionNode,
+  InputValueDefinitionNode,
   ObjectTypeDefinitionNode
 } from 'graphql'
 import { isObjectTypeDefinitionNode } from './graphql-guards'
@@ -34,6 +35,20 @@ export interface AstMap {
   subscription?: MapRootEntry
   types: StringMap<MapNestedEntry>
   rootMap: FieldMap
+}
+
+/**
+ * TODO: refactor to shape like flat FieldDefinitionNodeMeta
+ */
+
+export interface NewFieldMap {
+  [fieldname: string]: {
+    typename: string
+    // rename arguments=> args for destruct in strict mode
+    args: InputValueDefinitionNode[]
+    field: FieldDefinitionNode
+    type: ObjectTypeDefinitionNode
+  }
 }
 
 export interface FieldMap {
