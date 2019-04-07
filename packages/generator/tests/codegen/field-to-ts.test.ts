@@ -1,20 +1,16 @@
 import { DocumentNode, ObjectTypeDefinitionNode } from 'graphql'
 import gql from 'graphql-tag'
-import {
-  codegenFieldMetaToFunction,
-  codegenFieldMetaToType,
-  getFieldDefinitionNodeMeta
-} from '../../src'
+import { codegenFieldToFunction, codegenFieldToType } from '../../src'
+import { getIsolatedGenProps } from '../fixture'
 
 const getFields = (doc: DocumentNode) =>
   (doc.definitions[0] as ObjectTypeDefinitionNode)!.fields!
 
 const docToFieldsTypescript = (doc: DocumentNode) => {
   const fields = getFields(doc)
-  const fieldMetas = fields.map(getFieldDefinitionNodeMeta)
-  const fieldTypes = fieldMetas.map(codegenFieldMetaToType)
-
-  const fieldFunctions = fieldMetas.map(codegenFieldMetaToFunction)
+  const props = getIsolatedGenProps(doc)
+  const fieldTypes = fields.map(codegenFieldToType(props))
+  const fieldFunctions = fields.map(codegenFieldToFunction(props))
 
   return { fieldTypes, fieldFunctions }
 }

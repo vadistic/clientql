@@ -1,13 +1,20 @@
+import {
+  buildAstMap,
+  unwrapDocument,
+  wrapDocument
+} from '@graphql-clientgen/shared'
 import fs from 'fs-extra'
 import {
   ASTNode,
   buildASTSchema,
+  DocumentNode,
   Kind,
   ObjectTypeDefinitionNode,
   parse,
   visit
 } from 'graphql'
 import path from 'path'
+import { defaultConfig, GeneratorProps, getNaming } from '../src'
 
 export const typeDefs = fs.readFileSync(
   path.resolve(__dirname, '../generated/schema.graphql'),
@@ -16,6 +23,29 @@ export const typeDefs = fs.readFileSync(
 
 export const ast = parse(typeDefs, { noLocation: true })
 export const schema = buildASTSchema(ast)
+
+/**
+ * let's not use it for now
+ */
+const getFixtureGenProps = (doc?: DocumentNode): GeneratorProps => {
+  const extendedAst = !doc
+    ? ast
+    : wrapDocument(...unwrapDocument(doc), ...unwrapDocument(doc))
+
+  return {
+    config: defaultConfig,
+    naming: getNaming(defaultConfig),
+    doc: extendedAst,
+    astMap: buildAstMap(extendedAst)
+  }
+}
+
+export const getIsolatedGenProps = (doc: DocumentNode): GeneratorProps => ({
+  config: defaultConfig,
+  naming: getNaming(defaultConfig),
+  doc,
+  astMap: buildAstMap(doc)
+})
 
 export const mutation = ast.definitions.find(
   node =>

@@ -1,18 +1,19 @@
 import { DocumentNode, ObjectTypeDefinitionNode } from 'graphql'
 import gql from 'graphql-tag'
-import { codegenTypeMeta, getFieldDefinitionNodeMeta } from '../../src'
+import { codegenType } from '../../src'
+import { getIsolatedGenProps } from '../fixture'
 
 const getFields = (doc: DocumentNode) =>
   (doc.definitions[0] as ObjectTypeDefinitionNode)!.fields!
 
-const docToFieldsValueTsArray = (doc: DocumentNode) => {
+const docToFieldsReturnTsArray = (doc: DocumentNode) => {
   const fields = getFields(doc)
-  const fieldMetas = fields.map(getFieldDefinitionNodeMeta)
-  const fieldsValueTypescript = fieldMetas.map(fieldMeta =>
-    codegenTypeMeta(fieldMeta.type)
+  const props = getIsolatedGenProps(doc)
+  const fieldsReturnTypescript = fields.map(field =>
+    codegenType(props)(field.type)
   )
 
-  return fieldsValueTypescript
+  return fieldsReturnTypescript
 }
 
 describe('codegen > type meta to typescript', () => {
@@ -37,7 +38,7 @@ describe('codegen > type meta to typescript', () => {
       `string[]`
     ]
 
-    const result = docToFieldsValueTsArray(fixture)
+    const result = docToFieldsReturnTsArray(fixture)
 
     expect(result).toEqual(expected)
   })
@@ -63,7 +64,7 @@ describe('codegen > type meta to typescript', () => {
       `JSON | null`
     ]
 
-    const result = docToFieldsValueTsArray(fixture)
+    const result = docToFieldsReturnTsArray(fixture)
 
     expect(result).toEqual(expected)
   })
@@ -89,7 +90,7 @@ describe('codegen > type meta to typescript', () => {
       `Array<MyType>`
     ]
 
-    const result = docToFieldsValueTsArray(fixture)
+    const result = docToFieldsReturnTsArray(fixture)
 
     expect(result).toEqual(expected)
   })

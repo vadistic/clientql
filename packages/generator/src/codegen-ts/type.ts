@@ -1,4 +1,4 @@
-import { buildtypeMap, isNullable, Typename } from '@graphql-clientgen/shared'
+import { buildTypemap, isNullable, Typename } from '@graphql-clientgen/shared'
 import { TypeNode } from 'graphql'
 import { GeneratorProps } from '../config'
 
@@ -21,7 +21,7 @@ export const isExplicitScalar = (typename: Typename) =>
   mapScalarNameToTypescript(typename) !== typename
 
 export const codegenType = (props: GeneratorProps) => (node: TypeNode) => {
-  const { modifiers, typename } = buildtypeMap(node)
+  const { modifiers, typename } = buildTypemap(node)
 
   const scalar = isExplicitScalar(typename)
   const name = scalar ? mapScalarNameToTypescript(typename) : typename

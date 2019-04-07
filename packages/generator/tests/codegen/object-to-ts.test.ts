@@ -1,23 +1,18 @@
 import { DocumentNode } from 'graphql'
 import gql from 'graphql-tag'
-import {
-  codegenInputObjectMetaToType,
-  codegenObjectMetaToType,
-  getInputObjectTypeDefinitionNodeMeta,
-  getObjectTypeDefinitionNodeMeta
-} from '../../src'
+import { codegenInputObject, codegenObjectToType } from '../../src'
+import { getIsolatedGenProps } from '../fixture'
 
 const docToObjectTypescript = (doc: DocumentNode) => {
-  const objectMeta = getObjectTypeDefinitionNodeMeta(doc.definitions[0] as any)
+  const props = getIsolatedGenProps(doc)
 
-  return codegenObjectMetaToType(objectMeta)
+  return codegenObjectToType(props)(doc.definitions[0] as any)
 }
 
 const docToInputObjectTypescript = (doc: DocumentNode) => {
-  const objectMeta = getInputObjectTypeDefinitionNodeMeta(doc
-    .definitions[0] as any)
+  const props = getIsolatedGenProps(doc)
 
-  return codegenInputObjectMetaToType(objectMeta)
+  return codegenInputObject(props)(doc.definitions[0] as any)
 }
 
 describe('codegen > codegen object definition nodes', () => {

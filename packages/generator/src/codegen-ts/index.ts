@@ -8,3 +8,4 @@ export * from './scalar'
 export * from './type'
 
 export * from './indent'
+export * from './generate'

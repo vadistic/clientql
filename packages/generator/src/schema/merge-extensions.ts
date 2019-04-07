@@ -1,4 +1,9 @@
-import { Kind, StringMap, unwrapDocument } from '@graphql-clientgen/shared'
+import {
+  Kind,
+  StringMap,
+  unwrapDocument,
+  wrapDocument
+} from '@graphql-clientgen/shared'
 import {
   ASTNode,
   DocumentNode,
@@ -56,7 +61,11 @@ export const mergeExtensions = (doc: DocumentNode) => {
     }
   }
 
-  return definitionsMap
+  return wrapDocument(
+    ...Object.values(definitionsMap)
+      .map(obj => Object.values(obj))
+      .flat(2)
+  )
 }
 
 const mergeExtension = <T extends TypeDefinitionNode>(
@@ -86,5 +95,5 @@ const mergeExtension = <T extends TypeDefinitionNode>(
     result.types = [...(result.types || []), ...(result.types || [])]
   }
 
-  return result as T
+  return result
 }

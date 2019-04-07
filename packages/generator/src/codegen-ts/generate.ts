@@ -13,7 +13,7 @@ import {
 } from '.'
 import { GeneratorProps } from '../config/config'
 
-export const generateTypescriptTypes = async (props: GeneratorProps) => {
+export const generateTypescript = async (props: GeneratorProps) => {
   const definitions = unwrapDocument(props.doc)
 
   const objectTypes = Object.values(props.astMap.types).map(val => val.node)
