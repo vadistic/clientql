@@ -1,6 +1,7 @@
 import { isObjectTypeDefinitionNode } from '@graphql-clientgen/shared'
-import { DocumentNode, print } from 'graphql'
+import { print } from 'graphql'
 import { indent } from '../codegen'
+import { GeneratorProps } from '../config/config'
 
 /*
  * This will generate typedefs of object types for runtime client
@@ -9,7 +10,7 @@ import { indent } from '../codegen'
 
 const TYPEDEFS_CONST_NAME = 'TYPEDEFS'
 
-export const generateRuntimeTypedefs = (ast: DocumentNode) => {
+export const generateRuntimeTypedefs = ({ ast }: GeneratorProps) => {
   const objectTypes = ast.definitions.filter(isObjectTypeDefinitionNode)
 
   let result = `import gql from 'graphql-tag' \n\n`

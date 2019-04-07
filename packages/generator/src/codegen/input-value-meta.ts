@@ -1,5 +1,5 @@
 import { InputValueDefinitionNode } from 'graphql'
-import { getTypeNodeMeta, TypeNodeMeta } from './type'
+import { getTypeNodeMeta, TypeNodeMeta } from './type-meta'
 
 // maybe unify with field definition meta?
 export interface InputValueDefinitionNodeMeta {

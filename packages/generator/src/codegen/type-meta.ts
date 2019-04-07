@@ -1,5 +1,5 @@
+import { Kind } from '@graphql-clientgen/shared'
 import { TypeNode } from 'graphql'
-import { Kind } from '../graphql/kind'
 
 /**
  * It's transformation of non-null/array NodeTypes that will be easier to use and print

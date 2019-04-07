@@ -1,8 +1,8 @@
+import { wrapDocument } from '@graphql-clientgen/shared'
 import { getOperationDefinition } from 'apollo-utilities'
 import { DocumentNode, FieldDefinitionNode, print } from 'graphql'
 import gql from 'graphql-tag'
-import { fieldDefinitionToOperation } from '../src/field-to-operation'
-import { wrapInDocument } from '../src/utils'
+import { fieldDefinitionToOperation } from '../src/'
 import { mutation } from './fixture'
 
 describe('field to operation', () => {
@@ -27,6 +27,6 @@ describe('field to operation', () => {
   })
 
   it('operationToDocument', () => {
-    expect(print(wrapInDocument(operation))).toEqual(print(fixture))
+    expect(print(wrapDocument(operation))).toEqual(print(fixture))
   })
 })

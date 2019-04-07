@@ -9,15 +9,15 @@ import {
   isScalarTypeDefinitionNode,
   unwrapDocument
 } from '@graphql-clientgen/shared'
-import { DocumentNode } from 'graphql'
 import {
   codegenInputObjectMetaToType,
   codegenObjectMetaToType
 } from '../codegen'
-import { codegenEnumMeta } from '../codegen/enum'
-import { codegenScalarMeta } from '../codegen/scalar'
+import { codegenEnumMeta } from '../codegen/enum-codegen'
+import { codegenScalarMeta } from '../codegen/scalar-codegen'
+import { GeneratorProps } from '../config/config'
 
-export const generateTypescriptTypes = async (ast: DocumentNode) => {
+export const generateTypescriptTypes = async ({ ast }: GeneratorProps) => {
   const definitions = unwrapDocument(ast)
 
   const objectTypesTypescript = definitions

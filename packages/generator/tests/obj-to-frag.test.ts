@@ -1,7 +1,7 @@
 import { getFragmentDefinition } from 'apollo-utilities'
 import { ObjectTypeDefinitionNode, print } from 'graphql'
 import gql from 'graphql-tag'
-import { FragmentType, objectTypeToFragment } from '../src/object-to-fragment'
+import { FragmentType, objectTypeToFragment } from '../src'
 import { normalise, schema } from './fixture'
 
 describe('object to fragment', () => {

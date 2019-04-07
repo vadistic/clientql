@@ -2,7 +2,7 @@ import {
   InputValueDefinitionNodeMeta,
   isNullable
 } from '@graphql-clientgen/shared'
-import { codegenTypeMeta } from './type-meta-to-ts'
+import { codegenTypeMeta } from './type-codegen'
 
 /**
  * codegenFieldMetaToTypes works just about the same but let's keep this one for semantics

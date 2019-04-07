@@ -1,11 +1,20 @@
 import {
+  areArgsNullable,
   FieldDefinitionNodeMeta,
   InputValueDefinitionNodeMeta,
   isNotEmpty,
   isNullable,
   TypeNodeMeta
 } from '@graphql-clientgen/shared'
-import { codegenTypeMeta } from './type-meta-to-ts'
+import { codegenInputValueMeta } from './input-value-codegen'
+import { codegenTypeMeta } from './type-codegen'
+
+/*
+ * Single argument could be lifter to be in non-parametric fashion
+ * TODO: Add to some sort of config
+ */
+
+const LIFT_SINGLE_ARGUMENT = true
 
 /**
  *  Build simple type ingoring field arguments
@@ -19,22 +28,6 @@ export const codegenFieldMetaToType = (fieldMeta: FieldDefinitionNodeMeta) => {
 }
 
 /**
- * codegenFieldMetaToTypes works just about the same but let's keep this one for semantics
- */
-export const codegenInputValueMeta = (
-  inputValueMeta: InputValueDefinitionNodeMeta
-) => {
-  let result = inputValueMeta.fieldname
-
-  result += isNullable(inputValueMeta.type) ? '?: ' : ': '
-
-  // using 1:1 orignal type names
-  result += codegenTypeMeta(inputValueMeta.type)
-
-  return result
-}
-
-/**
  *  Build field arguments
  */
 
@@ -44,14 +37,25 @@ const codegenFieldMetaArguments = (fieldMeta: FieldDefinitionNodeMeta) => {
   }
 
   // print inline
-  if (fieldMeta.arguments.length === 1) {
+  if (LIFT_SINGLE_ARGUMENT && fieldMeta.arguments.length === 1) {
     return '(' + codegenInputValueMeta(fieldMeta.arguments[0]) + ')'
   }
 
   // print not inline^^
-  return (
-    '(\n' + fieldMeta.arguments.map(codegenInputValueMeta).join('\n') + '\n)'
-  )
+
+  let result = ''
+
+  result += '(\n'
+  result += '  args' + (areArgsNullable(fieldMeta) ? '?: ' : ': ') + '{' + '\n'
+
+  fieldMeta.arguments.forEach(inputValueMeta => {
+    result += '    ' + codegenInputValueMeta(inputValueMeta) + '\n'
+  })
+
+  result += '  }\n'
+  result += ')'
+
+  return result
 }
 
 /**

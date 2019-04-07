@@ -74,9 +74,11 @@ describe('codegen > codegen fields', () => {
       `withArg: (data: string) => Array<Value>`,
       `withOptArg: (data?: SomeInputType | null) => Array<Value>`,
       `many: (
-data?: string | null
-where: ID
-first?: number | null
+  args: {
+    data?: string | null
+    where: ID
+    first?: number | null
+  }
 ) => Array<Value>`
     ]
 

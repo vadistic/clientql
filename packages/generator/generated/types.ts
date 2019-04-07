@@ -1,4 +1,4 @@
-/* SCALAR TYPES */ 
+/* SCALAR TYPES */
 
 export type ID = string
 
@@ -8,7 +8,7 @@ export type Json = any
 
 export type Long = any
 
-/* ENUM TYPES */ 
+/* ENUM TYPES */
 
 export enum ApplicationOrderByInput {
   createdAt_ASC = 'createdAt_ASC',
@@ -306,7 +306,7 @@ export enum FieldType {
   DATETIME = 'DATETIME',
 }
 
-/* INPUT OBJECT TYPES */ 
+/* INPUT OBJECT TYPES */
 
 export interface WorkspaceCreateInput {
   name: string
@@ -4980,7 +4980,7 @@ export interface InviteUpdateManyDataInput {
   expireAt?: DateTime | null
 }
 
-/* OBJECT TYPES */ 
+/* OBJECT TYPES */
 
 export interface Query {
   application?: Application | null

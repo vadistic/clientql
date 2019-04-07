@@ -15,12 +15,7 @@ import {
   ObjectTypeDefinitionNode,
   SelectionNode
 } from 'graphql'
-
-export enum FragmentType {
-  DEFAULT = '',
-  FLAT = 'Flat',
-  DEEP = 'Deep'
-}
+import { FragmentType } from '../config'
 
 /**
  *  kind for flat fragment
@@ -35,26 +30,7 @@ export const isFlatType = (type: GraphQLType) =>
 export const isNestedType = (type: GraphQLType) => isObjectType(type)
 
 /**
- * Name of generated fragment (changecase only without fragmentType, add some validation later)
- */
-export const getFragmentName = (
-  typeName: string,
-  fragmentType?: FragmentType
-) => changeCase.pascalCase(typeName + (fragmentType ? ' ' + fragmentType : ''))
-
-/**
- * Name of constant with generated fragment (changecase only without fragmentType)
- */
-export const getFragmentConstName = (
-  typeName: string,
-  fragmentType?: FragmentType
-) =>
-  changeCase.constant(
-    typeName + (fragmentType ? ' ' + fragmentType : '') + ' Fragment'
-  )
-
-/**
- * Create FragmentSpreadNode with spreaded fragment
+ * Create FragmentSpreadNode with spread fragment
  */
 export const createFragmentSpread = (
   fragmentName: string
@@ -182,9 +158,8 @@ export const getFragmentDependencies = (node: ExecutableDefinitionNode) =>
  */
 export const objectTypeToFragment = (
   schema: GraphQLSchema,
-  node: ObjectTypeDefinitionNode,
   fragmentType: FragmentType
-): FragmentDefinitionNode | null => {
+) => (node: ObjectTypeDefinitionNode): FragmentDefinitionNode | null => {
   // return null without fields/selections since empty fragment does not make sense
   if (!node.fields || node.fields.length === 0) {
     return null

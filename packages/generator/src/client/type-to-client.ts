@@ -7,7 +7,7 @@ import {
   Kind,
   TypeNode
 } from 'graphql'
-import { isFlatType } from '../fragments/object-to-fragment'
+import { isFlatType } from '../fragment/object-to-fragment'
 
 export const getTypeClientName = (typename: string) =>
   changeCase.pascalCase(typename + ' Promise')

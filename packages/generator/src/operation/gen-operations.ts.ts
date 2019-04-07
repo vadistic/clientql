@@ -12,7 +12,7 @@ import {
   getFragmentConstName,
   getFragmentDependencies,
   getFragmentName
-} from '../fragments/object-to-fragment'
+} from '../fragment/object-to-fragment'
 import {
   fieldDefinitionToOperation,
   getOperationConstName

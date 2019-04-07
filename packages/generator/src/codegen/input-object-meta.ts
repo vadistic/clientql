@@ -2,7 +2,7 @@ import { InputObjectTypeDefinitionNode } from 'graphql'
 import {
   getInputValueDefinitionNodeMeta,
   InputValueDefinitionNodeMeta
-} from './input-value'
+} from './input-value-meta'
 
 export interface InputObjectTypeDefinitionNodeMeta {
   // maybe not typename to not confuse it with object types/ scalars

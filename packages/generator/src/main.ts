@@ -1,6 +1,7 @@
 import fs from 'fs-extra'
-import { parse } from 'graphql'
-import path from 'path'
+import { buildASTSchema } from 'graphql'
+import { getNaming } from './config'
+import { defaultConfig } from './config/config'
 import { generateSchema, generateTypescriptTypes } from './generate'
 import { generateRuntimeTypedefs } from './generate/typedefs'
 
@@ -11,10 +12,19 @@ const SCHEMA_PATH = 'generated/schema.graphql'
 const main = async () => {
   const { ast, typeDefs } = await generateSchema(SCHEMA_PATH)
 
-  const types = await generateTypescriptTypes(ast)
+  const schema = buildASTSchema(ast)
+
+  const generatorProps = {
+    ast,
+    schema,
+    config: defaultConfig,
+    naming: getNaming(defaultConfig)
+  }
+
+  const types = await generateTypescriptTypes(generatorProps)
   fs.writeFile(TYPES_PATH, types)
 
-  const typedefs = await generateRuntimeTypedefs(ast)
+  const typedefs = await generateRuntimeTypedefs(generatorProps)
   fs.writeFile(TYPEDEFS_PATH, typedefs)
 }
 

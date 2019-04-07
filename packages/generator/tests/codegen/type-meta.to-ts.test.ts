@@ -16,7 +16,7 @@ const docToFieldsValueTsArray = (doc: DocumentNode) => {
   return fieldsValueTypescript
 }
 
-describe('client > type meta to typescript', () => {
+describe('codegen > type meta to typescript', () => {
   it('transpile scalar nullable lists', () => {
     const fixture = gql`
       type MyType {

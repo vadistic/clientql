@@ -63,8 +63,6 @@ export interface MyInput {
 
     const result = docToInputObjectTypescript(fixture)
 
-    console.log(result)
-
     expect(result).toBe(expected)
   })
 })

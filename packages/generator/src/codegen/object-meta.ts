@@ -1,5 +1,8 @@
 import { ObjectTypeDefinitionNode } from 'graphql'
-import { FieldDefinitionNodeMeta, getFieldDefinitionNodeMeta } from './field'
+import {
+  FieldDefinitionNodeMeta,
+  getFieldDefinitionNodeMeta
+} from './field-meta'
 
 export interface ObjectTypeDefinitionNodeMeta {
   typename: string
