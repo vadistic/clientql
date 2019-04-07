@@ -8,7 +8,7 @@ import { GeneratorProps } from '../config/config'
 import { objectTypeToFragment } from '../fragment'
 
 export const generateFragments = (props: GeneratorProps) => {
-  const objectTypes = props.ast.definitions
+  const objectTypes = props.doc.definitions
     .filter(isObjectTypeDefinitionNode)
     .filter(
       el => isObjectTypeDefinitionNode(el) && !isRootTypeDefinitionNode(el)

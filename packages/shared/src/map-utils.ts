@@ -1,19 +1,19 @@
 import { OperationTypeNode } from 'graphql'
-import { AstMap, Fieldname, Typename } from './map-build'
+import { AstMap, Fieldname, Typename } from './map-ast'
 
-export const getTypeDefinition = (map: AstMap, typename: Typename) =>
-  map.types[typename] && map.types[typename].definition
+export const getMapEntry = (map: AstMap, typename: Typename) =>
+  map.types[typename]
 
-export const hasTypeDefinition = (map: AstMap, typename: Typename) =>
-  !!(map.types[typename] && map.types[typename].definition)
+export const hasMapEntry = (map: AstMap, typename: Typename) =>
+  !!map.types[typename]
 
-export const getRootOperationType = (
+export const getOperationType = (
   map: AstMap,
   fieldname: Fieldname
 ): OperationTypeNode | undefined =>
-  (map.query && map.query.fieldMap.typenames[fieldname] && 'query') ||
-  (map.mutation && map.mutation.fieldMap.typenames[fieldname] && 'mutation') ||
+  (map.query && map.query.fieldmap[fieldname] && 'query') ||
+  (map.mutation && map.mutation.fieldmap[fieldname] && 'mutation') ||
   (map.subscription &&
-    map.subscription.fieldMap.typenames[fieldname] &&
+    map.subscription.fieldmap[fieldname] &&
     'subscription') ||
   undefined

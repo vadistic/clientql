@@ -1,6 +1,6 @@
-import { ClientPaths, pathProxy } from '../src'
+import { fluentAsyncProxy, Segments } from '../src'
 
-describe('path proxy async/ promises', () => {
+describe('fluent async proxy > promises', () => {
   const OK_RES = 100
   const ERR_RES = 'oh no!'
 
@@ -17,7 +17,7 @@ describe('path proxy async/ promises', () => {
   })
 
   it('return resolved promise value', async () => {
-    const res = await pathProxy(() => timeoutOk)
+    const res = await fluentAsyncProxy(() => timeoutOk)
       .abc(1)
       .efd(2)
 
@@ -27,7 +27,7 @@ describe('path proxy async/ promises', () => {
   it('allow throwing', async () => {
     let res
     try {
-      const a = await pathProxy(() => timeoutErr)
+      await fluentAsyncProxy(() => timeoutErr)
         .abc(1)
         .efd(2)
     } catch (err) {
@@ -38,7 +38,7 @@ describe('path proxy async/ promises', () => {
   })
 
   it('supports thenable promise chains', async () => {
-    const a = await pathProxy(() => timeoutOk)
+    const a = await fluentAsyncProxy(() => timeoutOk)
       .abc(1)
       .efd(2)
       .then((res: any) => {
@@ -49,21 +49,25 @@ describe('path proxy async/ promises', () => {
   })
 
   it('supports catch & finally chains', async () => {
-    try {
-      const a = pathProxy(() => timeoutErr)
-        .abc(1)
-        .efd(2)
-        .catch((err: any) => {
-          console.log('err', err)
-          return ERR_RES + 'AAA'
-        })
-    } catch (err) {
-      console.log('wrapper err', err)
-    }
+    const a = await fluentAsyncProxy(() => timeoutErr)
+      .abc(1)
+      .efd(2)
+      .catch((err: any) => {
+        return err + 'AAA'
+      })
+
+    expect(a).toBe(ERR_RES + 'AAA')
+  })
+
+  it('unwrap to promise', async () => {
+    const a = fluentAsyncProxy(() => timeoutOk)
+
+    expect(a instanceof Promise).toBeFalsy()
+    expect(a.UNWRAP instanceof Promise).toBeTruthy()
   })
 })
 
-describe('path proxy path segments', () => {
+describe('fluent async proxy > segments', () => {
   const timeoutVal = (val: any) =>
     new Promise(ok => {
       setTimeout(() => {
@@ -72,34 +76,34 @@ describe('path proxy path segments', () => {
     })
 
   it('return paths & args of segments to callback', async () => {
-    const callback = (paths: ClientPaths) => timeoutVal(paths)
+    const callback = (paths: Segments) => timeoutVal(paths)
 
-    const res = await pathProxy(callback)
+    const res = await fluentAsyncProxy(callback)
       .aaa(1)
       .bbb(2)
 
-    const fixture: ClientPaths = {
-      args: [[1], [2]],
-      paths: ['aaa', 'bbb']
-    }
+    const fixture: Segments = [['aaa', [[1]]], ['bbb', [[2]]]]
 
     expect(res).toEqual(fixture)
   })
 
   it('handle many segments, random args', async () => {
-    const callback = (paths: ClientPaths) => timeoutVal(paths)
+    const callback = (paths: Segments) => timeoutVal(paths)
 
-    const res = await pathProxy(callback)
+    const res = await fluentAsyncProxy(callback)
       .aaa({ very: { nested: 'arg' } }, '123', 'another')
       .bbb(2)
       .bbb(2)
       .bbb()
       .bbb()
 
-    const fixture: ClientPaths = {
-      args: [[{ very: { nested: 'arg' } }, '123', 'another'], [2], [2], [], []],
-      paths: ['aaa', 'bbb', 'bbb', 'bbb', 'bbb']
-    }
+    const fixture: Segments = [
+      ['aaa', [[{ very: { nested: 'arg' } }, '123', 'another']]],
+      ['bbb', [[2]]],
+      ['bbb', [[2]]],
+      ['bbb', [[]]],
+      ['bbb', [[]]]
+    ]
 
     expect(res).toEqual(fixture)
   })

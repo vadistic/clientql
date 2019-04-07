@@ -1,3 +1,4 @@
+import { AstMap } from '@graphql-clientgen/shared'
 import { DocumentNode, GraphQLSchema } from 'graphql'
 import { Naming } from './naming'
 
@@ -6,11 +7,13 @@ import { Naming } from './naming'
  *
  * I would like to have some sort of incremental compilation
  * instead of simply maping over all types
+ *
+ * Also - I need to finaly decide to use Schema/ASt or 2 other custom conventions....
  */
 
 export interface GeneratorProps {
-  ast: DocumentNode
-  schema: GraphQLSchema
+  doc: DocumentNode
+  astMap: AstMap
   config: GeneratorConfig
   naming: Naming
 }

@@ -8,12 +8,12 @@ import {
   VariableDefinitionNode
 } from 'graphql'
 import { createField } from './graphql-create'
-import { wrapDocument } from './graphql-utils';
-import { AstMap, Fieldname, Typename } from './map-build'
-import { getRootOperationType } from './map-utils'
+import { wrapDocument } from './graphql-utils'
+import { AstMap, Fieldname, Typename } from './map-ast'
+import { getOperationType } from './map-utils'
 import {
   buildOperationArgument,
-  buildOperationBaseSelection,
+  buildOperationBase,
   buildOperationName,
   buildOperationVariable,
   FragmentType
@@ -23,6 +23,7 @@ export interface BuildOperationOptions {
   useFragments: boolean
   baseSelectionType: FragmentType
 }
+
 /**
  * Builds operation based on fields path
  * Retruns DocumentNode, becuse it may also contain some fragments
@@ -33,7 +34,7 @@ export const buildOperation = (
   paths: Fieldname[],
   opts: BuildOperationOptions
 ): DocumentNode => {
-  const operationType = getRootOperationType(map, paths[0])!
+  const operationType = getOperationType(map, paths[0])!
 
   if (!operationType) {
     throw Error(
@@ -52,120 +53,113 @@ export const buildOperation = (
       (acc, fieldname, i) => {
         const isRoot = i === 0
 
-        let typename: string
-        let inputs: InputValueDefinitionNode[] | undefined
+        const parentTypename = isRoot ? 'Root' : acc[i - 1].typename
+        const parentFieldmap = isRoot
+          ? map.operation
+          : map.types[parentTypename].fieldmap
 
-        if (isRoot) {
-          typename = map.rootMap.typenames[fieldname]
-          inputs = !!typename ? [...map.rootMap.definitions[fieldname].arguments || []] : []
-
-        } else {
-          const parentTypename = acc[i - 1].typename
-          const parentMap = map.types[parentTypename].getFieldMap()
-
-          typename = parentMap && parentMap.typenames[fieldname]
-          inputs = !!typename ? [...parentMap.definitions[fieldname].arguments || []]  : []
-        }
-
+        const typename = parentFieldmap[fieldname].typename
+        const args = parentFieldmap[fieldname].args
 
         if (!typename) {
-          throw Error(
-            `Invalid fieldname **${fieldname}**  in ${paths
-              .splice(1)
-              .join(' => ')}`
-          )
+          throw Error(`Missing type for ${fieldname}`)
         }
 
         const res = {
           typename,
           fieldname,
-          inputs
+          args
         }
 
-        return [...acc,res]
-
+        return [...acc, res]
       },
       [] as Array<{
         fieldname: Fieldname
         typename: Typename
-        inputs?: readonly InputValueDefinitionNode[]
+        args: InputValueDefinitionNode[]
       }>
     )
-    .map((props, i, arr) => {
-      const {fieldname,typename,inputs} = props
+    .map(({ fieldname, typename, args }, i, arr) => {
       const isBase = i === arr.length - 1
 
-      const variables = inputs ? inputs.map(buildOperationVariable(i)) : []
-
-      const args = inputs
-        ? inputs.map(buildOperationArgument(i))
-        : undefined
+      const variables = args.map(buildOperationVariable(i))
+      const operationArgs = args.map(buildOperationArgument(i))
 
       let selections: SelectionNode[] = []
+      let fragments: FragmentDefinitionNode[] = []
 
-      let fragments: FragmentDefinitionNode[] | undefined
+      if (isBase) {
+        const base = buildOperationBase(map, typename, opts)
 
-      if(isBase) {
-        const base = buildOperationBaseSelection(map, typename, opts)
-        selections = base.selection
+        selections = base.selections
         fragments = base.fragments
       }
 
       const field: FieldNode = createField({
         fieldname,
-        arguments: args,
+        arguments: operationArgs,
         selections
       })
 
       return {
-        ...props,
+        typename,
         field,
         variables,
         fragments
       }
     })
 
-  const variableDefinitions = selectionData.reduce(
-    (acc, {variables}) => variables ?  [...acc, ...variables]: acc,
-    [] as VariableDefinitionNode[]
-  )
-
-  const fragmentDefinitions = selectionData.reduce(
-    (acc, {fragments}) => fragments ? [...acc, ...fragments] : acc,
-    [] as FragmentDefinitionNode[]
+  const {
+    variables: variableDefinitions,
+    fragments: fragmentDefinitions,
+    typenames
+  } = selectionData.reduce(
+    (acc, { variables, fragments, typename }) => ({
+      variables: acc.variables.concat(variables),
+      typenames: acc.typenames.concat(typename),
+      fragments: acc.fragments.concat(fragments)
+    }),
+    {
+      variables: [] as VariableDefinitionNode[],
+      fragments: [] as FragmentDefinitionNode[],
+      typenames: [] as Typename[]
+    }
   )
 
   const selection = selectionData
     .slice()
     .reverse()
     .reduce(
-      (acc, {field}) =>
-        !acc
-          ? field
-          : {
-              ...field,
-              selectionSet: {
-                kind: Kind.SELECTION_SET,
-                selections: [
-                  // add id/typename to all intermediate steps
-                  createField({ fieldname: '__typename' }),
-                  createField({ fieldname: 'id' }),
-                  // add nested field
-                  acc
-                ]
-              }
-            },
+      (acc, { field }) => {
+        // base type
+        if (!acc) {
+          return field
+        }
+
+        return {
+          ...field,
+          selectionSet: {
+            kind: Kind.SELECTION_SET,
+            selections: [
+              // add id/typename to all intermediate steps
+              createField({ fieldname: '__typename' }),
+              // add id (probs should be configurable)
+              createField({ fieldname: 'id' }),
+              // add nested selection
+              acc
+            ]
+          }
+        }
+      },
       undefined as FieldNode | undefined
     )!
 
-  const operationName = buildOperationName(
-    selectionData.map(({typename}) => typename),
-    operationType
-  )
-
   const operationDefinition = {
     kind: Kind.OPERATION_DEFINITION,
-    name: { kind: Kind.NAME, value: operationName },
+    name: {
+      kind: Kind.NAME,
+      value: buildOperationName(typenames, operationType)
+    },
     operation: operationType,
     variableDefinitions,
     selectionSet: {

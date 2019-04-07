@@ -3,8 +3,11 @@ import {
   EnumTypeDefinitionNode,
   InputObjectTypeDefinitionNode,
   Kind,
+  ListTypeNode,
+  NamedTypeNode,
   ObjectTypeDefinitionNode,
-  ScalarTypeDefinitionNode
+  ScalarTypeDefinitionNode,
+  TypeNode
 } from 'graphql'
 
 export const isObjectTypeDefinitionNode = (
@@ -29,3 +32,10 @@ export const isRootTypeDefinitionNode = (
 ): node is ObjectTypeDefinitionNode =>
   node.kind === Kind.OBJECT_TYPE_DEFINITION &&
   ['Query', 'Mutation', 'Subscription'].includes(node.name.value)
+
+/**
+ * Means top level value is nullable (need it for printing)
+ */
+export const isNullable = (
+  node: TypeNode
+): node is ListTypeNode | NamedTypeNode => node.kind === Kind.NON_NULL_TYPE

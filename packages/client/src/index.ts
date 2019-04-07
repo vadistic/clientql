@@ -1,1 +1,1 @@
-export * from './path-proxy'
+export * from './fluent-async-proxy'

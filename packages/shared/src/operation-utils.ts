@@ -7,8 +7,8 @@ import {
   VariableDefinitionNode
 } from 'graphql'
 import { createField } from './graphql-create'
-import { AstMap, Typename } from './map-build'
-import { hasTypeDefinition } from './map-utils'
+import { AstMap, Typename } from './map-ast'
+import { hasMapEntry } from './map-utils'
 import { BuildOperationOptions } from './operation-build'
 import { nonNull } from './types'
 import { capitalise } from './utils'
@@ -61,9 +61,9 @@ export const buildOperationArgument = (level: number) => (
  */
 
 export const buildOperationName = (
-  path: Typename[],
+  typenames: Typename[],
   operation: OperationTypeNode
-) => path.join('') + capitalise(operation)
+) => typenames.join('') + capitalise(operation)
 
 /**
  * Build fragment for typename
@@ -76,67 +76,37 @@ export enum FragmentType {
   DEEP = 'Deep'
 }
 
-export const buildOperationFragment = (
-  map: AstMap,
-  typename: Typename,
-  opts: BuildOperationOptions
-) => {
-  const fieldMap = map.types[typename].getFieldMap()
-
-  const selection: FieldNode[] = Object.entries(fieldMap.typenames)
-    .map(([childFieldname, childTypename]) => {
-      // nested - skipping for now
-      if (hasTypeDefinition(map, childTypename)) {
-        return
-      }
-
-      // no arguments for child selections
-      return createField({
-        fieldname: childFieldname
-      })
-    })
-    .filter(nonNull)
-
-  return {
-    selection: [
-      // add to the fragment
-      createField({ fieldname: '__typename' }),
-      ...selection
-    ],
-    fragments: undefined
-  }
-}
-
 /**
  *  This is basically flat fragment buildre without fragment wrapper
  */
-export const buildOperationBaseSelection = (
+export const buildOperationBase = (
   map: AstMap,
   typename: Typename,
   opts: BuildOperationOptions
 ) => {
-  const fieldMap = map.types[typename].getFieldMap()
+  const fieldmap = map.types[typename].fieldmap
 
-  const selection: FieldNode[] = Object.entries(fieldMap.typenames)
-    .map(([childFieldname, childTypename]) => {
-      // nested - skipping for now
-      if (hasTypeDefinition(map, childTypename)) {
+  const selections: FieldNode[] = Object.entries(fieldmap)
+    .map(([selectionFieldname, { typename: selectionTypename }]) => {
+      // assuming it means nested => skipping
+      if (hasMapEntry(map, selectionTypename)) {
         return
       }
 
       // no arguments for child selections
       return createField({
-        fieldname: childFieldname
+        fieldname: selectionFieldname
       })
     })
     .filter(nonNull)
 
   return {
-    selection: [
-      // add to the fragment
+    selections: [
+      // add __typename to the fragment
       createField({ fieldname: '__typename' }),
-      ...selection
+      ...selections
     ],
-    fragments: undefined
+    // TODO: actually generate fragments when options are set to use fragments
+    fragments: []
   }
 }

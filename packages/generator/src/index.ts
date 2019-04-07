@@ -1,3 +1,3 @@
 export * from './client'
-export * from './codegen'
+export * from './codegen-ts'
 export * from './fragment'

@@ -1,4 +1,8 @@
-import { createField, FragmentType } from '@graphql-clientgen/shared'
+import {
+  buildTypemap,
+  createField,
+  FragmentType
+} from '@graphql-clientgen/shared'
 import {
   ExecutableDefinitionNode,
   FieldDefinitionNode,
@@ -13,7 +17,6 @@ import {
   ObjectTypeDefinitionNode,
   SelectionNode
 } from 'graphql'
-import { getTypeNodeMeta } from '../codegen'
 import { GeneratorProps } from '../config'
 
 /**
@@ -46,14 +49,14 @@ export const createFragmentSpread = (
  */
 
 const objectTypeFieldsToFragmentSelections = (
-  { schema, naming }: GeneratorProps,
+  props: GeneratorProps,
   nodes: ReadonlyArray<FieldDefinitionNode>,
   fragmentType: FragmentType
 ): SelectionNode[] =>
   nodes
     .map(
       (field): FieldNode | null => {
-        const { typename } = getTypeNodeMeta(field.type)
+        const { typename } = buildTypemap(field.type)
         // ID type seems to be without AST node
         if (typename === 'ID') {
           return {
@@ -62,27 +65,20 @@ const objectTypeFieldsToFragmentSelections = (
           }
         }
 
-        const fieldTarget = schema.getType(typename)
+        const isObject = !!props.astMap.types[typename]
 
-        if (!fieldTarget) {
-          return null
-        }
-
-        if (isFlatType(fieldTarget)) {
+        if (isObject) {
           return {
             name: field.name,
             kind: Kind.FIELD
           }
         }
 
-        if (
-          fragmentType === FragmentType.DEFAULT &&
-          isNestedType(fieldTarget)
-        ) {
+        if (fragmentType === FragmentType.DEFAULT && isObject) {
           const spreadFragmentType = FragmentType.FLAT
 
-          const spreadFragmentName = naming.getFragmentName(
-            fieldTarget.name,
+          const spreadFragmentName = props.naming.getFragmentName(
+            typename,
             spreadFragmentType
           )
 
@@ -105,11 +101,11 @@ const objectTypeFieldsToFragmentSelections = (
          *
          * For now I will just step-down to default fragments
          */
-        if (fragmentType === FragmentType.DEEP && isNestedType(fieldTarget)) {
+        if (fragmentType === FragmentType.DEEP && isObject) {
           const spreadFragmentType = FragmentType.DEFAULT
 
-          const spreadFragmentName = naming.getFragmentName(
-            fieldTarget.name,
+          const spreadFragmentName = props.naming.getFragmentName(
+            typename,
             spreadFragmentType
           )
 

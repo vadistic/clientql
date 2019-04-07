@@ -1,4 +1,4 @@
-import { DefinitionNode, DocumentNode, NamedTypeNode, TypeNode } from 'graphql'
+import { DefinitionNode, DocumentNode } from 'graphql'
 import { Kind } from './kind'
 
 export const wrapDocument = (...nodes: DefinitionNode[]): DocumentNode => ({
@@ -9,11 +9,3 @@ export const wrapDocument = (...nodes: DefinitionNode[]): DocumentNode => ({
 export const unwrapDocument = (doc: DocumentNode): DefinitionNode[] => [
   ...doc.definitions
 ]
-
-export const unwrapType = (type: TypeNode): NamedTypeNode => {
-  if (type.kind === Kind.NAMED_TYPE) {
-    return type
-  }
-
-  return unwrapType(type.type)
-}

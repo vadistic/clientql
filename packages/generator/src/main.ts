@@ -1,3 +1,4 @@
+import { buildAstMap } from '@graphql-clientgen/shared'
 import fs from 'fs-extra'
 import { buildASTSchema, parse } from 'graphql'
 import path from 'path'
@@ -50,9 +51,12 @@ export const local = async (file: string) => {
 const main = async () => {
   const { ast, schema, typeDefs } = await local(SCHEMA_PATH)
 
+  const astMap = buildAstMap(ast)
+
   const generatorProps = {
     ast,
     schema,
+    astMap,
     config: defaultConfig,
     naming: getNaming(defaultConfig)
   }

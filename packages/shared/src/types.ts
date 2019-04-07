@@ -40,3 +40,9 @@ export const literally = <
 ) => input
 
 export const tuplify = <T extends [any] | any[]>(tuple: T): T => tuple
+
+export type Mutable<T> = {
+  -readonly [P in keyof T]: T[P] extends ReadonlyArray<infer U>
+    ? Array<Mutable<U>>
+    : Mutable<T[P]>
+}

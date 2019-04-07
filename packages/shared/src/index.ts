@@ -4,6 +4,7 @@ export * from './graphql-utils'
 
 export * from './map-build'
 export * from './map-utils'
+export * from './map-ast'
 
 export * from './operation-build'
 export * from './operation-utils'

@@ -1,4 +1,6 @@
-import { isNullable, TypeNodeMeta } from './type-meta'
+import { buildtypeMap, isNullable, Typename } from '@graphql-clientgen/shared'
+import { TypeNode } from 'graphql'
+import { GeneratorProps } from '../config'
 
 const mapScalarNameToTypescript = (typename: string) => {
   switch (typename) {
@@ -15,14 +17,14 @@ const mapScalarNameToTypescript = (typename: string) => {
   }
 }
 
-export const isExplicitScalar = (typeMeta: TypeNodeMeta) =>
-  mapScalarNameToTypescript(typeMeta.typename) !== typeMeta.typename
+export const isExplicitScalar = (typename: Typename) =>
+  mapScalarNameToTypescript(typename) !== typename
 
-export const codegenTypeMeta = (typeMeta: TypeNodeMeta) => {
-  const scalar = isExplicitScalar(typeMeta)
-  const typename = scalar
-    ? mapScalarNameToTypescript(typeMeta.typename)
-    : typeMeta.typename
+export const codegenType = (props: GeneratorProps) => (node: TypeNode) => {
+  const { modifiers, typename } = buildtypeMap(node)
+
+  const scalar = isExplicitScalar(typename)
+  const name = scalar ? mapScalarNameToTypescript(typename) : typename
 
   /**
    *  That's the conversion
@@ -36,11 +38,11 @@ export const codegenTypeMeta = (typeMeta: TypeNodeMeta) => {
    *
    */
 
-  let result = typename
+  let result = name
 
   // apply list modifiers
-  if (typeMeta.modifiers && typeMeta.modifiers.length !== 0) {
-    typeMeta.modifiers
+  if (modifiers && modifiers.length !== 0) {
+    modifiers
       // reverse is mutable!
       .slice()
       // needs reverse for correct order
@@ -72,7 +74,7 @@ export const codegenTypeMeta = (typeMeta: TypeNodeMeta) => {
   }
 
   // apply wrapping null modifier
-  if (isNullable(typeMeta)) {
+  if (isNullable(node)) {
     result = `${result} | null`
   }
 
