@@ -1,20 +1,18 @@
+import { getDocDefinition, Kind } from '@graphql-clientgen/core'
 import { DocumentNode, ObjectTypeDefinitionNode } from 'graphql'
 import gql from 'graphql-tag'
 import { codegenFieldToType } from '../..'
 import { codegenFieldToFunction } from '../../codegen-typescript'
 import { getGeneratorProps } from '../../generator'
 
-const getFields = (doc: DocumentNode) =>
-  (doc.definitions[0] as ObjectTypeDefinitionNode)!.fields!
-
 const docToFieldTypeTypings = (doc: DocumentNode) => {
-  const fields = getFields(doc)
+  const fields = getDocDefinition(doc, Kind.OBJECT_TYPE_DEFINITION)!.fields!
   const props = getGeneratorProps(doc)
   return fields.map(codegenFieldToType(props)).join('\n')
 }
 
 const docToFieldFunctionsTypings = (doc: DocumentNode) => {
-  const fields = getFields(doc)
+  const fields = getDocDefinition(doc, Kind.OBJECT_TYPE_DEFINITION)!.fields!
   const props = getGeneratorProps(doc)
   return fields.map(codegenFieldToFunction(props)).join('\n')
 }
@@ -30,12 +28,14 @@ describe('codegen typescript > fields', () => {
       }
     `
 
-    expect(docToFieldTypeTypings(fixture)).toMatchInlineSnapshot(`
-            "prop: string
-            arr: string[]
-            nullableProp?: string | null
-            nullableArr?: (string | null)[] | null"
-        `)
+    const res = docToFieldTypeTypings(fixture)
+
+    expect(res).toMatchInlineSnapshot(`
+      "prop: string
+      arr: string[]
+      nullableProp?: string | null
+      nullableArr?: (string | null)[] | null"
+    `)
   })
 
   it('to to plain types (without args)', () => {
@@ -48,11 +48,13 @@ describe('codegen typescript > fields', () => {
       }
     `
 
-    expect(docToFieldTypeTypings(fixture)).toMatchInlineSnapshot(`
-            "prop: string
-            arr: string[]
-            withArg: Array<Value>"
-        `)
+    const res = docToFieldTypeTypings(fixture)
+
+    expect(res).toMatchInlineSnapshot(`
+      "prop: string
+      arr: string[]
+      withArg: Array<Value>"
+    `)
   })
 
   it('to to functions types', () => {
@@ -70,7 +72,9 @@ describe('codegen typescript > fields', () => {
       }
     `
 
-    expect(docToFieldFunctionsTypings(fixture)).toMatchInlineSnapshot(`
+    const res = docToFieldFunctionsTypings(fixture)
+
+    expect(res).toMatchInlineSnapshot(`
       "prop: () => string
       arr: () => string[]
       withArg: (data: string) => Array<Value>

@@ -1,13 +1,11 @@
-import { DocumentNode, ObjectTypeDefinitionNode } from 'graphql'
+import { getDocDefinition, Kind } from '@graphql-clientgen/core'
+import { DocumentNode } from 'graphql'
 import gql from 'graphql-tag'
 import { codegenType } from '../..'
 import { getGeneratorProps } from '../../generator'
 
-const getFields = (doc: DocumentNode) =>
-  (doc.definitions[0] as ObjectTypeDefinitionNode)!.fields!
-
 const docToFieldsReturnTypings = (doc: DocumentNode) => {
-  const fields = getFields(doc)
+  const fields = getDocDefinition(doc, Kind.OBJECT_TYPE_DEFINITION)!.fields!
   const props = getGeneratorProps(doc)
   return fields.map(field => codegenType(props)(field.type)).join('\n')
 }

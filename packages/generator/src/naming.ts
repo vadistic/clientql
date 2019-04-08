@@ -7,7 +7,7 @@ type NullableStrings = Array<string | null | boolean | undefined>
 export enum StringCase {
   PASCAL = 'pascal-case',
   CONSTANT = 'constant-case',
-  CAMEL = 'camel-case'
+  CAMEL = 'camel-case',
 }
 
 const isString = (input: any): input is string => typeof input === 'string'
@@ -49,18 +49,22 @@ export const getGeneratorNaming = (config: GeneratorConfig) => {
 
   const getJsConstantName = (name: string) => toCase(config.constantCase, name)
 
+  // do not case-process provided prefix
+  const interfacePrefix =
+    config.prefixInterfaces === true
+      ? 'I'
+      : !!config.prefixInterfaces
+      ? config.prefixInterfaces
+      : ''
+
   const getInterfaceName = (typename: string) =>
-    toCase(
-      StringCase.PASCAL,
-      config.prefixInterfaces === true ? 'I' : config.prefixInterfaces,
-      typename
-    )
+    interfacePrefix + toCase(StringCase.PASCAL, typename)
 
   return {
     getClientName,
     getRootClientName,
     getFragmentName,
     getJsConstantName,
-    getInterfaceName
+    getInterfaceName,
   }
 }

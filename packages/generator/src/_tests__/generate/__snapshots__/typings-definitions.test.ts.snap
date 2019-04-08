@@ -7,7 +7,7 @@ exports[`generate typings definitions match snapshot 1`] = `
  *
  */
 
-export interface IGraphQlMutation {
+export interface IGraphQLMutation {
   createPost: Post
   createUser: User
   deleteManyPosts: BatchPayload
@@ -22,7 +22,7 @@ export interface IGraphQlMutation {
   upsertUser: User
 }
 
-export interface IGraphQlQuery {
+export interface IGraphQLQuery {
   node?: Node | null
   post?: Post | null
   posts: Array<Post>
@@ -38,26 +38,26 @@ export interface IGraphQlQuery {
  *
  */
 
-export interface IGraphQlAggregatePost {
+export interface IGraphQLAggregatePost {
   count: number
 }
 
-export interface IGraphQlAggregateUser {
+export interface IGraphQLAggregateUser {
   count: number
 }
 
-export interface IGraphQlBatchPayload {
+export interface IGraphQLBatchPayload {
   count: number
 }
 
-export interface IGraphQlPageInfo {
+export interface IGraphQLPageInfo {
   endCursor?: string | null
   hasNextPage: boolean
   hasPreviousPage: boolean
   startCursor?: string | null
 }
 
-export interface IGraphQlPost {
+export interface IGraphQLPost {
   author: User
   content?: string | null
   createdAt: DateTime
@@ -67,31 +67,31 @@ export interface IGraphQlPost {
   updatedAt: DateTime
 }
 
-export interface IGraphQlPostConnection {
+export interface IGraphQLPostConnection {
   aggregate: AggregatePost
   edges: Array<PostEdge>
   pageInfo: PageInfo
 }
 
-export interface IGraphQlPostEdge {
+export interface IGraphQLPostEdge {
   cursor: string
   node: Post
 }
 
-export interface IGraphQlUser {
+export interface IGraphQLUser {
   email: string
   id: ID
   name?: string | null
   posts?: Array<Post> | null
 }
 
-export interface IGraphQlUserConnection {
+export interface IGraphQLUserConnection {
   aggregate: AggregateUser
   edges: Array<UserEdge>
   pageInfo: PageInfo
 }
 
-export interface IGraphQlUserEdge {
+export interface IGraphQLUserEdge {
   cursor: string
   node: User
 }
@@ -102,25 +102,25 @@ export interface IGraphQlUserEdge {
  *
  */
 
-export interface IGraphQlPostCreateInput {
+export interface IGraphQLPostCreateInput {
   author: UserCreateOneWithoutPostsInput
   content?: string | null
   published?: boolean | null
   title: string
 }
 
-export interface IGraphQlPostCreateManyWithoutAuthorInput {
+export interface IGraphQLPostCreateManyWithoutAuthorInput {
   connect?: Array<PostWhereUniqueInput> | null
   create?: Array<PostCreateWithoutAuthorInput> | null
 }
 
-export interface IGraphQlPostCreateWithoutAuthorInput {
+export interface IGraphQLPostCreateWithoutAuthorInput {
   content?: string | null
   published?: boolean | null
   title: string
 }
 
-export interface IGraphQlPostScalarWhereInput {
+export interface IGraphQLPostScalarWhereInput {
   AND?: Array<PostScalarWhereInput> | null
   content?: string | null
   content_contains?: string | null
@@ -186,26 +186,26 @@ export interface IGraphQlPostScalarWhereInput {
   updatedAt_not_in?: Array<DateTime> | null
 }
 
-export interface IGraphQlPostUpdateInput {
+export interface IGraphQLPostUpdateInput {
   author?: UserUpdateOneRequiredWithoutPostsInput | null
   content?: string | null
   published?: boolean | null
   title?: string | null
 }
 
-export interface IGraphQlPostUpdateManyDataInput {
+export interface IGraphQLPostUpdateManyDataInput {
   content?: string | null
   published?: boolean | null
   title?: string | null
 }
 
-export interface IGraphQlPostUpdateManyMutationInput {
+export interface IGraphQLPostUpdateManyMutationInput {
   content?: string | null
   published?: boolean | null
   title?: string | null
 }
 
-export interface IGraphQlPostUpdateManyWithoutAuthorInput {
+export interface IGraphQLPostUpdateManyWithoutAuthorInput {
   connect?: Array<PostWhereUniqueInput> | null
   create?: Array<PostCreateWithoutAuthorInput> | null
   delete?: Array<PostWhereUniqueInput> | null
@@ -217,29 +217,29 @@ export interface IGraphQlPostUpdateManyWithoutAuthorInput {
   upsert?: Array<PostUpsertWithWhereUniqueWithoutAuthorInput> | null
 }
 
-export interface IGraphQlPostUpdateManyWithWhereNestedInput {
+export interface IGraphQLPostUpdateManyWithWhereNestedInput {
   data: PostUpdateManyDataInput
   where: PostScalarWhereInput
 }
 
-export interface IGraphQlPostUpdateWithoutAuthorDataInput {
+export interface IGraphQLPostUpdateWithoutAuthorDataInput {
   content?: string | null
   published?: boolean | null
   title?: string | null
 }
 
-export interface IGraphQlPostUpdateWithWhereUniqueWithoutAuthorInput {
+export interface IGraphQLPostUpdateWithWhereUniqueWithoutAuthorInput {
   data: PostUpdateWithoutAuthorDataInput
   where: PostWhereUniqueInput
 }
 
-export interface IGraphQlPostUpsertWithWhereUniqueWithoutAuthorInput {
+export interface IGraphQLPostUpsertWithWhereUniqueWithoutAuthorInput {
   create: PostCreateWithoutAuthorInput
   update: PostUpdateWithoutAuthorDataInput
   where: PostWhereUniqueInput
 }
 
-export interface IGraphQlPostWhereInput {
+export interface IGraphQLPostWhereInput {
   AND?: Array<PostWhereInput> | null
   author?: UserWhereInput | null
   content?: string | null
@@ -306,55 +306,55 @@ export interface IGraphQlPostWhereInput {
   updatedAt_not_in?: Array<DateTime> | null
 }
 
-export interface IGraphQlPostWhereUniqueInput {
+export interface IGraphQLPostWhereUniqueInput {
   id?: ID | null
 }
 
-export interface IGraphQlUserCreateInput {
+export interface IGraphQLUserCreateInput {
   email: string
   name?: string | null
   posts?: PostCreateManyWithoutAuthorInput | null
 }
 
-export interface IGraphQlUserCreateOneWithoutPostsInput {
+export interface IGraphQLUserCreateOneWithoutPostsInput {
   connect?: UserWhereUniqueInput | null
   create?: UserCreateWithoutPostsInput | null
 }
 
-export interface IGraphQlUserCreateWithoutPostsInput {
+export interface IGraphQLUserCreateWithoutPostsInput {
   email: string
   name?: string | null
 }
 
-export interface IGraphQlUserUpdateInput {
+export interface IGraphQLUserUpdateInput {
   email?: string | null
   name?: string | null
   posts?: PostUpdateManyWithoutAuthorInput | null
 }
 
-export interface IGraphQlUserUpdateManyMutationInput {
+export interface IGraphQLUserUpdateManyMutationInput {
   email?: string | null
   name?: string | null
 }
 
-export interface IGraphQlUserUpdateOneRequiredWithoutPostsInput {
+export interface IGraphQLUserUpdateOneRequiredWithoutPostsInput {
   connect?: UserWhereUniqueInput | null
   create?: UserCreateWithoutPostsInput | null
   update?: UserUpdateWithoutPostsDataInput | null
   upsert?: UserUpsertWithoutPostsInput | null
 }
 
-export interface IGraphQlUserUpdateWithoutPostsDataInput {
+export interface IGraphQLUserUpdateWithoutPostsDataInput {
   email?: string | null
   name?: string | null
 }
 
-export interface IGraphQlUserUpsertWithoutPostsInput {
+export interface IGraphQLUserUpsertWithoutPostsInput {
   create: UserCreateWithoutPostsInput
   update: UserUpdateWithoutPostsDataInput
 }
 
-export interface IGraphQlUserWhereInput {
+export interface IGraphQLUserWhereInput {
   AND?: Array<UserWhereInput> | null
   email?: string | null
   email_contains?: string | null
@@ -405,7 +405,7 @@ export interface IGraphQlUserWhereInput {
   posts_some?: PostWhereInput | null
 }
 
-export interface IGraphQlUserWhereUniqueInput {
+export interface IGraphQLUserWhereUniqueInput {
   email?: string | null
   id?: ID | null
 }
@@ -426,32 +426,60 @@ export type Long = any
  *
  */
 
-export enum PostOrderByInput {
-  content_ASC = 'content_ASC',
-  content_DESC = 'content_DESC',
-  createdAt_ASC = 'createdAt_ASC',
-  createdAt_DESC = 'createdAt_DESC',
-  id_ASC = 'id_ASC',
-  id_DESC = 'id_DESC',
-  published_ASC = 'published_ASC',
-  published_DESC = 'published_DESC',
-  title_ASC = 'title_ASC',
-  title_DESC = 'title_DESC',
-  updatedAt_ASC = 'updatedAt_ASC',
-  updatedAt_DESC = 'updatedAt_DESC',
+export interface IGraphQLPostOrderByInput {
+  content_ASC: 'content_ASC'
+  content_DESC: 'content_DESC'
+  createdAt_ASC: 'createdAt_ASC'
+  createdAt_DESC: 'createdAt_DESC'
+  id_ASC: 'id_ASC'
+  id_DESC: 'id_DESC'
+  published_ASC: 'published_ASC'
+  published_DESC: 'published_DESC'
+  title_ASC: 'title_ASC'
+  title_DESC: 'title_DESC'
+  updatedAt_ASC: 'updatedAt_ASC'
+  updatedAt_DESC: 'updatedAt_DESC'
 }
 
-export enum UserOrderByInput {
-  createdAt_ASC = 'createdAt_ASC',
-  createdAt_DESC = 'createdAt_DESC',
-  email_ASC = 'email_ASC',
-  email_DESC = 'email_DESC',
-  id_ASC = 'id_ASC',
-  id_DESC = 'id_DESC',
-  name_ASC = 'name_ASC',
-  name_DESC = 'name_DESC',
-  updatedAt_ASC = 'updatedAt_ASC',
-  updatedAt_DESC = 'updatedAt_DESC',
+export const PostOrderByInput: IGraphQLPostOrderByInput = {
+  content_ASC: 'content_ASC',
+  content_DESC: 'content_DESC',
+  createdAt_ASC: 'createdAt_ASC',
+  createdAt_DESC: 'createdAt_DESC',
+  id_ASC: 'id_ASC',
+  id_DESC: 'id_DESC',
+  published_ASC: 'published_ASC',
+  published_DESC: 'published_DESC',
+  title_ASC: 'title_ASC',
+  title_DESC: 'title_DESC',
+  updatedAt_ASC: 'updatedAt_ASC',
+  updatedAt_DESC: 'updatedAt_DESC',
+}
+
+export interface IGraphQLUserOrderByInput {
+  createdAt_ASC: 'createdAt_ASC'
+  createdAt_DESC: 'createdAt_DESC'
+  email_ASC: 'email_ASC'
+  email_DESC: 'email_DESC'
+  id_ASC: 'id_ASC'
+  id_DESC: 'id_DESC'
+  name_ASC: 'name_ASC'
+  name_DESC: 'name_DESC'
+  updatedAt_ASC: 'updatedAt_ASC'
+  updatedAt_DESC: 'updatedAt_DESC'
+}
+
+export const UserOrderByInput: IGraphQLUserOrderByInput = {
+  createdAt_ASC: 'createdAt_ASC',
+  createdAt_DESC: 'createdAt_DESC',
+  email_ASC: 'email_ASC',
+  email_DESC: 'email_DESC',
+  id_ASC: 'id_ASC',
+  id_DESC: 'id_DESC',
+  name_ASC: 'name_ASC',
+  name_DESC: 'name_DESC',
+  updatedAt_ASC: 'updatedAt_ASC',
+  updatedAt_DESC: 'updatedAt_DESC',
 }
 
 "
