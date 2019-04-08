@@ -14,7 +14,7 @@
       "check-format",
       "allow-pascal-case"
     ],
-    "no-implicit-dependencies": [true, ["graphql"]]
+    "no-implicit-dependencies": [true, ["graphql", "graphql-tag"]]
   },
   "linterOptions": {
     "exclude": ["**/generated/**", "**/node_modules/**"]
