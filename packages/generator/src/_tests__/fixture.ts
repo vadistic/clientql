@@ -1,21 +1,50 @@
 import {
   buildAstMap,
   unwrapDocument,
-  wrapDocument
+  wrapDocument,
 } from '@graphql-clientgen/core'
 import { DocumentNode } from 'graphql'
+import { GeneratorConfig } from '../config'
 import { GeneratorProps, getGeneratorProps } from '../generator'
+import { getGeneratorNaming } from '../naming'
 import { TYPEDEFS } from './typedefs'
 
-export const generatorProps = getGeneratorProps(TYPEDEFS)
+export const fixtureProps = getGeneratorProps(TYPEDEFS)
 
-export const extendGeneratorProps = (doc: DocumentNode): GeneratorProps => {
-  const extendedAst = wrapDocument(
-    ...unwrapDocument(generatorProps.doc),
-    ...unwrapDocument(doc)
-  )
+export const configFixtureProps = (
+  config: Partial<GeneratorConfig>,
+): GeneratorProps => {
+  const mergedConfig: GeneratorConfig = {
+    ...fixtureProps.config,
+    ...config,
+  }
+
   return {
-    ...generatorProps,
-    astMap: buildAstMap(extendedAst)
+    ...fixtureProps,
+    config: mergedConfig,
+    // I'm guesing it need to be reintantiated because of scope
+    naming: getGeneratorNaming(mergedConfig),
+  }
+}
+
+export const extendFixtureProps = (
+  doc: DocumentNode,
+  config?: Partial<GeneratorConfig>,
+): GeneratorProps => {
+  const extendedAst = wrapDocument(
+    ...unwrapDocument(fixtureProps.doc),
+    ...unwrapDocument(doc),
+  )
+
+  if (config) {
+    return {
+      ...configFixtureProps(config),
+      astMap: buildAstMap(extendedAst),
+    }
+  }
+
+  return {
+    ...fixtureProps,
+    astMap: buildAstMap(extendedAst),
   }
 }

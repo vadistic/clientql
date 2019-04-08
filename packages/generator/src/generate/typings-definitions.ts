@@ -3,14 +3,14 @@ import {
   isInputObjectTypeDefinitionNode,
   isObjectTypeDefinitionNode,
   isScalarTypeDefinitionNode,
-  unwrapDocument
+  unwrapDocument,
 } from '@graphql-clientgen/core'
 import { ObjectTypeDefinitionNode } from 'graphql'
 import {
   codegenEnum,
   codegenInputObject,
   codegenObjectToType,
-  codegenScalar
+  codegenScalar,
 } from '../codegen-typescript'
 import { GeneratorProps } from '../generator'
 import { printJsSection } from '../print'
@@ -32,8 +32,8 @@ export const generateTypingsDefinitions = async (props: GeneratorProps) => {
       },
       {
         rootTypes: [] as ObjectTypeDefinitionNode[],
-        objectTypes: [] as ObjectTypeDefinitionNode[]
-      }
+        objectTypes: [] as ObjectTypeDefinitionNode[],
+      },
     )
 
   const rootsTypescript = rootTypes.map(codegenObjectToType(props)).join('\n\n')
@@ -59,12 +59,12 @@ export const generateTypingsDefinitions = async (props: GeneratorProps) => {
 
   let result = ''
 
-  result += printJsSection(rootsTypescript, `ROOT TYPES`)
-  result += printJsSection(objectsTypescript, `OBJECT TYPES`)
+  result += printJsSection(`ROOT TYPES`, rootsTypescript)
+  result += printJsSection(`OBJECT TYPES`, objectsTypescript)
   // result += printJsSection(interfacesTypescript, `INTERFACE TYPES`)
-  result += printJsSection(inputObjectsTypescript, `INPUT OBJECT TYPES`)
-  result += printJsSection(scalarsTypescript, `SCALAR TYPES`)
-  result += printJsSection(enumsTypescript, `ENUM TYPES`)
+  result += printJsSection(`INPUT OBJECT TYPES`, inputObjectsTypescript)
+  result += printJsSection(`SCALAR TYPES`, scalarsTypescript)
+  result += printJsSection(`ENUM TYPES`, enumsTypescript)
   // result += printJsSection(unionsTypescript, `UNION TYPES`)
 
   return result

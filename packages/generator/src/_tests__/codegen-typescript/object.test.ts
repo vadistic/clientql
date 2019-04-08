@@ -1,24 +1,20 @@
 import { DocumentNode } from 'graphql'
 import gql from 'graphql-tag'
-import {
-  codegenInputObject,
-  codegenObjectToType,
-  getGeneratorProps
-} from '../..'
+import { codegenInputObject, codegenObjectToType } from '../..'
 import { GeneratorConfig } from '../../config'
+import { getGeneratorProps } from '../../generator'
 
-const docToObjectTypescript = (
-  doc: DocumentNode,
-  config?: Partial<GeneratorConfig>
-) => {
+const config: Partial<GeneratorConfig> = {
+  prefixInterfaces: false,
+}
+
+const docToObjectTypescript = (doc: DocumentNode) => {
   const props = getGeneratorProps(doc, config)
-
   return codegenObjectToType(props)(doc.definitions[0] as any)
 }
 
 const docToInputObjectTypescript = (doc: DocumentNode) => {
-  const props = getGeneratorProps(doc)
-
+  const props = getGeneratorProps(doc, { prefixInterfaces: false })
   return codegenInputObject(props)(doc.definitions[0] as any)
 }
 
@@ -33,17 +29,13 @@ describe('codegen > codegen object definition nodes', () => {
       }
     `
 
-    const expected = `
-export interface MyType {
-  prop: string
-  arr: string[]
-  fn: string
-}
-    `.trim()
-
-    const result = docToObjectTypescript(fixture, { prefixInterfaces: false })
-
-    expect(result).toBe(expected)
+    expect(docToObjectTypescript(fixture)).toMatchInlineSnapshot(`
+      "export interface MyType {
+        prop: string
+        arr: string[]
+        fn: string
+      }"
+    `)
   })
 
   it('codegen input object definitions to typescript', () => {
@@ -54,15 +46,11 @@ export interface MyType {
       }
     `
 
-    const expected = `
-export interface MyInput {
-  prop: string
-  arr: string[]
-}
-    `.trim()
-
-    const result = docToObjectTypescript(fixture, { prefixInterfaces: false })
-
-    expect(result).toBe(expected)
+    expect(docToInputObjectTypescript(fixture)).toMatchInlineSnapshot(`
+      "export interface MyInput {
+        prop: string
+        arr: string[]
+      }"
+    `)
   })
 })

@@ -1,3 +1,5 @@
+import { ASTNode, print } from 'graphql'
+
 const INDENT_WIDTH = 2
 
 /**
@@ -18,20 +20,13 @@ export const indent = (content: string, level = 1, trim = false) =>
 export const printJsBlockComment = (content: string) => {
   const headerLines = content.split('\n').map(v => v.trim())
 
-  let result =
-    `
-/*
- *
-  `.trim() + '\n'
+  let result = `/*\n *\n`
 
   headerLines.forEach(line => {
     result += ` * ` + line + '\n'
   })
 
-  result += `
- *
- */
-  `.trim()
+  result += ` *\n */`
 
   return result
 }
@@ -39,7 +34,7 @@ export const printJsBlockComment = (content: string) => {
 /**
  *  prints sections with header comments and uniform spacing
  */
-export const printJsSection = (content: string, comment: string) => {
+export const printJsSection = (comment: string, content: string) => {
   const result = printJsBlockComment(comment) + '\n\n' + content.trim() + '\n\n'
 
   return result
@@ -48,9 +43,23 @@ export const printJsSection = (content: string, comment: string) => {
 /**
  *  prints graphql to gql tagged constant
  */
-export const printJsGqlTag = (constant: string, content: string) => {
-  let result = `export const ${constant} = gql\`\n`
-  result += indent(content, 1)
+export const printJsGraphql = (
+  constant: string,
+  content: ASTNode,
+  deps?: string[],
+) => {
+  let result = ''
+
+  result += `export const ${constant} = gql\`\n`
+  result += indent(print(content), 1) + '\n'
+
+  if (deps) {
+    result += '\n'
+    deps.forEach(dep => {
+      result += '${' + indent(dep, 1) + '}\n'
+    })
+  }
+
   result += `\``
 
   return result

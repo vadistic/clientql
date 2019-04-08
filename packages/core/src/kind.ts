@@ -4,7 +4,9 @@ import { _Kind } from 'graphql/language/kinds'
 /*
  * Kind enum from graphql (used to remove `graphql` dependency)
  */
-export const Kind: _Kind = {
+export type NodeKind = _Kind
+
+export const Kind: NodeKind = {
   // Name
   NAME: 'Name',
 
@@ -68,5 +70,5 @@ export const Kind: _Kind = {
   INTERFACE_TYPE_EXTENSION: 'InterfaceTypeExtension',
   UNION_TYPE_EXTENSION: 'UnionTypeExtension',
   ENUM_TYPE_EXTENSION: 'EnumTypeExtension',
-  INPUT_OBJECT_TYPE_EXTENSION: 'InputObjectTypeExtension'
+  INPUT_OBJECT_TYPE_EXTENSION: 'InputObjectTypeExtension',
 }

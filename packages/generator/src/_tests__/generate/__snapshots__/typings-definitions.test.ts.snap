@@ -1,0 +1,458 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`generate typings definitions match snapshot 1`] = `
+"/*
+ *
+ * ROOT TYPES
+ *
+ */
+
+export interface IGraphQlMutation {
+  createPost: Post
+  createUser: User
+  deleteManyPosts: BatchPayload
+  deleteManyUsers: BatchPayload
+  deletePost?: Post | null
+  deleteUser?: User | null
+  updateManyPosts: BatchPayload
+  updateManyUsers: BatchPayload
+  updatePost?: Post | null
+  updateUser?: User | null
+  upsertPost: Post
+  upsertUser: User
+}
+
+export interface IGraphQlQuery {
+  node?: Node | null
+  post?: Post | null
+  posts: Array<Post>
+  postsConnection: PostConnection
+  user?: User | null
+  users: Array<User>
+  usersConnection: UserConnection
+}
+
+/*
+ *
+ * OBJECT TYPES
+ *
+ */
+
+export interface IGraphQlAggregatePost {
+  count: number
+}
+
+export interface IGraphQlAggregateUser {
+  count: number
+}
+
+export interface IGraphQlBatchPayload {
+  count: number
+}
+
+export interface IGraphQlPageInfo {
+  endCursor?: string | null
+  hasNextPage: boolean
+  hasPreviousPage: boolean
+  startCursor?: string | null
+}
+
+export interface IGraphQlPost {
+  author: User
+  content?: string | null
+  createdAt: DateTime
+  id: ID
+  published: boolean
+  title: string
+  updatedAt: DateTime
+}
+
+export interface IGraphQlPostConnection {
+  aggregate: AggregatePost
+  edges: Array<PostEdge>
+  pageInfo: PageInfo
+}
+
+export interface IGraphQlPostEdge {
+  cursor: string
+  node: Post
+}
+
+export interface IGraphQlUser {
+  email: string
+  id: ID
+  name?: string | null
+  posts?: Array<Post> | null
+}
+
+export interface IGraphQlUserConnection {
+  aggregate: AggregateUser
+  edges: Array<UserEdge>
+  pageInfo: PageInfo
+}
+
+export interface IGraphQlUserEdge {
+  cursor: string
+  node: User
+}
+
+/*
+ *
+ * INPUT OBJECT TYPES
+ *
+ */
+
+export interface IGraphQlPostCreateInput {
+  author: UserCreateOneWithoutPostsInput
+  content?: string | null
+  published?: boolean | null
+  title: string
+}
+
+export interface IGraphQlPostCreateManyWithoutAuthorInput {
+  connect?: Array<PostWhereUniqueInput> | null
+  create?: Array<PostCreateWithoutAuthorInput> | null
+}
+
+export interface IGraphQlPostCreateWithoutAuthorInput {
+  content?: string | null
+  published?: boolean | null
+  title: string
+}
+
+export interface IGraphQlPostScalarWhereInput {
+  AND?: Array<PostScalarWhereInput> | null
+  content?: string | null
+  content_contains?: string | null
+  content_ends_with?: string | null
+  content_gt?: string | null
+  content_gte?: string | null
+  content_in?: string[] | null
+  content_lt?: string | null
+  content_lte?: string | null
+  content_not?: string | null
+  content_not_contains?: string | null
+  content_not_ends_with?: string | null
+  content_not_in?: string[] | null
+  content_not_starts_with?: string | null
+  content_starts_with?: string | null
+  createdAt?: DateTime | null
+  createdAt_gt?: DateTime | null
+  createdAt_gte?: DateTime | null
+  createdAt_in?: Array<DateTime> | null
+  createdAt_lt?: DateTime | null
+  createdAt_lte?: DateTime | null
+  createdAt_not?: DateTime | null
+  createdAt_not_in?: Array<DateTime> | null
+  id?: ID | null
+  id_contains?: ID | null
+  id_ends_with?: ID | null
+  id_gt?: ID | null
+  id_gte?: ID | null
+  id_in?: Array<ID> | null
+  id_lt?: ID | null
+  id_lte?: ID | null
+  id_not?: ID | null
+  id_not_contains?: ID | null
+  id_not_ends_with?: ID | null
+  id_not_in?: Array<ID> | null
+  id_not_starts_with?: ID | null
+  id_starts_with?: ID | null
+  NOT?: Array<PostScalarWhereInput> | null
+  OR?: Array<PostScalarWhereInput> | null
+  published?: boolean | null
+  published_not?: boolean | null
+  title?: string | null
+  title_contains?: string | null
+  title_ends_with?: string | null
+  title_gt?: string | null
+  title_gte?: string | null
+  title_in?: string[] | null
+  title_lt?: string | null
+  title_lte?: string | null
+  title_not?: string | null
+  title_not_contains?: string | null
+  title_not_ends_with?: string | null
+  title_not_in?: string[] | null
+  title_not_starts_with?: string | null
+  title_starts_with?: string | null
+  updatedAt?: DateTime | null
+  updatedAt_gt?: DateTime | null
+  updatedAt_gte?: DateTime | null
+  updatedAt_in?: Array<DateTime> | null
+  updatedAt_lt?: DateTime | null
+  updatedAt_lte?: DateTime | null
+  updatedAt_not?: DateTime | null
+  updatedAt_not_in?: Array<DateTime> | null
+}
+
+export interface IGraphQlPostUpdateInput {
+  author?: UserUpdateOneRequiredWithoutPostsInput | null
+  content?: string | null
+  published?: boolean | null
+  title?: string | null
+}
+
+export interface IGraphQlPostUpdateManyDataInput {
+  content?: string | null
+  published?: boolean | null
+  title?: string | null
+}
+
+export interface IGraphQlPostUpdateManyMutationInput {
+  content?: string | null
+  published?: boolean | null
+  title?: string | null
+}
+
+export interface IGraphQlPostUpdateManyWithoutAuthorInput {
+  connect?: Array<PostWhereUniqueInput> | null
+  create?: Array<PostCreateWithoutAuthorInput> | null
+  delete?: Array<PostWhereUniqueInput> | null
+  deleteMany?: Array<PostScalarWhereInput> | null
+  disconnect?: Array<PostWhereUniqueInput> | null
+  set?: Array<PostWhereUniqueInput> | null
+  update?: Array<PostUpdateWithWhereUniqueWithoutAuthorInput> | null
+  updateMany?: Array<PostUpdateManyWithWhereNestedInput> | null
+  upsert?: Array<PostUpsertWithWhereUniqueWithoutAuthorInput> | null
+}
+
+export interface IGraphQlPostUpdateManyWithWhereNestedInput {
+  data: PostUpdateManyDataInput
+  where: PostScalarWhereInput
+}
+
+export interface IGraphQlPostUpdateWithoutAuthorDataInput {
+  content?: string | null
+  published?: boolean | null
+  title?: string | null
+}
+
+export interface IGraphQlPostUpdateWithWhereUniqueWithoutAuthorInput {
+  data: PostUpdateWithoutAuthorDataInput
+  where: PostWhereUniqueInput
+}
+
+export interface IGraphQlPostUpsertWithWhereUniqueWithoutAuthorInput {
+  create: PostCreateWithoutAuthorInput
+  update: PostUpdateWithoutAuthorDataInput
+  where: PostWhereUniqueInput
+}
+
+export interface IGraphQlPostWhereInput {
+  AND?: Array<PostWhereInput> | null
+  author?: UserWhereInput | null
+  content?: string | null
+  content_contains?: string | null
+  content_ends_with?: string | null
+  content_gt?: string | null
+  content_gte?: string | null
+  content_in?: string[] | null
+  content_lt?: string | null
+  content_lte?: string | null
+  content_not?: string | null
+  content_not_contains?: string | null
+  content_not_ends_with?: string | null
+  content_not_in?: string[] | null
+  content_not_starts_with?: string | null
+  content_starts_with?: string | null
+  createdAt?: DateTime | null
+  createdAt_gt?: DateTime | null
+  createdAt_gte?: DateTime | null
+  createdAt_in?: Array<DateTime> | null
+  createdAt_lt?: DateTime | null
+  createdAt_lte?: DateTime | null
+  createdAt_not?: DateTime | null
+  createdAt_not_in?: Array<DateTime> | null
+  id?: ID | null
+  id_contains?: ID | null
+  id_ends_with?: ID | null
+  id_gt?: ID | null
+  id_gte?: ID | null
+  id_in?: Array<ID> | null
+  id_lt?: ID | null
+  id_lte?: ID | null
+  id_not?: ID | null
+  id_not_contains?: ID | null
+  id_not_ends_with?: ID | null
+  id_not_in?: Array<ID> | null
+  id_not_starts_with?: ID | null
+  id_starts_with?: ID | null
+  NOT?: Array<PostWhereInput> | null
+  OR?: Array<PostWhereInput> | null
+  published?: boolean | null
+  published_not?: boolean | null
+  title?: string | null
+  title_contains?: string | null
+  title_ends_with?: string | null
+  title_gt?: string | null
+  title_gte?: string | null
+  title_in?: string[] | null
+  title_lt?: string | null
+  title_lte?: string | null
+  title_not?: string | null
+  title_not_contains?: string | null
+  title_not_ends_with?: string | null
+  title_not_in?: string[] | null
+  title_not_starts_with?: string | null
+  title_starts_with?: string | null
+  updatedAt?: DateTime | null
+  updatedAt_gt?: DateTime | null
+  updatedAt_gte?: DateTime | null
+  updatedAt_in?: Array<DateTime> | null
+  updatedAt_lt?: DateTime | null
+  updatedAt_lte?: DateTime | null
+  updatedAt_not?: DateTime | null
+  updatedAt_not_in?: Array<DateTime> | null
+}
+
+export interface IGraphQlPostWhereUniqueInput {
+  id?: ID | null
+}
+
+export interface IGraphQlUserCreateInput {
+  email: string
+  name?: string | null
+  posts?: PostCreateManyWithoutAuthorInput | null
+}
+
+export interface IGraphQlUserCreateOneWithoutPostsInput {
+  connect?: UserWhereUniqueInput | null
+  create?: UserCreateWithoutPostsInput | null
+}
+
+export interface IGraphQlUserCreateWithoutPostsInput {
+  email: string
+  name?: string | null
+}
+
+export interface IGraphQlUserUpdateInput {
+  email?: string | null
+  name?: string | null
+  posts?: PostUpdateManyWithoutAuthorInput | null
+}
+
+export interface IGraphQlUserUpdateManyMutationInput {
+  email?: string | null
+  name?: string | null
+}
+
+export interface IGraphQlUserUpdateOneRequiredWithoutPostsInput {
+  connect?: UserWhereUniqueInput | null
+  create?: UserCreateWithoutPostsInput | null
+  update?: UserUpdateWithoutPostsDataInput | null
+  upsert?: UserUpsertWithoutPostsInput | null
+}
+
+export interface IGraphQlUserUpdateWithoutPostsDataInput {
+  email?: string | null
+  name?: string | null
+}
+
+export interface IGraphQlUserUpsertWithoutPostsInput {
+  create: UserCreateWithoutPostsInput
+  update: UserUpdateWithoutPostsDataInput
+}
+
+export interface IGraphQlUserWhereInput {
+  AND?: Array<UserWhereInput> | null
+  email?: string | null
+  email_contains?: string | null
+  email_ends_with?: string | null
+  email_gt?: string | null
+  email_gte?: string | null
+  email_in?: string[] | null
+  email_lt?: string | null
+  email_lte?: string | null
+  email_not?: string | null
+  email_not_contains?: string | null
+  email_not_ends_with?: string | null
+  email_not_in?: string[] | null
+  email_not_starts_with?: string | null
+  email_starts_with?: string | null
+  id?: ID | null
+  id_contains?: ID | null
+  id_ends_with?: ID | null
+  id_gt?: ID | null
+  id_gte?: ID | null
+  id_in?: Array<ID> | null
+  id_lt?: ID | null
+  id_lte?: ID | null
+  id_not?: ID | null
+  id_not_contains?: ID | null
+  id_not_ends_with?: ID | null
+  id_not_in?: Array<ID> | null
+  id_not_starts_with?: ID | null
+  id_starts_with?: ID | null
+  name?: string | null
+  name_contains?: string | null
+  name_ends_with?: string | null
+  name_gt?: string | null
+  name_gte?: string | null
+  name_in?: string[] | null
+  name_lt?: string | null
+  name_lte?: string | null
+  name_not?: string | null
+  name_not_contains?: string | null
+  name_not_ends_with?: string | null
+  name_not_in?: string[] | null
+  name_not_starts_with?: string | null
+  name_starts_with?: string | null
+  NOT?: Array<UserWhereInput> | null
+  OR?: Array<UserWhereInput> | null
+  posts_every?: PostWhereInput | null
+  posts_none?: PostWhereInput | null
+  posts_some?: PostWhereInput | null
+}
+
+export interface IGraphQlUserWhereUniqueInput {
+  email?: string | null
+  id?: ID | null
+}
+
+/*
+ *
+ * SCALAR TYPES
+ *
+ */
+
+export type DateTime = string
+
+export type Long = any
+
+/*
+ *
+ * ENUM TYPES
+ *
+ */
+
+export enum PostOrderByInput {
+  content_ASC = 'content_ASC',
+  content_DESC = 'content_DESC',
+  createdAt_ASC = 'createdAt_ASC',
+  createdAt_DESC = 'createdAt_DESC',
+  id_ASC = 'id_ASC',
+  id_DESC = 'id_DESC',
+  published_ASC = 'published_ASC',
+  published_DESC = 'published_DESC',
+  title_ASC = 'title_ASC',
+  title_DESC = 'title_DESC',
+  updatedAt_ASC = 'updatedAt_ASC',
+  updatedAt_DESC = 'updatedAt_DESC',
+}
+
+export enum UserOrderByInput {
+  createdAt_ASC = 'createdAt_ASC',
+  createdAt_DESC = 'createdAt_DESC',
+  email_ASC = 'email_ASC',
+  email_DESC = 'email_DESC',
+  id_ASC = 'id_ASC',
+  id_DESC = 'id_DESC',
+  name_ASC = 'name_ASC',
+  name_DESC = 'name_DESC',
+  updatedAt_ASC = 'updatedAt_ASC',
+  updatedAt_DESC = 'updatedAt_DESC',
+}
+
+"
+`;
