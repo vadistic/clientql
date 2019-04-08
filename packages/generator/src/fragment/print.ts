@@ -1,5 +1,5 @@
 import { FragmentDefinitionNode, print } from 'graphql'
-import { GeneratorProps } from '../config'
+import { GeneratorProps } from '../generator'
 import { getFragmentDependencies } from './object-to-fragment'
 
 const fragmentJSTemplate = ({ naming }: GeneratorProps) => (
@@ -9,7 +9,7 @@ const fragmentJSTemplate = ({ naming }: GeneratorProps) => (
 ) => {
   const deps = fragmentDeps
     ? fragmentDeps
-        .map(dep => '${' + naming.getFragmentConstantName(dep) + '}')
+        .map(dep => '${' + naming.getJsConstantName(dep) + '}')
         .join('\n  ')
     : ''
 
@@ -20,7 +20,7 @@ const fragmentJSTemplate = ({ naming }: GeneratorProps) => (
   `.trim()
 
   const all = `
-export const ${naming.getFragmentConstantName(fragmentName)} = gql\`
+export const ${naming.getJsConstantName(fragmentName)} = gql\`
   ${bodyAndDeps}
 \`
 `

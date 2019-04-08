@@ -4,5 +4,5 @@
     "rootDir": "src"
   },
   "include": ["src"],
-  "exclude": ["node_mdules", "test", "dist"]
+  "exclude": ["node_mdules", "dist"]
 }

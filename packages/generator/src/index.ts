@@ -1,4 +1,4 @@
-export * from './client'
-export * from './codegen-ts'
+export * from './codegen-typescript'
 export * from './fragment'
-export * from './config'
+export * from './print'
+export * from './generator'

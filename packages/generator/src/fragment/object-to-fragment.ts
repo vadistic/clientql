@@ -2,7 +2,7 @@ import {
   buildTypemap,
   createField,
   FragmentType
-} from '@graphql-clientgen/shared'
+} from '@graphql-clientgen/core'
 import {
   ExecutableDefinitionNode,
   FieldDefinitionNode,
@@ -17,7 +17,7 @@ import {
   ObjectTypeDefinitionNode,
   SelectionNode
 } from 'graphql'
-import { GeneratorProps } from '../config'
+import { GeneratorProps } from '../generator'
 
 /**
  *  kind for flat fragment

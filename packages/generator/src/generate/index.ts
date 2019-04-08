@@ -1,2 +1,3 @@
-export * from './fragments'
-export * from './typedefs'
+export * from './graphql-fragments'
+export * from './graphql-typedefs'
+export * from './typings-definitions'

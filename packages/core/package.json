@@ -1,5 +1,5 @@
 {
-  "name": "@graphql-clientgen/client",
+  "name": "@graphql-clientgen/core",
   "version": "0.1.0",
   "private": false,
   "repository": "https://github.com/vadistic/graphql-client-generator",
@@ -19,17 +19,11 @@
     "prepare": "yarn clean && yarn build",
     "test": "jest"
   },
-  "dependencies": {
-    "@graphql-clientgen/core": "^0.1.0",
-    "apollo-client": "^2.5.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/graphql": "^14.2.0",
     "@types/jest": "24.0.11",
     "@types/node": "11.13.0",
     "typescript": "3.4.1"
-  },
-  "resolutions": {
-    "graphql": "14.2.1"
   }
 }
