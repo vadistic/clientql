@@ -1,19 +1,16 @@
 import {
+  createCodegenPrinter,
+  printCodeSection,
+} from '@graphql-clientgen/codegen'
+import {
   isEnumTypeDefinitionNode,
   isInputObjectTypeDefinitionNode,
-  isObjectTypeDefinitionNode,
   isScalarTypeDefinitionNode,
+  Kind,
   unwrapDocument,
 } from '@graphql-clientgen/core'
-import { ObjectTypeDefinitionNode } from 'graphql'
-import {
-  codegenScalar,
-  codegenTsEnum,
-  codegenTsInputObject,
-  codegenTsObjectToType,
-} from '../codegen-typescript'
+
 import { GeneratorProps } from '../generator'
-import { printJsSection } from '../print'
 import { reduceObjectTypeDefinitions } from '../utils'
 
 export const generateTypingsDefinitions = async (props: GeneratorProps) => {
@@ -21,38 +18,54 @@ export const generateTypingsDefinitions = async (props: GeneratorProps) => {
 
   const { rootTypes, objectTypes } = reduceObjectTypeDefinitions(definitions)
 
-  const rootsTypescript = rootTypes
-    .map(codegenTsObjectToType(props))
-    .join('\n\n')
+  const print = createCodegenPrinter(props.config.codegenConfig, props.schema)
 
-  const objectsTypescript = objectTypes
-    .map(codegenTsObjectToType(props))
+  const rootsTypescript = rootTypes.map(print).join('\n\n')
+
+  const objectsTypescript = objectTypes.map(print).join('\n\n')
+
+  const interfacesTypescript = definitions
+    .filter(n => n.kind === Kind.INTERFACE_TYPE_DEFINITION)
+    .map(print)
     .join('\n\n')
 
   const inputObjectsTypescript = definitions
     .filter(isInputObjectTypeDefinitionNode)
-    .map(codegenTsInputObject(props))
+    .map(print)
+    .join('\n\n')
+
+  const unionsTypescript = definitions
+    .filter(n => n.kind === Kind.UNION_TYPE_DEFINITION)
+    .map(print)
     .join('\n\n')
 
   const scalarsTypescript = definitions
     .filter(isScalarTypeDefinitionNode)
-    .map(codegenScalar(props))
+    .map(print)
     .join('\n\n')
 
   const enumsTypescript = definitions
     .filter(isEnumTypeDefinitionNode)
-    .map(codegenTsEnum(props))
+    .map(print)
     .join('\n\n')
 
   let result = ''
 
-  result += printJsSection(`ROOT TYPES`, rootsTypescript)
-  result += printJsSection(`OBJECT TYPES`, objectsTypescript)
-  // result += printJsSection(interfacesTypescript, `INTERFACE TYPES`)
-  result += printJsSection(`INPUT OBJECT TYPES`, inputObjectsTypescript)
-  result += printJsSection(`SCALAR TYPES`, scalarsTypescript)
-  result += printJsSection(`ENUM TYPES`, enumsTypescript)
-  // result += printJsSection(unionsTypescript, `UNION TYPES`)
+  result += printCodeSection(`ROOT`, rootsTypescript)
+  result += printCodeSection(Kind.SCALAR_TYPE_DEFINITION, scalarsTypescript)
+  result += printCodeSection(Kind.UNION_TYPE_DEFINITION, unionsTypescript)
+
+  result += printCodeSection(Kind.OBJECT_TYPE_DEFINITION, objectsTypescript)
+  result += printCodeSection(
+    Kind.INTERFACE_TYPE_DEFINITION,
+    interfacesTypescript,
+  )
+
+  result += printCodeSection(
+    Kind.INPUT_OBJECT_TYPE_DEFINITION,
+    inputObjectsTypescript,
+  )
+  result += printCodeSection(Kind.ENUM_TYPE_DEFINITION, enumsTypescript)
 
   return result
 }

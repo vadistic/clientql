@@ -7,6 +7,10 @@ exports[`generate graphql > typedefs match snapshot 1`] = `
  *
  */
 
+
+
+
+
 import gql from 'graphql-tag' 
 
 export const TYPEDEFS = gql\`

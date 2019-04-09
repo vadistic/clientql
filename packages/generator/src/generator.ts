@@ -1,5 +1,5 @@
 import { AstMap, buildAstMap } from '@graphql-clientgen/core'
-import { DocumentNode } from 'graphql'
+import { buildASTSchema, DocumentNode, GraphQLSchema } from 'graphql'
 import { mergeExtensions } from './codegen-graphql'
 import {
   defaultGeneratorConfig,
@@ -14,6 +14,7 @@ import { GeneratorNaming, getGeneratorNaming } from './naming'
 export interface GeneratorProps {
   doc: DocumentNode
   astMap: AstMap
+  schema: GraphQLSchema
   naming: GeneratorNaming
   options: GeneratorOptions
   config: GeneratorConfig
@@ -66,9 +67,12 @@ export const getGeneratorProps = (
 
   const astMap = buildAstMap(mergedDoc)
 
+  const schema = buildASTSchema(mergedDoc)
+
   const props: GeneratorProps = {
     doc,
     astMap,
+    schema,
     naming: getGeneratorNaming(mergedConfig),
     config: mergedConfig,
     options: mergedOptions,

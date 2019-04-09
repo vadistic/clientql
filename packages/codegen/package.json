@@ -1,5 +1,5 @@
 {
-  "name": "@graphql-clientgen/generator",
+  "name": "@graphql-clientgen/codegen",
   "version": "0.1.0",
   "private": false,
   "repository": "https://github.com/vadistic/graphql-client-generator",
@@ -9,9 +9,6 @@
   "module": "dist/esm/index.js",
   "types": "dist/types/index.d.ts",
   "source": "src/index.ts",
-  "bin": {
-    "gql-clientgen": "./dist/cjs/cli.js"
-  },
   "scripts": {
     "build:esm": "tsc -p tsconfig.build.json -m esnext --outDir dist/esm",
     "build:cjs": "tsc -p tsconfig.build.json -m commonjs --outDir dist/cjs",
@@ -23,18 +20,12 @@
     "test": "jest"
   },
   "dependencies": {
-    "@graphql-clientgen/codegen": "^0.1.0",
-    "@graphql-clientgen/core": "^0.1.0",
-    "change-case": "^3.1.0",
-    "graphql": "^14.2.1",
-    "graphql-tag": "^2.10.1"
+    "graphql": "^14.2.1"
   },
   "devDependencies": {
-    "@types/fs-extra": "^5.0.5",
     "@types/graphql": "^14.2.0",
     "@types/jest": "24.0.11",
     "@types/node": "11.13.0",
-    "fs-extra": "^7.0.1",
     "typescript": "3.4.1"
   }
 }

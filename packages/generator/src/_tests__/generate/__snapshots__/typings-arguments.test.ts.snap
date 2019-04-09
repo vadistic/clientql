@@ -7,122 +7,122 @@ exports[`generate typings > arguments match snapshot 1`] = `
  *
  */
 
-export interface IMutationPostArgs {
-  data: IPostCreateInput
+export interface ArgsMutationPost {
+  data: PostCreateInput
 }
 
-export interface IMutationUserArgs {
-  data: IUserCreateInput
+export interface ArgsMutationUser {
+  data: UserCreateInput
 }
 
-export interface IMutationBatchPayloadArgs {
-  where?: IPostWhereInput | null
+export interface ArgsMutationBatchPayload {
+  where?: PostWhereInput | null
 }
 
-export interface IMutationBatchPayloadArgs {
-  where?: IUserWhereInput | null
+export interface ArgsMutationBatchPayload {
+  where?: UserWhereInput | null
 }
 
-export interface IMutationPostArgs {
-  where: IPostWhereUniqueInput
+export interface ArgsMutationPost {
+  where: PostWhereUniqueInput
 }
 
-export interface IMutationUserArgs {
-  where: IUserWhereUniqueInput
+export interface ArgsMutationUser {
+  where: UserWhereUniqueInput
 }
 
-export interface IMutationBatchPayloadArgs {
-  data: IPostUpdateManyMutationInput
-  where?: IPostWhereInput | null
+export interface ArgsMutationBatchPayload {
+  data: PostUpdateManyMutationInput
+  where?: PostWhereInput | null
 }
 
-export interface IMutationBatchPayloadArgs {
-  data: IUserUpdateManyMutationInput
-  where?: IUserWhereInput | null
+export interface ArgsMutationBatchPayload {
+  data: UserUpdateManyMutationInput
+  where?: UserWhereInput | null
 }
 
-export interface IMutationPostArgs {
-  data: IPostUpdateInput
-  where: IPostWhereUniqueInput
+export interface ArgsMutationPost {
+  data: PostUpdateInput
+  where: PostWhereUniqueInput
 }
 
-export interface IMutationUserArgs {
-  data: IUserUpdateInput
-  where: IUserWhereUniqueInput
+export interface ArgsMutationUser {
+  data: UserUpdateInput
+  where: UserWhereUniqueInput
 }
 
-export interface IMutationPostArgs {
-  create: IPostCreateInput
-  update: IPostUpdateInput
-  where: IPostWhereUniqueInput
+export interface ArgsMutationPost {
+  create: PostCreateInput
+  update: PostUpdateInput
+  where: PostWhereUniqueInput
 }
 
-export interface IMutationUserArgs {
-  create: IUserCreateInput
-  update: IUserUpdateInput
-  where: IUserWhereUniqueInput
+export interface ArgsMutationUser {
+  create: UserCreateInput
+  update: UserUpdateInput
+  where: UserWhereUniqueInput
 }
 
-export interface IQueryNodeArgs {
-  id: ID
+export interface ArgsQueryNode {
+  id: string
 }
 
-export interface IQueryPostArgs {
-  where: IPostWhereUniqueInput
+export interface ArgsQueryPost {
+  where: PostWhereUniqueInput
 }
 
-export interface IQueryPostArgs {
+export interface ArgsQueryPost {
   after?: string | null
   before?: string | null
   first?: number | null
   last?: number | null
   orderBy?: PostOrderByInput | null
   skip?: number | null
-  where?: IPostWhereInput | null
+  where?: PostWhereInput | null
 }
 
-export interface IQueryPostConnectionArgs {
+export interface ArgsQueryPostConnection {
   after?: string | null
   before?: string | null
   first?: number | null
   last?: number | null
   orderBy?: PostOrderByInput | null
   skip?: number | null
-  where?: IPostWhereInput | null
+  where?: PostWhereInput | null
 }
 
-export interface IQueryUserArgs {
-  where: IUserWhereUniqueInput
+export interface ArgsQueryUser {
+  where: UserWhereUniqueInput
 }
 
-export interface IQueryUserArgs {
+export interface ArgsQueryUser {
   after?: string | null
   before?: string | null
   first?: number | null
   last?: number | null
   orderBy?: UserOrderByInput | null
   skip?: number | null
-  where?: IUserWhereInput | null
+  where?: UserWhereInput | null
 }
 
-export interface IQueryUserConnectionArgs {
+export interface ArgsQueryUserConnection {
   after?: string | null
   before?: string | null
   first?: number | null
   last?: number | null
   orderBy?: UserOrderByInput | null
   skip?: number | null
-  where?: IUserWhereInput | null
+  where?: UserWhereInput | null
 }
 
-export interface IUserPostArgs {
+export interface ArgsUserPost {
   after?: string | null
   before?: string | null
   first?: number | null
   last?: number | null
   orderBy?: PostOrderByInput | null
   skip?: number | null
-  where?: IPostWhereInput | null
+  where?: PostWhereInput | null
 }
 
 "

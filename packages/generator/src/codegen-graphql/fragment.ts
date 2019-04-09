@@ -1,8 +1,8 @@
 import {
-  buildTypemap,
   createField,
   createFragmentSpread,
   FragmentType,
+  unwrapType,
 } from '@graphql-clientgen/core'
 import {
   FieldDefinitionNode,
@@ -29,7 +29,7 @@ const objectTypeFieldsToFragmentSelections = (
   nodes
     .map(
       (field): FieldNode | null => {
-        const { typename } = buildTypemap(field.type)
+        const { typename } = unwrapType(field.type)
         // ID type seems to be without AST node
         if (typename === 'ID') {
           return {

@@ -1,10 +1,42 @@
-import { DocumentNode, ObjectTypeDefinitionNode } from 'graphql'
+import {
+  DocumentNode,
+  FieldDefinitionNode,
+  InputValueDefinitionNode,
+  ObjectTypeDefinitionNode,
+} from 'graphql'
 import { isObjectTypeDefinitionNode } from './graphql-guards'
-import { buildFieldmap, Fieldmap } from './map-build'
 import { StringMap } from './types'
+import { TypeModifier, unwrapType } from './unwrap-type'
 
 export type Typename = string
 export type Fieldname = string
+
+export interface Fieldmap {
+  [fieldname: string]: {
+    typename: Typename
+    args: InputValueDefinitionNode[]
+    field: FieldDefinitionNode
+    modifiers: TypeModifier[]
+  }
+}
+
+export const buildFieldmap = (node: ObjectTypeDefinitionNode) => {
+  const fieldMap: Fieldmap = {}
+
+  for (const field of node.fields || []) {
+    const fieldname = field.name.value
+    const { modifiers, typename } = unwrapType(field.type)
+
+    fieldMap[fieldname] = {
+      args: [...(field.arguments || [])],
+      field,
+      typename,
+      modifiers,
+    }
+  }
+
+  return fieldMap
+}
 
 export interface MapEntry {
   node: ObjectTypeDefinitionNode

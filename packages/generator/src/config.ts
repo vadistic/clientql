@@ -1,3 +1,4 @@
+import { CodegenPrinterConfig } from '@graphql-clientgen/codegen'
 import { CoreConfig, FragmentType } from '@graphql-clientgen/core'
 import { StringCase } from './naming'
 
@@ -6,23 +7,13 @@ import { StringCase } from './naming'
  */
 
 export interface GeneratorConfig extends CoreConfig {
-  /**
-   * add __typename to generated types
-   * pass 'string' to add it as 'string' instead of specific name
-   * @default: true
-   */
-  addTypename: boolean | 'string'
+  codegenConfig?: CodegenPrinterConfig
   /**
    * suffix client types
    * @default: 'Client'
    *
    */
   clientSuffix: string
-  /**
-   * prefix typescript interface name, accepts custom string
-   * @default: I
-   */
-  interfacePrefix: boolean | string
   /**
    * return graphql as string of js/ts file with graphql-tag tagged separate types
    * otherwise prints graphql
@@ -44,24 +35,16 @@ export interface GeneratorConfig extends CoreConfig {
    * @default: true
    */
   generateJsMaps: boolean
-  /**
-   * use object literal instead of enums
-   * @default: true
-   */
-  useMapsForEnums: boolean
 }
 
 export const defaultGeneratorConfig: GeneratorConfig = {
-  addTypename: true,
   clientSuffix: 'Client',
   constantCase: StringCase.CONSTANT,
   deparametrizeSingleArgument: true,
   fragmentJsConstantSuffix: 'Fragment',
   fragmentType: FragmentType.NONE,
   generateJsMaps: true,
-  interfacePrefix: 'I',
   printGraphqlToJs: true,
-  useMapsForEnums: true,
 }
 
 /**

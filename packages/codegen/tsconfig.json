@@ -3,6 +3,6 @@
   "compilerOptions": {
     "rootDir": "src"
   },
-  "include": ["src", "../print-typings/typings-printer"],
+  "include": ["src", "typings-printer"],
   "exclude": ["node_mdules", "dist"]
 }

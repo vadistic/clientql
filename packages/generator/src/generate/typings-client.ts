@@ -1,27 +1,29 @@
-import { unwrapDocument } from '@graphql-clientgen/core'
 import {
-  codegenTsObjectToClient,
-  codegenTsRootClient,
-} from '../codegen-typescript'
+  createCodegenPrinter,
+  printCodeSection,
+} from '@graphql-clientgen/codegen'
+import { unwrapDocument } from '@graphql-clientgen/core'
 import { GeneratorProps } from '../generator'
-import { printJsSection } from '../print'
 import { reduceObjectTypeDefinitions } from '../utils'
 
 export const generateTypingsClient = async (props: GeneratorProps) => {
   const definitions = unwrapDocument(props.doc)
 
-  const { objectTypes } = reduceObjectTypeDefinitions(definitions)
+  const { objectTypes, rootTypes } = reduceObjectTypeDefinitions(definitions)
 
-  const rootClientTypings = codegenTsRootClient(props)()
+  const print = createCodegenPrinter(
+    { addFieldsAsFunction: true },
+    props.schema,
+  )
 
-  const objectClientTypings = objectTypes
-    .map(codegenTsObjectToClient(props))
-    .join('\n\n')
+  const rootClientTypings = print(rootTypes)!
+
+  const objectClientTypings = objectTypes.map(print).join('\n\n')
 
   let result = ''
 
-  result += printJsSection(`ROOT CLIENT`, rootClientTypings)
-  result += printJsSection(`CLIENTS`, objectClientTypings)
+  result += printCodeSection(`ROOT CLIENT`, rootClientTypings)
+  result += printCodeSection(`CLIENTS`, objectClientTypings)
 
   return result
 }

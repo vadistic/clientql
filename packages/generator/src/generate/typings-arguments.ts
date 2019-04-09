@@ -1,7 +1,9 @@
+import {
+  printArgumentInterfaces,
+  printCodeSection,
+} from '@graphql-clientgen/codegen'
 import { truthy, unwrapDocument } from '@graphql-clientgen/core'
-import { codegenTsArguments } from '../codegen-typescript/arguments'
 import { GeneratorProps } from '../generator'
-import { printJsSection } from '../print'
 import { reduceObjectTypeDefinitions } from '../utils'
 
 export const generateTypingsArguments = async (props: GeneratorProps) => {
@@ -9,16 +11,19 @@ export const generateTypingsArguments = async (props: GeneratorProps) => {
 
   const { rootTypes, objectTypes } = reduceObjectTypeDefinitions(definitions)
 
+  const print = printArgumentInterfaces(
+    props.config.codegenConfig,
+    props.schema,
+  )
+
   const rootTypesArgumentsTypescript = rootTypes
-    .map(codegenTsArguments(props))
+    .map(print)
     .filter(truthy)
     .join('\n\n')
 
-  const objectTypesArgumentsTypescript = objectTypes
-    .map(codegenTsArguments(props))
-    .filter(truthy)
+  const objectTypesArgumentsTypescript = objectTypes.map(print).filter(truthy)
 
-  const result = printJsSection(
+  const result = printCodeSection(
     `ARGUMENTS TYPES`,
     rootTypesArgumentsTypescript + '\n\n' + objectTypesArgumentsTypescript,
   )

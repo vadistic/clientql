@@ -1,6 +1,7 @@
+import { printCodeSection } from '@graphql-clientgen/codegen'
 import { wrapDocument } from '@graphql-clientgen/core'
 import { GeneratorProps } from '../generator'
-import { printJsBlockComment, printJsGraphql } from '../print'
+import { printGqlTag } from '../print'
 
 /*
  * This will generate typedefs of object types for runtime client
@@ -16,11 +17,11 @@ export const generateGraphqlTypedefs = (props: GeneratorProps) => {
   )
   const constantName = props.naming.getJsConstantName(TYPEDEFS_CONST_NAME)
 
-  let result = printJsBlockComment('RUNTIME TYPEDEFS') + '\n\n'
+  let result = printCodeSection('RUNTIME TYPEDEFS', '') + '\n\n'
 
   result += `import gql from 'graphql-tag' \n\n`
 
-  result += printJsGraphql(constantName, newDoc) + '\n\n'
+  result += printGqlTag(constantName, newDoc) + '\n\n'
 
   // this way I do not need to put it to config...+
   result += `export default ${constantName}`
