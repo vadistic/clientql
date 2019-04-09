@@ -1,0 +1,98 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`generate graphql > typedefs match snapshot 1`] = `
+"/*
+ *
+ * RUNTIME TYPEDEFS
+ *
+ */
+
+import gql from 'graphql-tag' 
+
+export const TYPEDEFS = gql\`
+  type AggregatePost {
+    count: Int!
+  }
+  
+  type AggregateUser {
+    count: Int!
+  }
+  
+  type BatchPayload {
+    count: Long!
+  }
+  
+  type Mutation {
+    createPost(data: PostCreateInput!): Post!
+    createUser(data: UserCreateInput!): User!
+    deleteManyPosts(where: PostWhereInput): BatchPayload!
+    deleteManyUsers(where: UserWhereInput): BatchPayload!
+    deletePost(where: PostWhereUniqueInput!): Post
+    deleteUser(where: UserWhereUniqueInput!): User
+    updateManyPosts(data: PostUpdateManyMutationInput!, where: PostWhereInput): BatchPayload!
+    updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+    updatePost(data: PostUpdateInput!, where: PostWhereUniqueInput!): Post
+    updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+    upsertPost(create: PostCreateInput!, update: PostUpdateInput!, where: PostWhereUniqueInput!): Post!
+    upsertUser(create: UserCreateInput!, update: UserUpdateInput!, where: UserWhereUniqueInput!): User!
+  }
+  
+  type PageInfo {
+    endCursor: String
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    startCursor: String
+  }
+  
+  type Post {
+    author: User!
+    content: String
+    createdAt: DateTime!
+    id: ID!
+    published: Boolean!
+    title: String!
+    updatedAt: DateTime!
+  }
+  
+  type PostConnection {
+    aggregate: AggregatePost!
+    edges: [PostEdge!]!
+    pageInfo: PageInfo!
+  }
+  
+  type PostEdge {
+    cursor: String!
+    node: Post!
+  }
+  
+  type Query {
+    node(id: ID!): Node
+    post(where: PostWhereUniqueInput!): Post
+    posts(after: String, before: String, first: Int, last: Int, orderBy: PostOrderByInput, skip: Int, where: PostWhereInput): [Post!]!
+    postsConnection(after: String, before: String, first: Int, last: Int, orderBy: PostOrderByInput, skip: Int, where: PostWhereInput): PostConnection!
+    user(where: UserWhereUniqueInput!): User
+    users(after: String, before: String, first: Int, last: Int, orderBy: UserOrderByInput, skip: Int, where: UserWhereInput): [User!]!
+    usersConnection(after: String, before: String, first: Int, last: Int, orderBy: UserOrderByInput, skip: Int, where: UserWhereInput): UserConnection!
+  }
+  
+  type User {
+    email: String!
+    id: ID!
+    name: String
+    posts(after: String, before: String, first: Int, last: Int, orderBy: PostOrderByInput, skip: Int, where: PostWhereInput): [Post!]
+  }
+  
+  type UserConnection {
+    aggregate: AggregateUser!
+    edges: [UserEdge!]!
+    pageInfo: PageInfo!
+  }
+  
+  type UserEdge {
+    cursor: String!
+    node: User!
+  }
+\`
+
+export default TYPEDEFS"
+`;

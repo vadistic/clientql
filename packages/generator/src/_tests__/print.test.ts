@@ -5,6 +5,7 @@ import {
   printJsBlockComment,
   printJsGraphql,
   printJsSection,
+  printTsInterface,
 } from '../print'
 
 describe('print utils', () => {
@@ -17,23 +18,23 @@ ok
     `
 
     expect(indent(fixture, 2)).toMatchInlineSnapshot(`
-                                    "    something
-                                        newline
-                                          indented
-                                        ok"
-                        `)
+                                                      "    something
+                                                          newline
+                                                            indented
+                                                          ok"
+                                    `)
   })
 
   it('print block comment', () => {
     const fixture = printJsBlockComment('MY IMPORTANT BLOCK')
 
     expect(fixture).toMatchInlineSnapshot(`
-                        "/*
-                         *
-                         * MY IMPORTANT BLOCK
-                         *
-                         */"
-                `)
+                                          "/*
+                                           *
+                                           * MY IMPORTANT BLOCK
+                                           *
+                                           */"
+                            `)
   })
 
   it('print sections', () => {
@@ -45,28 +46,28 @@ ok
     fixture += printJsSection('SECOND', content)
 
     expect(fixture).toMatchInlineSnapshot(`
-            "/*
-             *
-             * FIRST
-             *
-             */
-            
-            HELLO
-            HELLO
-            HELLO
-            
-            /*
-             *
-             * SECOND
-             *
-             */
-            
-            HELLO
-            HELLO
-            HELLO
-            
-            "
-        `)
+      "/*
+       *
+       * FIRST
+       *
+       */
+      
+      HELLO
+      HELLO
+      HELLO
+      
+      /*
+       *
+       * SECOND
+       *
+       */
+      
+      HELLO
+      HELLO
+      HELLO
+      
+      "
+    `)
   })
 
   it('print graphql to gql tagged const with deps', () => {
@@ -90,9 +91,33 @@ ok
           ...SomeOtherFragment
         }
       
-      \${  SOME_FRAGMENT}
-      \${  SOME_OTHER_FRAGMENT}
-      \`"
+        \${SOME_FRAGMENT}
+        \${SOME_OTHER_FRAGMENT}\`"
     `)
+  })
+
+  it('prints interface', () => {
+    const arr = ['prop?: Value', 'arr?: any[]']
+    const str = arr.join('\n')
+
+    const name = 'MyInterface'
+    const extend = ['First', 'Second']
+
+    const res1 = printTsInterface(name, false, arr)
+    const res2 = printTsInterface(name, extend, str)
+
+    expect(res1).toMatchInlineSnapshot(`
+            "export interface MyInterface {
+              prop?: Value
+              arr?: any[]
+            }"
+        `)
+
+    expect(res2).toMatchInlineSnapshot(`
+            "export interface MyInterface extends First, Second {
+              prop?: Value
+              arr?: any[]
+            }"
+        `)
   })
 })

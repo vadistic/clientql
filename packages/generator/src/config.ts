@@ -7,21 +7,22 @@ import { StringCase } from './naming'
 
 export interface GeneratorConfig extends CoreConfig {
   /**
+   * add __typename to generated types
+   * pass 'string' to add it as 'string' instead of specific name
+   * @default: true
+   */
+  addTypename: boolean | 'string'
+  /**
    * suffix client types
    * @default: 'Client'
    *
    */
   clientSuffix: string
   /**
-   * casing of generated js constants
-   * @default: 'CONSTANT_CASE'
-   */
-  constantCase: StringCase
-  /**
    * prefix typescript interface name, accepts custom string
    * @default: I
    */
-  prefixInterfaces: boolean | string
+  interfacePrefix: boolean | string
   /**
    * return graphql as string of js/ts file with graphql-tag tagged separate types
    * otherwise prints graphql
@@ -29,26 +30,38 @@ export interface GeneratorConfig extends CoreConfig {
    */
   printGraphqlToJs: boolean
   /**
+   * casing of generated js constants
+   * @default: 'CONSTANT_CASE'
+   */
+  constantCase: StringCase
+  /**
+   * Fragments generated with convention of 1:1 to typename needs some namespacing in JS constant name
+   * @default: 'Fragment'
+   */
+  fragmentJsConstantSuffix: string
+  /**
    * generate helper maps of all all generated fragments/operations by typename/field
    * @default: true
    */
-  generateJsMaps: true
+  generateJsMaps: boolean
   /**
    * use object literal instead of enums
-   * @default: false
+   * @default: true
    */
   useMapsForEnums: boolean
 }
 
 export const defaultGeneratorConfig: GeneratorConfig = {
+  addTypename: true,
   clientSuffix: 'Client',
-  fragmentType: FragmentType.NONE,
-  deparametrizeSingleArgument: true,
-  prefixInterfaces: 'I',
   constantCase: StringCase.CONSTANT,
+  deparametrizeSingleArgument: true,
+  fragmentJsConstantSuffix: 'Fragment',
+  fragmentType: FragmentType.NONE,
   generateJsMaps: true,
+  interfacePrefix: 'I',
   printGraphqlToJs: true,
-  useMapsForEnums: true
+  useMapsForEnums: true,
 }
 
 /**
@@ -73,7 +86,7 @@ export const defaultGeneratorPaths = {
   client: 'client.ts',
   fragments: 'fragments.ts',
   operations: 'operations.ts',
-  typedefs: 'typedefs.ts'
+  typedefs: 'typedefs.ts',
 }
 
 /**
@@ -141,14 +154,14 @@ export const defaultGeneratorOptions: GeneratorOptions = {
     client: true,
     arguments: true,
     operations: true,
-    fragments: true
+    fragments: true,
   },
   client: {
-    boilerplate: true
+    boilerplate: true,
   },
   graphql: {
     typedefs: true,
     fragments: true,
-    operations: true
-  }
+    operations: true,
+  },
 }

@@ -1,20 +1,20 @@
 import { getDocDefinition, Kind } from '@graphql-clientgen/core'
 import { DocumentNode, ObjectTypeDefinitionNode } from 'graphql'
 import gql from 'graphql-tag'
-import { codegenFieldToType } from '../..'
-import { codegenFieldToFunction } from '../../codegen-typescript'
+import { codegenTsFieldToType } from '../..'
+import { codegenTsFieldToFunction } from '../../codegen-typescript'
 import { getGeneratorProps } from '../../generator'
 
 const docToFieldTypeTypings = (doc: DocumentNode) => {
   const fields = getDocDefinition(doc, Kind.OBJECT_TYPE_DEFINITION)!.fields!
   const props = getGeneratorProps(doc)
-  return fields.map(codegenFieldToType(props)).join('\n')
+  return fields.map(codegenTsFieldToType(props)).join('\n')
 }
 
 const docToFieldFunctionsTypings = (doc: DocumentNode) => {
   const fields = getDocDefinition(doc, Kind.OBJECT_TYPE_DEFINITION)!.fields!
   const props = getGeneratorProps(doc)
-  return fields.map(codegenFieldToFunction(props)).join('\n')
+  return fields.map(codegenTsFieldToFunction(props)).join('\n')
 }
 
 describe('codegen typescript > fields', () => {

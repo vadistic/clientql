@@ -2,29 +2,29 @@ import {
   FragmentType,
   isObjectTypeDefinitionNode,
   isRootTypeDefinitionNode,
-  nonNull
+  truthy,
 } from '@graphql-clientgen/core'
-import { objectTypeToFragment } from '../fragment'
+import { codegenGraphqlFragment } from '../codegen-graphql'
 import { GeneratorProps } from '../generator'
 
 export const generateGraphqlFragments = (props: GeneratorProps) => {
   const objectTypes = props.doc.definitions
     .filter(isObjectTypeDefinitionNode)
     .filter(
-      el => isObjectTypeDefinitionNode(el) && !isRootTypeDefinitionNode(el)
+      el => isObjectTypeDefinitionNode(el) && !isRootTypeDefinitionNode(el),
     )
 
   const flatFragments = objectTypes
-    .map(objectTypeToFragment(props, FragmentType.FLAT))
-    .filter(nonNull)
+    .map(codegenGraphqlFragment(props, FragmentType.FLAT))
+    .filter(truthy)
 
   const deepFragments = objectTypes
-    .map(objectTypeToFragment(props, FragmentType.DEEP))
-    .filter(nonNull)
+    .map(codegenGraphqlFragment(props, FragmentType.DEEP))
+    .filter(truthy)
 
   const defaultFragments = objectTypes
-    .map(objectTypeToFragment(props, FragmentType.DEFAULT))
-    .filter(nonNull)
+    .map(codegenGraphqlFragment(props, FragmentType.DEFAULT))
+    .filter(truthy)
 
   const fragments = [flatFragments, defaultFragments, deepFragments].flat(1)
 
@@ -32,6 +32,6 @@ export const generateGraphqlFragments = (props: GeneratorProps) => {
     fragments,
     flatFragments,
     deepFragments,
-    defaultFragments
+    defaultFragments,
   }
 }

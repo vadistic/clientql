@@ -1,0 +1,157 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`generate typings > client match snapshot 1`] = `
+"/*
+ *
+ * ROOT CLIENT
+ *
+ */
+
+export interface IRootClient {
+  node: (id: ID) => Promise<INode | null>
+  post: (where: IPostWhereUniqueInput) => Promise<IPost | null> & IPostClient
+  posts: (args: {
+    after?: string | null
+    before?: string | null
+    first?: number | null
+    last?: number | null
+    orderBy?: PostOrderByInput | null
+    skip?: number | null
+    where?: IPostWhereInput | null
+  }) => Promise<Array<IPost>> & IPostClient
+  postsConnection: (args: {
+    after?: string | null
+    before?: string | null
+    first?: number | null
+    last?: number | null
+    orderBy?: PostOrderByInput | null
+    skip?: number | null
+    where?: IPostWhereInput | null
+  }) => Promise<IPostConnection> & IPostConnectionClient
+  user: (where: IUserWhereUniqueInput) => Promise<IUser | null> & IUserClient
+  users: (args: {
+    after?: string | null
+    before?: string | null
+    first?: number | null
+    last?: number | null
+    orderBy?: UserOrderByInput | null
+    skip?: number | null
+    where?: IUserWhereInput | null
+  }) => Promise<Array<IUser>> & IUserClient
+  usersConnection: (args: {
+    after?: string | null
+    before?: string | null
+    first?: number | null
+    last?: number | null
+    orderBy?: UserOrderByInput | null
+    skip?: number | null
+    where?: IUserWhereInput | null
+  }) => Promise<IUserConnection> & IUserConnectionClient
+  createPost: (data: IPostCreateInput) => Promise<IPost> & IPostClient
+  createUser: (data: IUserCreateInput) => Promise<IUser> & IUserClient
+  deleteManyPosts: (where?: IPostWhereInput | null) => Promise<IBatchPayload> & IBatchPayloadClient
+  deleteManyUsers: (where?: IUserWhereInput | null) => Promise<IBatchPayload> & IBatchPayloadClient
+  deletePost: (where: IPostWhereUniqueInput) => Promise<IPost | null> & IPostClient
+  deleteUser: (where: IUserWhereUniqueInput) => Promise<IUser | null> & IUserClient
+  updateManyPosts: (args: {
+    data: IPostUpdateManyMutationInput
+    where?: IPostWhereInput | null
+  }) => Promise<IBatchPayload> & IBatchPayloadClient
+  updateManyUsers: (args: {
+    data: IUserUpdateManyMutationInput
+    where?: IUserWhereInput | null
+  }) => Promise<IBatchPayload> & IBatchPayloadClient
+  updatePost: (args?: {
+    data: IPostUpdateInput
+    where: IPostWhereUniqueInput
+  }) => Promise<IPost | null> & IPostClient
+  updateUser: (args?: {
+    data: IUserUpdateInput
+    where: IUserWhereUniqueInput
+  }) => Promise<IUser | null> & IUserClient
+  upsertPost: (args: {
+    create: IPostCreateInput
+    update: IPostUpdateInput
+    where: IPostWhereUniqueInput
+  }) => Promise<IPost> & IPostClient
+  upsertUser: (args: {
+    create: IUserCreateInput
+    update: IUserUpdateInput
+    where: IUserWhereUniqueInput
+  }) => Promise<IUser> & IUserClient
+}
+
+/*
+ *
+ * CLIENTS
+ *
+ */
+
+export interface IAggregatePostClient extends IFragmentable {
+  count: () => Promise<number>
+}
+
+export interface IAggregateUserClient extends IFragmentable {
+  count: () => Promise<number>
+}
+
+export interface IBatchPayloadClient extends IFragmentable {
+  count: () => Promise<number>
+}
+
+export interface IPageInfoClient extends IFragmentable {
+  endCursor: () => Promise<string | null>
+  hasNextPage: () => Promise<boolean>
+  hasPreviousPage: () => Promise<boolean>
+  startCursor: () => Promise<string | null>
+}
+
+export interface IPostClient extends IFragmentable {
+  author: () => Promise<IUser> & IUserClient
+  content: () => Promise<string | null>
+  createdAt: () => Promise<DateTime>
+  id: () => Promise<ID>
+  published: () => Promise<boolean>
+  title: () => Promise<string>
+  updatedAt: () => Promise<DateTime>
+}
+
+export interface IPostConnectionClient extends IFragmentable {
+  aggregate: () => Promise<IAggregatePost> & IAggregatePostClient
+  edges: () => Promise<Array<IPostEdge>> & IPostEdgeClient
+  pageInfo: () => Promise<IPageInfo> & IPageInfoClient
+}
+
+export interface IPostEdgeClient extends IFragmentable {
+  cursor: () => Promise<string>
+  node: () => Promise<IPost> & IPostClient
+}
+
+export interface IUserClient extends IFragmentable {
+  email: () => Promise<string>
+  id: () => Promise<ID>
+  name: () => Promise<string | null>
+  posts: (args?: {
+    after?: string | null
+    before?: string | null
+    first?: number | null
+    last?: number | null
+    orderBy?: PostOrderByInput | null
+    skip?: number | null
+    where?: IPostWhereInput | null
+  }) => Promise<Array<IPost> | null> & IPostClient
+}
+
+export interface IUserConnectionClient extends IFragmentable {
+  aggregate: () => Promise<IAggregateUser> & IAggregateUserClient
+  edges: () => Promise<Array<IUserEdge>> & IUserEdgeClient
+  pageInfo: () => Promise<IPageInfo> & IPageInfoClient
+}
+
+export interface IUserEdgeClient extends IFragmentable {
+  cursor: () => Promise<string>
+  node: () => Promise<IUser> & IUserClient
+}
+
+"
+`;

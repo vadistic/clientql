@@ -5,18 +5,18 @@ import {
   InputValueDefinitionNode,
   Kind,
   SelectionNode,
-  VariableDefinitionNode
+  VariableDefinitionNode,
 } from 'graphql'
-import { CoreProps, FragmentType } from './config'
+import { CoreProps } from './config'
 import { createField } from './graphql-create'
 import { wrapDocument } from './graphql-utils'
-import { AstMap, Fieldname, Typename } from './map-ast'
+import { Fieldname, Typename } from './map-ast'
 import { getOperationType } from './map-utils'
 import {
   buildOperationArgument,
-  buildOperationBase,
   buildOperationName,
-  buildOperationVariable
+  buildOperationSelection,
+  buildOperationVariable,
 } from './operation-utils'
 
 /**
@@ -26,7 +26,7 @@ import {
 
 export const buildOperation = (
   props: CoreProps,
-  paths: Fieldname[]
+  paths: Fieldname[],
 ): DocumentNode => {
   const { config, astMap } = props
 
@@ -62,7 +62,7 @@ export const buildOperation = (
         const res = {
           typename,
           fieldname,
-          args
+          args,
         }
 
         return [...acc, res]
@@ -71,7 +71,7 @@ export const buildOperation = (
         fieldname: Fieldname
         typename: Typename
         args: InputValueDefinitionNode[]
-      }>
+      }>,
     )
     .map(({ fieldname, typename, args }, i, arr) => {
       const isBase = i === arr.length - 1
@@ -83,7 +83,7 @@ export const buildOperation = (
       let fragments: FragmentDefinitionNode[] = []
 
       if (isBase) {
-        const base = buildOperationBase(props, typename)
+        const base = buildOperationSelection(props, typename)
 
         selections = base.selections
         fragments = base.fragments
@@ -92,32 +92,32 @@ export const buildOperation = (
       const field: FieldNode = createField({
         fieldname,
         arguments: operationArgs,
-        selections
+        selections,
       })
 
       return {
         typename,
         field,
         variables,
-        fragments
+        fragments,
       }
     })
 
   const {
     variables: variableDefinitions,
     fragments: fragmentDefinitions,
-    typenames
+    typenames,
   } = selectionData.reduce(
     (acc, { variables, fragments, typename }) => ({
       variables: acc.variables.concat(variables),
       typenames: acc.typenames.concat(typename),
-      fragments: acc.fragments.concat(fragments)
+      fragments: acc.fragments.concat(fragments),
     }),
     {
       variables: [] as VariableDefinitionNode[],
       fragments: [] as FragmentDefinitionNode[],
-      typenames: [] as Typename[]
-    }
+      typenames: [] as Typename[],
+    },
   )
 
   const selection = selectionData
@@ -140,26 +140,26 @@ export const buildOperation = (
               // add id (probs should be configurable)
               createField({ fieldname: 'id' }),
               // add nested selection
-              acc
-            ]
-          }
+              acc,
+            ],
+          },
         }
       },
-      undefined as FieldNode | undefined
+      undefined as FieldNode | undefined,
     )!
 
   const operationDefinition = {
     kind: Kind.OPERATION_DEFINITION,
     name: {
       kind: Kind.NAME,
-      value: buildOperationName(typenames, operationType)
+      value: buildOperationName(typenames, operationType),
     },
     operation: operationType,
     variableDefinitions,
     selectionSet: {
       kind: Kind.SELECTION_SET,
-      selections: [selection]
-    }
+      selections: [selection],
+    },
   }
 
   return wrapDocument(operationDefinition, ...fragmentDefinitions)

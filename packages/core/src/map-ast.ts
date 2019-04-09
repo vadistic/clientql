@@ -25,7 +25,7 @@ export const buildAstMap = (doc: DocumentNode): AstMap => {
     query: undefined,
     mutation: undefined,
     subscription: undefined,
-    operation: {}
+    operation: {},
   }
 
   const fieldmapCache: { [typename: string]: Fieldmap } = {}
@@ -36,9 +36,9 @@ export const buildAstMap = (doc: DocumentNode): AstMap => {
       return {
         ...(this.query && this.query.fieldmap),
         ...(this.mutation && this.mutation.fieldmap),
-        ...(this.subscription && this.subscription.fieldmap)
+        ...(this.subscription && this.subscription.fieldmap),
       }
-    }
+    },
   })
 
   /**
@@ -71,38 +71,23 @@ export const buildAstMap = (doc: DocumentNode): AstMap => {
     if (isObjectTypeDefinitionNode(node)) {
       const typename = node.name.value
 
-      if (typename === 'Query') {
-        astMap.query = {
-          node,
-          fieldmap: buildFieldmap(node)
-        }
-
-        continue
-      }
-      if (typename === 'Mutation') {
-        astMap.mutation = {
-          node,
-          fieldmap: buildFieldmap(node)
-        }
-        continue
-      }
-      if (typename === 'Subscription') {
-        astMap.subscription = {
-          node,
-          fieldmap: buildFieldmap(node)
-        }
-        continue
-      }
-
       astMap.types[typename] = {
         node,
-        fieldmap: {}
+        fieldmap: {},
       }
 
       // a bit of proxy-like for lazyinit
       Object.defineProperty(astMap.types[typename], 'fieldmap', {
-        get: () => getFieldmap(typename)
+        get: () => getFieldmap(typename),
       })
+
+      // roots will be also added to types since they are types
+      if (['Query', 'Mutation', 'Subscription'].includes(typename)) {
+        ;(astMap as any)[typename.toLowerCase()] = {
+          node,
+          fieldmap: astMap.types[typename].fieldmap,
+        }
+      }
     }
   }
 

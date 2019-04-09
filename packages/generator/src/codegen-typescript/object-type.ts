@@ -1,35 +1,33 @@
 import { isNotEmpty } from '@graphql-clientgen/core'
 import { ObjectTypeDefinitionNode } from 'graphql'
 import { GeneratorProps } from '../generator'
-import { codegenFieldToType } from './field'
+import { printTsInterface } from '../print'
+import { codegenTsFieldToType } from './field'
 
 /**
  * codegen to TYPE => as response shape, not as functions
  */
-export const codegenObjectToType = (props: GeneratorProps) => (
-  node: ObjectTypeDefinitionNode
+export const codegenTsObjectToType = (props: GeneratorProps) => (
+  node: ObjectTypeDefinitionNode,
 ) => {
-  const { interfaces, fields } = node
   const name = props.naming.getInterfaceName(node.name.value)
 
-  let result = ''
+  const extend =
+    node.interfaces &&
+    node.interfaces.map(n => props.naming.getInterfaceName(n.name.value))
 
-  result += `export interface ${name}`
+  const fieldsTs =
+    isNotEmpty(node.fields) && node.fields.map(codegenTsFieldToType(props))
 
-  if (isNotEmpty(interfaces)) {
-    result += ` extends ${interfaces.map(v => v.name.value).join(', ')}`
+  if (props.config.addTypename === 'string' && fieldsTs) {
+    fieldsTs.unshift(`__typename: string`)
   }
 
-  result += ' {\n'
-
-  const fieldsTs = isNotEmpty(fields) && fields.map(codegenFieldToType(props))
-
-  if (fieldsTs) {
-    // probably I should automate this formatting
-    result += '  ' + fieldsTs.join('\n  ')
+  if (props.config.addTypename === true && fieldsTs) {
+    fieldsTs.unshift(`__typename: '${node.name.value}'`)
   }
 
-  result += '\n}'
+  const result = printTsInterface(name, extend, fieldsTs)
 
   return result
 }

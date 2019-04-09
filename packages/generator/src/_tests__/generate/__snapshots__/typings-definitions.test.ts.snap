@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`generate typings definitions match snapshot 1`] = `
+exports[`generate typings > definitions match snapshot 1`] = `
 "/*
  *
  * ROOT TYPES
@@ -8,28 +8,30 @@ exports[`generate typings definitions match snapshot 1`] = `
  */
 
 export interface IGraphQLMutation {
-  createPost: Post
-  createUser: User
-  deleteManyPosts: BatchPayload
-  deleteManyUsers: BatchPayload
-  deletePost?: Post | null
-  deleteUser?: User | null
-  updateManyPosts: BatchPayload
-  updateManyUsers: BatchPayload
-  updatePost?: Post | null
-  updateUser?: User | null
-  upsertPost: Post
-  upsertUser: User
+  __typename: 'Mutation'
+  createPost: IGraphQLPost
+  createUser: IGraphQLUser
+  deleteManyPosts: IGraphQLBatchPayload
+  deleteManyUsers: IGraphQLBatchPayload
+  deletePost?: IGraphQLPost | null
+  deleteUser?: IGraphQLUser | null
+  updateManyPosts: IGraphQLBatchPayload
+  updateManyUsers: IGraphQLBatchPayload
+  updatePost?: IGraphQLPost | null
+  updateUser?: IGraphQLUser | null
+  upsertPost: IGraphQLPost
+  upsertUser: IGraphQLUser
 }
 
 export interface IGraphQLQuery {
-  node?: Node | null
-  post?: Post | null
-  posts: Array<Post>
-  postsConnection: PostConnection
-  user?: User | null
-  users: Array<User>
-  usersConnection: UserConnection
+  __typename: 'Query'
+  node?: IGraphQLNode | null
+  post?: IGraphQLPost | null
+  posts: Array<IGraphQLPost>
+  postsConnection: IGraphQLPostConnection
+  user?: IGraphQLUser | null
+  users: Array<IGraphQLUser>
+  usersConnection: IGraphQLUserConnection
 }
 
 /*
@@ -39,18 +41,22 @@ export interface IGraphQLQuery {
  */
 
 export interface IGraphQLAggregatePost {
+  __typename: 'AggregatePost'
   count: number
 }
 
 export interface IGraphQLAggregateUser {
+  __typename: 'AggregateUser'
   count: number
 }
 
 export interface IGraphQLBatchPayload {
+  __typename: 'BatchPayload'
   count: number
 }
 
 export interface IGraphQLPageInfo {
+  __typename: 'PageInfo'
   endCursor?: string | null
   hasNextPage: boolean
   hasPreviousPage: boolean
@@ -58,7 +64,8 @@ export interface IGraphQLPageInfo {
 }
 
 export interface IGraphQLPost {
-  author: User
+  __typename: 'Post'
+  author: IGraphQLUser
   content?: string | null
   createdAt: DateTime
   id: ID
@@ -68,32 +75,37 @@ export interface IGraphQLPost {
 }
 
 export interface IGraphQLPostConnection {
-  aggregate: AggregatePost
-  edges: Array<PostEdge>
-  pageInfo: PageInfo
+  __typename: 'PostConnection'
+  aggregate: IGraphQLAggregatePost
+  edges: Array<IGraphQLPostEdge>
+  pageInfo: IGraphQLPageInfo
 }
 
 export interface IGraphQLPostEdge {
+  __typename: 'PostEdge'
   cursor: string
-  node: Post
+  node: IGraphQLPost
 }
 
 export interface IGraphQLUser {
+  __typename: 'User'
   email: string
   id: ID
   name?: string | null
-  posts?: Array<Post> | null
+  posts?: Array<IGraphQLPost> | null
 }
 
 export interface IGraphQLUserConnection {
-  aggregate: AggregateUser
-  edges: Array<UserEdge>
-  pageInfo: PageInfo
+  __typename: 'UserConnection'
+  aggregate: IGraphQLAggregateUser
+  edges: Array<IGraphQLUserEdge>
+  pageInfo: IGraphQLPageInfo
 }
 
 export interface IGraphQLUserEdge {
+  __typename: 'UserEdge'
   cursor: string
-  node: User
+  node: IGraphQLUser
 }
 
 /*
@@ -103,15 +115,15 @@ export interface IGraphQLUserEdge {
  */
 
 export interface IGraphQLPostCreateInput {
-  author: UserCreateOneWithoutPostsInput
+  author: IGraphQLUserCreateOneWithoutPostsInput
   content?: string | null
   published?: boolean | null
   title: string
 }
 
 export interface IGraphQLPostCreateManyWithoutAuthorInput {
-  connect?: Array<PostWhereUniqueInput> | null
-  create?: Array<PostCreateWithoutAuthorInput> | null
+  connect?: Array<IGraphQLPostWhereUniqueInput> | null
+  create?: Array<IGraphQLPostCreateWithoutAuthorInput> | null
 }
 
 export interface IGraphQLPostCreateWithoutAuthorInput {
@@ -121,7 +133,7 @@ export interface IGraphQLPostCreateWithoutAuthorInput {
 }
 
 export interface IGraphQLPostScalarWhereInput {
-  AND?: Array<PostScalarWhereInput> | null
+  AND?: Array<IGraphQLPostScalarWhereInput> | null
   content?: string | null
   content_contains?: string | null
   content_ends_with?: string | null
@@ -158,8 +170,8 @@ export interface IGraphQLPostScalarWhereInput {
   id_not_in?: Array<ID> | null
   id_not_starts_with?: ID | null
   id_starts_with?: ID | null
-  NOT?: Array<PostScalarWhereInput> | null
-  OR?: Array<PostScalarWhereInput> | null
+  NOT?: Array<IGraphQLPostScalarWhereInput> | null
+  OR?: Array<IGraphQLPostScalarWhereInput> | null
   published?: boolean | null
   published_not?: boolean | null
   title?: string | null
@@ -187,7 +199,7 @@ export interface IGraphQLPostScalarWhereInput {
 }
 
 export interface IGraphQLPostUpdateInput {
-  author?: UserUpdateOneRequiredWithoutPostsInput | null
+  author?: IGraphQLUserUpdateOneRequiredWithoutPostsInput | null
   content?: string | null
   published?: boolean | null
   title?: string | null
@@ -206,20 +218,20 @@ export interface IGraphQLPostUpdateManyMutationInput {
 }
 
 export interface IGraphQLPostUpdateManyWithoutAuthorInput {
-  connect?: Array<PostWhereUniqueInput> | null
-  create?: Array<PostCreateWithoutAuthorInput> | null
-  delete?: Array<PostWhereUniqueInput> | null
-  deleteMany?: Array<PostScalarWhereInput> | null
-  disconnect?: Array<PostWhereUniqueInput> | null
-  set?: Array<PostWhereUniqueInput> | null
-  update?: Array<PostUpdateWithWhereUniqueWithoutAuthorInput> | null
-  updateMany?: Array<PostUpdateManyWithWhereNestedInput> | null
-  upsert?: Array<PostUpsertWithWhereUniqueWithoutAuthorInput> | null
+  connect?: Array<IGraphQLPostWhereUniqueInput> | null
+  create?: Array<IGraphQLPostCreateWithoutAuthorInput> | null
+  delete?: Array<IGraphQLPostWhereUniqueInput> | null
+  deleteMany?: Array<IGraphQLPostScalarWhereInput> | null
+  disconnect?: Array<IGraphQLPostWhereUniqueInput> | null
+  set?: Array<IGraphQLPostWhereUniqueInput> | null
+  update?: Array<IGraphQLPostUpdateWithWhereUniqueWithoutAuthorInput> | null
+  updateMany?: Array<IGraphQLPostUpdateManyWithWhereNestedInput> | null
+  upsert?: Array<IGraphQLPostUpsertWithWhereUniqueWithoutAuthorInput> | null
 }
 
 export interface IGraphQLPostUpdateManyWithWhereNestedInput {
-  data: PostUpdateManyDataInput
-  where: PostScalarWhereInput
+  data: IGraphQLPostUpdateManyDataInput
+  where: IGraphQLPostScalarWhereInput
 }
 
 export interface IGraphQLPostUpdateWithoutAuthorDataInput {
@@ -229,19 +241,19 @@ export interface IGraphQLPostUpdateWithoutAuthorDataInput {
 }
 
 export interface IGraphQLPostUpdateWithWhereUniqueWithoutAuthorInput {
-  data: PostUpdateWithoutAuthorDataInput
-  where: PostWhereUniqueInput
+  data: IGraphQLPostUpdateWithoutAuthorDataInput
+  where: IGraphQLPostWhereUniqueInput
 }
 
 export interface IGraphQLPostUpsertWithWhereUniqueWithoutAuthorInput {
-  create: PostCreateWithoutAuthorInput
-  update: PostUpdateWithoutAuthorDataInput
-  where: PostWhereUniqueInput
+  create: IGraphQLPostCreateWithoutAuthorInput
+  update: IGraphQLPostUpdateWithoutAuthorDataInput
+  where: IGraphQLPostWhereUniqueInput
 }
 
 export interface IGraphQLPostWhereInput {
-  AND?: Array<PostWhereInput> | null
-  author?: UserWhereInput | null
+  AND?: Array<IGraphQLPostWhereInput> | null
+  author?: IGraphQLUserWhereInput | null
   content?: string | null
   content_contains?: string | null
   content_ends_with?: string | null
@@ -278,8 +290,8 @@ export interface IGraphQLPostWhereInput {
   id_not_in?: Array<ID> | null
   id_not_starts_with?: ID | null
   id_starts_with?: ID | null
-  NOT?: Array<PostWhereInput> | null
-  OR?: Array<PostWhereInput> | null
+  NOT?: Array<IGraphQLPostWhereInput> | null
+  OR?: Array<IGraphQLPostWhereInput> | null
   published?: boolean | null
   published_not?: boolean | null
   title?: string | null
@@ -313,12 +325,12 @@ export interface IGraphQLPostWhereUniqueInput {
 export interface IGraphQLUserCreateInput {
   email: string
   name?: string | null
-  posts?: PostCreateManyWithoutAuthorInput | null
+  posts?: IGraphQLPostCreateManyWithoutAuthorInput | null
 }
 
 export interface IGraphQLUserCreateOneWithoutPostsInput {
-  connect?: UserWhereUniqueInput | null
-  create?: UserCreateWithoutPostsInput | null
+  connect?: IGraphQLUserWhereUniqueInput | null
+  create?: IGraphQLUserCreateWithoutPostsInput | null
 }
 
 export interface IGraphQLUserCreateWithoutPostsInput {
@@ -329,7 +341,7 @@ export interface IGraphQLUserCreateWithoutPostsInput {
 export interface IGraphQLUserUpdateInput {
   email?: string | null
   name?: string | null
-  posts?: PostUpdateManyWithoutAuthorInput | null
+  posts?: IGraphQLPostUpdateManyWithoutAuthorInput | null
 }
 
 export interface IGraphQLUserUpdateManyMutationInput {
@@ -338,10 +350,10 @@ export interface IGraphQLUserUpdateManyMutationInput {
 }
 
 export interface IGraphQLUserUpdateOneRequiredWithoutPostsInput {
-  connect?: UserWhereUniqueInput | null
-  create?: UserCreateWithoutPostsInput | null
-  update?: UserUpdateWithoutPostsDataInput | null
-  upsert?: UserUpsertWithoutPostsInput | null
+  connect?: IGraphQLUserWhereUniqueInput | null
+  create?: IGraphQLUserCreateWithoutPostsInput | null
+  update?: IGraphQLUserUpdateWithoutPostsDataInput | null
+  upsert?: IGraphQLUserUpsertWithoutPostsInput | null
 }
 
 export interface IGraphQLUserUpdateWithoutPostsDataInput {
@@ -350,12 +362,12 @@ export interface IGraphQLUserUpdateWithoutPostsDataInput {
 }
 
 export interface IGraphQLUserUpsertWithoutPostsInput {
-  create: UserCreateWithoutPostsInput
-  update: UserUpdateWithoutPostsDataInput
+  create: IGraphQLUserCreateWithoutPostsInput
+  update: IGraphQLUserUpdateWithoutPostsDataInput
 }
 
 export interface IGraphQLUserWhereInput {
-  AND?: Array<UserWhereInput> | null
+  AND?: Array<IGraphQLUserWhereInput> | null
   email?: string | null
   email_contains?: string | null
   email_ends_with?: string | null
@@ -398,11 +410,11 @@ export interface IGraphQLUserWhereInput {
   name_not_in?: string[] | null
   name_not_starts_with?: string | null
   name_starts_with?: string | null
-  NOT?: Array<UserWhereInput> | null
-  OR?: Array<UserWhereInput> | null
-  posts_every?: PostWhereInput | null
-  posts_none?: PostWhereInput | null
-  posts_some?: PostWhereInput | null
+  NOT?: Array<IGraphQLUserWhereInput> | null
+  OR?: Array<IGraphQLUserWhereInput> | null
+  posts_every?: IGraphQLPostWhereInput | null
+  posts_none?: IGraphQLPostWhereInput | null
+  posts_some?: IGraphQLPostWhereInput | null
 }
 
 export interface IGraphQLUserWhereUniqueInput {
@@ -426,7 +438,7 @@ export type Long = any
  *
  */
 
-export interface IGraphQLPostOrderByInput {
+export interface PostOrderByInput {
   content_ASC: 'content_ASC'
   content_DESC: 'content_DESC'
   createdAt_ASC: 'createdAt_ASC'
@@ -441,7 +453,7 @@ export interface IGraphQLPostOrderByInput {
   updatedAt_DESC: 'updatedAt_DESC'
 }
 
-export const PostOrderByInput: IGraphQLPostOrderByInput = {
+export const PostOrderByInput: PostOrderByInput = {
   content_ASC: 'content_ASC',
   content_DESC: 'content_DESC',
   createdAt_ASC: 'createdAt_ASC',
@@ -456,7 +468,7 @@ export const PostOrderByInput: IGraphQLPostOrderByInput = {
   updatedAt_DESC: 'updatedAt_DESC',
 }
 
-export interface IGraphQLUserOrderByInput {
+export interface UserOrderByInput {
   createdAt_ASC: 'createdAt_ASC'
   createdAt_DESC: 'createdAt_DESC'
   email_ASC: 'email_ASC'
@@ -469,7 +481,7 @@ export interface IGraphQLUserOrderByInput {
   updatedAt_DESC: 'updatedAt_DESC'
 }
 
-export const UserOrderByInput: IGraphQLUserOrderByInput = {
+export const UserOrderByInput: UserOrderByInput = {
   createdAt_ASC: 'createdAt_ASC',
   createdAt_DESC: 'createdAt_DESC',
   email_ASC: 'email_ASC',

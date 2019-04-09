@@ -7,44 +7,31 @@ import {
 } from '@graphql-clientgen/core'
 import { ObjectTypeDefinitionNode } from 'graphql'
 import {
-  codegenEnum,
-  codegenInputObject,
-  codegenObjectToType,
   codegenScalar,
+  codegenTsEnum,
+  codegenTsInputObject,
+  codegenTsObjectToType,
 } from '../codegen-typescript'
 import { GeneratorProps } from '../generator'
 import { printJsSection } from '../print'
+import { reduceObjectTypeDefinitions } from '../utils'
 
 export const generateTypingsDefinitions = async (props: GeneratorProps) => {
   const definitions = unwrapDocument(props.doc)
 
-  const { rootTypes, objectTypes } = definitions
-    .filter(isObjectTypeDefinitionNode)
-    .reduce(
-      (acc, node) => {
-        if (['Query', 'Mutation', 'Subscription'].includes(node.name.value)) {
-          acc.rootTypes.push(node)
-        } else {
-          acc.objectTypes.push(node)
-        }
+  const { rootTypes, objectTypes } = reduceObjectTypeDefinitions(definitions)
 
-        return acc
-      },
-      {
-        rootTypes: [] as ObjectTypeDefinitionNode[],
-        objectTypes: [] as ObjectTypeDefinitionNode[],
-      },
-    )
-
-  const rootsTypescript = rootTypes.map(codegenObjectToType(props)).join('\n\n')
+  const rootsTypescript = rootTypes
+    .map(codegenTsObjectToType(props))
+    .join('\n\n')
 
   const objectsTypescript = objectTypes
-    .map(codegenObjectToType(props))
+    .map(codegenTsObjectToType(props))
     .join('\n\n')
 
   const inputObjectsTypescript = definitions
     .filter(isInputObjectTypeDefinitionNode)
-    .map(codegenInputObject(props))
+    .map(codegenTsInputObject(props))
     .join('\n\n')
 
   const scalarsTypescript = definitions
@@ -54,7 +41,7 @@ export const generateTypingsDefinitions = async (props: GeneratorProps) => {
 
   const enumsTypescript = definitions
     .filter(isEnumTypeDefinitionNode)
-    .map(codegenEnum(props))
+    .map(codegenTsEnum(props))
     .join('\n\n')
 
   let result = ''

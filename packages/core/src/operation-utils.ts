@@ -4,7 +4,7 @@ import {
   InputValueDefinitionNode,
   Kind,
   OperationTypeNode,
-  VariableDefinitionNode
+  VariableDefinitionNode,
 } from 'graphql'
 import { CoreProps } from './config'
 import { createField } from './graphql-create'
@@ -16,10 +16,11 @@ import { capitalise } from './utils'
 /**
  * nested variables will get nesting index number like $data1
  * top level variables will state original instead of $data0
+ *
  */
 
 export const buildOperationVariable = (level: number) => (
-  node: InputValueDefinitionNode
+  node: InputValueDefinitionNode,
 ): VariableDefinitionNode => ({
   kind: Kind.VARIABLE_DEFINITION,
   defaultValue: node.defaultValue,
@@ -28,10 +29,10 @@ export const buildOperationVariable = (level: number) => (
     kind: Kind.VARIABLE,
     name: {
       kind: Kind.NAME,
-      value: node.name.value + (level > 0 ? level : '')
-    }
+      value: node.name.value + (level > 0 ? level : ''),
+    },
   },
-  type: node.type
+  type: node.type,
 })
 
 /**
@@ -40,7 +41,7 @@ export const buildOperationVariable = (level: number) => (
  * the naming of variables will folow above
  */
 export const buildOperationArgument = (level: number) => (
-  node: InputValueDefinitionNode
+  node: InputValueDefinitionNode,
 ): ArgumentNode => ({
   kind: Kind.ARGUMENT,
   name: node.name,
@@ -48,11 +49,12 @@ export const buildOperationArgument = (level: number) => (
     kind: Kind.VARIABLE,
     name: {
       kind: Kind.NAME,
-      value: node.name.value + (level > 0 ? level : '')
-    }
-  }
+      value: node.name.value + (level > 0 ? level : ''),
+    },
+  },
 })
-/*
+
+/**
  *  operations will have name representing nesting level
  *  ['User', 'Posts', 'Comments', 'Author'], Query =>
  *  UserPostsCommentsAuthorQuery
@@ -62,15 +64,15 @@ export const buildOperationArgument = (level: number) => (
 
 export const buildOperationName = (
   typenames: Typename[],
-  operation: OperationTypeNode
+  operation: OperationTypeNode,
 ) => typenames.join('') + capitalise(operation)
 
 /**
  *  This is basically flat fragment buildre without fragment wrapper
  */
-export const buildOperationBase = (
+export const buildOperationSelection = (
   { astMap }: CoreProps,
-  typename: Typename
+  typename: Typename,
 ) => {
   const fieldmap = astMap.types[typename].fieldmap
 
@@ -83,7 +85,7 @@ export const buildOperationBase = (
 
       // no arguments for child selections
       return createField({
-        fieldname: selectionFieldname
+        fieldname: selectionFieldname,
       })
     })
     .filter(truthy)
@@ -92,9 +94,9 @@ export const buildOperationBase = (
     selections: [
       // add __typename to the fragment
       createField({ fieldname: '__typename' }),
-      ...selections
+      ...selections,
     ],
     // TODO: actually generate fragments when options are set to use fragments
-    fragments: []
+    fragments: [],
   }
 }

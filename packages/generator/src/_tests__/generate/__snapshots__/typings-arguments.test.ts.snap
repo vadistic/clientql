@@ -1,0 +1,129 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`generate typings > arguments match snapshot 1`] = `
+"/*
+ *
+ * ARGUMENTS TYPES
+ *
+ */
+
+export interface IMutationPostArgs {
+  data: IPostCreateInput
+}
+
+export interface IMutationUserArgs {
+  data: IUserCreateInput
+}
+
+export interface IMutationBatchPayloadArgs {
+  where?: IPostWhereInput | null
+}
+
+export interface IMutationBatchPayloadArgs {
+  where?: IUserWhereInput | null
+}
+
+export interface IMutationPostArgs {
+  where: IPostWhereUniqueInput
+}
+
+export interface IMutationUserArgs {
+  where: IUserWhereUniqueInput
+}
+
+export interface IMutationBatchPayloadArgs {
+  data: IPostUpdateManyMutationInput
+  where?: IPostWhereInput | null
+}
+
+export interface IMutationBatchPayloadArgs {
+  data: IUserUpdateManyMutationInput
+  where?: IUserWhereInput | null
+}
+
+export interface IMutationPostArgs {
+  data: IPostUpdateInput
+  where: IPostWhereUniqueInput
+}
+
+export interface IMutationUserArgs {
+  data: IUserUpdateInput
+  where: IUserWhereUniqueInput
+}
+
+export interface IMutationPostArgs {
+  create: IPostCreateInput
+  update: IPostUpdateInput
+  where: IPostWhereUniqueInput
+}
+
+export interface IMutationUserArgs {
+  create: IUserCreateInput
+  update: IUserUpdateInput
+  where: IUserWhereUniqueInput
+}
+
+export interface IQueryNodeArgs {
+  id: ID
+}
+
+export interface IQueryPostArgs {
+  where: IPostWhereUniqueInput
+}
+
+export interface IQueryPostArgs {
+  after?: string | null
+  before?: string | null
+  first?: number | null
+  last?: number | null
+  orderBy?: PostOrderByInput | null
+  skip?: number | null
+  where?: IPostWhereInput | null
+}
+
+export interface IQueryPostConnectionArgs {
+  after?: string | null
+  before?: string | null
+  first?: number | null
+  last?: number | null
+  orderBy?: PostOrderByInput | null
+  skip?: number | null
+  where?: IPostWhereInput | null
+}
+
+export interface IQueryUserArgs {
+  where: IUserWhereUniqueInput
+}
+
+export interface IQueryUserArgs {
+  after?: string | null
+  before?: string | null
+  first?: number | null
+  last?: number | null
+  orderBy?: UserOrderByInput | null
+  skip?: number | null
+  where?: IUserWhereInput | null
+}
+
+export interface IQueryUserConnectionArgs {
+  after?: string | null
+  before?: string | null
+  first?: number | null
+  last?: number | null
+  orderBy?: UserOrderByInput | null
+  skip?: number | null
+  where?: IUserWhereInput | null
+}
+
+export interface IUserPostArgs {
+  after?: string | null
+  before?: string | null
+  first?: number | null
+  last?: number | null
+  orderBy?: PostOrderByInput | null
+  skip?: number | null
+  where?: IPostWhereInput | null
+}
+
+"
+`;

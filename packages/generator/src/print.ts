@@ -1,3 +1,4 @@
+import { isNotEmpty } from '@graphql-clientgen/core'
 import { ASTNode, print } from 'graphql'
 
 const INDENT_WIDTH = 2
@@ -55,12 +56,36 @@ export const printJsGraphql = (
 
   if (deps) {
     result += '\n'
-    deps.forEach(dep => {
-      result += '${' + indent(dep, 1) + '}\n'
-    })
+    result += indent(deps.map(dep => '${' + dep + '}').join('\n'), 1)
   }
 
   result += `\``
+
+  return result
+}
+
+/**
+ *  prints typescript interface
+ */
+export const printTsInterface = (
+  interfacename: string,
+  extend?: string[] | false,
+  content?: string[] | string | false,
+) => {
+  let result = ''
+
+  const interExtend = isNotEmpty(extend) ? ` extends ` + extend.join(', ') : ''
+
+  result += `export interface ${interfacename + interExtend} {\n`
+
+  // allow empty
+  if (content) {
+    result += Array.isArray(content)
+      ? content.map(field => indent(field, 1)).join('\n')
+      : indent(content, 1)
+  }
+
+  result += '\n}'
 
   return result
 }

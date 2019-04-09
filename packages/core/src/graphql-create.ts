@@ -2,9 +2,11 @@ import {
   ArgumentNode,
   FieldNode,
   FragmentSpreadNode,
-  SelectionNode
+  InlineFragmentNode,
+  SelectionNode,
 } from 'graphql'
 import { Kind } from './kind'
+import { Typename } from './map-ast'
 
 export interface CreateFieldProps {
   fieldname: string
@@ -16,23 +18,38 @@ export const createField = (props: CreateFieldProps): FieldNode => ({
   kind: Kind.FIELD,
   name: {
     kind: Kind.NAME,
-    value: props.fieldname
+    value: props.fieldname,
   },
   arguments: props.arguments,
   selectionSet: props.selections
     ? {
         kind: Kind.SELECTION_SET,
-        selections: props.selections
+        selections: props.selections,
       }
-    : undefined
+    : undefined,
 })
 
 /**
  * Create FragmentSpreadNode with spread fragment
  */
 export const createFragmentSpread = (
-  fragmentName: string
+  fragmentname: string,
 ): FragmentSpreadNode => ({
   kind: Kind.FRAGMENT_SPREAD,
-  name: { kind: Kind.NAME, value: fragmentName }
+  name: { kind: Kind.NAME, value: fragmentname },
+})
+
+export const createInlineFragment = (
+  on: Typename,
+  selections: SelectionNode[],
+): InlineFragmentNode => ({
+  kind: Kind.INLINE_FRAGMENT,
+  typeCondition: {
+    kind: Kind.NAMED_TYPE,
+    name: { kind: Kind.NAME, value: on },
+  },
+  selectionSet: {
+    kind: Kind.SELECTION_SET,
+    selections,
+  },
 })

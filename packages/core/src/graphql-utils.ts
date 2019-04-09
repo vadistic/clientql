@@ -1,6 +1,15 @@
-import { ASTKindToNode, DefinitionNode, DocumentNode, KindEnum } from 'graphql'
+import {
+  ASTKindToNode,
+  DefinitionNode,
+  DocumentNode,
+  KindEnum,
+  TypeDefinitionNode,
+  TypeExtensionNode,
+} from 'graphql'
 import { Kind } from './kind'
 import { truthy } from './types'
+
+export type TypedefNode = TypeDefinitionNode | TypeExtensionNode
 
 export const wrapDocument = (
   ...nodes: Array<DefinitionNode | undefined | null | false>

@@ -1,4 +1,4 @@
-import { FragmentType } from '@graphql-clientgen/core'
+import { FragmentType, Typename } from '@graphql-clientgen/core'
 import changeCase from 'change-case'
 import { GeneratorConfig, GeneratorOptions } from './config'
 
@@ -38,33 +38,53 @@ export const toCase = (type: StringCase, ...inputs: NullableStrings) => {
 export type GeneratorNaming = ReturnType<typeof getGeneratorNaming>
 
 export const getGeneratorNaming = (config: GeneratorConfig) => {
-  const getClientName = (typename: string) =>
-    toCase(StringCase.PASCAL, typename, config.clientSuffix)
+  // do not case-process provided prefix
+  const interfacePrefix =
+    config.interfacePrefix === true
+      ? 'I'
+      : !!config.interfacePrefix
+      ? config.interfacePrefix
+      : ''
 
-  const getRootClientName = () =>
-    toCase(StringCase.PASCAL, 'Root', config.clientSuffix)
-
-  const getFragmentName = (typename: string, fragmentType: FragmentType) =>
-    toCase(StringCase.PASCAL, typename, fragmentType)
+  /**
+   * Placeholder for common client functions
+   */
+  const clientExtends = interfacePrefix + 'Fragmentable'
 
   const getJsConstantName = (name: string) => toCase(config.constantCase, name)
 
-  // do not case-process provided prefix
-  const interfacePrefix =
-    config.prefixInterfaces === true
-      ? 'I'
-      : !!config.prefixInterfaces
-      ? config.prefixInterfaces
-      : ''
+  const getClientName = (typename: Typename) =>
+    interfacePrefix + toCase(StringCase.PASCAL, typename, config.clientSuffix)
+
+  const getRootClientName = () =>
+    interfacePrefix + toCase(StringCase.PASCAL, 'Root', config.clientSuffix)
+
+  const getFragmentName = (typename: Typename, fragmentType: FragmentType) =>
+    toCase(StringCase.PASCAL, typename, fragmentType)
+
+  const getFragmentJsConstName = (fragmentname: string) =>
+    getJsConstantName(fragmentname + ' ' + config.fragmentJsConstantSuffix)
 
   const getInterfaceName = (typename: string) =>
     interfacePrefix + toCase(StringCase.PASCAL, typename)
 
+  /**
+   * Convention for arguments interfaces will be:
+   * Prefix + Parent + Target + Args
+   * e.g. `IQueryUsersArgs`
+   */
+  const getArgumentsInterfaceName = (parent: string, target: string) =>
+    interfacePrefix + toCase(StringCase.PASCAL, parent, target) + 'Args'
+
   return {
+    interfacePrefix,
+    clientExtends,
     getClientName,
     getRootClientName,
     getFragmentName,
+    getFragmentJsConstName,
     getJsConstantName,
     getInterfaceName,
+    getArgumentsInterfaceName,
   }
 }

@@ -1,4 +1,5 @@
-import { AstMap } from './map-ast'
+import { DocumentNode } from 'graphql'
+import { AstMap, buildAstMap } from './map-ast'
 
 /**
  * Build fragment for typename
@@ -9,7 +10,7 @@ export enum FragmentType {
   DEFAULT = '',
   FLAT = 'Flat',
   DEEP = 'Deep',
-  NONE = 'None'
+  NONE = 'None',
 }
 
 /**
@@ -32,7 +33,7 @@ export interface CoreConfig {
 
 export const defaultCoreConfig: CoreConfig = {
   fragmentType: FragmentType.NONE,
-  deparametrizeSingleArgument: true
+  deparametrizeSingleArgument: true,
 }
 
 /**
@@ -42,3 +43,14 @@ export interface CoreProps {
   astMap: AstMap
   config: CoreConfig
 }
+
+export const getCoreProps = (
+  doc: DocumentNode,
+  config?: Partial<CoreConfig>,
+): CoreProps => ({
+  astMap: buildAstMap(doc),
+  config: {
+    ...defaultCoreConfig,
+    ...config,
+  },
+})

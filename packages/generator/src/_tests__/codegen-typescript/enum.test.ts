@@ -1,11 +1,11 @@
 import { getDocDefinition, Kind } from '@graphql-clientgen/core'
 import { DocumentNode } from 'graphql'
 import gql from 'graphql-tag'
-import { codegenEnum } from '../../codegen-typescript'
+import { codegenTsEnum } from '../../codegen-typescript'
 import { getGeneratorProps } from '../../generator'
 
 const docToEnumTypings = (doc: DocumentNode, useMaps?: boolean) =>
-  codegenEnum(getGeneratorProps(doc, { useMapsForEnums: !!useMaps }))(
+  codegenTsEnum(getGeneratorProps(doc, { useMapsForEnums: !!useMaps }))(
     getDocDefinition(doc, Kind.ENUM_TYPE_DEFINITION)!,
   )
 
@@ -22,12 +22,12 @@ describe('codegen typescript > enums', () => {
     const res = docToEnumTypings(fixture)
 
     expect(res).toMatchInlineSnapshot(`
-                        "export enum MyEnum {
-                          ABC = 'ABC',
-                          Value = 'Value',
-                          ANOTHER = 'ANOTHER',
-                        }"
-                `)
+            "export enum MyEnum {
+              ABC = 'ABC',
+              Value = 'Value',
+              ANOTHER = 'ANOTHER',
+            }"
+        `)
   })
 
   it('codegens enum as map', () => {
@@ -42,13 +42,13 @@ describe('codegen typescript > enums', () => {
     const res = docToEnumTypings(fixture, true)
 
     expect(res).toMatchInlineSnapshot(`
-      "export interface IMyEnum {
+      "export interface MyEnum {
         ABC: 'ABC'
         Value: 'Value'
         ANOTHER: 'ANOTHER'
       }
       
-      export const MyEnum: IMyEnum = {
+      export const MyEnum: MyEnum = {
         ABC: 'ABC',
         Value: 'Value',
         ANOTHER: 'ANOTHER',

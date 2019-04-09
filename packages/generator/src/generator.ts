@@ -1,12 +1,13 @@
 import { AstMap, buildAstMap } from '@graphql-clientgen/core'
 import { DocumentNode } from 'graphql'
+import { mergeExtensions } from './codegen-graphql'
 import {
   defaultGeneratorConfig,
   defaultGeneratorOptions,
   defaultGeneratorPaths,
   GeneratorConfig,
   GeneratorOptions,
-  GeneratorPaths
+  GeneratorPaths,
 } from './config'
 import { GeneratorNaming, getGeneratorNaming } from './naming'
 
@@ -32,36 +33,38 @@ export const getGeneratorProps = (
   doc: DocumentNode,
   config?: Partial<GeneratorConfig>,
   options?: Partial<GeneratorOptions>,
-  paths?: Partial<GeneratorPaths>
+  paths?: Partial<GeneratorPaths>,
 ) => {
   const mergedConfig: GeneratorConfig = {
     ...defaultGeneratorConfig,
-    ...config
+    ...config,
   }
 
   const mergedOptions: GeneratorOptions = options
     ? {
         client: {
           ...defaultGeneratorOptions.client,
-          ...options.client
+          ...options.client,
         },
         graphql: {
           ...defaultGeneratorOptions.graphql,
-          ...options.graphql
+          ...options.graphql,
         },
         typings: {
           ...defaultGeneratorOptions.typings,
-          ...options.typings
-        }
+          ...options.typings,
+        },
       }
     : defaultGeneratorOptions
 
   const mergedPaths: GeneratorPaths = {
     ...defaultGeneratorPaths,
-    ...paths
+    ...paths,
   }
 
-  const astMap = buildAstMap(doc)
+  const mergedDoc = mergeExtensions(doc)
+
+  const astMap = buildAstMap(mergedDoc)
 
   const props: GeneratorProps = {
     doc,
@@ -69,7 +72,7 @@ export const getGeneratorProps = (
     naming: getGeneratorNaming(mergedConfig),
     config: mergedConfig,
     options: mergedOptions,
-    paths: mergedPaths
+    paths: mergedPaths,
   }
 
   return props
@@ -79,14 +82,14 @@ export const graphqlClientGenerator = async (
   doc: DocumentNode,
   config: Partial<GeneratorConfig>,
   options: Partial<GeneratorOptions>,
-  paths: Partial<GeneratorPaths>
+  paths: Partial<GeneratorPaths>,
 ) => {
   const props = getGeneratorProps(doc, config, options, paths)
 
   const result: GeneratorResult = {
     client: {},
     graphql: {},
-    typings: {}
+    typings: {},
   }
 
   /**
@@ -95,7 +98,7 @@ export const graphqlClientGenerator = async (
 
   if (props.options.typings.definitions) {
     const {
-      generateTypingsDefinitions
+      generateTypingsDefinitions,
     } = await import('./generate/typings-definitions')
 
     result.typings.definitions = await generateTypingsDefinitions(props)

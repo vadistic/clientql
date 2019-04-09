@@ -2,20 +2,20 @@ import { isNotEmpty, isNullable } from '@graphql-clientgen/core'
 import { FieldDefinitionNode } from 'graphql'
 import { GeneratorProps } from '../generator'
 import { indent } from '../print'
-import { codegenInputValue } from './input-value'
-import { codegenType } from './type'
+import { codegenTsInputValue } from './input-value'
+import { codegenTsType } from './type'
 
 /**
  *  Build simple type ingoring field arguments
  */
 
-export const codegenFieldToType = (props: GeneratorProps) => (
-  node: FieldDefinitionNode
+export const codegenTsFieldToType = (props: GeneratorProps) => (
+  node: FieldDefinitionNode,
 ) => {
   const name = node.name.value
   const nullable = isNullable(node.type)
 
-  const type = codegenType(props)(node.type)
+  const type = codegenTsType(props)(node.type)
 
   return name + (nullable ? '?: ' : ': ') + type
 }
@@ -24,8 +24,8 @@ export const codegenFieldToType = (props: GeneratorProps) => (
  *  Build field arguments
  */
 
-const codegenFieldArguments = (props: GeneratorProps) => (
-  node: FieldDefinitionNode
+const codegenTsFieldArguments = (props: GeneratorProps) => (
+  node: FieldDefinitionNode,
 ) => {
   if (!isNotEmpty(node.arguments)) {
     return `()`
@@ -33,7 +33,7 @@ const codegenFieldArguments = (props: GeneratorProps) => (
 
   // print inline
   if (props.config.deparametrizeSingleArgument && node.arguments.length === 1) {
-    return '(' + codegenInputValue(props)(node.arguments[0]) + ')'
+    return '(' + codegenTsInputValue(props)(node.arguments[0]) + ')'
   }
 
   let result = '(args'
@@ -41,7 +41,7 @@ const codegenFieldArguments = (props: GeneratorProps) => (
   result += '{' + '\n'
 
   node.arguments.forEach(inputValue => {
-    result += indent(codegenInputValue(props)(inputValue), 1) + '\n'
+    result += indent(codegenTsInputValue(props)(inputValue), 1) + '\n'
   })
 
   result += '})'
@@ -64,17 +64,17 @@ export type TransformFieldArgs = (props: {
  *  Build field typescript as function of args
  */
 
-export const codegenFieldToFunction = (
+export const codegenTsFieldToFunction = (
   props: GeneratorProps,
   options: {
     transformType?: TransformFieldType
     transformArgs?: TransformFieldArgs
-  } = {}
+  } = {},
 ) => (node: FieldDefinitionNode) => {
   const fieldname = node.name.value
 
-  const argsBody = codegenFieldArguments(props)(node)
-  const typeBody = codegenType(props)(node.type)
+  const argsBody = codegenTsFieldArguments(props)(node)
+  const typeBody = codegenTsType(props)(node.type)
 
   const argsTs = options.transformArgs
     ? options.transformArgs({ body: argsBody, field: node })

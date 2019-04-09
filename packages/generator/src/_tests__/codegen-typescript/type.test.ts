@@ -1,13 +1,13 @@
 import { getDocDefinition, Kind } from '@graphql-clientgen/core'
 import { DocumentNode } from 'graphql'
 import gql from 'graphql-tag'
-import { codegenType } from '../..'
+import { codegenTsType } from '../..'
 import { getGeneratorProps } from '../../generator'
 
 const docToFieldsReturnTypings = (doc: DocumentNode) => {
   const fields = getDocDefinition(doc, Kind.OBJECT_TYPE_DEFINITION)!.fields!
   const props = getGeneratorProps(doc)
-  return fields.map(field => codegenType(props)(field.type)).join('\n')
+  return fields.map(field => codegenTsType(props)(field.type)).join('\n')
 }
 
 describe('codegen typescript > types', () => {
@@ -24,13 +24,13 @@ describe('codegen typescript > types', () => {
     `
 
     expect(docToFieldsReturnTypings(fixture)).toMatchInlineSnapshot(`
-      "string | null
-      string
-      (string | null)[] | null
-      string[] | null
-      (string | null)[]
-      string[]"
-    `)
+            "string | null
+            string
+            (string | null)[] | null
+            string[] | null
+            (string | null)[]
+            string[]"
+        `)
   })
 
   it('transpile predefined scalar values', () => {
@@ -46,13 +46,13 @@ describe('codegen typescript > types', () => {
     `
 
     expect(docToFieldsReturnTypings(fixture)).toMatchInlineSnapshot(`
-      "string | null
-      number
-      number | null
-      number | null
-      boolean | null
-      JSON | null"
-    `)
+            "string | null
+            number
+            number | null
+            number | null
+            boolean | null
+            JSON | null"
+        `)
   })
 
   it('transpile named types', () => {
@@ -68,12 +68,12 @@ describe('codegen typescript > types', () => {
     `
 
     expect(docToFieldsReturnTypings(fixture)).toMatchInlineSnapshot(`
-      "MyType | null
-      MyType
-      Array<MyType | null> | null
-      Array<MyType> | null
-      Array<MyType | null>
-      Array<MyType>"
+      "IMyType | null
+      IMyType
+      Array<IMyType | null> | null
+      Array<IMyType> | null
+      Array<IMyType | null>
+      Array<IMyType>"
     `)
   })
 })

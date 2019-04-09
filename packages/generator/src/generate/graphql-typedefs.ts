@@ -1,27 +1,29 @@
-import { isObjectTypeDefinitionNode } from '@graphql-clientgen/core'
-import { print } from 'graphql'
+import { wrapDocument } from '@graphql-clientgen/core'
 import { GeneratorProps } from '../generator'
-import { indent } from '../print'
+import { printJsBlockComment, printJsGraphql } from '../print'
 
 /*
  * This will generate typedefs of object types for runtime client
- * TODO: later support interfaces and maybe args runtime validation with input types
+ *
+ * Only objects for now since nothing else is really supported
  */
 
-const TYPEDEFS_CONST_NAME = 'TYPEDEFS'
+export const TYPEDEFS_CONST_NAME = 'TYPEDEFS'
 
-export const generateGraphqlTypedefs = ({ doc: ast }: GeneratorProps) => {
-  const objectTypes = ast.definitions.filter(isObjectTypeDefinitionNode)
+export const generateGraphqlTypedefs = (props: GeneratorProps) => {
+  const newDoc = wrapDocument(
+    ...Object.values(props.astMap.types).map(({ node }) => node),
+  )
+  const constantName = props.naming.getJsConstantName(TYPEDEFS_CONST_NAME)
 
-  let result = `import gql from 'graphql-tag' \n\n`
+  let result = printJsBlockComment('RUNTIME TYPEDEFS') + '\n\n'
 
-  result += `export const ${TYPEDEFS_CONST_NAME} = gql\`\n`
+  result += `import gql from 'graphql-tag' \n\n`
 
-  objectTypes.forEach(node => {
-    result += indent(print(node), 1) + '\n\n'
-  })
+  result += printJsGraphql(constantName, newDoc) + '\n\n'
 
-  result += `\``
+  // this way I do not need to put it to config...+
+  result += `export default ${constantName}`
 
   return result
 }
