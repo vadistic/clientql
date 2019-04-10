@@ -6,94 +6,109 @@ import {
   TypeNode,
 } from 'graphql'
 import { NullableString } from './strings'
-import { ObjectLikeNode, ObjectOrIntefaceNode } from './utils'
+import { ObjectLikeNode } from './utils'
 
 export interface CodegenPrinterConfig {
   /**
-   * add __typename to generated types
-   * pass 'string' to add it as 'string' instead of specific name
-   * @default: true
+   * add `__typename` to generated types
+   *  - `string` => add it as `__typename: string` instead of specific name
+   *  - `boolean` => on/off
+   * @default true
    */
   addTypename: boolean | 'string'
   /**
-   * add some custom scalars (that may be missing or be untyped in schema)
+   * add type description as JSDoc comment
+   *  - 'comment' to add also comment descriptions
+   * @default 'comment'
+   */
+  addDescription: boolean | 'comment'
+  /**
+   * provide types for custom scalars (which are untyped in schema)
+   * - !!! if their scalar nodes are not present in provided ast
+   *   this will not add them to schema
+   *   (to avoid duplication with multiple print runs etc.)
+   *
    * @default {ID: 'string', DateTime: 'string', JSON: 'any'}
    */
   customScalars: {
     [scalarname: string]: string
   }
   /**
-   * print object/interface fields as functions of arguments
-   *  @default: false
+   * print ObjectType/InterfaceType fields as functions of arguments
+   * @example interface Post { author: (args?: {id: string}) => Author }
+   * @default false
    */
-  addFieldsAsFunction: boolean
+  addFieldAsFunction: boolean
   /**
    * print separate interfaces for all field arguments
-   *  @default: true
+   *  @default false
    */
-  addFieldArgumentsInterface: boolean
+  useFieldArgumentsInterface: boolean
   /**
-   * if generating interfaces for field arguments - what suffix should be used?
-   * @default: 'Args'
+   * if `addFieldArgumentsInterface` - what suffix should be used?
+   * @example 'QueryUserArgs' for type Query { user (args: X){...} }
+   * @default 'Args'
    */
   fieldArgumentsInterfaceSuffix: string
   /**
-   * prefix graphql interface/object/input object/union with 'I' or custom string
-   * @default: false
+   * prefix interface with 'I' or custom string
+   * - !!! needs schema to determine type
+   * @default false
    */
   interfacePrefix: boolean | string
   /**
-   * should interface prefix be added to union type?
-   * @default: false
+   * prefix graphQL unions with inteface prefix
+   * @default false
    */
   useInterfacePrefixForUnion: boolean
   /**
    * sufix for fragment interfaces
-   * @default: 'Fragment'
+   * @example 'UserFragment' for 'fragment User on User'
+   * @default 'Fragment'
    */
   fragmentSuffix: string
   /**
-   * use object literal instead of enums
-   * @default: true
+   * use object literal map + interface instead of TS enums
+   * @default true
    */
   useMapsForEnum: boolean
   /**
-   * use Maybe<type> for nullable types
-   * @default: false
+   * use `Maybe<type>` for nullable types
+   * @default false
    */
   useMaybeType: boolean
   /**
    * use field?: string | null for nullable types
-   * @default: true
+   * @default true
    */
   useOptionalModifier: boolean
   /**
-   * whether object types interfaces should extend their graphql interfaces' interfaces
-   * (with removal of duplicate fields from object itself)
-   * @default: true
+   * use `interface SomeObjectType extends SomeInterfaceType {}`
+   * - with deduping of interface fields from ObjectType
+   * - !!! needs schema to determine fields
+   * @default false
    */
   useExtendedInterfaces: boolean
 
   /*
-   * CUSTOM APIS
+   * SOME CUSTOM CALLBACK APIS
    */
 
   /**
-   * callback to add custom extend to generated object-like interfaces
+   * callback to add /modify interface Extends of ObjectType/ InterfaceType
    */
-  extendObjectInterface?: (
+  transformIntefaceExtend?: (
     node: ObjectLikeNode,
     prev: string[],
   ) => NullableString | NullableString[]
   /**
-   * callback to modify field arguments codegen result
-   * OR modify nodes and use provided printer to operate on ast
+   * callback to modify field arguments of ObjectType/ InterfaceType
    *
-   * undefined leaves field unchanged (prev)
-   * null remove field
+   * - return `undefined` for unchanged
+   * - return `null` for delete field
    */
   transformFieldArguments?: <
-    Parent extends ObjectOrIntefaceNode,
+    Parent extends ObjectLikeNode,
     Field extends FieldDefinitionNode
   >(
     parent: Parent,
@@ -102,12 +117,15 @@ export interface CodegenPrinterConfig {
     printer: (field: Field) => string,
   ) => string | null | undefined | void
   /**
-   * same, but modify field value/ function return instead of arguments
-   * it's not perfectly cool because it's string based so -
-   * it does not support changing optional modifier yet...
+   * callback to modify field return of ObjectType/ InterfaceType
+   *
+   * ! cannot change field optional modifier when it's used!
+   *
+   * - return `undefined` for unchanged
+   * - return `null` for delete field
    */
   transformFieldType?: <
-    Parent extends ObjectOrIntefaceNode,
+    Parent extends ObjectLikeNode,
     Field extends FieldDefinitionNode
   >(
     parent: Parent,
@@ -116,7 +134,12 @@ export interface CodegenPrinterConfig {
     printer: (type: TypeNode) => string,
   ) => string | null | undefined | void
   /**
-   * same, but for input value types
+   * callback to modify field type of InputObjectType
+   *
+   * ! also cannot change field optional modifier when it's used!
+   *
+   * - return `undefined` for unchanged
+   * - return `null` for delete field
    */
   transformInputValueType?: <
     Parent extends InputObjectTypeDefinitionNode | InputObjectTypeExtensionNode,
@@ -131,8 +154,9 @@ export interface CodegenPrinterConfig {
 
 export const defaultConfig: CodegenPrinterConfig = {
   addTypename: true,
-  addFieldsAsFunction: false,
-  addFieldArgumentsInterface: false,
+  addDescription: true,
+  addFieldAsFunction: false,
+  useFieldArgumentsInterface: false,
   fieldArgumentsInterfaceSuffix: 'Args',
   interfacePrefix: false,
   useInterfacePrefixForUnion: false,
@@ -140,7 +164,7 @@ export const defaultConfig: CodegenPrinterConfig = {
   useMapsForEnum: true,
   useMaybeType: false,
   useOptionalModifier: true,
-  useExtendedInterfaces: true,
+  useExtendedInterfaces: false,
   customScalars: {
     ID: 'string',
     DateTime: 'string',

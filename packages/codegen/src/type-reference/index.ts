@@ -1,5 +1,6 @@
-export * from './field'
+export * from './field-definition'
 export * from './input-value'
 export * from './named-type'
 export * from './rest'
 export * from './type'
+export * from './description'

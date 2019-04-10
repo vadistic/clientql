@@ -15,17 +15,23 @@ ok
     `
 
     expect(indent(fixture, 2)).toMatchInlineSnapshot(`
-      "    something
-          newline
-            indented
-          ok"
-    `)
+            "    something
+                newline
+                  indented
+                ok"
+        `)
   })
 
   it('print block comment', () => {
     const fixture = printBlockComment('MY IMPORTANT BLOCK')
 
-    expect(fixture).toMatchInlineSnapshot()
+    expect(fixture).toMatchInlineSnapshot(`
+      "/*
+       *
+       * MY IMPORTANT BLOCK
+       *
+       */"
+    `)
   })
 
   it('print sections', () => {
@@ -36,7 +42,29 @@ ok
     fixture += printCodeSection('FIRST', content)
     fixture += printCodeSection('SECOND', content)
 
-    expect(fixture).toMatchInlineSnapshot()
+    expect(fixture).toMatchInlineSnapshot(`
+      "/*
+       *
+       * FIRST
+       *
+       */
+      
+      HELLO
+      HELLO
+      HELLO
+      
+      /*
+       *
+       * SECOND
+       *
+       */
+      
+      HELLO
+      HELLO
+      HELLO
+      
+      "
+    `)
   })
 
   it('prints interface', () => {
@@ -49,8 +77,18 @@ ok
     const res1 = printTSInterface(name, false, arr)
     const res2 = printTSInterface(name, extend, str)
 
-    expect(res1).toMatchInlineSnapshot()
+    expect(res1).toMatchInlineSnapshot(`
+      "export interface MyInterface {
+        prop?: Value
+        arr?: any[]
+      }"
+    `)
 
-    expect(res2).toMatchInlineSnapshot()
+    expect(res2).toMatchInlineSnapshot(`
+      "export interface MyInterface extends First, Second {
+        prop?: Value
+        arr?: any[]
+      }"
+    `)
   })
 })

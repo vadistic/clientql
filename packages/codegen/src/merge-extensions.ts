@@ -1,16 +1,13 @@
 import {
-  indexed,
-  Kind,
-  TypedefNode,
-  unwrapDocument,
-  wrapDocument,
-} from '@graphql-clientgen/core'
-import {
   ASTNode,
+  DefinitionNode,
   DocumentNode,
+  Kind,
   TypeDefinitionNode,
   TypeExtensionNode,
 } from 'graphql'
+import { indexed } from './types'
+import { unwrapDocument, wrapDocument } from './utils'
 
 const extendsionToDefinitionKindMap = {
   [Kind.OBJECT_TYPE_EXTENSION]: Kind.OBJECT_TYPE_DEFINITION,
@@ -24,16 +21,24 @@ const extendsionToDefinitionKindMap = {
 const extensionToDefintionKind = (kind: string) =>
   indexed(extendsionToDefinitionKindMap)[kind]
 
-const isTypeExtension = (node: ASTNode): node is TypeExtensionNode =>
+export const isTypeExtension = (node: ASTNode): node is TypeExtensionNode =>
   !!extensionToDefintionKind(node.kind)
 
-const isNotTypeExtension = (node: ASTNode) => !isTypeExtension(node)
+export const isTypeDefinition = (node: ASTNode): node is TypeDefinitionNode =>
+  Object.values(extendsionToDefinitionKindMap).includes(node.kind as any)
+
+export const isTypeDefinitionOrExtension = (
+  node: ASTNode,
+): node is TypeDefinitionNode | TypeExtensionNode =>
+  isTypeExtension(node) || isTypeExtension(node)
 
 /**
- * seriously no idea how to name it.
+ * seriously no idea how to name it...
  *
- * It's boils down to transform on duplicates (eb by some key getter) and spreading rest
- * It would be more plain in forEach.find but this is On not On2
+ * It's boils down to transformation/merge on duplicates
+ * (eg by some key getter) and spreading the rest
+ *
+ * It would be more plain in some forEach.find but this is O(N) not O(N2)
  */
 const concatOrTransformDuplicatesByWith = <T>(
   eq: (val: T) => string | number | symbol,
@@ -53,7 +58,8 @@ const concatOrTransformDuplicatesByWith = <T>(
   for (const nextEl of nextArr) {
     const key = eq(nextEl)
     const prevElIndex = keyIndexMap.get(key)
-    if (prevElIndex) {
+    // damn, remember about 0s
+    if (prevElIndex !== undefined) {
       copy[prevElIndex] = assign(copy[prevElIndex], nextEl)
     } else {
       unique.push(nextEl)
@@ -64,26 +70,40 @@ const concatOrTransformDuplicatesByWith = <T>(
 }
 
 /**
- * handling extensions separately would make client logic more complex so let's just merge them
+ * merge type extension nodes into type definition nodes
  */
 export const mergeExtensions = (doc: DocumentNode) => {
-  const definitions = unwrapDocument(doc) as Array<
-    TypeDefinitionNode | TypeExtensionNode
-  >
+  const definitions = unwrapDocument(doc)
 
   const concatOrMergeExtensions = concatOrTransformDuplicatesByWith<
-    TypedefNode
-  >(v => v.name.value)((prev, next) => mergeExtension(prev, next))
+    TypeDefinitionNode | TypeExtensionNode
+  >(v => v.name.value)((prev, next) => mergeSingleExtension(prev, next))
 
-  const res = concatOrMergeExtensions(
-    definitions.filter(isNotTypeExtension),
-    definitions.filter(isTypeExtension),
+  const { rest, defs, exts } = definitions.reduce(
+    (acc, node) => {
+      isTypeDefinition(node)
+        ? acc.defs.push(node)
+        : isTypeExtension(node)
+        ? acc.exts.push(node)
+        : acc.rest.push(node)
+      return acc
+    },
+    {
+      rest: [] as DefinitionNode[],
+      defs: [] as TypeDefinitionNode[],
+      exts: [] as TypeExtensionNode[],
+    },
   )
 
-  return wrapDocument(...res)
+  const res = concatOrMergeExtensions(defs, exts)
+
+  return wrapDocument(...res, ...rest)
 }
 
-const mergeExtension = <T extends any>(type: T, ext: T) => {
+/**
+ * merge single type extension node into type definition node
+ */
+export const mergeSingleExtension = <T extends any>(type: T, ext: any): T => {
   const result: any = {
     ...type,
   }

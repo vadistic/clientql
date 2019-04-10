@@ -1,6 +1,6 @@
 import { Kind } from 'graphql'
 import gql from 'graphql-tag'
-import { createCodegenPrinter } from '../printer'
+import { createCodegenPrinter } from '../../printer'
 
 describe('printer > ' + Kind.UNION_TYPE_DEFINITION, () => {
   it('prints union inline with one value', () => {

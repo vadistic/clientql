@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
-import { CodegenPrinterConfig } from '../config'
-import { createCodegenPrinter } from '../printer'
+import { CodegenPrinterConfig } from '../../config'
+import { createCodegenPrinter } from '../../printer'
 
 describe('printer > custom transformations', () => {
   it('transformFieldArguments', () => {
@@ -34,7 +34,7 @@ describe('printer > custom transformations', () => {
 
     const print = createCodegenPrinter({
       transformFieldArguments: transform,
-      addFieldsAsFunction: true,
+      addFieldAsFunction: true,
     })
 
     expect(print(fixture)).toMatchInlineSnapshot(`

@@ -1,6 +1,6 @@
 import {
-  InputObjectTypeDefinitionNode,
-  InputObjectTypeExtensionNode,
+  DefinitionNode,
+  DocumentNode,
   InterfaceTypeDefinitionNode,
   InterfaceTypeExtensionNode,
   Kind,
@@ -9,21 +9,8 @@ import {
   ObjectTypeExtensionNode,
   TypeNode,
 } from 'graphql'
+import { truthy } from './types'
 
-export type Truthy<T> = T extends boolean ? never : NonNullable<T> & true
-
-export const truthy = <T>(input: T): input is Truthy<T> => !!input
-
-export const isNotEmpty = <T>(input: T): input is NonNullable<T> =>
-  !!input &&
-  (typeof input === 'object'
-    ? Array.isArray(input)
-      ? input.length > 0
-      : Object.keys(input).length > 0
-    : true)
-
-export const isString = (input: any): input is string =>
-  typeof input === 'string'
 /**
  * Alternative to those nested Null/List types that is easier to print
  */
@@ -59,15 +46,19 @@ export const unwrapType = (
   }
 }
 
-export type ObjectOrIntefaceNode =
+export const wrapDocument = (
+  ...nodes: Array<DefinitionNode | undefined | null | false>
+): DocumentNode => ({
+  kind: Kind.DOCUMENT,
+  definitions: nodes.filter(truthy),
+})
+
+export const unwrapDocument = (doc: DocumentNode): DefinitionNode[] => [
+  ...doc.definitions,
+]
+
+export type ObjectLikeNode =
   | ObjectTypeDefinitionNode
   | ObjectTypeExtensionNode
   | InterfaceTypeDefinitionNode
   | InterfaceTypeExtensionNode
-  | InputObjectTypeDefinitionNode
-  | InputObjectTypeExtensionNode
-
-export type ObjectLikeNode =
-  | ObjectOrIntefaceNode
-  | InputObjectTypeDefinitionNode
-  | InputObjectTypeExtensionNode

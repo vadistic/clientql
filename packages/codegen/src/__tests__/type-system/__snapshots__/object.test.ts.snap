@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`printer > ObjectTypeDefinition useFieldArgumentsInterfaces: true 1`] = `
+"export interface Query {
+  node: (args?: QueryNodeArgs) => Node | null
+  post: (args?: QueryPostArgs) => Post | null
+  posts: (args: QueryPostArgs) => Array<Post>
+  postsConnection: (args: QueryPostConnectionArgs) => PostConnection
+  user: (args?: QueryUserArgs) => User | null
+  users: (args: QueryUserArgs) => Array<User>
+  usersConnection: (args: QueryUserConnectionArgs) => UserConnection
+}
+
+export interface QueryNodeArgs {
+  id: string
+}
+
+export interface QueryPostArgs {
+  where: PostWhereUniqueInput
+}
+
+export interface QueryPostArgs {
+  after?: string | null
+  before?: string | null
+  first?: number | null
+  last?: number | null
+  orderBy?: PostOrderByInput | null
+  skip?: number | null
+  where?: PostWhereInput | null
+}
+
+export interface QueryPostConnectionArgs {
+  after?: string | null
+  before?: string | null
+  first?: number | null
+  last?: number | null
+  orderBy?: PostOrderByInput | null
+  skip?: number | null
+  where?: PostWhereInput | null
+}
+
+export interface QueryUserArgs {
+  where: UserWhereUniqueInput
+}
+
+export interface QueryUserArgs {
+  after?: string | null
+  before?: string | null
+  first?: number | null
+  last?: number | null
+  orderBy?: UserOrderByInput | null
+  skip?: number | null
+  where?: UserWhereInput | null
+}
+
+export interface QueryUserConnectionArgs {
+  after?: string | null
+  before?: string | null
+  first?: number | null
+  last?: number | null
+  orderBy?: UserOrderByInput | null
+  skip?: number | null
+  where?: UserWhereInput | null
+}"
+`;

@@ -29,8 +29,8 @@ const argumentsInterfaceName = (config = defaultConfig) => (
   target: string,
 ) =>
   interfacePrefix(config) +
-  config.fieldArgumentsInterfaceSuffix +
-  pascalCase(parent, target)
+  pascalCase(parent, target) +
+  config.fieldArgumentsInterfaceSuffix
 
 const fragmentName = (config = defaultConfig) => (name: string) =>
   pascalCase(name, config.fragmentSuffix)

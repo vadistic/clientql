@@ -2,37 +2,79 @@ import {
   GraphQLSchema,
   InputObjectTypeDefinitionNode,
   InputObjectTypeExtensionNode,
+  InputValueDefinitionNode,
 } from 'graphql'
+import { isString } from 'util'
 import { defaultConfig } from '../config'
 import { naming } from '../naming'
 import { printTSInterface } from '../strings'
-import { printInputValue } from '../type-reference/input-value'
-import { isNotEmpty } from '../utils'
+import {
+  isNullable,
+  printInputValue,
+  printType,
+  withDescription,
+} from '../type-reference'
+import { isNotEmpty } from '../types'
 
+/**
+ * prints InputObjectTypeDefinitionNode | InputObjectTypeExtensionNode
+ *
+ * supports:
+ * - `transformInputValueType`
+ */
 export const printInputObject = (
   config = defaultConfig,
   schema?: GraphQLSchema,
 ) => (node: InputObjectTypeDefinitionNode | InputObjectTypeExtensionNode) => {
   const name = naming.interfaceName(config)(node.name.value)
+  const addDescription = withDescription(config, schema)
 
-  const inter =
-    config.extendObjectInterface && config.extendObjectInterface(node, [])
-
+  // empty
   if (!isNotEmpty(node.fields)) {
-    return printTSInterface(name, inter, [])
+    return addDescription(node)(printTSInterface(name, [], []))
   }
 
-  const fieldsTs = node.fields.map(printInputValue(config, schema))
-
+  // standard
   if (!config.transformInputValueType) {
-    return printTSInterface(name, inter, fieldsTs)
+    const inputValuesTs = node.fields.map(printInputValue(config, schema))
+
+    return addDescription(node)(printTSInterface(name, [], inputValuesTs))
   }
 
-  /**
-   * TODO: Implement custom fields printer
-   */
+  // custom
+  const inputValueTypePrinter = (field: InputValueDefinitionNode) =>
+    printType(config, schema)(field.type)
 
-  const result = printTSInterface(name, inter, fieldsTs)
+  const modifiedInputValuesTs = node.fields
+    // prebuild
+    .map(field => ({
+      fieldname: field.name.value,
+      modifier:
+        config.useOptionalModifier && isNullable(field.type) ? '?: ' : ': ',
+      type: inputValueTypePrinter(field),
+      field,
+    }))
+    // modify
+    .map((strings, i) => {
+      const res = config.transformInputValueType!(
+        node,
+        node.fields![i],
+        strings.type,
+        inputValueTypePrinter,
+      )
 
-  return result
+      if (isString(res) || res === null) {
+        return { ...strings, type: res }
+      }
+
+      return strings
+    })
+    // remove nullified
+    .filter(strings => strings.type !== null)
+    // build strings
+    .map(({ fieldname, modifier, type, field }) =>
+      addDescription(field)(fieldname + modifier + type),
+    )
+
+  return addDescription(node)(printTSInterface(name, [], modifiedInputValuesTs))
 }

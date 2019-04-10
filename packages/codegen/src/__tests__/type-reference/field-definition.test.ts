@@ -1,5 +1,5 @@
 import { FieldDefinitionNode, Kind } from 'graphql'
-import { createCodegenPrinter } from '../printer'
+import { createCodegenPrinter } from '../../printer'
 
 describe('printer > ' + Kind.FIELD_DEFINITION, () => {
   it('useFieldArguments: false', () => {
@@ -21,7 +21,7 @@ describe('printer > ' + Kind.FIELD_DEFINITION, () => {
       },
     }
 
-    const print = createCodegenPrinter({ addFieldsAsFunction: false })
+    const print = createCodegenPrinter({ addFieldAsFunction: false })
 
     expect(print(field)).toMatchInlineSnapshot(`"My field: Value"`)
   })
@@ -45,7 +45,7 @@ describe('printer > ' + Kind.FIELD_DEFINITION, () => {
       },
     }
 
-    const print = createCodegenPrinter({ addFieldsAsFunction: true })
+    const print = createCodegenPrinter({ addFieldAsFunction: true })
 
     expect(print(field)).toMatchInlineSnapshot(`"My field: () => Value"`)
   })

@@ -40,6 +40,7 @@ export const printValue = (config = defaultConfig, schema?: GraphQLSchema) => (
 
       const listValue = node.values.map(printValue(config, schema))
 
+      // arbitrary - up to 3 values inline
       if (node.values.length <= 3) {
         return '[' + listValue.join(', ') + ']'
       }

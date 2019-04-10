@@ -1,4 +1,4 @@
-import { isNotEmpty, isString } from './utils'
+import { isNotEmpty, isString } from './types'
 
 export type NullableString = string | null | boolean | undefined
 
@@ -17,7 +17,7 @@ export const indent = (content: string, level = 1, trim = false) =>
     : content.replace(/\n/gm, '\n' + ' '.repeat(level * INDENT_WIDTH)).trim())
 
 /**
- *  prints block comment with some content
+ * prints block comment with some content
  */
 export const printBlockComment = (content: string) => {
   const headerLines = content.split('\n').map(v => v.trim())
@@ -34,7 +34,28 @@ export const printBlockComment = (content: string) => {
 }
 
 /**
- *  prints sections with header comments and uniform spacing
+ * prints JSDoc comment with some content
+ */
+export const printJSDoc = (content: string) => {
+  const descriptionLines = content.split('\n')
+
+  if (descriptionLines.length === 1) {
+    return `/** ${content} */`
+  }
+
+  let result = `/**\n`
+
+  descriptionLines.forEach(line => {
+    result += ` * ` + line + '\n'
+  })
+
+  result += ` */`
+
+  return result
+}
+
+/**
+ * prints sections with header comments and uniform spacing
  */
 export const printCodeSection = (comment: string, content: string) => {
   const result = printBlockComment(comment) + '\n\n' + content.trim() + '\n\n'
@@ -43,7 +64,7 @@ export const printCodeSection = (comment: string, content: string) => {
 }
 
 /**
- *  prints typescript interface
+ * prints typescript interface
  */
 export const printTSInterface = (
   interfacename: string,

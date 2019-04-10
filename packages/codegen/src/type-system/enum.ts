@@ -4,24 +4,34 @@ import {
   GraphQLSchema,
 } from 'graphql'
 import { defaultConfig } from '../config'
-import { isNotEmpty } from '../utils'
+import { indent } from '../strings'
+import { withDescription } from '../type-reference'
+import { isNotEmpty } from '../types'
+
+/**
+ * prints EnumTypeDefinitionNode | EnumTypeExtensionNode
+ *
+ * supports:
+ * - `useMapsForEnum`
+ */
 
 export const printEnum = (config = defaultConfig, schema?: GraphQLSchema) => (
   node: EnumTypeDefinitionNode | EnumTypeExtensionNode,
 ) => {
   const name = node.name.value
-  const values = node.values && node.values.map(value => value.name.value)
+  const addDescription = withDescription(config, schema)
 
-  /**
-   * opting for same const & interface name for declarations merging
-   */
+  // opting for same const & interface name for declarations merging
   if (config.useMapsForEnum) {
     let inter = `export interface ${name} {\n`
     let map = `export const ${name}: ${name} = {\n`
 
-    if (isNotEmpty(values)) {
-      values.forEach(value => {
-        inter += `  ${value}: '${value}'\n`
+    if (isNotEmpty(node.values)) {
+      node.values.forEach(enumValue => {
+        const value = enumValue.name.value
+
+        inter +=
+          indent(addDescription(enumValue)(`${value}: '${value}'`), 1) + '\n'
         map += `  ${value}: '${value}',\n`
       })
     }
@@ -33,14 +43,16 @@ export const printEnum = (config = defaultConfig, schema?: GraphQLSchema) => (
   } else {
     let result = `export enum ${name} {\n`
 
-    if (isNotEmpty(values)) {
-      values.forEach(value => {
-        result += `  ${value} = '${value}',\n`
+    if (isNotEmpty(node.values)) {
+      node.values.forEach(enumValue => {
+        const value = enumValue.name.value
+        result +=
+          indent(addDescription(enumValue)(`${value} = '${value}',`), 1) + '\n'
       })
     }
 
     result += '}'
 
-    return result
+    return addDescription(node)(result)
   }
 }
