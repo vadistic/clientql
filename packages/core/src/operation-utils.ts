@@ -8,8 +8,8 @@ import {
 } from 'graphql'
 import { CoreProps } from './config'
 import { createField } from './graphql-create'
-import { Typename } from './map-ast'
 import { hasMapEntry } from './map-utils'
+import { Typename } from './type-graph'
 import { truthy } from './types'
 import { capitalise } from './utils'
 

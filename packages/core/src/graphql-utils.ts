@@ -11,6 +11,8 @@ import { truthy } from './types'
 
 export type TypedefNode = TypeDefinitionNode | TypeExtensionNode
 
+export type KindMap = typeof Kind
+
 export const wrapDocument = (
   ...nodes: Array<DefinitionNode | undefined | null | false>
 ): DocumentNode => ({

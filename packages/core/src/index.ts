@@ -3,7 +3,7 @@ export * from './graphql-guards'
 export * from './graphql-utils'
 
 export * from './map-utils'
-export * from './map-ast'
+export * from './type-graph'
 
 export * from './operation-build'
 export * from './operation-utils'

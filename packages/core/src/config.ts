@@ -1,5 +1,5 @@
 import { DocumentNode } from 'graphql'
-import { AstMap, buildAstMap } from './map-ast'
+import { AstMap, buildAstMap } from './type-graph'
 
 /**
  * Build fragment for typename

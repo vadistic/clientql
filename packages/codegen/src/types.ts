@@ -1,4 +1,6 @@
-export type Truthy<T> = T extends boolean ? never : NonNullable<T> & true
+export type Truthy<T> = T extends boolean
+  ? NonNullable<T> & true
+  : NonNullable<T>
 
 export const truthy = <T>(input: T): input is Truthy<T> => !!input
 

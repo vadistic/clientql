@@ -78,8 +78,6 @@ export const createCodegenPrinter = (
      */
 
     let dynamicSchema = initalSchema
-
-    // it does not handle chainging comments config here but who cares
     const dynamicConfig = configOverride
       ? { ...initalConfig, ...configOverride }
       : initalConfig
@@ -98,43 +96,6 @@ export const createCodegenPrinter = (
       dynamicSchema = extendSchema(initalSchema, ast, schemaOptions)
     }
 
-    /*
-     * PRINTERS
-     */
-
-    /**
-     * type system definitions
-     */
-    const inputObjectPrinter = printInputObject(dynamicConfig, dynamicSchema)
-    const objectPrinter = printObject(dynamicConfig, dynamicSchema)
-    const interfacePrinter = printInterface(dynamicConfig, dynamicSchema)
-    const unionPrinter = printUnion(dynamicConfig, dynamicSchema)
-    const enumPrinter = printEnum(dynamicConfig, dynamicSchema)
-    const scalarPrinter = printScalar(dynamicConfig, dynamicSchema)
-
-    /*
-     * type reference
-     */
-    const typePrinter = printType(dynamicConfig, dynamicSchema)
-    const namedTypePrinter = printNamedType(dynamicConfig, dynamicSchema)
-    const inputValuePrinter = printInputValue(dynamicConfig, dynamicSchema)
-    const fieldPrinter = printFieldDefinition(dynamicConfig, dynamicSchema)
-    const argumentPrinter = printArgument(dynamicConfig, dynamicSchema)
-
-    /**
-     * TODO: Operations
-     */
-
-    /*
-     * rest
-     */
-    const valuePrinter = printValue(dynamicConfig, dynamicSchema)
-    const objectFieldPrinter = printObjectField(dynamicConfig, dynamicSchema)
-    const schemaDefinitionPrinter = printSchemaDefinition(
-      dynamicConfig,
-      dynamicSchema,
-    )
-
     /**
      * rescursive main loop
      */
@@ -151,44 +112,44 @@ export const createCodegenPrinter = (
          */
         case Kind.INPUT_OBJECT_TYPE_DEFINITION:
         case Kind.INPUT_OBJECT_TYPE_EXTENSION:
-          return inputObjectPrinter(node)
+          return printInputObject(dynamicConfig, dynamicSchema)(node)
         case Kind.OBJECT_TYPE_DEFINITION:
         case Kind.OBJECT_TYPE_EXTENSION:
-          return objectPrinter(node)
+          return printObject(dynamicConfig, dynamicSchema)(node)
         case Kind.INTERFACE_TYPE_DEFINITION:
         case Kind.INTERFACE_TYPE_EXTENSION:
-          return interfacePrinter(node)
+          return printInterface(dynamicConfig, dynamicSchema)(node)
         case Kind.UNION_TYPE_DEFINITION:
         case Kind.UNION_TYPE_EXTENSION:
-          return unionPrinter(node)
+          return printUnion(dynamicConfig, dynamicSchema)(node)
         case Kind.ENUM_TYPE_DEFINITION:
         case Kind.ENUM_TYPE_EXTENSION:
-          return enumPrinter(node)
+          return printEnum(dynamicConfig, dynamicSchema)(node)
         case Kind.SCALAR_TYPE_DEFINITION:
         case Kind.SCALAR_TYPE_EXTENSION:
-          return scalarPrinter(node)
+          return printScalar(dynamicConfig, dynamicSchema)(node)
 
         /**
          * type reference
          */
         case Kind.INPUT_VALUE_DEFINITION:
-          return inputValuePrinter(node)
+          return printInputValue(dynamicConfig, dynamicSchema)(node)
         case Kind.FIELD_DEFINITION:
-          return fieldPrinter(node)
+          return printFieldDefinition(dynamicConfig, dynamicSchema)(node)
         case Kind.NON_NULL_TYPE:
         case Kind.LIST_TYPE:
-          return typePrinter(node)
+          return printType(dynamicConfig, dynamicSchema)(node)
         case Kind.NAMED_TYPE:
-          return namedTypePrinter(node)
+          return printNamedType(dynamicConfig, dynamicSchema)(node)
         case Kind.ARGUMENT:
-          return argumentPrinter(node)
+          return printArgument(dynamicConfig, dynamicSchema)(node)
 
         /**
          * schema
          */
         case Kind.SCHEMA_DEFINITION:
         case Kind.SCHEMA_EXTENSION:
-          return schemaDefinitionPrinter(node)
+          return printSchemaDefinition(dynamicConfig, dynamicSchema)(node)
 
         /**
          * primitives
@@ -203,9 +164,9 @@ export const createCodegenPrinter = (
         case Kind.LIST:
         case Kind.OBJECT:
         case Kind.VARIABLE:
-          return valuePrinter(node)
+          return printValue(dynamicConfig, dynamicSchema)(node)
         case Kind.OBJECT_FIELD:
-          return objectFieldPrinter(node)
+          return printObjectField(dynamicConfig, dynamicSchema)(node)
         case Kind.NAME:
           return node.value
         default:
@@ -213,7 +174,7 @@ export const createCodegenPrinter = (
       }
     }
 
-    // supports ast arrays
+    // supports ast as arrays
     if (Array.isArray(ast)) {
       return ast
         .map(printReducer)

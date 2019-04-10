@@ -10,7 +10,6 @@ import {
 import { CoreProps } from './config'
 import { createField } from './graphql-create'
 import { wrapDocument } from './graphql-utils'
-import { Fieldname, Typename } from './map-ast'
 import { getOperationType } from './map-utils'
 import {
   buildOperationArgument,
@@ -18,6 +17,7 @@ import {
   buildOperationSelection,
   buildOperationVariable,
 } from './operation-utils'
+import { Fieldname, Typename } from './type-graph'
 
 /**
  * Builds operation based on fields path
@@ -53,7 +53,7 @@ export const buildOperation = (
           : astMap.types[parentTypename].fieldmap
 
         const typename = parentFieldmap[fieldname].typename
-        const args = parentFieldmap[fieldname].args
+        const inputValues = parentFieldmap[fieldname].inputValues
 
         if (!typename) {
           throw Error(`Missing type for ${fieldname}`)
@@ -62,7 +62,7 @@ export const buildOperation = (
         const res = {
           typename,
           fieldname,
-          args,
+          inputValues,
         }
 
         return [...acc, res]
@@ -70,7 +70,7 @@ export const buildOperation = (
       [] as Array<{
         fieldname: Fieldname
         typename: Typename
-        args: InputValueDefinitionNode[]
+        inputValues: InputValueDefinitionNode[]
       }>,
     )
     .map(({ fieldname, typename, args }, i, arr) => {

@@ -6,7 +6,7 @@ import {
   SelectionNode,
 } from 'graphql'
 import { Kind } from './kind'
-import { Typename } from './map-ast'
+import { Typename } from './type-graph'
 
 export interface CreateFieldProps {
   fieldname: string
