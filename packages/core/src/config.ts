@@ -1,5 +1,4 @@
 import { DocumentNode } from 'graphql'
-import { AstMap, buildAstMap } from './type-graph'
 
 /**
  * Build fragment for typename
@@ -40,7 +39,6 @@ export const defaultCoreConfig: CoreConfig = {
  * Uniform props for utils options
  */
 export interface CoreProps {
-  astMap: AstMap
   config: CoreConfig
 }
 
@@ -48,7 +46,6 @@ export const getCoreProps = (
   doc: DocumentNode,
   config?: Partial<CoreConfig>,
 ): CoreProps => ({
-  astMap: buildAstMap(doc),
   config: {
     ...defaultCoreConfig,
     ...config,

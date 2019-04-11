@@ -4,13 +4,13 @@ import {
   FragmentDefinitionNode,
   InputValueDefinitionNode,
   Kind,
+  OperationTypeNode,
   SelectionNode,
   VariableDefinitionNode,
 } from 'graphql'
 import { CoreProps } from './config'
 import { createField } from './graphql-create'
 import { wrapDocument } from './graphql-utils'
-import { getOperationType } from './map-utils'
 import {
   buildOperationArgument,
   buildOperationName,
@@ -24,13 +24,11 @@ import { Fieldname, Typename } from './type-graph'
  * Retruns DocumentNode, becuse it may also contain some fragments
  */
 
-export const buildOperation = (
-  props: CoreProps,
-  paths: Fieldname[],
-): DocumentNode => {
-  const { config, astMap } = props
+export const buildOperation = (props: CoreProps, paths: Fieldname[]) => {
+  const { config } = props
 
-  const operationType = getOperationType(astMap, paths[0])!
+  // TODO:
+  const operationType: OperationTypeNode = 'query'
 
   if (!operationType) {
     throw Error(`Invalid field **${paths[0]}** in ${paths.join('.')}`)
@@ -42,7 +40,7 @@ export const buildOperation = (
    * I'll reverse it in the next step
    */
 
-  const selectionData = paths
+  /* const selectionData = paths
     .reduce(
       (acc, fieldname, i) => {
         const isRoot = i === 0
@@ -160,7 +158,22 @@ export const buildOperation = (
       kind: Kind.SELECTION_SET,
       selections: [selection],
     },
+  } */
+
+  // return wrapDocument(operationDefinition, ...fragmentDefinitions)
+
+  const operationDefinition = {
+    kind: Kind.OPERATION_DEFINITION,
+    name: {
+      kind: Kind.NAME,
+      value: 'placeholder',
+    },
+    operation: operationType,
+    selectionSet: {
+      kind: Kind.SELECTION_SET,
+      selections: [],
+    },
   }
 
-  return wrapDocument(operationDefinition, ...fragmentDefinitions)
+  return wrapDocument(operationDefinition)
 }

@@ -2,9 +2,6 @@ export * from './graphql-create'
 export * from './graphql-guards'
 export * from './graphql-utils'
 
-export * from './map-utils'
-export * from './type-graph'
-
 export * from './operation-build'
 export * from './operation-utils'
 
@@ -14,3 +11,6 @@ export * from './types'
 export * from './utils'
 
 export * from './config'
+
+export * from './digraph'
+export * from './true-pipe'

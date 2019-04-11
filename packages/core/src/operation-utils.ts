@@ -8,7 +8,6 @@ import {
 } from 'graphql'
 import { CoreProps } from './config'
 import { createField } from './graphql-create'
-import { hasMapEntry } from './map-utils'
 import { Typename } from './type-graph'
 import { truthy } from './types'
 import { capitalise } from './utils'
@@ -71,18 +70,13 @@ export const buildOperationName = (
  *  This is basically flat fragment buildre without fragment wrapper
  */
 export const buildOperationSelection = (
-  { astMap }: CoreProps,
+  {  }: CoreProps,
   typename: Typename,
 ) => {
-  const fieldmap = astMap.types[typename].fieldmap
+  /*  const fieldmap = astMap.types[typename].fieldmap
 
   const selections: FieldNode[] = Object.entries(fieldmap)
     .map(([selectionFieldname, { typename: selectionTypename }]) => {
-      // assuming it means nested => skipping
-      if (hasMapEntry(astMap, selectionTypename)) {
-        return
-      }
-
       // no arguments for child selections
       return createField({
         fieldname: selectionFieldname,
@@ -98,5 +92,5 @@ export const buildOperationSelection = (
     ],
     // TODO: actually generate fragments when options are set to use fragments
     fragments: [],
-  }
+  } */
 }

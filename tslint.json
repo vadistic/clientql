@@ -8,6 +8,8 @@
     "no-empty-interface": true,
     "ordered-imports": true,
     "only-arrow-functions": true,
+    "max-classes-per-file": false,
+    "member-ordering": false,
     "variable-name": [
       true,
       "ban-keywords",

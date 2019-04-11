@@ -308,6 +308,7 @@ export const TYPEDEFS = gql`
 
   type Query {
     node(id: ID!): Node
+    hello: String!
     post(where: PostWhereUniqueInput!): Post
     posts(
       after: String
