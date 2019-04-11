@@ -16,13 +16,13 @@ describe('printer > ' + Kind.ENUM_TYPE_DEFINITION, () => {
     const print = createCodegenPrinter({ useMapsForEnum: false })
 
     expect(print(fixture)).toMatchInlineSnapshot(`
-            "export enum MyEnum {
-              ABC = 'ABC',
-              Value = 'Value',
-              /**  my description  */
-              ANOTHER = 'ANOTHER',
-            }"
-        `)
+                  "export enum MyEnum {
+                    ABC = 'ABC',
+                    Value = 'Value',
+                    /**  my description  */
+                    ANOTHER = 'ANOTHER',
+                  }"
+            `)
   })
 
   it('codegens enum as map', () => {
@@ -52,7 +52,7 @@ describe('printer > ' + Kind.ENUM_TYPE_DEFINITION, () => {
         /**  my description  */
         ANOTHER: 'ANOTHER'
       }
-
+      
       export const MyEnum: MyEnum = {
         ABC: 'ABC',
         Value: 'Value',

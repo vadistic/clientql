@@ -1,7 +1,8 @@
+import { isNullable } from '@graphql-clientgen/core'
 import { GraphQLSchema, InputValueDefinitionNode } from 'graphql'
 import { defaultConfig } from '../config'
 import { withDescription } from './description'
-import { isNullable, printType } from './type'
+import { printType } from './type'
 
 /**
  * codegenFieldToTypes works just about the same but let's keep this one for semantics

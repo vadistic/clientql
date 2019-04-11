@@ -45,8 +45,6 @@ export const withDescription = (
 
   const description = printDescription(config, schema)(node as DescribableNode)
 
-  console.log('ADD DESC', description)
-
   if (description) {
     return description + '\n' + content
   }

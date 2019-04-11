@@ -1,20 +1,7 @@
-import {
-  GraphQLSchema,
-  Kind,
-  ListTypeNode,
-  NamedTypeNode,
-  TypeNode,
-} from 'graphql'
+import { isNullable, unwrapType } from '@graphql-clientgen/core'
+import { GraphQLSchema, Kind, TypeNode } from 'graphql'
 import { defaultConfig } from '../config'
-import { unwrapType } from '../utils'
 import { isExplicitScalar, printNamedType } from './named-type'
-
-/**
- * Means top level value is nullable (need it for printing optional modifiers)
- */
-export const isNullable = (
-  node: TypeNode,
-): node is ListTypeNode | NamedTypeNode => node.kind !== Kind.NON_NULL_TYPE
 
 /**
  * Prints nullable/list/scalar TypeNode
@@ -46,19 +33,19 @@ export const printType = (config = defaultConfig, schema?: GraphQLSchema) => (
       .forEach((modifier, i, arr) => {
         const prevModifier = i >= 1 && arr[i - 1]
 
-        if (modifier === 'list') {
-          if (useSimpleArrFlag && prevModifier === 'nonNull') {
+        if (modifier === Kind.LIST_TYPE) {
+          if (useSimpleArrFlag && prevModifier === Kind.NON_NULL_TYPE) {
             result = `${result}[]`
             return
           }
 
-          if (useSimpleArrFlag && prevModifier !== 'nonNull') {
+          if (useSimpleArrFlag && prevModifier !== Kind.NON_NULL_TYPE) {
             useSimpleArrFlag = false
             result = addArray(addMaybe(result))
             return
           }
 
-          if (!useSimpleArrFlag && prevModifier === 'nonNull') {
+          if (!useSimpleArrFlag && prevModifier === Kind.NON_NULL_TYPE) {
             result = addArray(result)
             return
           }

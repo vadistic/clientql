@@ -9,7 +9,6 @@ import {
   Kind,
   unwrapDocument,
 } from '@graphql-clientgen/core'
-
 import { GeneratorProps } from '../generator'
 import { reduceObjectTypeDefinitions } from '../utils'
 
@@ -20,33 +19,33 @@ export const generateTypingsDefinitions = async (props: GeneratorProps) => {
 
   const print = createCodegenPrinter(props.config.codegenConfig, props.schema)
 
-  const rootsTypescript = rootTypes.map(print).join('\n\n')
+  const rootsTypescript = rootTypes.map(t => print(t)).join('\n\n')
 
-  const objectsTypescript = objectTypes.map(print).join('\n\n')
+  const objectsTypescript = objectTypes.map(t => print(t)).join('\n\n')
 
   const interfacesTypescript = definitions
     .filter(n => n.kind === Kind.INTERFACE_TYPE_DEFINITION)
-    .map(print)
+    .map(t => print(t))
     .join('\n\n')
 
   const inputObjectsTypescript = definitions
     .filter(isInputObjectTypeDefinitionNode)
-    .map(print)
+    .map(t => print(t))
     .join('\n\n')
 
   const unionsTypescript = definitions
     .filter(n => n.kind === Kind.UNION_TYPE_DEFINITION)
-    .map(print)
+    .map(t => print(t))
     .join('\n\n')
 
   const scalarsTypescript = definitions
     .filter(isScalarTypeDefinitionNode)
-    .map(print)
+    .map(t => print(t))
     .join('\n\n')
 
   const enumsTypescript = definitions
     .filter(isEnumTypeDefinitionNode)
-    .map(print)
+    .map(t => print(t))
     .join('\n\n')
 
   let result = ''

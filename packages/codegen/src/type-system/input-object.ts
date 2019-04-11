@@ -1,3 +1,4 @@
+import { isNotEmpty, isNullable } from '@graphql-clientgen/core'
 import {
   GraphQLSchema,
   InputObjectTypeDefinitionNode,
@@ -8,13 +9,7 @@ import { isString } from 'util'
 import { defaultConfig } from '../config'
 import { naming } from '../naming'
 import { printTSInterface } from '../strings'
-import {
-  isNullable,
-  printInputValue,
-  printType,
-  withDescription,
-} from '../type-reference'
-import { isNotEmpty } from '../types'
+import { printInputValue, printType, withDescription } from '../type-reference'
 
 /**
  * prints InputObjectTypeDefinitionNode | InputObjectTypeExtensionNode
@@ -28,6 +23,7 @@ export const printInputObject = (
 ) => (node: InputObjectTypeDefinitionNode | InputObjectTypeExtensionNode) => {
   const name = naming.interfaceName(config)(node.name.value)
   const addDescription = withDescription(config, schema)
+  const inputValuePrinter = printInputValue(config, schema)
 
   // empty
   if (!isNotEmpty(node.fields)) {
@@ -36,7 +32,7 @@ export const printInputObject = (
 
   // standard
   if (!config.transformInputValueType) {
-    const inputValuesTs = node.fields.map(printInputValue(config, schema))
+    const inputValuesTs = node.fields.map(inputValuePrinter)
 
     return addDescription(node)(printTSInterface(name, [], inputValuesTs))
   }

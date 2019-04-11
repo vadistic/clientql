@@ -1,4 +1,11 @@
 import {
+  isNotEmpty,
+  isNullable,
+  isString,
+  ObjectLikeNode,
+  unwrapType,
+} from '@graphql-clientgen/core'
+import {
   assertInterfaceType,
   FieldDefinitionNode,
   GraphQLSchema,
@@ -9,14 +16,11 @@ import { defaultConfig } from '../config'
 import { naming } from '../naming'
 import { printTSInterface } from '../strings'
 import {
-  isNullable,
   printFieldArguments,
   printInputValue,
   printType,
   withDescription,
 } from '../type-reference'
-import { isNotEmpty, isString } from '../types'
-import { ObjectLikeNode, unwrapType } from '../utils'
 
 /**
  * prints fields of ObjectLike (Obect + Interface types)

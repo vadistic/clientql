@@ -17,23 +17,23 @@ describe('BidirectionalMap', () => {
     expect(map.has('first')).toBeTruthy()
     expect(map.has('smth')).toBeFalsy()
 
-    expect(map.hasReverse(333)).toBeTruthy()
-    expect(map.hasReverse(123123)).toBeFalsy()
+    expect(map.hasValue(333)).toBeTruthy()
+    expect(map.hasValue(123123)).toBeFalsy()
 
-    expect(map.getReverse(222)).toEqual(['second', 'secondPrim'])
+    expect(map.getValueKeys(222)).toEqual(['second', 'secondPrim'])
 
     // deletes and stuff
     map.delete('second')
-    expect(map.getReverse(222)).toEqual(['secondPrim'])
+    expect(map.getValueKeys(222)).toEqual(['secondPrim'])
 
     map.delete('fifth')
-    expect(map.getReverse(444)).toBeUndefined()
+    expect(map.getValueKeys(444)).toBeUndefined()
 
     map.set('new', 222)
-    expect(map.getReverse(222)).toEqual(['secondPrim', 'new'])
+    expect(map.getValueKeys(222)).toEqual(['secondPrim', 'new'])
 
     map.deleteReverse(222)
-    expect(map.hasReverse(222)).toBeFalsy()
+    expect(map.hasValue(222)).toBeFalsy()
     expect(map.has('secondPrim')).toBeFalsy()
   })
 })

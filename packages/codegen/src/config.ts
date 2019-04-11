@@ -1,3 +1,4 @@
+import { ObjectLikeNode } from '@graphql-clientgen/core'
 import {
   FieldDefinitionNode,
   InputObjectTypeDefinitionNode,
@@ -6,7 +7,6 @@ import {
   TypeNode,
 } from 'graphql'
 import { NullableString } from './strings'
-import { ObjectLikeNode } from './utils'
 
 export interface CodegenPrinterConfig {
   /**

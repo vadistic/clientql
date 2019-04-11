@@ -2,19 +2,19 @@ import { BidirectionalMap } from './bidirectional-map'
 import { DigraphVertex } from './vertex'
 
 /**
- * arrow-key, vertex-key pair => points to some vertex
+ * edge-key, vertex-key pair => points to some vertex
  */
-export type ArrowEntry<A, K> = [A, K]
+export type Edge<E, K> = [E, K]
 
-export type DigraphEntry<K, A, V> = [K, V, Array<ArrowEntry<A, K>>]
+export type DigraphEntry<K, E, V> = [K, V, Array<Edge<E, K>>]
 
 /**
  * represents private map value/one graph entry
  * re-mapped & mapped DigraphEntry for nicer API
  */
-export interface DigraphMappedEntry<K, A, V> {
+export interface DigraphMappedEntry<K, E, V> {
   value: V
-  arrows: BidirectionalMap<A, K>
+  edges: BidirectionalMap<E, K>
 }
 
 /**
@@ -24,22 +24,22 @@ export interface DigraphMappedEntry<K, A, V> {
  *  - enters to `DigraphVertex` as to help with traversal
  *
  *  generics:
- *  - K unique vertex key type
- *  - A vertex-unique arrow key type
+ *  - K (graph-unique) vertex key type
+ *  - A (vertex-unique) edge key type
  *  - V arbitrary vertex value type
  */
 
-export class Digraph<K, A, V> {
-  public static from = <K, A, V>(entries: Array<DigraphEntry<K, A, V>>) =>
-    new Digraph<K, A, V>(entries)
+export class Digraph<K, E, V> {
+  public static from = <K, E, V>(entries: Array<DigraphEntry<K, E, V>>) =>
+    new Digraph<K, E, V>(entries)
 
-  private map: Map<K, DigraphMappedEntry<K, A, V>>
+  private _map: Map<K, DigraphMappedEntry<K, E, V>>
 
-  constructor(entries: Array<DigraphEntry<K, A, V>>) {
-    this.map = new Map(
-      entries.map(([key, value, arrowEntries]) => [
+  constructor(entries: Array<DigraphEntry<K, E, V>>) {
+    this._map = new Map(
+      entries.map(([key, value, edges]) => [
         key,
-        { value, arrows: BidirectionalMap.from(arrowEntries) },
+        { value, edges: BidirectionalMap.from(edges) },
       ]),
     )
   }
@@ -47,43 +47,46 @@ export class Digraph<K, A, V> {
   /**
    * forwarding getters to keep map private for data integrity
    */
-  public get = (key: K) => this.map.get(key)
-  public has = (key: K) => this.map.has(key)
-  public entries = () => this.map.entries()
-  public keys = () => this.map.keys()
-  public values = () => this.map.values()
+  public get = (key: K) => this._map.get(key)
+  public has = (key: K) => this._map.has(key)
+  public entries = () => this._map.entries()
+  public keys = () => this._map.keys()
+  public values = () => this._map.values()
 
   /**
-   * delete vertex and associated arrows from other verticies
+   * delete vertex and associated edges from other verticies
    */
   public delete = (key: K) => {
-    if (!this.map.has(key)) {
+    if (!this._map.has(key)) {
       return
     }
 
-    const res = this.map.delete(key)
+    const res = this._map.delete(key)
 
-    for (const vtx of this.map.values()) {
-      vtx.arrows.deleteReverse(key)
+    for (const vtx of this._map.values()) {
+      vtx.edges.deleteReverse(key)
     }
 
     return res
   }
 
   /**
-   * sets new vertex, optionally creating new arrows map
+   * sets new vertex, optionally creating new edges map
    */
-  public set = (key: K, value: V, nextArrows?: Array<ArrowEntry<A, K>>) => {
-    if (!this.map.has(key) || nextArrows) {
-      this.map.set(key, {
+  public set = (key: K, value: V, nextEdges?: Array<Edge<E, K>>) => {
+    if (!this._map.has(key) || nextEdges) {
+      // create next edges
+      this._map.set(key, {
         value,
-        arrows: BidirectionalMap.from(nextArrows || []),
+        edges: BidirectionalMap.from(nextEdges || []),
+      })
+    } else {
+      // use prev edges
+      this._map.set(key, {
+        value,
+        edges: this._map.get(key)!.edges,
       })
     }
-
-    const prevArrows = this.map.get(key)!.arrows
-
-    this.map.set(key, { value, arrows: prevArrows })
 
     return this
   }
@@ -91,10 +94,11 @@ export class Digraph<K, A, V> {
   /**
    * start walking on some entry
    *
-   * external arrow =>
-   * how inital point of entry should appear in the stack
-   * need to provide since keys can be of any type
+   * external edge =>
+   *  how inital point of entry should appear in the stack
+   *  need to provide since keys can be of any type (so I cannot provide default)
+   *  and this is kind of most semantic way to represent external intruction to graph
    */
-  public start = (key: K, externalArrow: A) =>
-    new DigraphVertex<K, A, V>(this, key, [[externalArrow, key]])
+  public start = (key: K, externalEdgeKey: E) =>
+    new DigraphVertex<K, E, V>(this, key, [[externalEdgeKey, key]])
 }

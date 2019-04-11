@@ -11,14 +11,11 @@ export const generateTypingsClient = async (props: GeneratorProps) => {
 
   const { objectTypes, rootTypes } = reduceObjectTypeDefinitions(definitions)
 
-  const print = createCodegenPrinter(
-    { addFieldsAsFunction: true },
-    props.schema,
-  )
+  const print = createCodegenPrinter({ addFieldAsFunction: true }, props.schema)
 
   const rootClientTypings = print(rootTypes)!
 
-  const objectClientTypings = objectTypes.map(print).join('\n\n')
+  const objectClientTypings = objectTypes.map(obj => print(obj)).join('\n\n')
 
   let result = ''
 

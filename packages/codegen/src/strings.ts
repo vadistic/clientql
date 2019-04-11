@@ -1,20 +1,4 @@
-import { isNotEmpty, isString } from './types'
-
-export type NullableString = string | null | boolean | undefined
-
-export const INDENT_WIDTH = 2
-
-/**
- * indents string (WITH first line)
- */
-export const indent = (content: string, level = 1, trim = false) =>
-  ' '.repeat(level * INDENT_WIDTH) +
-  (trim
-    ? content
-        .replace(/^\s+/gm, '')
-        .replace(/\n\s*/gm, '\n' + ' '.repeat(level * INDENT_WIDTH))
-        .trim()
-    : content.replace(/\n/gm, '\n' + ' '.repeat(level * INDENT_WIDTH)).trim())
+import { indent, isNotEmpty, isString } from '@graphql-clientgen/core'
 
 /**
  * prints block comment with some content
@@ -62,6 +46,8 @@ export const printCodeSection = (comment: string, content: string) => {
 
   return result
 }
+
+export type NullableString = string | null | boolean | undefined
 
 /**
  * prints typescript interface

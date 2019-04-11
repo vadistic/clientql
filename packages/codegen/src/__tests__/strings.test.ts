@@ -1,37 +1,20 @@
 import {
-  indent,
   printBlockComment,
   printCodeSection,
   printTSInterface,
 } from '../strings'
 
 describe('string utils', () => {
-  it('indent multiline strings', () => {
-    const fixture = `
-    something
-newline
-  indented
-ok
-    `
-
-    expect(indent(fixture, 2)).toMatchInlineSnapshot(`
-            "    something
-                newline
-                  indented
-                ok"
-        `)
-  })
-
   it('print block comment', () => {
     const fixture = printBlockComment('MY IMPORTANT BLOCK')
 
     expect(fixture).toMatchInlineSnapshot(`
-      "/*
-       *
-       * MY IMPORTANT BLOCK
-       *
-       */"
-    `)
+            "/*
+             *
+             * MY IMPORTANT BLOCK
+             *
+             */"
+        `)
   })
 
   it('print sections', () => {
@@ -78,17 +61,17 @@ ok
     const res2 = printTSInterface(name, extend, str)
 
     expect(res1).toMatchInlineSnapshot(`
-      "export interface MyInterface {
-        prop?: Value
-        arr?: any[]
-      }"
-    `)
+            "export interface MyInterface {
+              prop?: Value
+              arr?: any[]
+            }"
+        `)
 
     expect(res2).toMatchInlineSnapshot(`
-      "export interface MyInterface extends First, Second {
-        prop?: Value
-        arr?: any[]
-      }"
-    `)
+            "export interface MyInterface extends First, Second {
+              prop?: Value
+              arr?: any[]
+            }"
+        `)
   })
 })

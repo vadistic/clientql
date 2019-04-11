@@ -21,6 +21,7 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "@graphql-clientgen/testing": "^0.1.0",
     "@types/graphql": "^14.2.0",
     "@types/jest": "24.0.11",
     "@types/node": "11.13.0",

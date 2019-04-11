@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "exclude": [
+    "node_mdules",
+    "dist",
+    "**/tests/**",
+    "**/__tests__/**",
+    "**/*.test.ts"
+  ]
+}

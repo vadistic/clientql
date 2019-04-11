@@ -1,6 +1,10 @@
-import { AstMap, buildAstMap } from '@graphql-clientgen/core'
+import {
+  createGraphQLGraph,
+  GraphQLGraph,
+  mergeExtensions,
+} from '@graphql-clientgen/core'
+
 import { buildASTSchema, DocumentNode, GraphQLSchema } from 'graphql'
-import { mergeExtensions } from './codegen-graphql'
 import {
   defaultGeneratorConfig,
   defaultGeneratorOptions,
@@ -9,13 +13,11 @@ import {
   GeneratorOptions,
   GeneratorPaths,
 } from './config'
-import { GeneratorNaming, getGeneratorNaming } from './naming'
 
 export interface GeneratorProps {
   doc: DocumentNode
-  astMap: AstMap
+  graph: GraphQLGraph
   schema: GraphQLSchema
-  naming: GeneratorNaming
   options: GeneratorOptions
   config: GeneratorConfig
   paths: GeneratorPaths
@@ -65,15 +67,17 @@ export const getGeneratorProps = (
 
   const mergedDoc = mergeExtensions(doc)
 
-  const astMap = buildAstMap(mergedDoc)
+  const schema = buildASTSchema(mergedDoc, {
+    assumeValid: true,
+    assumeValidSDL: true,
+  })
 
-  const schema = buildASTSchema(mergedDoc)
+  const graph = createGraphQLGraph(mergedDoc)
 
   const props: GeneratorProps = {
     doc,
-    astMap,
+    graph,
     schema,
-    naming: getGeneratorNaming(mergedConfig),
     config: mergedConfig,
     options: mergedOptions,
     paths: mergedPaths,

@@ -1,7 +1,5 @@
-import { indent } from '@graphql-clientgen/codegen'
+import { indent } from '@graphql-clientgen/core'
 import { ASTNode, print } from 'graphql'
-
-const INDENT_WIDTH = 2
 
 /**
  *  prints graphql to gql tagged constant

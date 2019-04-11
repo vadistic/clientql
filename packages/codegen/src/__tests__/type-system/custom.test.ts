@@ -19,8 +19,6 @@ describe('printer > custom transformations', () => {
       prev,
       printer,
     ) => {
-      console.log(field.name.value)
-
       if (field.name.value === 'fn') {
         return `()`
       }

@@ -1,3 +1,4 @@
+import { mergeExtensions, truthy } from '@graphql-clientgen/core'
 import {
   ASTNode,
   buildASTSchema,
@@ -8,7 +9,6 @@ import {
   parse,
 } from 'graphql'
 import { CodegenPrinterConfig, defaultConfig } from './config'
-import { mergeExtensions } from './merge-extensions'
 import {
   printArgument,
   printFieldDefinition,
@@ -27,7 +27,6 @@ import {
   printScalar,
   printUnion,
 } from './type-system'
-import { truthy } from './types'
 
 /**
  * Create printer - schema needs to be provided mainly for

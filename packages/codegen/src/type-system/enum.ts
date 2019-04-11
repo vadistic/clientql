@@ -1,12 +1,11 @@
+import { indent, isNotEmpty } from '@graphql-clientgen/core'
 import {
   EnumTypeDefinitionNode,
   EnumTypeExtensionNode,
   GraphQLSchema,
 } from 'graphql'
 import { defaultConfig } from '../config'
-import { indent } from '../strings'
 import { withDescription } from '../type-reference'
-import { isNotEmpty } from '../types'
 
 /**
  * prints EnumTypeDefinitionNode | EnumTypeExtensionNode

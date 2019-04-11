@@ -12,11 +12,15 @@
     "member-ordering": false,
     "variable-name": [
       true,
+      "allow-leading-underscore",
       "ban-keywords",
       "check-format",
       "allow-pascal-case"
     ],
-    "no-implicit-dependencies": [true, ["graphql", "graphql-tag"]]
+    "no-implicit-dependencies": [
+      true,
+      ["graphql", "graphql-tag", "@graphql-clientgen/testing"]
+    ]
   },
   "linterOptions": {
     "exclude": ["**/generated/**", "**/node_modules/**"]

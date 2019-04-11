@@ -1,8 +1,6 @@
+import { capitalise } from '@graphql-clientgen/core'
 import { defaultConfig } from './config'
 import { NullableString } from './strings'
-
-export const capitalise = (input: string) =>
-  input[0].toUpperCase() + input.slice(1)
 
 /**
  * TODO: some sort of spliting

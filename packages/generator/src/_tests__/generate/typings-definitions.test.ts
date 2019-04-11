@@ -1,11 +1,9 @@
 import { generateTypingsDefinitions } from '../../generate'
-import { configFixtureProps } from '../fixture'
+import { fixtureProps } from '../fixture'
 
 describe('generate typings > definitions', () => {
-  const props = configFixtureProps({})
-
   it('match snapshot', async () => {
-    const result = await generateTypingsDefinitions(props)
+    const result = await generateTypingsDefinitions(fixtureProps)
 
     expect(result).toMatchSnapshot()
   })

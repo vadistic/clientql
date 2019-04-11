@@ -1,3 +1,4 @@
+import { indent } from '@graphql-clientgen/core'
 import {
   ArgumentNode,
   GraphQLSchema,
@@ -9,7 +10,6 @@ import {
 } from 'graphql'
 import { defaultConfig } from '../config'
 import { naming } from '../naming'
-import { indent, INDENT_WIDTH } from '../strings'
 
 /**
  * This is all pointles but nvm...

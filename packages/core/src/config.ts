@@ -1,4 +1,5 @@
 import { DocumentNode } from 'graphql'
+import { createGraphQLGraph, GraphQLGraph } from './graphql-graph'
 
 /**
  * Build fragment for typename
@@ -6,7 +7,6 @@ import { DocumentNode } from 'graphql'
  */
 
 export enum FragmentType {
-  DEFAULT = '',
   FLAT = 'Flat',
   DEEP = 'Deep',
   NONE = 'None',
@@ -18,21 +18,26 @@ export enum FragmentType {
 
 export interface CoreConfig {
   /**
-   * whether to use fragments and on what depth
-   * @default: 'NONE'
+   * how deep operation should query
+   * @default: '2'
    */
-  fragmentType: FragmentType
+  operationDepth: number
   /**
-   * deparametrize single client operation argument
-   * @example: createPost:(args: {data: PostData}) => createPost:(data: PostData)
-   * @default: true
+   * idea is that operation can:
+   * 1) not to use fragments, just fields
+   * 2) use one big, deep fragment namespaced to itself
+   * 3) use set of completly flat fragments for each node that can be shared acros operations
+   * @default: 'FLAT'
    */
-  deparametrizeSingleArgument: boolean
+  useFragments: FragmentType
+
+  addTypename: boolean
 }
 
 export const defaultCoreConfig: CoreConfig = {
-  fragmentType: FragmentType.NONE,
-  deparametrizeSingleArgument: true,
+  operationDepth: 2,
+  useFragments: FragmentType.FLAT,
+  addTypename: true,
 }
 
 /**
@@ -40,12 +45,14 @@ export const defaultCoreConfig: CoreConfig = {
  */
 export interface CoreProps {
   config: CoreConfig
+  graph: GraphQLGraph
 }
 
 export const getCoreProps = (
   doc: DocumentNode,
   config?: Partial<CoreConfig>,
 ): CoreProps => ({
+  graph: createGraphQLGraph(doc),
   config: {
     ...defaultCoreConfig,
     ...config,

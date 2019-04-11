@@ -1,4 +1,4 @@
-import { ArrowEntry, Digraph, DigraphEntry } from '../../digraph'
+import { Digraph, DigraphEntry, Edge } from '../../digraph'
 
 describe('Digraph', () => {
   it('works', () => {

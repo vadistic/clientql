@@ -1,10 +1,9 @@
+import { indent, isNotEmpty, isNullable } from '@graphql-clientgen/core'
 import { FieldDefinitionNode, GraphQLSchema } from 'graphql'
 import { defaultConfig } from '../config'
-import { indent } from '../strings'
-import { isNotEmpty } from '../types'
 import { withDescription } from './description'
 import { printInputValue } from './input-value'
-import { isNullable, printType } from './type'
+import { printType } from './type'
 
 /**
  * print FieldDefinitionNode

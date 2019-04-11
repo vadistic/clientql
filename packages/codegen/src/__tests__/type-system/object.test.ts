@@ -1,7 +1,7 @@
+import { PRISMA_TYPEDEFS } from '@graphql-clientgen/testing'
 import { buildASTSchema, Kind } from 'graphql'
 import gql from 'graphql-tag'
 import { createCodegenPrinter } from '../../printer'
-import { TYPEDEFS } from '../typedefs'
 
 describe('printer > ' + Kind.OBJECT_TYPE_DEFINITION, () => {
   it('addFieldsAsFunction: true', () => {
@@ -17,12 +17,12 @@ describe('printer > ' + Kind.OBJECT_TYPE_DEFINITION, () => {
     const print = createCodegenPrinter({ addFieldAsFunction: true })
 
     expect(print(fixture)).toMatchInlineSnapshot(`
-                  "export interface MyType {
-                    prop: () => string
-                    arr: () => string[]
-                    fn: (args: { data: string }) => string
-                  }"
-            `)
+                        "export interface MyType {
+                          prop: () => string
+                          arr: () => string[]
+                          fn: (args: { data: string }) => string
+                        }"
+                `)
   })
 
   it('addTypename: false', () => {
@@ -38,12 +38,12 @@ describe('printer > ' + Kind.OBJECT_TYPE_DEFINITION, () => {
     const print = createCodegenPrinter({ addTypename: false })
 
     expect(print(fixture)).toMatchInlineSnapshot(`
-                  "export interface MyType {
-                    prop: string
-                    arr: string[]
-                    fn: string
-                  }"
-            `)
+                        "export interface MyType {
+                          prop: string
+                          arr: string[]
+                          fn: string
+                        }"
+                `)
   })
 
   it('useExtendedInterfaces: true', () => {
@@ -91,11 +91,11 @@ describe('printer > ' + Kind.OBJECT_TYPE_DEFINITION, () => {
   })
 
   it('useFieldArgumentsInterfaces: true', () => {
-    const schema = buildASTSchema(TYPEDEFS)
+    const schema = buildASTSchema(PRISMA_TYPEDEFS)
 
     const print = createCodegenPrinter(
       { addFieldAsFunction: true, useFieldArgumentsInterface: true },
-      TYPEDEFS,
+      PRISMA_TYPEDEFS,
     )
 
     const fixture = schema.getQueryType()!.astNode!
