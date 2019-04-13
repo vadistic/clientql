@@ -16,7 +16,7 @@ import {
   wrapDocument,
 } from '../ast'
 import { CoreProps } from '../config'
-import { buildSelections } from './selection'
+import { buildSelections, retriveCacheFragments } from './selection'
 
 /**
  * this needs to build operation from arr of fieldnames
@@ -66,8 +66,9 @@ const buildDeepOperation = (props: CoreProps) => (
   }
 
   const edgeData = vtx.weightsMap!.get(head)
+  const nextTarget = vtx.edgesMap!.get(head)
 
-  if (!edgeData) {
+  if (!edgeData || !nextTarget) {
     throw Error('Invalid operation path')
   }
 
@@ -87,13 +88,12 @@ const buildDeepOperation = (props: CoreProps) => (
 
   // base
   if (tail.length === 0) {
-    const { selections, complete, fragments } = buildSelections(props)(
-      vtx.name,
-      head,
+    const { selections, complete, fragmentnames } = buildSelections(props)(
+      nextTarget,
     )
 
     return {
-      fragments,
+      fragments: retriveCacheFragments(props)(fragmentnames),
       variables,
       selection: createField({
         fieldname: head,
@@ -103,16 +103,11 @@ const buildDeepOperation = (props: CoreProps) => (
     }
   }
 
-  // not a base
-
-  // nullability checked above by edgeData
-  const nextTarget = vtx.edgesMap!.get(head)!
-
   const { selection, fragments, variables: deepVariables } = buildDeepOperation(
     props,
   )(nextTarget, tail, level + 1)
 
-  const netxtSelection: FieldNode = createField({
+  const nextSelection: FieldNode = createField({
     fieldname: head,
     arguments: args,
     selections: [selection],
@@ -121,11 +116,13 @@ const buildDeepOperation = (props: CoreProps) => (
   return {
     variables: [...variables, ...deepVariables],
     fragments,
-    selection: netxtSelection,
+    selection: nextSelection,
   }
 }
 
-const determineOperationType = (props: CoreProps) => (head: Fieldname) => {
+export const determineOperationType = (props: CoreProps) => (
+  head: Fieldname,
+) => {
   const query = props.graph.get('Query')
   if (query && query.edgesMap && query.edgesMap.has(head)) {
     return { vtx: query, type: 'query' as OperationTypeNode }

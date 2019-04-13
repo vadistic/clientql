@@ -1,9 +1,9 @@
 interface Node {
-  id: ID!
+  id: ID! @unique
 }
 
 type Post implements Node {
-  id: ID!
+  id: ID! @unique
   author: User!
   content: String
   createdAt: DateTime!
@@ -12,8 +12,8 @@ type Post implements Node {
   updatedAt: DateTime!
 }
 
-type User implements Node & Person {
-  id: ID!
+type User implements Node {
+  id: ID! @unique
   nationality: String
   email: String!
   name: String
@@ -29,19 +29,19 @@ type User implements Node & Person {
 }
 
 type Thread {
-  id: ID!
+  id: ID! @unique
   createdAt: DateTime!
   author: User!
   name: String!
-  entry: Post!
-  replies: [Post!]!
+  entry: Post! @relation(name: "ThreadEntry")
+  replies: [Post!]! @relation(name: "ThreadReplies")
 }
 
 type Board {
-  id: ID!
+  id: ID! @unique
   createdAt: DateTime!
-  admins: [User!]!
-  members: [User!]!
+  admins: [User!]! @relation(name: "BoardAdmins")
+  members: [User!]! @relation(name: "BoardMembers")
   threads: [Thread!]!
 }
 

@@ -15,363 +15,352 @@ import { CoreProps, FragmentType } from '../config'
 import { Edge } from '../type-graph'
 import { isNotEmpty } from '../utils'
 
-export const buildSelections = (props: CoreProps) => (
-  target: Typename,
-  initalEdgeKey = '$ROOT',
-) => {
-  const initalStack: Edge[] = [[initalEdgeKey, target]]
-
-  const { selections, complete, fragmentnames } = buildDeepSelection(props)(
-    target,
-    initalStack,
-  )
-
-  // I'm building those fragments anyway, but the goal for later
-  // is to skip traversing graph where a tree was previously deemed complete and retrive from cache
-  const cacheFragments = Array.from(new Set(fragmentnames).values()).map(
-    name => props.fragments.get(name)!,
-  )
-
-  return {
-    selections,
-    fragments: cacheFragments,
-    complete,
-  }
+export interface SelectionResult {
+  selections: SelectionNode[]
+  fragmentnames: string[]
+  complete: boolean
+  flat: boolean
 }
+
+export const buildSelections = (props: CoreProps) => (target: Typename) =>
+  buildNestedSelection(props)([['$ROOT', target]])
+
+export const retriveCacheFragments = (props: CoreProps) => (
+  fragmentnames: string[],
+) => onlyUnique(fragmentnames).map(name => props.fragments.get(name)!)
+
+// not sure at which stage do it and if this is performant way
+const onlyUnique = (input: string[]) => Array.from(new Set(input).values())
+
+const lastTypename = (stack: Edge[]) => stack[stack.length - 1][1]
+const lastFieldname = (stack: Edge[]) => stack[stack.length - 1][0]
 
 /**
  * edge will be circural if...
  */
-const isCircural = (props: CoreProps) => (
-  stack: Edge[],
-  [fieldname, typename]: Edge,
-) => {
+const isCircural = (props: CoreProps) => (stack: Edge[]) => {
   // cannot circle just on the begining
   if (stack.length === 1) {
     return false
   }
 
-  const [inital, second] = stack
-  const [, initalTypename] = inital
+  const firstTypename = stack[0][1]
+  const typename = lastTypename(stack)
+  const fieldname = lastFieldname(stack)
 
-  // do not go to the inital type so..
-  // lets jsut check if duplicates any of stack entriess
-  if (initalTypename !== typename) {
-    return stack.some(([a, b]) => a === fieldname && b === typename)
-  }
-
-  // let's handle circle on the first element (since inital edge can be a mystery)
-  const [secondFieldname, secondTypename] = second
-  const target = props.graph.get(typename)
-
-  // no target - no circle, life is simple
-  if (!target) {
-    return false
-  }
-
-  // this will mean a circle
-  if (
-    target.edgesMap &&
-    target.edgesMap.get(secondFieldname) === secondTypename
-  ) {
+  // no idea how to check the first edge so
+  // I'm just banning root/first typename
+  if (firstTypename === typename) {
     return true
   }
 
-  return false
+  // cannot allow to duplicate any stack entry
+  // (except first edge that is kinda virtual and the last)
+  return stack.slice(1, -1).some(([a, b]) => a === fieldname && b === typename)
 }
 
 /**
- * recursivelly build deep selection
- * as one big recursice fn + loop
- * and using function scope flags/mutation, but I hope it'll be fast this way
+ * this is main recursive reducer
+ *
+ * splitted in 2 because
+ *  - I cache nested fragments by Typename+ content, not by edge
+ *  - split validation + building
  */
 
-const buildDeepSelection = (props: CoreProps) => (
-  on: Typename,
+const buildSelection = (props: CoreProps) => (
   stack: Edge[],
-) => {
-  const current = props.graph.get(on)
+): SelectionResult => {
+  const typename = lastTypename(stack)
+  const fieldname = lastFieldname(stack)
+
+  const vtx = props.graph.get(typename)
   const allowedDepth = props.config.maxDepth - (stack.length - 1)
-  const deepSelection = buildDeepSelection(props)
 
-  const result: SelectionNode[] = []
-  const nestedFragmentnames: string[] = []
+  const noop = {
+    complete: true,
+    flat: true,
+    fragmentnames: [],
+    selections: [],
+  }
 
-  // flag to cheaply check if recursive selection can be wrapped in complete fragment
-  let isComplete = true
-  let isFlat = true
+  if (isCircural(props)(stack)) {
+    return { ...noop, complete: false }
+  }
 
-  // validation / base
-  if (!current || !current.edgesArr || allowedDepth < 0) {
+  // trivial flat cases, always allowed
+  if (
+    !vtx ||
+    isEnumTypeDefinitionNode(vtx.value) ||
+    isScalarTypeDefinitionNode(vtx.value)
+  ) {
     return {
-      selections: [],
       complete: true,
-      fragmentnames: [],
       flat: true,
-    }
-  }
-
-  for (const edge of current.edgesArr) {
-    const [fieldname, typename] = edge
-    const target = props.graph.get(typename)
-
-    /*
-     * handle flat
-     */
-
-    if (
-      !target ||
-      isEnumTypeDefinitionNode(target.value) ||
-      isScalarTypeDefinitionNode(target.value)
-    ) {
-      result.push(createField({ fieldname }))
-      continue
-    }
-
-    // cannot select nested on depth 0
-    if (allowedDepth < 1) {
-      isComplete = false
-      continue
-    }
-
-    // avoid circles
-    if (isCircural(props)(stack, edge)) {
-      isComplete = false
-      console.log('CIRCTLE', stack, '=>', edge)
-      continue
-    }
-
-    /*
-     * handle object
-     */
-
-    if (isObjectTypeDefinitionNode(target.value)) {
-      const { complete, selections, fragmentnames } = deepSelection(typename, [
-        ...stack,
-        edge,
-      ])
-
-      if (fragmentnames.length !== 0) {
-        nestedFragmentnames.push(...fragmentnames)
-      }
-
-      if (!complete) {
-        isComplete = false
-      }
-
-      isFlat = false
-      result.push(createField({ fieldname, selections }))
-      continue
-    }
-
-    /*
-     * handle union
-     */
-
-    if (isUnionTypeDefinitionNode(target.value)) {
-      // union with no members
-      if (!target.implementations) {
-        continue
-      }
-
-      const inlines: InlineFragmentNode[] = []
-
-      for (const implem of target.implementations) {
-        const { complete, selections, fragmentnames } = deepSelection(implem, [
-          ...stack,
-          edge,
-        ])
-
-        if (fragmentnames.length !== 0) {
-          nestedFragmentnames.push(...fragmentnames)
-        }
-
-        if (!complete) {
-          isComplete = false
-        }
-
-        if (isNotEmpty(selections)) {
-          inlines.push(createInlineFragment(implem, selections))
-        }
-      }
-
-      if (!isNotEmpty(inlines)) {
-        continue
-      }
-
-      isFlat = false
-      result.push(createField({ fieldname, selections: inlines }))
-      continue
-    }
-
-    /*
-     * handle interfaces
-     */
-
-    if (isInterfaceTypeDefinitonNode(target.value)) {
-      const own = deepSelection(typename, [...stack, edge])
-
-      if (own.fragmentnames.length !== 0) {
-        nestedFragmentnames.push(...own.fragmentnames)
-      }
-
-      if (!own.complete) {
-        isComplete = false
-      }
-
-      const ownAndInlines: SelectionNode[] = own.selections
-
-      // can interface have no implementations?? not sure if possible
-      for (const implem of target.implementations || []) {
-        const { complete, selections, fragmentnames } = deepSelection(implem, [
-          ...stack,
-          edge,
-        ])
-
-        if (fragmentnames.length !== 0) {
-          nestedFragmentnames.push(...fragmentnames)
-        }
-
-        if (!complete) {
-          isComplete = false
-        }
-
-        if (isNotEmpty(selections)) {
-          ownAndInlines.push(createInlineFragment(implem, selections))
-        }
-      }
-
-      if (!isNotEmpty(ownAndInlines)) {
-        continue
-      }
-
-      isFlat = false
-      result.push(createField({ fieldname, selections: ownAndInlines }))
-      continue
-    }
-  }
-
-  /**
-   * process result
-   */
-
-  // empty
-  if (result.length === 0) {
-    return {
-      selections: [],
       fragmentnames: [],
-      complete: true,
+      selections: [createField({ fieldname })],
     }
   }
 
-  // add typename
-
-  // ! but not on root fields because it will create for them weird flat fragments with only typename
-  // TODO: how to hand it + probably a helper to check if root to support custom schema definitions
-  if (
-    props.config.addTypename &&
-    !['Query', 'Mutation', 'Subscription'].includes(on)
-  ) {
-    result.unshift(createField({ fieldname: '__typename' }))
+  // disable nesting when depth 0 and circural queries
+  if (allowedDepth < 1) {
+    return { ...noop, complete: false }
   }
 
-  // no fragments
-  if (props.config.useFragments === FragmentType.NONE) {
-    return {
-      selections: result,
-      fragmentnames: nestedFragmentnames,
-      complete: isComplete,
+  // load from cache or build
+  const nestedSelection = props.selections.has(typename)
+    ? props.selections.get(typename)!
+    : buildNestedSelection(props)(stack)
+
+  // another noop
+  if (!isNotEmpty(nestedSelection.selections)) {
+    return noop
+  }
+
+  // top case => return unpacked
+  if (stack.length === 1) {
+    return nestedSelection
+  }
+
+  // return nested on one wrapping field
+  return {
+    ...nestedSelection,
+    flat: false,
+    selections: [
+      createField({
+        fieldname,
+        selections: nestedSelection.selections,
+      }),
+    ],
+  }
+}
+
+const buildNestedSelection = (props: CoreProps) => (
+  stack: Edge[],
+): SelectionResult => {
+  const typename = lastTypename(stack)
+  const vtx = props.graph.get(typename)!
+
+  if (isObjectTypeDefinitionNode(vtx.value)) {
+    let complete = true
+    let flat = true
+
+    const selections: SelectionNode[] = []
+    const fragmentnames: string[] = []
+
+    for (const edge of vtx.edgesArr || []) {
+      const res = buildSelection(props)([...stack, edge])
+
+      if (!isNotEmpty(res.selections)) {
+        complete = false
+        continue
+      }
+
+      selections.push(...res.selections)
+      fragmentnames.push(...res.fragmentnames)
+
+      flat = flat && res.flat
+      complete = complete && res.complete
     }
+
+    return cacheAndFragment(props)(stack, {
+      complete,
+      flat,
+      fragmentnames,
+      selections,
+    })
   }
 
-  /**
-   * fragmentarize
-   *
-   * I've used global flags for "isFlat" & "isComplete" and passed result in recursion,
-   * it seems like smart way to do it.
-   *
-   * "Complete" indicate that selection has all possible fields so it can be used as fragment everywhere
-   * - selection skipped fields because of depth limit is not complete
-   * - circural selection that has skipped circural fields is not complete
-   * - flat fragment is always complete
-   *
-   * I'm not playing with partial fragments, because even simple circural datamodel will produce
-   * tons of UserWithoutPostWithoutPostUserWithoutWhatever
-   * (and it's getting crazy with unions/ interfaces)
-   */
+  if (isUnionTypeDefinitionNode(vtx.value)) {
+    // weird case of union without members
+    if (!vtx.implementations) {
+      return {
+        complete: true,
+        flat: true,
+        fragmentnames: [],
+        selections: [],
+      }
+    }
 
-  // fragmentarize complete result
-  // complete + isFlat OR complete + FragmentType.FLAT => wrap everything in fragment
-  if (
-    isComplete &&
-    (isFlat || props.config.useFragments === FragmentType.DEEP)
-  ) {
-    const fragmentname = on + (isFlat ? 'Flat' : 'Deep')
+    let complete = true
+    let flat = true
 
-    // conditionaly register fragment
+    const selections: SelectionNode[] = []
+    const fragmentnames: string[] = []
+
+    const stackBase = stack.slice(0, -1)
+    const fieldname = lastFieldname(stack)
+
+    for (const implem of vtx.implementations) {
+      // replacing last stack entry when resolving union, kind of portal?
+      const res = buildSelection(props)([...stackBase, [fieldname, implem]])
+
+      if (!isNotEmpty(res.selections)) {
+        complete = false
+        continue
+      }
+
+      selections.push(createInlineFragment(implem, res.selections))
+      fragmentnames.push(...res.fragmentnames)
+
+      flat = flat && res.flat
+      complete = complete && res.complete
+    }
+
+    return cacheAndFragment(props)(stack, {
+      complete,
+      flat,
+      fragmentnames,
+      selections,
+    })
+  }
+
+  if (isInterfaceTypeDefinitonNode(vtx.value)) {
+    let complete = true
+    let flat = true
+
+    const selections: SelectionNode[] = []
+    const fragmentnames: string[] = []
+
+    const stackBase = stack.slice(0, -1)
+    const fieldname = lastFieldname(stack)
+
+    for (const edge of vtx.edgesArr || []) {
+      const res = buildSelection(props)([...stack, edge])
+
+      if (!isNotEmpty(res.selections)) {
+        complete = false
+        continue
+      }
+
+      selections.push(...res.selections)
+      fragmentnames.push(...res.fragmentnames)
+
+      flat = flat && res.flat
+      complete = complete && res.complete
+    }
+
+    for (const implem of vtx.implementations || []) {
+      const res = buildSelection(props)([...stackBase, [fieldname, implem]])
+
+      if (!isNotEmpty(res.selections)) {
+        complete = false
+        continue
+      }
+
+      selections.push(createInlineFragment(implem, res.selections))
+      fragmentnames.push(...res.fragmentnames)
+
+      flat = flat && res.flat
+      complete = complete && res.complete
+    }
+
+    return cacheAndFragment(props)(stack, {
+      complete,
+      flat,
+      fragmentnames,
+      selections,
+    })
+  }
+
+  // noop
+  return {
+    complete: true,
+    flat: true,
+    fragmentnames: [],
+    selections: [],
+  }
+}
+
+/**
+ * logic by FragmentType is:
+ *
+ *  NONE => pass through
+ *  DEEP => pack in fragment if complete
+ *  FLAT =>
+ *    pack in fragment if flat flag (which is also complete btw.)
+ *    select flat if not flat
+ *
+ */
+const cacheAndFragment = (props: CoreProps) => (
+  stack: Edge[],
+  result: SelectionResult,
+): SelectionResult => {
+  let fragmentedResult = result
+  const typename = lastTypename(stack)
+
+  if (props.config.useFragments === FragmentType.DEEP && result.complete) {
+    const fragmentname = typename + (result.flat ? 'Flat' : 'Deep')
+
     if (!props.fragments.has(fragmentname)) {
       props.fragments.set(
         fragmentname,
         createFragment({
-          condition: on,
+          condition: typename,
           fragmentname,
-          selections: result,
+          selections: result.selections,
         }),
       )
     }
 
-    return {
+    fragmentedResult = {
+      ...result,
       selections: [createFragmentSpread(fragmentname)],
-      fragmentnames: [fragmentname, ...nestedFragmentnames],
-      complete: isComplete,
+      fragmentnames: [fragmentname, ...result.fragmentnames],
     }
   }
 
-  // FragmentType.FLAT but was not flat OR not complete
-  // => divide into flat and deep selection
   if (props.config.useFragments === FragmentType.FLAT) {
-    const fragmentname = on + 'Flat'
+    const fragmentname = typename + 'Flat'
 
-    const flat = result.filter(
-      node => node.kind === Kind.FIELD && !node.selectionSet,
-    )
-    const deep = result.filter(
-      node =>
-        node.kind !== Kind.FIELD ||
-        (node.selectionSet && isNotEmpty(node.selectionSet)),
-    )
+    const { flat, deep } = result.flat
+      ? { flat: result.selections, deep: [] }
+      : result.selections.reduce(
+          (acc, node) => {
+            if (
+              node.kind === Kind.FIELD &&
+              (!node.selectionSet || node.selectionSet.selections.length === 0)
+            ) {
+              acc.flat.push(node)
+            } else {
+              acc.deep.push(node)
+            }
 
-    const hasFlatPart = flat.length !== 0
+            return acc
+          },
+          {
+            flat: [] as SelectionNode[],
+            deep: [] as SelectionNode[],
+          },
+        )
 
-    // conditionaly register fragment
-    if (hasFlatPart && !props.fragments.has(fragmentname)) {
+    if (!props.fragments.has(fragmentname)) {
       props.fragments.set(
         fragmentname,
         createFragment({
-          condition: on,
+          condition: typename,
           fragmentname,
           selections: flat,
         }),
       )
     }
 
-    return {
-      selections: [
-        ...(hasFlatPart ? [createFragmentSpread(fragmentname)] : []),
-        ...deep,
-      ],
-      fragmentnames: [
-        ...(fragmentname ? [fragmentname] : []),
-        ...nestedFragmentnames,
-      ],
-      complete: isComplete,
+    fragmentedResult = {
+      ...result,
+      selections: [createFragmentSpread(fragmentname), ...deep],
+      fragmentnames: [fragmentname, ...result.fragmentnames],
     }
   }
 
-  // fallthrough
-  return {
-    selections: result,
-    fragmentnames: nestedFragmentnames,
-    complete: isComplete,
+  /*
+   * write to cache, if selection is complete (does not make sense to store partial ones)
+   */
+  if (fragmentedResult.complete && !props.selections.has(typename)) {
+    props.selections.set(typename, {
+      ...fragmentedResult,
+      fragmentnames: onlyUnique(fragmentedResult.fragmentnames),
+    })
   }
+
+  // return
+  return fragmentedResult
 }

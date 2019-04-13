@@ -49,7 +49,6 @@ export interface TruePipe {
 
 export const truePipe: TruePipe = (...fns: any[]) => (input: any) =>
   fns.reduce(
-    (val, fn: any) =>
-      val === undefined || val === false ? undefined : fn(val),
+    (val, fn: any) => (val === undefined || val === false ? val : fn(val)),
     input,
   )

@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@graphql-clientgen/core": "^0.1.0",
+    "@graphql-clientgen/testing": "^0.1.0",
     "apollo-client": "^2.5.1"
   },
   "devDependencies": {

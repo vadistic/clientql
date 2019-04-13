@@ -6,10 +6,10 @@ import { HttpLink } from 'apollo-link-http'
 
 const cache = new InMemoryCache()
 
-const ENDPOINT = `https://vats.now.sh/graphql`
+const ENDPOINT = `https://eu1.prisma.sh/vadistic/graphql-clientgen/dev`
 
 const httpLink = new HttpLink({
-  uri: ENDPOINT
+  uri: ENDPOINT,
 })
 
 const errorLink = onError(({ graphQLErrors, networkError, response }) => {
@@ -26,7 +26,7 @@ const errorLink = onError(({ graphQLErrors, networkError, response }) => {
 const apolloClientOptions = {
   connectToDevTools: true,
   link: ApolloLink.from([errorLink, httpLink]),
-  cache
+  cache,
 }
 
-export const client = new ApolloClient(apolloClientOptions)
+export const apolloClient = new ApolloClient(apolloClientOptions)

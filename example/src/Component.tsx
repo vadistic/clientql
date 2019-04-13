@@ -1,11 +1,15 @@
 import React, { useState } from 'react'
+import { client } from './client'
 
 export const Component: React.FC = () => {
   const [state, setState] = useState<any>({})
 
   const handleFetch = async () => {
-    // const res = await clientProxy.applications()
-    // setState(res)
+    const start = window.performance.now()
+    const p = client.users()
+    console.log('QUERY TIME', window.performance.now() - start)
+    const res = await p
+    setState(res)
   }
 
   return (

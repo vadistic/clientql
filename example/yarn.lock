@@ -856,20 +856,30 @@
   version "0.1.0"
   dependencies:
     "@graphql-clientgen/core" "^0.1.0"
+    "@graphql-clientgen/testing" "^0.1.0"
     apollo-client "^2.5.1"
+
+"@graphql-clientgen/codegen@../packages/codegen", "@graphql-clientgen/codegen@^0.1.0":
+  version "0.1.0"
+  dependencies:
+    graphql "^14.2.1"
+
+"@graphql-clientgen/core@../packages/core", "@graphql-clientgen/core@^0.1.0":
+  version "0.1.0"
 
 "@graphql-clientgen/generator@../packages/generator":
   version "0.1.0"
   dependencies:
+    "@graphql-clientgen/codegen" "^0.1.0"
     "@graphql-clientgen/core" "^0.1.0"
     change-case "^3.1.0"
-    fs-extra "^7.0.1"
     graphql "^14.2.1"
     graphql-tag "^2.10.1"
-    node-fetch "^2.3.0"
 
-"@graphql-clientgen/core@../packages/core", "@graphql-clientgen/core@^0.1.0":
+"@graphql-clientgen/testing@../packages/testing", "@graphql-clientgen/testing@^0.1.0":
   version "0.1.0"
+  dependencies:
+    graphql "^14.2.1"
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
@@ -4218,7 +4228,7 @@ from2@^2.1.0:
     inherits "^2.0.1"
     readable-stream "^2.0.0"
 
-fs-extra@7.0.1, fs-extra@^7.0.0, fs-extra@^7.0.1:
+fs-extra@7.0.1, fs-extra@^7.0.0:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-7.0.1.tgz#4f189c44aa123b895f722804f55ea23eadc348e9"
   integrity sha512-YJDaCJZEnBmcbw13fvdAM9AwNOJwOzrE4pqMqBq5nFiEqXUqHwlK4B+3pUw6JNvfSPtX05xFHtYy/1ni01eGCw==
@@ -6582,11 +6592,6 @@ no-case@^2.2.0, no-case@^2.3.2:
   integrity sha512-rmTZ9kz+f3rCvK2TD1Ue/oZlns7OGoIWP4fc3llxxRXlOkHKoWPPWJOfFYpITabSow43QJbRIoHQXtt10VldyQ==
   dependencies:
     lower-case "^1.1.1"
-
-node-fetch@^2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.3.0.tgz#1a1d940bbfb916a1d3e0219f037e89e71f8c5fa5"
-  integrity sha512-MOd8pV3fxENbryESLgVIeaGKrdl+uaYhCSSVkjeOb/31/njTpcis5aWfdqgNlHIrKOLRbMnfPINPOML2CIFeXA==
 
 node-forge@0.7.5:
   version "0.7.5"
