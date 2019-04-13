@@ -15,43 +15,84 @@ import { CoreProps, FragmentType } from '../config'
 import { Edge } from '../type-graph'
 import { isNotEmpty } from '../utils'
 
-export const createSelections = (props: CoreProps) => (target: Typename) => {
-  const { selections, complete, fragmentnames } = createSelectionsLoop(props)(
+export const buildSelections = (props: CoreProps) => (
+  target: Typename,
+  initalEdgeKey = '$ROOT',
+) => {
+  const initalStack: Edge[] = [[initalEdgeKey, target]]
+
+  const { selections, complete, fragmentnames } = buildDeepSelection(props)(
     target,
-    [['$ROOT', target]],
+    initalStack,
   )
 
-  const retrivedFragments = Array.from(new Set(fragmentnames).values()).map(
-    name => props.fragments.get(name),
+  // I'm building those fragments anyway, but the goal for later
+  // is to skip traversing graph where a tree was previously deemed complete and retrive from cache
+  const cacheFragments = Array.from(new Set(fragmentnames).values()).map(
+    name => props.fragments.get(name)!,
   )
 
   return {
     selections,
-    fragments: retrivedFragments,
+    fragments: cacheFragments,
+    complete,
   }
 }
 
-const isEdgeEqual = (a: Edge) => (b: Edge) => a[0] === b[0] && a[1] === b[1]
+/**
+ * edge will be circural if...
+ */
+const isCircural = (props: CoreProps) => (
+  stack: Edge[],
+  [fieldname, typename]: Edge,
+) => {
+  // cannot circle just on the begining
+  if (stack.length === 1) {
+    return false
+  }
 
-const isCircural = (stack: Edge[]) => (edge: Edge) => {
+  const [inital, second] = stack
+  const [, initalTypename] = inital
+
+  // do not go to the inital type so..
+  // lets jsut check if duplicates any of stack entriess
+  if (initalTypename !== typename) {
+    return stack.some(([a, b]) => a === fieldname && b === typename)
+  }
+
+  // let's handle circle on the first element (since inital edge can be a mystery)
+  const [secondFieldname, secondTypename] = second
+  const target = props.graph.get(typename)
+
+  // no target - no circle, life is simple
+  if (!target) {
+    return false
+  }
+
+  // this will mean a circle
   if (
-    stack.length === 2 &&
-    stack[0][0] === '$ROOT' &&
-    stack[0][1] === edge[1]
+    target.edgesMap &&
+    target.edgesMap.get(secondFieldname) === secondTypename
   ) {
     return true
   }
 
-  return stack.some(isEdgeEqual(edge))
+  return false
 }
 
-const createSelectionsLoop = (props: CoreProps) => (
+/**
+ * recursivelly build deep selection
+ * as one big recursice fn + loop
+ * and using function scope flags/mutation, but I hope it'll be fast this way
+ */
+
+const buildDeepSelection = (props: CoreProps) => (
   on: Typename,
   stack: Edge[],
 ) => {
   const current = props.graph.get(on)
   const allowedDepth = props.config.maxDepth - (stack.length - 1)
-  const selectionLoop = createSelectionsLoop(props)
+  const deepSelection = buildDeepSelection(props)
 
   const result: SelectionNode[] = []
   const nestedFragmentnames: string[] = []
@@ -89,15 +130,14 @@ const createSelectionsLoop = (props: CoreProps) => (
 
     // cannot select nested on depth 0
     if (allowedDepth < 1) {
-      console.log('allowedDepth', edge)
       isComplete = false
       continue
     }
 
     // avoid circles
-    if (isCircural(stack)(edge)) {
-      console.log('isCircural', edge)
+    if (isCircural(props)(stack, edge)) {
       isComplete = false
+      console.log('CIRCTLE', stack, '=>', edge)
       continue
     }
 
@@ -106,7 +146,7 @@ const createSelectionsLoop = (props: CoreProps) => (
      */
 
     if (isObjectTypeDefinitionNode(target.value)) {
-      const { complete, selections, fragmentnames } = selectionLoop(typename, [
+      const { complete, selections, fragmentnames } = deepSelection(typename, [
         ...stack,
         edge,
       ])
@@ -137,7 +177,7 @@ const createSelectionsLoop = (props: CoreProps) => (
       const inlines: InlineFragmentNode[] = []
 
       for (const implem of target.implementations) {
-        const { complete, selections, fragmentnames } = selectionLoop(implem, [
+        const { complete, selections, fragmentnames } = deepSelection(implem, [
           ...stack,
           edge,
         ])
@@ -155,22 +195,21 @@ const createSelectionsLoop = (props: CoreProps) => (
         }
       }
 
+      if (!isNotEmpty(inlines)) {
+        continue
+      }
+
       isFlat = false
       result.push(createField({ fieldname, selections: inlines }))
       continue
     }
 
     /*
-     * handle fragments
+     * handle interfaces
      */
 
     if (isInterfaceTypeDefinitonNode(target.value)) {
-      // interface with no implementations?? not sure if possible
-      if (!target.implementations) {
-        continue
-      }
-
-      const own = selectionLoop(typename, [...stack, edge])
+      const own = deepSelection(typename, [...stack, edge])
 
       if (own.fragmentnames.length !== 0) {
         nestedFragmentnames.push(...own.fragmentnames)
@@ -182,8 +221,9 @@ const createSelectionsLoop = (props: CoreProps) => (
 
       const ownAndInlines: SelectionNode[] = own.selections
 
-      for (const implem of target.implementations) {
-        const { complete, selections, fragmentnames } = selectionLoop(implem, [
+      // can interface have no implementations?? not sure if possible
+      for (const implem of target.implementations || []) {
+        const { complete, selections, fragmentnames } = deepSelection(implem, [
           ...stack,
           edge,
         ])
@@ -199,6 +239,10 @@ const createSelectionsLoop = (props: CoreProps) => (
         if (isNotEmpty(selections)) {
           ownAndInlines.push(createInlineFragment(implem, selections))
         }
+      }
+
+      if (!isNotEmpty(ownAndInlines)) {
+        continue
       }
 
       isFlat = false
@@ -221,7 +265,13 @@ const createSelectionsLoop = (props: CoreProps) => (
   }
 
   // add typename
-  if (props.config.addTypename) {
+
+  // ! but not on root fields because it will create for them weird flat fragments with only typename
+  // TODO: how to hand it + probably a helper to check if root to support custom schema definitions
+  if (
+    props.config.addTypename &&
+    !['Query', 'Mutation', 'Subscription'].includes(on)
+  ) {
     result.unshift(createField({ fieldname: '__typename' }))
   }
 

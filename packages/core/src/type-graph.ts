@@ -1,5 +1,11 @@
 import { DocumentNode, FieldDefinitionNode, TypeDefinitionNode } from 'graphql'
-import { getTypename, isTypeDefinitionNode, Kind } from './ast'
+import {
+  Fieldname,
+  getTypename,
+  isTypeDefinitionNode,
+  Kind,
+  Typename,
+} from './ast'
 import {
   Digraph,
   DigraphEdgeLinkEntry,
@@ -10,20 +16,20 @@ import {
 
 export type TypeGraph = ReturnType<typeof createTypeGraph>
 
-export type Edge = DigraphEdgeLinkEntry<string, string>
-export type EdgeType = DigraphEdgeWeigthEntry<string, FieldDefinitionNode>
+export type Edge = DigraphEdgeLinkEntry<Fieldname, Typename>
+export type EdgeType = DigraphEdgeWeigthEntry<Fieldname, FieldDefinitionNode>
 
 export type GraphEntry = DigraphVertexEntry<
-  string,
+  Typename,
   TypeDefinitionNode,
-  string,
+  Fieldname,
   FieldDefinitionNode
 >
 
 export type GraphVertex = DigraphVertex<
-  string,
+  Typename,
   TypeDefinitionNode,
-  string,
+  Fieldname,
   FieldDefinitionNode
 >
 

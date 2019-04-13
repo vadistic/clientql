@@ -1,11 +1,11 @@
 import { print } from 'graphql'
 import { createFragment, createOperation, wrapDocument } from '../../ast'
-import { createSelections } from '../../operations'
+import { buildSelections } from '../../operation'
 import { complexProps, prismaProps } from '../fixture'
 
 describe('selection', () => {
   it('deep fragment', () => {
-    const selectionFn = createSelections(prismaProps)
+    const selectionFn = buildSelections(prismaProps)
 
     const { selections, fragments } = selectionFn('Post')
 
@@ -45,7 +45,7 @@ describe('selection', () => {
   })
 
   it('deep interface fragment', () => {
-    const selectionFn = createSelections(complexProps)
+    const selectionFn = buildSelections(complexProps)
 
     const { selections, fragments } = selectionFn('Query')
 
@@ -59,7 +59,7 @@ describe('selection', () => {
   })
 
   it('deep interface fragment', () => {
-    const selectionFn = createSelections(complexProps)
+    const selectionFn = buildSelections(complexProps)
 
     const { selections, fragments } = selectionFn('Event')
 
