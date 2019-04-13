@@ -6,6 +6,8 @@ import {
   InlineFragmentNode,
   InputValueDefinitionNode,
   NameNode,
+  OperationDefinitionNode,
+  OperationTypeNode,
   SelectionNode,
   VariableDefinitionNode,
 } from 'graphql'
@@ -102,4 +104,24 @@ export const createOperationArgument = (suffix: string) => (
     kind: Kind.VARIABLE,
     name: createName(node.name.value + suffix),
   },
+})
+
+export interface CreateOperationProps {
+  name: string
+  type: OperationTypeNode
+  variables?: VariableDefinitionNode[]
+  selections: SelectionNode[]
+}
+
+export const createOperation = (
+  props: CreateOperationProps,
+): OperationDefinitionNode => ({
+  kind: Kind.OPERATION_DEFINITION,
+  name: createName(props.name),
+  operation: props.type,
+  selectionSet: {
+    kind: Kind.SELECTION_SET,
+    selections: props.selections,
+  },
+  variableDefinitions: props.variables,
 })

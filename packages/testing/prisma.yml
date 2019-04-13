@@ -1,0 +1,6 @@
+endpoint: https://eu1.prisma.sh/vadistic/graphql-clientgen/dev
+datamodel: ./src/prisma-datamodel.graphql
+
+generate:
+  - generator: typescript-client
+    output: ./src/generated/prisma-client/

@@ -21,9 +21,9 @@ export class BidirectionalMap <K,V> {
     this._forwardMap = new Map (entries || [])
     this._reverseMap = new Map ()
 
+    // I would like to do it in O1 but do not see a way
+    // it's only once - I'm saving having loop on each reverse lookup op
     if(entries) {
-      // I would like to do it in O1 but do not see a way
-      // it's only once - I'm saving having loop on each reverse lookup op
       entries.forEach(([key, value]) => {
         const prev = this._reverseMap.get(value) || []
         this._reverseMap.set(value, [...prev, key])
@@ -32,26 +32,26 @@ export class BidirectionalMap <K,V> {
   }
 
   /*
-   * forwarding vanilla props
+   * forwarding forward props
    * (cannot do it without callback because of some prototype receiver type error)
    */
-  public get: Map<K,V>['get'] = (key) =>this._forwardMap.get(key)
-  public has: Map<K,V>['has'] = (key) =>this._forwardMap.has(key)
+  public get: Map<K,V>['get'] = (key) => this._forwardMap.get(key)
+  public has: Map<K,V>['has'] = (key) => this._forwardMap.has(key)
 
   public size = () => this._forwardMap.size
   public forEach: Map<K,V>['forEach'] = (fn) => this._forwardMap.forEach(fn)
-  public keys: Map<K,V>['keys'] = () =>this._forwardMap.keys()
-  public values: Map<K,V>['values']= () =>this._forwardMap.values()
-  public entries: Map<K,V>['entries']= () =>this._forwardMap.entries()
+  public keys: Map<K,V>['keys'] = () => this._forwardMap.keys()
+  public values: Map<K,V>['values']= () => this._forwardMap.values()
+  public entries: Map<K,V>['entries']= () => this._forwardMap.entries()
 
   /*
    * getters
    */
 
-  /** get keys of value */
-  public getValueKeys = (value: V) => this._reverseMap.get(value)
+  /** get keys by value */
+  public reverseGet = (value: V) => this._reverseMap.get(value)
   /** has value */
-  public hasValue = (value: V) => this._reverseMap.has(value)
+  public reverseHas = (value: V) => this._reverseMap.has(value)
 
 
   /*
@@ -76,7 +76,7 @@ export class BidirectionalMap <K,V> {
   /**
    * It's delete many by value
    */
-  public deleteReverse = (value: V) => {
+  public reverseDelete = (value: V) => {
     if(!this._reverseMap.has(value)) {
       return false
     }

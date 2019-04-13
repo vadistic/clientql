@@ -1,0 +1,173 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`selection deep interface fragment 1`] = `
+"query MyOperation {
+  ...QueryFlat
+  findEventsAtVenue {
+    ...EventFlat
+    venue {
+      ...VenueFlat
+    }
+    ... on Concert {
+      ...ConcertFlat
+      venue {
+        ...VenueFlat
+      }
+      previousVenues {
+        ...VenueFlat
+      }
+      performingBand {
+        ...PerformerFlat
+      }
+    }
+    ... on Festival {
+      ...FestivalFlat
+      venue {
+        ...VenueFlat
+      }
+      performers {
+        ...PerformerFlat
+      }
+    }
+    ... on Conference {
+      ...ConferenceFlat
+      venue {
+        ...VenueFlat
+      }
+      speakers {
+        ...SpeakerFlat
+      }
+    }
+  }
+  findPerson {
+    ... on Client {
+      ...ClientFlat
+      events {
+        ...EventFlat
+        venue {
+          ...VenueFlat
+        }
+        ... on Concert {
+          ...ConcertFlat
+          venue {
+            ...VenueFlat
+          }
+          previousVenues {
+            ...VenueFlat
+          }
+          performingBand {
+            ...PerformerFlat
+          }
+        }
+        ... on Festival {
+          ...FestivalFlat
+          venue {
+            ...VenueFlat
+          }
+          performers {
+            ...PerformerFlat
+          }
+        }
+        ... on Conference {
+          ...ConferenceFlat
+          venue {
+            ...VenueFlat
+          }
+          speakers {
+            ...SpeakerFlat
+          }
+        }
+      }
+    }
+    ... on Stakeholder {
+      ...StakeholderFlat
+    }
+    ... on Speaker {
+      ...SpeakerFlat
+    }
+    ... on Performer {
+      ...PerformerFlat
+    }
+  }
+}
+
+fragment QueryFlat on Query {
+  __typename
+}
+
+fragment EventFlat on Event {
+  __typename
+  id
+  name
+  startsAt
+  endsAt
+  minAgeRestriction
+}
+
+fragment VenueFlat on Venue {
+  __typename
+  id
+  name
+  address
+  maxOccupancy
+}
+
+fragment ConcertFlat on Concert {
+  __typename
+  id
+  name
+  startsAt
+  endsAt
+  minAgeRestriction
+}
+
+fragment PerformerFlat on Performer {
+  __typename
+  id
+  name
+  contact
+  speciality
+  fee
+}
+
+fragment FestivalFlat on Festival {
+  __typename
+  id
+  name
+  startsAt
+  endsAt
+  minAgeRestriction
+}
+
+fragment ConferenceFlat on Conference {
+  __typename
+  id
+  name
+  startsAt
+  endsAt
+  minAgeRestriction
+  workshops
+}
+
+fragment SpeakerFlat on Speaker {
+  __typename
+  id
+  name
+  contact
+}
+
+fragment ClientFlat on Client {
+  __typename
+  id
+  name
+}
+
+fragment StakeholderFlat on Stakeholder {
+  __typename
+  id
+  name
+  company
+  stake
+}
+"
+`;

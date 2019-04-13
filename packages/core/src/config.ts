@@ -1,14 +1,12 @@
-import { DocumentNode } from 'graphql'
-import { createGraphQLGraph, GraphQLGraph } from './graphql-graph'
-
-/**
- * Build fragment for typename
- * TODO: Later
- */
+import { DocumentNode, FragmentDefinitionNode } from 'graphql'
+import { createTypeGraph, TypeGraph } from './type-graph'
 
 export enum FragmentType {
+  /** use flat fragments when possible */
   FLAT = 'Flat',
+  /** use one deep fragment */
   DEEP = 'Deep',
+  /** do not use fragments */
   NONE = 'None',
 }
 
@@ -18,16 +16,14 @@ export enum FragmentType {
 
 export interface CoreConfig {
   /**
-   * how deep operation should query
-   * @default: '2'
+   * how deep operations/fragments should query
+   * 0 === flat
+   * @default 3
    */
-  operationDepth: number
+  maxDepth: number
+
   /**
-   * idea is that operation can:
-   * 1) not to use fragments, just fields
-   * 2) use one big, deep fragment namespaced to itself
-   * 3) use set of completly flat fragments for each node that can be shared acros operations
-   * @default: 'FLAT'
+   * idea is that operation can query using different kind of fragments
    */
   useFragments: FragmentType
 
@@ -35,7 +31,7 @@ export interface CoreConfig {
 }
 
 export const defaultCoreConfig: CoreConfig = {
-  operationDepth: 2,
+  maxDepth: 4,
   useFragments: FragmentType.FLAT,
   addTypename: true,
 }
@@ -45,16 +41,19 @@ export const defaultCoreConfig: CoreConfig = {
  */
 export interface CoreProps {
   config: CoreConfig
-  graph: GraphQLGraph
+  graph: TypeGraph
+  // lazy map for reusable fragments
+  fragments: Map<string, FragmentDefinitionNode>
 }
 
 export const getCoreProps = (
   doc: DocumentNode,
   config?: Partial<CoreConfig>,
 ): CoreProps => ({
-  graph: createGraphQLGraph(doc),
+  graph: createTypeGraph(doc),
   config: {
     ...defaultCoreConfig,
     ...config,
   },
+  fragments: new Map(),
 })

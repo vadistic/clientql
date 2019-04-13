@@ -1,10 +1,9 @@
 import { OperationTypeNode } from 'graphql'
-import { FragmentType } from '../config'
 import {
   createOperationArgument,
   createOperationVariable,
   Typename,
-} from '../graphql-ast'
+} from '../ast'
 import { capitalise } from '../utils'
 
 export const operationName = (

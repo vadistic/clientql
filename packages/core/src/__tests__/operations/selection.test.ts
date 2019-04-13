@@ -1,36 +1,99 @@
 import { print } from 'graphql'
-import { createFragment } from '../../graphql-ast'
-import { createDeepSelection, createFlatFragment } from '../../operations'
-import { fixtureProps } from '../fixture'
+import { createFragment, createOperation, wrapDocument } from '../../ast'
+import { createSelections } from '../../operations'
+import { complexProps, prismaProps } from '../fixture'
 
 describe('selection', () => {
-  /*  it('flat fragment', () => {
-    const fragmentFn = createFlatFragment(fixtureProps)
+  it('deep fragment', () => {
+    const selectionFn = createSelections(prismaProps)
 
-    expect(print(fragmentFn('Post'))).toMatchInlineSnapshot(`
-      "fragment PostFlat on Post {
+    const { selections, fragments } = selectionFn('Post')
+
+    const op = createOperation({
+      name: 'PostQuery',
+      selections,
+      type: 'query',
+    })
+
+    expect(print(wrapDocument(op, ...fragments))).toMatchInlineSnapshot(`
+      "query PostQuery {
+        ...PostFlat
+        author {
+          ...UserFlat
+        }
+      }
+      
+      fragment PostFlat on Post {
         __typename
+        id
         content
         createdAt
-        id
         published
         title
         updatedAt
-      }"
+      }
+      
+      fragment UserFlat on User {
+        __typename
+        id
+        nationality
+        email
+        name
+      }
+      "
     `)
-  }) */
+  })
 
-  it('deep fragment', () => {
-    const selectionFn = createDeepSelection(fixtureProps)
+  it('deep interface fragment', () => {
+    const selectionFn = createSelections(complexProps)
 
-    const selections = selectionFn('Post', 4)
+    const { selections, fragments } = selectionFn('Query')
 
-    const fragments = createFragment({
-      condition: 'Post',
-      fragmentname: 'MyFragment',
+    const op = createOperation({
+      name: 'MyOperation',
       selections,
+      type: 'query',
     })
 
-    console.log(print(fragments))
+    expect(print(wrapDocument(op, ...fragments))).toMatchSnapshot()
+  })
+
+  it('deep interface fragment', () => {
+    const selectionFn = createSelections(complexProps)
+
+    const { selections, fragments } = selectionFn('Event')
+
+    const op = createOperation({
+      name: 'EventOp',
+      selections,
+      type: 'query',
+    })
+
+    expect(print(wrapDocument(op, ...fragments))).toMatchInlineSnapshot(`
+      "query EventOp {
+        ...EventFlat
+        venue {
+          ...VenueFlat
+        }
+      }
+      
+      fragment EventFlat on Event {
+        __typename
+        id
+        name
+        startsAt
+        endsAt
+        minAgeRestriction
+      }
+      
+      fragment VenueFlat on Venue {
+        __typename
+        id
+        name
+        address
+        maxOccupancy
+      }
+      "
+    `)
   })
 })

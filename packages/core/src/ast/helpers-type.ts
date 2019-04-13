@@ -2,7 +2,7 @@ import { ListTypeNode, NamedTypeNode, TypeNode } from 'graphql'
 import { Kind, KindMap } from './kind'
 
 /**
- * Alternative to those nested Null/List types that is easier to print
+ * alternative to those nested Null/List types that is easier to print
  */
 export type TypeModifier = KindMap['NON_NULL_TYPE'] | KindMap['LIST_TYPE']
 
@@ -11,10 +11,6 @@ export interface UnwrapType {
   typename: string
   modifiers: TypeModifier[]
 }
-
-/*
- * This is as helper - do not need to store it in astMap - fieldmap will suffice
- */
 
 export const unwrapType = (
   node: TypeNode,
@@ -37,8 +33,26 @@ export const unwrapType = (
 }
 
 /**
- * Means top level value is nullable (need it e.g. for printing)
+ * same as unwarpType but without those modifiers when not needed
+ */
+
+export const getTypename = (node: TypeNode): string =>
+  node.kind === Kind.NAMED_TYPE ? node.name.value : getTypename(node.type)
+
+/**
+ * means top level value is nullable
  */
 export const isNullable = (
   node: TypeNode,
 ): node is ListTypeNode | NamedTypeNode => node.kind !== Kind.NON_NULL_TYPE
+
+/**
+ * recursively check if field type will be a list
+ */
+
+export const isList = (node: TypeNode): boolean =>
+  node.kind === Kind.LIST_TYPE
+    ? true
+    : node.kind === Kind.NAMED_TYPE
+    ? false
+    : isList(node.type)

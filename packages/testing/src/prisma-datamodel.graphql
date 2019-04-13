@@ -1,0 +1,50 @@
+interface Node {
+  id: ID!
+}
+
+type Post implements Node {
+  id: ID!
+  author: User!
+  content: String
+  createdAt: DateTime!
+  published: Boolean!
+  title: String!
+  updatedAt: DateTime!
+}
+
+type User implements Node & Person {
+  id: ID!
+  nationality: String
+  email: String!
+  name: String
+  posts(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    orderBy: PostOrderByInput
+    skip: Int
+    where: PostWhereInput
+  ): [Post!]
+}
+
+type Thread {
+  id: ID!
+  createdAt: DateTime!
+  author: User!
+  name: String!
+  entry: Post!
+  replies: [Post!]!
+}
+
+type Board {
+  id: ID!
+  createdAt: DateTime!
+  admins: [User!]!
+  members: [User!]!
+  threads: [Thread!]!
+}
+
+interface Person {
+  nationality: String
+}
