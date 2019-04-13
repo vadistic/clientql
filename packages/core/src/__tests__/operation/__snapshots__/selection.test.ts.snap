@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`selection complex fragment selection no interface 1`] = `
+"fragment EventFragment on Event {
+  event {
+    ...EventFlat
+    venue {
+      ...VenueFlat
+    }
+    ... on Concert {
+      ...ConcertFlat
+      venue {
+        ...VenueFlat
+      }
+      previousVenues {
+        ...VenueFlat
+      }
+      performingBand {
+        ...PerformerFlat
+      }
+    }
+    ... on Festival {
+      ...FestivalFlat
+      venue {
+        ...VenueFlat
+      }
+      performers {
+        ...PerformerFlat
+      }
+    }
+    ... on Conference {
+      ...ConferenceFlat
+      venue {
+        ...VenueFlat
+      }
+      speakers {
+        ...SpeakerFlat
+      }
+    }
+  }
+}
+"
+`;
+
+exports[`selection not very nested prisma fragment 1`] = `
+"fragment PostFragment on Post {
+  ...PostFlat
+  author {
+    ...UserFlat
+  }
+}
+
+fragment PostFlat on Post {
+  id
+  content
+  createdAt
+  published
+  title
+  updatedAt
+}
+
+fragment UserFlat on User {
+  id
+  nationality
+  email
+  name
+}
+"
+`;

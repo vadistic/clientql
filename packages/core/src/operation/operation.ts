@@ -1,5 +1,6 @@
 import {
   ArgumentNode,
+  FieldDefinitionNode,
   FieldNode,
   FragmentDefinitionNode,
   OperationTypeNode,
@@ -16,7 +17,7 @@ import {
   wrapDocument,
 } from '../ast'
 import { CoreProps } from '../config'
-import { buildSelections, retriveCacheFragments } from './selection'
+import { buildSelection, retriveCacheFragments } from './selection'
 
 /**
  * this needs to build operation from arr of fieldnames
@@ -31,14 +32,14 @@ export const buildOperation = (props: CoreProps) => (path: Fieldname[]) => {
     return
   }
 
-  const { fragments, selection, variables } = buildDeepOperation(props)(
+  const { fragments, selections, variables } = buildDeepOperation(props)(
     vtx.name,
     path,
   )
 
   const operation = createOperation({
     name: 'TODO',
-    selections: [selection],
+    selections,
     type,
     variables,
   })
@@ -49,7 +50,7 @@ export const buildOperation = (props: CoreProps) => (path: Fieldname[]) => {
 interface BuildDeepOperation {
   variables: VariableDefinitionNode[]
   fragments: FragmentDefinitionNode[]
-  selection: SelectionNode
+  selections: SelectionNode[]
 }
 
 const buildDeepOperation = (props: CoreProps) => (
@@ -88,35 +89,41 @@ const buildDeepOperation = (props: CoreProps) => (
 
   // base
   if (tail.length === 0) {
-    const { selections, complete, fragmentnames } = buildSelections(props)(
-      nextTarget,
-    )
+    const { selections, fragmentnames } = buildSelection(props)([
+      [head, nextTarget],
+    ])
+
+    const selection = {
+      // this should always be field on the top level
+      ...(selections[0] as FieldNode),
+      // inject args
+      arguments: args,
+    }
 
     return {
       fragments: retriveCacheFragments(props)(fragmentnames),
       variables,
-      selection: createField({
-        fieldname: head,
-        arguments: args,
-        selections,
-      }),
+      selections: [selection],
     }
-  }
+  } else {
+    // not a base
+    const {
+      selections,
+      fragments,
+      variables: deepVariables,
+    } = buildDeepOperation(props)(nextTarget, tail, level + 1)
 
-  const { selection, fragments, variables: deepVariables } = buildDeepOperation(
-    props,
-  )(nextTarget, tail, level + 1)
+    const nextSelection: FieldNode = createField({
+      fieldname: head,
+      arguments: args,
+      selections,
+    })
 
-  const nextSelection: FieldNode = createField({
-    fieldname: head,
-    arguments: args,
-    selections: [selection],
-  })
-
-  return {
-    variables: [...variables, ...deepVariables],
-    fragments,
-    selection: nextSelection,
+    return {
+      variables: [...variables, ...deepVariables],
+      fragments,
+      selections: [nextSelection],
+    }
   }
 }
 

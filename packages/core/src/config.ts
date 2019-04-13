@@ -1,5 +1,5 @@
 import { DocumentNode, FragmentDefinitionNode } from 'graphql'
-import { SelectionResult } from './operation'
+import { NestedSelectionResult, SelectionResult } from './operation'
 import { createTypeGraph, TypeGraph } from './type-graph'
 
 export enum FragmentType {
@@ -47,7 +47,7 @@ export interface CoreProps {
   fragments: Map<string, FragmentDefinitionNode>
   // testing to avoid traversing whole tree few times each op
   // lets store only complete ones (should cover 90% of the tree)
-  selections: Map<string, SelectionResult>
+  selections: Map<string, NestedSelectionResult>
 }
 
 export const getCoreProps = (

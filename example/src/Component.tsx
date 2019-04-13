@@ -6,7 +6,7 @@ export const Component: React.FC = () => {
 
   const handleFetch = async () => {
     const start = window.performance.now()
-    const p = client.users()
+    const p = client.users().name()
     console.log('QUERY TIME', window.performance.now() - start)
     const res = await p
     setState(res)

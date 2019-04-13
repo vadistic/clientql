@@ -38,4 +38,17 @@ describe('operation', () => {
 
     expect(print(op)).toMatchSnapshot()
   })
+
+  it('handle selecting leafs', () => {
+    const op = buildOperation(prismaProps)(['user', 'name'])!
+
+    expect(print(op)).toMatchInlineSnapshot(`
+      "query TODO($where: UserWhereUniqueInput!) {
+        user(where: $where) {
+          name
+        }
+      }
+      "
+    `)
+  })
 })

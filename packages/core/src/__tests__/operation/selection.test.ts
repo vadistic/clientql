@@ -1,18 +1,13 @@
 import { print } from 'graphql'
-import {
-  createField,
-  createFragment,
-  createOperation,
-  wrapDocument,
-} from '../../ast'
-import { buildSelections, retriveCacheFragments } from '../../operation'
+import { createField, createFragment, wrapDocument } from '../../ast'
+import { buildSelection, retriveCacheFragments } from '../../operation'
 import { complexProps, prismaProps } from '../fixture'
 
 describe('selection', () => {
   it('not very nested prisma fragment', () => {
-    const selectionFn = buildSelections(prismaProps)
+    const selectionFn = buildSelection(prismaProps)
 
-    const { selections, fragmentnames } = selectionFn('Post')
+    const { selections, fragmentnames } = selectionFn([[null as any, 'Post']])
 
     const frag = createFragment({
       fragmentname: 'PostFragment',
@@ -26,9 +21,9 @@ describe('selection', () => {
   })
 
   it('complex fragment selection no interface', () => {
-    const selectionFn = buildSelections(complexProps)
+    const selectionFn = buildSelection(complexProps)
 
-    const { selections, fragmentnames } = selectionFn('Event')
+    const { selections, fragmentnames } = selectionFn([[null as any, 'Event']])
 
     const frag = createFragment({
       fragmentname: 'EventFragment',

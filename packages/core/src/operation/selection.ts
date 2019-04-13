@@ -1,4 +1,4 @@
-import { InlineFragmentNode, Kind, SelectionNode } from 'graphql'
+import { FieldNode, Kind, SelectionNode } from 'graphql'
 import {
   createField,
   createFragment,
@@ -9,21 +9,24 @@ import {
   isObjectTypeDefinitionNode,
   isScalarTypeDefinitionNode,
   isUnionTypeDefinitionNode,
-  Typename,
 } from '../ast'
 import { CoreProps, FragmentType } from '../config'
 import { Edge } from '../type-graph'
 import { isNotEmpty } from '../utils'
 
 export interface SelectionResult {
-  selections: SelectionNode[]
+  selections: FieldNode[]
   fragmentnames: string[]
   complete: boolean
   flat: boolean
 }
 
-export const buildSelections = (props: CoreProps) => (target: Typename) =>
-  buildNestedSelection(props)([['$ROOT', target]])
+export interface NestedSelectionResult {
+  selections: SelectionNode[]
+  fragmentnames: string[]
+  complete: boolean
+  flat: boolean
+}
 
 export const retriveCacheFragments = (props: CoreProps) => (
   fragmentnames: string[],
@@ -36,27 +39,17 @@ const lastTypename = (stack: Edge[]) => stack[stack.length - 1][1]
 const lastFieldname = (stack: Edge[]) => stack[stack.length - 1][0]
 
 /**
- * edge will be circural if...
+ * no idea how to check it...
+ * I'm disallowing to duplicate typename in the stack
  */
 const isCircural = (props: CoreProps) => (stack: Edge[]) => {
   // cannot circle just on the begining
   if (stack.length === 1) {
     return false
   }
-
-  const firstTypename = stack[0][1]
   const typename = lastTypename(stack)
-  const fieldname = lastFieldname(stack)
 
-  // no idea how to check the first edge so
-  // I'm just banning root/first typename
-  if (firstTypename === typename) {
-    return true
-  }
-
-  // cannot allow to duplicate any stack entry
-  // (except first edge that is kinda virtual and the last)
-  return stack.slice(1, -1).some(([a, b]) => a === fieldname && b === typename)
+  return stack.slice(0, -1).some(([fname, tname]) => tname === typename)
 }
 
 /**
@@ -67,7 +60,7 @@ const isCircural = (props: CoreProps) => (stack: Edge[]) => {
  *  - split validation + building
  */
 
-const buildSelection = (props: CoreProps) => (
+export const buildSelection = (props: CoreProps) => (
   stack: Edge[],
 ): SelectionResult => {
   const typename = lastTypename(stack)
@@ -116,11 +109,6 @@ const buildSelection = (props: CoreProps) => (
     return noop
   }
 
-  // top case => return unpacked
-  if (stack.length === 1) {
-    return nestedSelection
-  }
-
   // return nested on one wrapping field
   return {
     ...nestedSelection,
@@ -136,7 +124,7 @@ const buildSelection = (props: CoreProps) => (
 
 const buildNestedSelection = (props: CoreProps) => (
   stack: Edge[],
-): SelectionResult => {
+): NestedSelectionResult => {
   const typename = lastTypename(stack)
   const vtx = props.graph.get(typename)!
 
@@ -283,8 +271,8 @@ const buildNestedSelection = (props: CoreProps) => (
  */
 const cacheAndFragment = (props: CoreProps) => (
   stack: Edge[],
-  result: SelectionResult,
-): SelectionResult => {
+  result: NestedSelectionResult,
+): NestedSelectionResult => {
   let fragmentedResult = result
   const typename = lastTypename(stack)
 

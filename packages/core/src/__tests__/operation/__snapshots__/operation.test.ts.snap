@@ -17,13 +17,19 @@ fragment EventDeep on Event {
   }
   minAgeRestriction
   ... on Concert {
-    ...ConcertDeep
+    findEventsAtVenue {
+      ...ConcertDeep
+    }
   }
   ... on Festival {
-    ...FestivalDeep
+    findEventsAtVenue {
+      ...FestivalDeep
+    }
   }
   ... on Conference {
-    ...ConferenceDeep
+    findEventsAtVenue {
+      ...ConferenceDeep
+    }
   }
 }
 
@@ -104,33 +110,39 @@ exports[`operation complex > interface target 1`] = `
       ...VenueFlat
     }
     ... on Concert {
-      ...ConcertFlat
-      venue {
-        ...VenueFlat
-      }
-      previousVenues {
-        ...VenueFlat
-      }
-      performingBand {
-        ...PerformerFlat
+      findEventsAtVenue {
+        ...ConcertFlat
+        venue {
+          ...VenueFlat
+        }
+        previousVenues {
+          ...VenueFlat
+        }
+        performingBand {
+          ...PerformerFlat
+        }
       }
     }
     ... on Festival {
-      ...FestivalFlat
-      venue {
-        ...VenueFlat
-      }
-      performers {
-        ...PerformerFlat
+      findEventsAtVenue {
+        ...FestivalFlat
+        venue {
+          ...VenueFlat
+        }
+        performers {
+          ...PerformerFlat
+        }
       }
     }
     ... on Conference {
-      ...ConferenceFlat
-      venue {
-        ...VenueFlat
-      }
-      speakers {
-        ...SpeakerFlat
+      findEventsAtVenue {
+        ...ConferenceFlat
+        venue {
+          ...VenueFlat
+        }
+        speakers {
+          ...SpeakerFlat
+        }
       }
     }
   }
