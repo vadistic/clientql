@@ -1,0 +1,1607 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`generate graphql fragments complex > generate fragment definitions 1`] = `
+"fragment Stakeholder on Stakeholder {
+  ...StakeholderFlat
+}
+
+fragment Client on Client {
+  ...ClientFlat
+  events {
+    ...EventFlat
+    venue {
+      ...VenueFlat
+    }
+    ... on Concert {
+      ...ConcertFlat
+      venue {
+        ...VenueFlat
+      }
+      previousVenues {
+        ...VenueFlat
+      }
+      performingBand {
+        ...PerformerFlat
+      }
+    }
+    ... on Festival {
+      ...FestivalFlat
+      venue {
+        ...VenueFlat
+      }
+      performers {
+        ...PerformerFlat
+      }
+    }
+    ... on Conference {
+      ...ConferenceFlat
+      venue {
+        ...VenueFlat
+      }
+      speakers {
+        ...SpeakerFlat
+      }
+    }
+  }
+}
+
+fragment Performer on Performer {
+  ...PerformerFlat
+}
+
+fragment Speaker on Speaker {
+  ...SpeakerFlat
+}
+
+fragment Person on Person {
+  ...PersonFlat
+  ... on Client {
+    ...ClientFlat
+    events {
+      ...EventFlat
+      venue {
+        ...VenueFlat
+      }
+      ... on Concert {
+        ...ConcertFlat
+        venue {
+          ...VenueFlat
+        }
+        previousVenues {
+          ...VenueFlat
+        }
+        performingBand {
+          ...PerformerFlat
+        }
+      }
+      ... on Festival {
+        ...FestivalFlat
+        venue {
+          ...VenueFlat
+        }
+        performers {
+          ...PerformerFlat
+        }
+      }
+      ... on Conference {
+        ...ConferenceFlat
+        venue {
+          ...VenueFlat
+        }
+        speakers {
+          ...SpeakerFlat
+        }
+      }
+    }
+  }
+  ... on Stakeholder {
+    ...StakeholderFlat
+  }
+  ... on Speaker {
+    ...SpeakerFlat
+  }
+  ... on Performer {
+    ...PerformerFlat
+  }
+}
+
+fragment Venue on Venue {
+  ...VenueFlat
+}
+
+fragment Event on Event {
+  ...EventFlat
+  venue {
+    ...VenueFlat
+  }
+  ... on Concert {
+    ...ConcertFlat
+    venue {
+      ...VenueFlat
+    }
+    previousVenues {
+      ...VenueFlat
+    }
+    performingBand {
+      ...PerformerFlat
+    }
+  }
+  ... on Festival {
+    ...FestivalFlat
+    venue {
+      ...VenueFlat
+    }
+    performers {
+      ...PerformerFlat
+    }
+  }
+  ... on Conference {
+    ...ConferenceFlat
+    venue {
+      ...VenueFlat
+    }
+    speakers {
+      ...SpeakerFlat
+    }
+  }
+}
+
+fragment Concert on Concert {
+  ...ConcertFlat
+  venue {
+    ...VenueFlat
+  }
+  previousVenues {
+    ...VenueFlat
+  }
+  performingBand {
+    ...PerformerFlat
+  }
+}
+
+fragment Festival on Festival {
+  ...FestivalFlat
+  venue {
+    ...VenueFlat
+  }
+  performers {
+    ...PerformerFlat
+  }
+}
+
+fragment Conference on Conference {
+  ...ConferenceFlat
+  venue {
+    ...VenueFlat
+  }
+  speakers {
+    ...SpeakerFlat
+  }
+}
+"
+`;
+
+exports[`generate graphql fragments complex > generate fragments file in js 1`] = `
+"export const STAKEHOLDER_FLAT_FRAGMENT = gql\`
+  fragment StakeholderFlat on Stakeholder {
+    id
+    name
+    company
+    stake
+  }
+  
+\`
+
+export const CLIENT_FLAT_FRAGMENT = gql\`
+  fragment ClientFlat on Client {
+    id
+    name
+  }
+  
+\`
+
+export const EVENT_FLAT_FRAGMENT = gql\`
+  fragment EventFlat on Event {
+    id
+    name
+    startsAt
+    endsAt
+    minAgeRestriction
+  }
+  
+\`
+
+export const VENUE_FLAT_FRAGMENT = gql\`
+  fragment VenueFlat on Venue {
+    id
+    name
+    address
+    maxOccupancy
+  }
+  
+\`
+
+export const CONCERT_FLAT_FRAGMENT = gql\`
+  fragment ConcertFlat on Concert {
+    id
+    name
+    startsAt
+    endsAt
+    minAgeRestriction
+  }
+  
+\`
+
+export const PERFORMER_FLAT_FRAGMENT = gql\`
+  fragment PerformerFlat on Performer {
+    id
+    name
+    contact
+    speciality
+    fee
+  }
+  
+\`
+
+export const FESTIVAL_FLAT_FRAGMENT = gql\`
+  fragment FestivalFlat on Festival {
+    id
+    name
+    startsAt
+    endsAt
+    minAgeRestriction
+  }
+  
+\`
+
+export const CONFERENCE_FLAT_FRAGMENT = gql\`
+  fragment ConferenceFlat on Conference {
+    id
+    name
+    startsAt
+    endsAt
+    minAgeRestriction
+    workshops
+  }
+  
+\`
+
+export const SPEAKER_FLAT_FRAGMENT = gql\`
+  fragment SpeakerFlat on Speaker {
+    id
+    name
+    contact
+  }
+  
+\`
+
+export const PERSON_FLAT_FRAGMENT = gql\`
+  fragment PersonFlat on Person
+  
+\`
+
+export const STAKEHOLDER_FRAGMENT = gql\`
+  fragment Stakeholder on Stakeholder {
+    ...StakeholderFlat
+  }
+  \${STAKEHOLDER_FLAT_FRAGMENT}
+\`
+
+export const CLIENT_FRAGMENT = gql\`
+  fragment Client on Client {
+    ...ClientFlat
+    events {
+      ...EventFlat
+      venue {
+        ...VenueFlat
+      }
+      ... on Concert {
+        ...ConcertFlat
+        venue {
+          ...VenueFlat
+        }
+        previousVenues {
+          ...VenueFlat
+        }
+        performingBand {
+          ...PerformerFlat
+        }
+      }
+      ... on Festival {
+        ...FestivalFlat
+        venue {
+          ...VenueFlat
+        }
+        performers {
+          ...PerformerFlat
+        }
+      }
+      ... on Conference {
+        ...ConferenceFlat
+        venue {
+          ...VenueFlat
+        }
+        speakers {
+          ...SpeakerFlat
+        }
+      }
+    }
+  }
+  \${CLIENT_FLAT_FRAGMENT}
+  \${EVENT_FLAT_FRAGMENT}
+  \${VENUE_FLAT_FRAGMENT}
+  \${CONCERT_FLAT_FRAGMENT}
+  \${PERFORMER_FLAT_FRAGMENT}
+  \${FESTIVAL_FLAT_FRAGMENT}
+  \${CONFERENCE_FLAT_FRAGMENT}
+  \${SPEAKER_FLAT_FRAGMENT}
+\`
+
+export const PERFORMER_FRAGMENT = gql\`
+  fragment Performer on Performer {
+    ...PerformerFlat
+  }
+  \${PERFORMER_FLAT_FRAGMENT}
+\`
+
+export const SPEAKER_FRAGMENT = gql\`
+  fragment Speaker on Speaker {
+    ...SpeakerFlat
+  }
+  \${SPEAKER_FLAT_FRAGMENT}
+\`
+
+export const PERSON_FRAGMENT = gql\`
+  fragment Person on Person {
+    ...PersonFlat
+    ... on Client {
+      ...ClientFlat
+      events {
+        ...EventFlat
+        venue {
+          ...VenueFlat
+        }
+        ... on Concert {
+          ...ConcertFlat
+          venue {
+            ...VenueFlat
+          }
+          previousVenues {
+            ...VenueFlat
+          }
+          performingBand {
+            ...PerformerFlat
+          }
+        }
+        ... on Festival {
+          ...FestivalFlat
+          venue {
+            ...VenueFlat
+          }
+          performers {
+            ...PerformerFlat
+          }
+        }
+        ... on Conference {
+          ...ConferenceFlat
+          venue {
+            ...VenueFlat
+          }
+          speakers {
+            ...SpeakerFlat
+          }
+        }
+      }
+    }
+    ... on Stakeholder {
+      ...StakeholderFlat
+    }
+    ... on Speaker {
+      ...SpeakerFlat
+    }
+    ... on Performer {
+      ...PerformerFlat
+    }
+  }
+  \${PERSON_FLAT_FRAGMENT}
+  \${CLIENT_FLAT_FRAGMENT}
+  \${EVENT_FLAT_FRAGMENT}
+  \${VENUE_FLAT_FRAGMENT}
+  \${CONCERT_FLAT_FRAGMENT}
+  \${PERFORMER_FLAT_FRAGMENT}
+  \${FESTIVAL_FLAT_FRAGMENT}
+  \${CONFERENCE_FLAT_FRAGMENT}
+  \${SPEAKER_FLAT_FRAGMENT}
+  \${STAKEHOLDER_FLAT_FRAGMENT}
+\`
+
+export const VENUE_FRAGMENT = gql\`
+  fragment Venue on Venue {
+    ...VenueFlat
+  }
+  \${VENUE_FLAT_FRAGMENT}
+\`
+
+export const EVENT_FRAGMENT = gql\`
+  fragment Event on Event {
+    ...EventFlat
+    venue {
+      ...VenueFlat
+    }
+    ... on Concert {
+      ...ConcertFlat
+      venue {
+        ...VenueFlat
+      }
+      previousVenues {
+        ...VenueFlat
+      }
+      performingBand {
+        ...PerformerFlat
+      }
+    }
+    ... on Festival {
+      ...FestivalFlat
+      venue {
+        ...VenueFlat
+      }
+      performers {
+        ...PerformerFlat
+      }
+    }
+    ... on Conference {
+      ...ConferenceFlat
+      venue {
+        ...VenueFlat
+      }
+      speakers {
+        ...SpeakerFlat
+      }
+    }
+  }
+  \${EVENT_FLAT_FRAGMENT}
+  \${VENUE_FLAT_FRAGMENT}
+  \${CONCERT_FLAT_FRAGMENT}
+  \${PERFORMER_FLAT_FRAGMENT}
+  \${FESTIVAL_FLAT_FRAGMENT}
+  \${CONFERENCE_FLAT_FRAGMENT}
+  \${SPEAKER_FLAT_FRAGMENT}
+\`
+
+export const CONCERT_FRAGMENT = gql\`
+  fragment Concert on Concert {
+    ...ConcertFlat
+    venue {
+      ...VenueFlat
+    }
+    previousVenues {
+      ...VenueFlat
+    }
+    performingBand {
+      ...PerformerFlat
+    }
+  }
+  \${CONCERT_FLAT_FRAGMENT}
+  \${VENUE_FLAT_FRAGMENT}
+  \${PERFORMER_FLAT_FRAGMENT}
+\`
+
+export const FESTIVAL_FRAGMENT = gql\`
+  fragment Festival on Festival {
+    ...FestivalFlat
+    venue {
+      ...VenueFlat
+    }
+    performers {
+      ...PerformerFlat
+    }
+  }
+  \${FESTIVAL_FLAT_FRAGMENT}
+  \${VENUE_FLAT_FRAGMENT}
+  \${PERFORMER_FLAT_FRAGMENT}
+\`
+
+export const CONFERENCE_FRAGMENT = gql\`
+  fragment Conference on Conference {
+    ...ConferenceFlat
+    venue {
+      ...VenueFlat
+    }
+    speakers {
+      ...SpeakerFlat
+    }
+  }
+  \${CONFERENCE_FLAT_FRAGMENT}
+  \${VENUE_FLAT_FRAGMENT}
+  \${SPEAKER_FLAT_FRAGMENT}
+\`"
+`;
+
+exports[`generate graphql fragments prisma > generate fragment definitions 1`] = `
+"fragment AggregateBoard on AggregateBoard {
+  ...AggregateBoardFlat
+}
+
+fragment AggregatePost on AggregatePost {
+  ...AggregatePostFlat
+}
+
+fragment AggregateThread on AggregateThread {
+  ...AggregateThreadFlat
+}
+
+fragment AggregateUser on AggregateUser {
+  ...AggregateUserFlat
+}
+
+fragment BatchPayload on BatchPayload {
+  ...BatchPayloadFlat
+}
+
+fragment Board on Board {
+  ...BoardFlat
+  admins {
+    ...UserFlat
+    posts {
+      ...PostFlat
+    }
+  }
+  members {
+    ...UserFlat
+    posts {
+      ...PostFlat
+    }
+  }
+  threads {
+    ...ThreadFlat
+    author {
+      ...UserFlat
+      posts {
+        ...PostFlat
+      }
+    }
+    entry {
+      ...PostFlat
+      author {
+        ...UserFlat
+      }
+    }
+    replies {
+      ...PostFlat
+      author {
+        ...UserFlat
+      }
+    }
+  }
+}
+
+fragment BoardConnection on BoardConnection {
+  ...BoardConnectionFlat
+  pageInfo {
+    ...PageInfoFlat
+  }
+  edges {
+    ...BoardEdgeFlat
+    node {
+      ...BoardFlat
+      admins {
+        ...UserFlat
+      }
+      members {
+        ...UserFlat
+      }
+      threads {
+        ...ThreadFlat
+      }
+    }
+  }
+  aggregate {
+    ...AggregateBoardFlat
+  }
+}
+
+fragment BoardEdge on BoardEdge {
+  ...BoardEdgeFlat
+  node {
+    ...BoardFlat
+    admins {
+      ...UserFlat
+      posts {
+        ...PostFlat
+      }
+    }
+    members {
+      ...UserFlat
+      posts {
+        ...PostFlat
+      }
+    }
+    threads {
+      ...ThreadFlat
+      author {
+        ...UserFlat
+      }
+      entry {
+        ...PostFlat
+      }
+      replies {
+        ...PostFlat
+      }
+    }
+  }
+}
+
+fragment BoardPreviousValues on BoardPreviousValues {
+  ...BoardPreviousValuesFlat
+}
+
+fragment BoardSubscriptionPayload on BoardSubscriptionPayload {
+  ...BoardSubscriptionPayloadFlat
+  node {
+    ...BoardFlat
+    admins {
+      ...UserFlat
+      posts {
+        ...PostFlat
+      }
+    }
+    members {
+      ...UserFlat
+      posts {
+        ...PostFlat
+      }
+    }
+    threads {
+      ...ThreadFlat
+      author {
+        ...UserFlat
+      }
+      entry {
+        ...PostFlat
+      }
+      replies {
+        ...PostFlat
+      }
+    }
+  }
+  previousValues {
+    ...BoardPreviousValuesFlat
+  }
+}
+
+fragment Node on Node {
+  ...NodeFlat
+}
+
+fragment PageInfo on PageInfo {
+  ...PageInfoFlat
+}
+
+fragment Post on Post {
+  ...PostFlat
+  author {
+    ...UserFlat
+  }
+}
+
+fragment PostConnection on PostConnection {
+  ...PostConnectionFlat
+  pageInfo {
+    ...PageInfoFlat
+  }
+  edges {
+    ...PostEdgeFlat
+    node {
+      ...PostFlat
+      author {
+        ...UserFlat
+      }
+    }
+  }
+  aggregate {
+    ...AggregatePostFlat
+  }
+}
+
+fragment PostEdge on PostEdge {
+  ...PostEdgeFlat
+  node {
+    ...PostFlat
+    author {
+      ...UserFlat
+    }
+  }
+}
+
+fragment PostPreviousValues on PostPreviousValues {
+  ...PostPreviousValuesFlat
+}
+
+fragment PostSubscriptionPayload on PostSubscriptionPayload {
+  ...PostSubscriptionPayloadFlat
+  node {
+    ...PostFlat
+    author {
+      ...UserFlat
+    }
+  }
+  previousValues {
+    ...PostPreviousValuesFlat
+  }
+}
+
+fragment Thread on Thread {
+  ...ThreadFlat
+  author {
+    ...UserFlat
+    posts {
+      ...PostFlat
+    }
+  }
+  entry {
+    ...PostFlat
+    author {
+      ...UserFlat
+    }
+  }
+  replies {
+    ...PostFlat
+    author {
+      ...UserFlat
+    }
+  }
+}
+
+fragment ThreadConnection on ThreadConnection {
+  ...ThreadConnectionFlat
+  pageInfo {
+    ...PageInfoFlat
+  }
+  edges {
+    ...ThreadEdgeFlat
+    node {
+      ...ThreadFlat
+      author {
+        ...UserFlat
+      }
+      entry {
+        ...PostFlat
+      }
+      replies {
+        ...PostFlat
+      }
+    }
+  }
+  aggregate {
+    ...AggregateThreadFlat
+  }
+}
+
+fragment ThreadEdge on ThreadEdge {
+  ...ThreadEdgeFlat
+  node {
+    ...ThreadFlat
+    author {
+      ...UserFlat
+      posts {
+        ...PostFlat
+      }
+    }
+    entry {
+      ...PostFlat
+      author {
+        ...UserFlat
+      }
+    }
+    replies {
+      ...PostFlat
+      author {
+        ...UserFlat
+      }
+    }
+  }
+}
+
+fragment ThreadPreviousValues on ThreadPreviousValues {
+  ...ThreadPreviousValuesFlat
+}
+
+fragment ThreadSubscriptionPayload on ThreadSubscriptionPayload {
+  ...ThreadSubscriptionPayloadFlat
+  node {
+    ...ThreadFlat
+    author {
+      ...UserFlat
+      posts {
+        ...PostFlat
+      }
+    }
+    entry {
+      ...PostFlat
+      author {
+        ...UserFlat
+      }
+    }
+    replies {
+      ...PostFlat
+      author {
+        ...UserFlat
+      }
+    }
+  }
+  previousValues {
+    ...ThreadPreviousValuesFlat
+  }
+}
+
+fragment User on User {
+  ...UserFlat
+  posts {
+    ...PostFlat
+  }
+}
+
+fragment UserConnection on UserConnection {
+  ...UserConnectionFlat
+  pageInfo {
+    ...PageInfoFlat
+  }
+  edges {
+    ...UserEdgeFlat
+    node {
+      ...UserFlat
+      posts {
+        ...PostFlat
+      }
+    }
+  }
+  aggregate {
+    ...AggregateUserFlat
+  }
+}
+
+fragment UserEdge on UserEdge {
+  ...UserEdgeFlat
+  node {
+    ...UserFlat
+    posts {
+      ...PostFlat
+    }
+  }
+}
+
+fragment UserPreviousValues on UserPreviousValues {
+  ...UserPreviousValuesFlat
+}
+
+fragment UserSubscriptionPayload on UserSubscriptionPayload {
+  ...UserSubscriptionPayloadFlat
+  node {
+    ...UserFlat
+    posts {
+      ...PostFlat
+    }
+  }
+  previousValues {
+    ...UserPreviousValuesFlat
+  }
+}
+"
+`;
+
+exports[`generate graphql fragments prisma > generate fragments file in js 1`] = `
+"export const AGGREGATE_BOARD_FLAT_FRAGMENT = gql\`
+  fragment AggregateBoardFlat on AggregateBoard {
+    count
+  }
+  
+\`
+
+export const AGGREGATE_POST_FLAT_FRAGMENT = gql\`
+  fragment AggregatePostFlat on AggregatePost {
+    count
+  }
+  
+\`
+
+export const AGGREGATE_THREAD_FLAT_FRAGMENT = gql\`
+  fragment AggregateThreadFlat on AggregateThread {
+    count
+  }
+  
+\`
+
+export const AGGREGATE_USER_FLAT_FRAGMENT = gql\`
+  fragment AggregateUserFlat on AggregateUser {
+    count
+  }
+  
+\`
+
+export const BATCH_PAYLOAD_FLAT_FRAGMENT = gql\`
+  fragment BatchPayloadFlat on BatchPayload {
+    count
+  }
+  
+\`
+
+export const BOARD_FLAT_FRAGMENT = gql\`
+  fragment BoardFlat on Board {
+    id
+    createdAt
+  }
+  
+\`
+
+export const USER_FLAT_FRAGMENT = gql\`
+  fragment UserFlat on User {
+    id
+    nationality
+    email
+    name
+  }
+  
+\`
+
+export const POST_FLAT_FRAGMENT = gql\`
+  fragment PostFlat on Post {
+    id
+    content
+    createdAt
+    published
+    title
+    updatedAt
+  }
+  
+\`
+
+export const THREAD_FLAT_FRAGMENT = gql\`
+  fragment ThreadFlat on Thread {
+    id
+    createdAt
+    name
+  }
+  
+\`
+
+export const BOARD_CONNECTION_FLAT_FRAGMENT = gql\`
+  fragment BoardConnectionFlat on BoardConnection
+  
+\`
+
+export const PAGE_INFO_FLAT_FRAGMENT = gql\`
+  fragment PageInfoFlat on PageInfo {
+    hasNextPage
+    hasPreviousPage
+    startCursor
+    endCursor
+  }
+  
+\`
+
+export const BOARD_EDGE_FLAT_FRAGMENT = gql\`
+  fragment BoardEdgeFlat on BoardEdge {
+    cursor
+  }
+  
+\`
+
+export const BOARD_PREVIOUS_VALUES_FLAT_FRAGMENT = gql\`
+  fragment BoardPreviousValuesFlat on BoardPreviousValues {
+    id
+    createdAt
+  }
+  
+\`
+
+export const BOARD_SUBSCRIPTION_PAYLOAD_FLAT_FRAGMENT = gql\`
+  fragment BoardSubscriptionPayloadFlat on BoardSubscriptionPayload {
+    mutation
+    updatedFields
+  }
+  
+\`
+
+export const NODE_FLAT_FRAGMENT = gql\`
+  fragment NodeFlat on Node {
+    id
+  }
+  
+\`
+
+export const POST_CONNECTION_FLAT_FRAGMENT = gql\`
+  fragment PostConnectionFlat on PostConnection
+  
+\`
+
+export const POST_EDGE_FLAT_FRAGMENT = gql\`
+  fragment PostEdgeFlat on PostEdge {
+    cursor
+  }
+  
+\`
+
+export const POST_PREVIOUS_VALUES_FLAT_FRAGMENT = gql\`
+  fragment PostPreviousValuesFlat on PostPreviousValues {
+    id
+    content
+    createdAt
+    published
+    title
+    updatedAt
+  }
+  
+\`
+
+export const POST_SUBSCRIPTION_PAYLOAD_FLAT_FRAGMENT = gql\`
+  fragment PostSubscriptionPayloadFlat on PostSubscriptionPayload {
+    mutation
+    updatedFields
+  }
+  
+\`
+
+export const THREAD_CONNECTION_FLAT_FRAGMENT = gql\`
+  fragment ThreadConnectionFlat on ThreadConnection
+  
+\`
+
+export const THREAD_EDGE_FLAT_FRAGMENT = gql\`
+  fragment ThreadEdgeFlat on ThreadEdge {
+    cursor
+  }
+  
+\`
+
+export const THREAD_PREVIOUS_VALUES_FLAT_FRAGMENT = gql\`
+  fragment ThreadPreviousValuesFlat on ThreadPreviousValues {
+    id
+    createdAt
+    name
+  }
+  
+\`
+
+export const THREAD_SUBSCRIPTION_PAYLOAD_FLAT_FRAGMENT = gql\`
+  fragment ThreadSubscriptionPayloadFlat on ThreadSubscriptionPayload {
+    mutation
+    updatedFields
+  }
+  
+\`
+
+export const USER_CONNECTION_FLAT_FRAGMENT = gql\`
+  fragment UserConnectionFlat on UserConnection
+  
+\`
+
+export const USER_EDGE_FLAT_FRAGMENT = gql\`
+  fragment UserEdgeFlat on UserEdge {
+    cursor
+  }
+  
+\`
+
+export const USER_PREVIOUS_VALUES_FLAT_FRAGMENT = gql\`
+  fragment UserPreviousValuesFlat on UserPreviousValues {
+    id
+    nationality
+    email
+    name
+  }
+  
+\`
+
+export const USER_SUBSCRIPTION_PAYLOAD_FLAT_FRAGMENT = gql\`
+  fragment UserSubscriptionPayloadFlat on UserSubscriptionPayload {
+    mutation
+    updatedFields
+  }
+  
+\`
+
+export const AGGREGATE_BOARD_FRAGMENT = gql\`
+  fragment AggregateBoard on AggregateBoard {
+    ...AggregateBoardFlat
+  }
+  \${AGGREGATE_BOARD_FLAT_FRAGMENT}
+\`
+
+export const AGGREGATE_POST_FRAGMENT = gql\`
+  fragment AggregatePost on AggregatePost {
+    ...AggregatePostFlat
+  }
+  \${AGGREGATE_POST_FLAT_FRAGMENT}
+\`
+
+export const AGGREGATE_THREAD_FRAGMENT = gql\`
+  fragment AggregateThread on AggregateThread {
+    ...AggregateThreadFlat
+  }
+  \${AGGREGATE_THREAD_FLAT_FRAGMENT}
+\`
+
+export const AGGREGATE_USER_FRAGMENT = gql\`
+  fragment AggregateUser on AggregateUser {
+    ...AggregateUserFlat
+  }
+  \${AGGREGATE_USER_FLAT_FRAGMENT}
+\`
+
+export const BATCH_PAYLOAD_FRAGMENT = gql\`
+  fragment BatchPayload on BatchPayload {
+    ...BatchPayloadFlat
+  }
+  \${BATCH_PAYLOAD_FLAT_FRAGMENT}
+\`
+
+export const BOARD_FRAGMENT = gql\`
+  fragment Board on Board {
+    ...BoardFlat
+    admins {
+      ...UserFlat
+      posts {
+        ...PostFlat
+      }
+    }
+    members {
+      ...UserFlat
+      posts {
+        ...PostFlat
+      }
+    }
+    threads {
+      ...ThreadFlat
+      author {
+        ...UserFlat
+        posts {
+          ...PostFlat
+        }
+      }
+      entry {
+        ...PostFlat
+        author {
+          ...UserFlat
+        }
+      }
+      replies {
+        ...PostFlat
+        author {
+          ...UserFlat
+        }
+      }
+    }
+  }
+  \${BOARD_FLAT_FRAGMENT}
+  \${USER_FLAT_FRAGMENT}
+  \${POST_FLAT_FRAGMENT}
+  \${THREAD_FLAT_FRAGMENT}
+\`
+
+export const BOARD_CONNECTION_FRAGMENT = gql\`
+  fragment BoardConnection on BoardConnection {
+    ...BoardConnectionFlat
+    pageInfo {
+      ...PageInfoFlat
+    }
+    edges {
+      ...BoardEdgeFlat
+      node {
+        ...BoardFlat
+        admins {
+          ...UserFlat
+        }
+        members {
+          ...UserFlat
+        }
+        threads {
+          ...ThreadFlat
+        }
+      }
+    }
+    aggregate {
+      ...AggregateBoardFlat
+    }
+  }
+  \${BOARD_CONNECTION_FLAT_FRAGMENT}
+  \${PAGE_INFO_FLAT_FRAGMENT}
+  \${BOARD_EDGE_FLAT_FRAGMENT}
+  \${BOARD_FLAT_FRAGMENT}
+  \${USER_FLAT_FRAGMENT}
+  \${THREAD_FLAT_FRAGMENT}
+  \${AGGREGATE_BOARD_FLAT_FRAGMENT}
+\`
+
+export const BOARD_EDGE_FRAGMENT = gql\`
+  fragment BoardEdge on BoardEdge {
+    ...BoardEdgeFlat
+    node {
+      ...BoardFlat
+      admins {
+        ...UserFlat
+        posts {
+          ...PostFlat
+        }
+      }
+      members {
+        ...UserFlat
+        posts {
+          ...PostFlat
+        }
+      }
+      threads {
+        ...ThreadFlat
+        author {
+          ...UserFlat
+        }
+        entry {
+          ...PostFlat
+        }
+        replies {
+          ...PostFlat
+        }
+      }
+    }
+  }
+  \${BOARD_EDGE_FLAT_FRAGMENT}
+  \${BOARD_FLAT_FRAGMENT}
+  \${USER_FLAT_FRAGMENT}
+  \${POST_FLAT_FRAGMENT}
+  \${THREAD_FLAT_FRAGMENT}
+\`
+
+export const BOARD_PREVIOUS_VALUES_FRAGMENT = gql\`
+  fragment BoardPreviousValues on BoardPreviousValues {
+    ...BoardPreviousValuesFlat
+  }
+  \${BOARD_PREVIOUS_VALUES_FLAT_FRAGMENT}
+\`
+
+export const BOARD_SUBSCRIPTION_PAYLOAD_FRAGMENT = gql\`
+  fragment BoardSubscriptionPayload on BoardSubscriptionPayload {
+    ...BoardSubscriptionPayloadFlat
+    node {
+      ...BoardFlat
+      admins {
+        ...UserFlat
+        posts {
+          ...PostFlat
+        }
+      }
+      members {
+        ...UserFlat
+        posts {
+          ...PostFlat
+        }
+      }
+      threads {
+        ...ThreadFlat
+        author {
+          ...UserFlat
+        }
+        entry {
+          ...PostFlat
+        }
+        replies {
+          ...PostFlat
+        }
+      }
+    }
+    previousValues {
+      ...BoardPreviousValuesFlat
+    }
+  }
+  \${BOARD_SUBSCRIPTION_PAYLOAD_FLAT_FRAGMENT}
+  \${BOARD_FLAT_FRAGMENT}
+  \${USER_FLAT_FRAGMENT}
+  \${POST_FLAT_FRAGMENT}
+  \${THREAD_FLAT_FRAGMENT}
+  \${BOARD_PREVIOUS_VALUES_FLAT_FRAGMENT}
+\`
+
+export const NODE_FRAGMENT = gql\`
+  fragment Node on Node {
+    ...NodeFlat
+  }
+  \${NODE_FLAT_FRAGMENT}
+\`
+
+export const PAGE_INFO_FRAGMENT = gql\`
+  fragment PageInfo on PageInfo {
+    ...PageInfoFlat
+  }
+  \${PAGE_INFO_FLAT_FRAGMENT}
+\`
+
+export const POST_FRAGMENT = gql\`
+  fragment Post on Post {
+    ...PostFlat
+    author {
+      ...UserFlat
+    }
+  }
+  \${POST_FLAT_FRAGMENT}
+  \${USER_FLAT_FRAGMENT}
+\`
+
+export const POST_CONNECTION_FRAGMENT = gql\`
+  fragment PostConnection on PostConnection {
+    ...PostConnectionFlat
+    pageInfo {
+      ...PageInfoFlat
+    }
+    edges {
+      ...PostEdgeFlat
+      node {
+        ...PostFlat
+        author {
+          ...UserFlat
+        }
+      }
+    }
+    aggregate {
+      ...AggregatePostFlat
+    }
+  }
+  \${POST_CONNECTION_FLAT_FRAGMENT}
+  \${PAGE_INFO_FLAT_FRAGMENT}
+  \${POST_EDGE_FLAT_FRAGMENT}
+  \${POST_FLAT_FRAGMENT}
+  \${USER_FLAT_FRAGMENT}
+  \${AGGREGATE_POST_FLAT_FRAGMENT}
+\`
+
+export const POST_EDGE_FRAGMENT = gql\`
+  fragment PostEdge on PostEdge {
+    ...PostEdgeFlat
+    node {
+      ...PostFlat
+      author {
+        ...UserFlat
+      }
+    }
+  }
+  \${POST_EDGE_FLAT_FRAGMENT}
+  \${POST_FLAT_FRAGMENT}
+  \${USER_FLAT_FRAGMENT}
+\`
+
+export const POST_PREVIOUS_VALUES_FRAGMENT = gql\`
+  fragment PostPreviousValues on PostPreviousValues {
+    ...PostPreviousValuesFlat
+  }
+  \${POST_PREVIOUS_VALUES_FLAT_FRAGMENT}
+\`
+
+export const POST_SUBSCRIPTION_PAYLOAD_FRAGMENT = gql\`
+  fragment PostSubscriptionPayload on PostSubscriptionPayload {
+    ...PostSubscriptionPayloadFlat
+    node {
+      ...PostFlat
+      author {
+        ...UserFlat
+      }
+    }
+    previousValues {
+      ...PostPreviousValuesFlat
+    }
+  }
+  \${POST_SUBSCRIPTION_PAYLOAD_FLAT_FRAGMENT}
+  \${POST_FLAT_FRAGMENT}
+  \${USER_FLAT_FRAGMENT}
+  \${POST_PREVIOUS_VALUES_FLAT_FRAGMENT}
+\`
+
+export const THREAD_FRAGMENT = gql\`
+  fragment Thread on Thread {
+    ...ThreadFlat
+    author {
+      ...UserFlat
+      posts {
+        ...PostFlat
+      }
+    }
+    entry {
+      ...PostFlat
+      author {
+        ...UserFlat
+      }
+    }
+    replies {
+      ...PostFlat
+      author {
+        ...UserFlat
+      }
+    }
+  }
+  \${THREAD_FLAT_FRAGMENT}
+  \${USER_FLAT_FRAGMENT}
+  \${POST_FLAT_FRAGMENT}
+\`
+
+export const THREAD_CONNECTION_FRAGMENT = gql\`
+  fragment ThreadConnection on ThreadConnection {
+    ...ThreadConnectionFlat
+    pageInfo {
+      ...PageInfoFlat
+    }
+    edges {
+      ...ThreadEdgeFlat
+      node {
+        ...ThreadFlat
+        author {
+          ...UserFlat
+        }
+        entry {
+          ...PostFlat
+        }
+        replies {
+          ...PostFlat
+        }
+      }
+    }
+    aggregate {
+      ...AggregateThreadFlat
+    }
+  }
+  \${THREAD_CONNECTION_FLAT_FRAGMENT}
+  \${PAGE_INFO_FLAT_FRAGMENT}
+  \${THREAD_EDGE_FLAT_FRAGMENT}
+  \${THREAD_FLAT_FRAGMENT}
+  \${USER_FLAT_FRAGMENT}
+  \${POST_FLAT_FRAGMENT}
+  \${AGGREGATE_THREAD_FLAT_FRAGMENT}
+\`
+
+export const THREAD_EDGE_FRAGMENT = gql\`
+  fragment ThreadEdge on ThreadEdge {
+    ...ThreadEdgeFlat
+    node {
+      ...ThreadFlat
+      author {
+        ...UserFlat
+        posts {
+          ...PostFlat
+        }
+      }
+      entry {
+        ...PostFlat
+        author {
+          ...UserFlat
+        }
+      }
+      replies {
+        ...PostFlat
+        author {
+          ...UserFlat
+        }
+      }
+    }
+  }
+  \${THREAD_EDGE_FLAT_FRAGMENT}
+  \${THREAD_FLAT_FRAGMENT}
+  \${USER_FLAT_FRAGMENT}
+  \${POST_FLAT_FRAGMENT}
+\`
+
+export const THREAD_PREVIOUS_VALUES_FRAGMENT = gql\`
+  fragment ThreadPreviousValues on ThreadPreviousValues {
+    ...ThreadPreviousValuesFlat
+  }
+  \${THREAD_PREVIOUS_VALUES_FLAT_FRAGMENT}
+\`
+
+export const THREAD_SUBSCRIPTION_PAYLOAD_FRAGMENT = gql\`
+  fragment ThreadSubscriptionPayload on ThreadSubscriptionPayload {
+    ...ThreadSubscriptionPayloadFlat
+    node {
+      ...ThreadFlat
+      author {
+        ...UserFlat
+        posts {
+          ...PostFlat
+        }
+      }
+      entry {
+        ...PostFlat
+        author {
+          ...UserFlat
+        }
+      }
+      replies {
+        ...PostFlat
+        author {
+          ...UserFlat
+        }
+      }
+    }
+    previousValues {
+      ...ThreadPreviousValuesFlat
+    }
+  }
+  \${THREAD_SUBSCRIPTION_PAYLOAD_FLAT_FRAGMENT}
+  \${THREAD_FLAT_FRAGMENT}
+  \${USER_FLAT_FRAGMENT}
+  \${POST_FLAT_FRAGMENT}
+  \${THREAD_PREVIOUS_VALUES_FLAT_FRAGMENT}
+\`
+
+export const USER_FRAGMENT = gql\`
+  fragment User on User {
+    ...UserFlat
+    posts {
+      ...PostFlat
+    }
+  }
+  \${USER_FLAT_FRAGMENT}
+  \${POST_FLAT_FRAGMENT}
+\`
+
+export const USER_CONNECTION_FRAGMENT = gql\`
+  fragment UserConnection on UserConnection {
+    ...UserConnectionFlat
+    pageInfo {
+      ...PageInfoFlat
+    }
+    edges {
+      ...UserEdgeFlat
+      node {
+        ...UserFlat
+        posts {
+          ...PostFlat
+        }
+      }
+    }
+    aggregate {
+      ...AggregateUserFlat
+    }
+  }
+  \${USER_CONNECTION_FLAT_FRAGMENT}
+  \${PAGE_INFO_FLAT_FRAGMENT}
+  \${USER_EDGE_FLAT_FRAGMENT}
+  \${USER_FLAT_FRAGMENT}
+  \${POST_FLAT_FRAGMENT}
+  \${AGGREGATE_USER_FLAT_FRAGMENT}
+\`
+
+export const USER_EDGE_FRAGMENT = gql\`
+  fragment UserEdge on UserEdge {
+    ...UserEdgeFlat
+    node {
+      ...UserFlat
+      posts {
+        ...PostFlat
+      }
+    }
+  }
+  \${USER_EDGE_FLAT_FRAGMENT}
+  \${USER_FLAT_FRAGMENT}
+  \${POST_FLAT_FRAGMENT}
+\`
+
+export const USER_PREVIOUS_VALUES_FRAGMENT = gql\`
+  fragment UserPreviousValues on UserPreviousValues {
+    ...UserPreviousValuesFlat
+  }
+  \${USER_PREVIOUS_VALUES_FLAT_FRAGMENT}
+\`
+
+export const USER_SUBSCRIPTION_PAYLOAD_FRAGMENT = gql\`
+  fragment UserSubscriptionPayload on UserSubscriptionPayload {
+    ...UserSubscriptionPayloadFlat
+    node {
+      ...UserFlat
+      posts {
+        ...PostFlat
+      }
+    }
+    previousValues {
+      ...UserPreviousValuesFlat
+    }
+  }
+  \${USER_SUBSCRIPTION_PAYLOAD_FLAT_FRAGMENT}
+  \${USER_FLAT_FRAGMENT}
+  \${POST_FLAT_FRAGMENT}
+  \${USER_PREVIOUS_VALUES_FLAT_FRAGMENT}
+\`"
+`;

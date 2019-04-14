@@ -14,87 +14,228 @@ exports[`generate graphql > typedefs match snapshot 1`] = `
 import gql from 'graphql-tag' 
 
 export const TYPEDEFS = gql\`
+  type Query {
+    board(where: BoardWhereUniqueInput!): Board
+    boards(where: BoardWhereInput, orderBy: BoardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Board]!
+    boardsConnection(where: BoardWhereInput, orderBy: BoardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BoardConnection!
+    post(where: PostWhereUniqueInput!): Post
+    posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post]!
+    postsConnection(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PostConnection!
+    thread(where: ThreadWhereUniqueInput!): Thread
+    threads(where: ThreadWhereInput, orderBy: ThreadOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Thread]!
+    threadsConnection(where: ThreadWhereInput, orderBy: ThreadOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ThreadConnection!
+    user(where: UserWhereUniqueInput!): User
+    users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+    usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+    node(id: ID!): Node
+  }
+  
+  type Board {
+    id: ID!
+    createdAt: DateTime!
+    admins(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+    members(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+    threads(where: ThreadWhereInput, orderBy: ThreadOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Thread!]
+  }
+  
+  scalar DateTime
+  
+  type User {
+    id: ID!
+    nationality: String
+    email: String!
+    name: String
+    posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
+  }
+  
+  type Post {
+    id: ID!
+    author: User!
+    content: String
+    createdAt: DateTime!
+    published: Boolean!
+    title: String!
+    updatedAt: DateTime!
+  }
+  
+  type Thread {
+    id: ID!
+    createdAt: DateTime!
+    author: User!
+    name: String!
+    entry: Post!
+    replies(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
+  }
+  
+  type BoardConnection {
+    pageInfo: PageInfo!
+    edges: [BoardEdge]!
+    aggregate: AggregateBoard!
+  }
+  
+  type PageInfo {
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    startCursor: String
+    endCursor: String
+  }
+  
+  type BoardEdge {
+    node: Board!
+    cursor: String!
+  }
+  
+  type AggregateBoard {
+    count: Int!
+  }
+  
+  type PostConnection {
+    pageInfo: PageInfo!
+    edges: [PostEdge]!
+    aggregate: AggregatePost!
+  }
+  
+  type PostEdge {
+    node: Post!
+    cursor: String!
+  }
+  
   type AggregatePost {
     count: Int!
+  }
+  
+  type ThreadConnection {
+    pageInfo: PageInfo!
+    edges: [ThreadEdge]!
+    aggregate: AggregateThread!
+  }
+  
+  type ThreadEdge {
+    node: Thread!
+    cursor: String!
+  }
+  
+  type AggregateThread {
+    count: Int!
+  }
+  
+  type UserConnection {
+    pageInfo: PageInfo!
+    edges: [UserEdge]!
+    aggregate: AggregateUser!
+  }
+  
+  type UserEdge {
+    node: User!
+    cursor: String!
   }
   
   type AggregateUser {
     count: Int!
   }
   
+  interface Node {
+    id: ID!
+  }
+  
+  type Mutation {
+    createBoard(data: BoardCreateInput!): Board!
+    updateBoard(data: BoardUpdateInput!, where: BoardWhereUniqueInput!): Board
+    upsertBoard(where: BoardWhereUniqueInput!, create: BoardCreateInput!, update: BoardUpdateInput!): Board!
+    deleteBoard(where: BoardWhereUniqueInput!): Board
+    deleteManyBoards(where: BoardWhereInput): BatchPayload!
+    createPost(data: PostCreateInput!): Post!
+    updatePost(data: PostUpdateInput!, where: PostWhereUniqueInput!): Post
+    updateManyPosts(data: PostUpdateManyMutationInput!, where: PostWhereInput): BatchPayload!
+    upsertPost(where: PostWhereUniqueInput!, create: PostCreateInput!, update: PostUpdateInput!): Post!
+    deletePost(where: PostWhereUniqueInput!): Post
+    deleteManyPosts(where: PostWhereInput): BatchPayload!
+    createThread(data: ThreadCreateInput!): Thread!
+    updateThread(data: ThreadUpdateInput!, where: ThreadWhereUniqueInput!): Thread
+    updateManyThreads(data: ThreadUpdateManyMutationInput!, where: ThreadWhereInput): BatchPayload!
+    upsertThread(where: ThreadWhereUniqueInput!, create: ThreadCreateInput!, update: ThreadUpdateInput!): Thread!
+    deleteThread(where: ThreadWhereUniqueInput!): Thread
+    deleteManyThreads(where: ThreadWhereInput): BatchPayload!
+    createUser(data: UserCreateInput!): User!
+    updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+    updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+    upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+    deleteUser(where: UserWhereUniqueInput!): User
+    deleteManyUsers(where: UserWhereInput): BatchPayload!
+  }
+  
   type BatchPayload {
     count: Long!
   }
   
-  type Mutation {
-    createPost(data: PostCreateInput!): Post!
-    createUser(data: UserCreateInput!): User!
-    deleteManyPosts(where: PostWhereInput): BatchPayload!
-    deleteManyUsers(where: UserWhereInput): BatchPayload!
-    deletePost(where: PostWhereUniqueInput!): Post
-    deleteUser(where: UserWhereUniqueInput!): User
-    updateManyPosts(data: PostUpdateManyMutationInput!, where: PostWhereInput): BatchPayload!
-    updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
-    updatePost(data: PostUpdateInput!, where: PostWhereUniqueInput!): Post
-    updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
-    upsertPost(create: PostCreateInput!, update: PostUpdateInput!, where: PostWhereUniqueInput!): Post!
-    upsertUser(create: UserCreateInput!, update: UserUpdateInput!, where: UserWhereUniqueInput!): User!
+  scalar Long
+  
+  type Subscription {
+    board(where: BoardSubscriptionWhereInput): BoardSubscriptionPayload
+    post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
+    thread(where: ThreadSubscriptionWhereInput): ThreadSubscriptionPayload
+    user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
   }
   
-  type PageInfo {
-    endCursor: String
-    hasNextPage: Boolean!
-    hasPreviousPage: Boolean!
-    startCursor: String
+  type BoardSubscriptionPayload {
+    mutation: MutationType!
+    node: Board
+    updatedFields: [String!]
+    previousValues: BoardPreviousValues
   }
   
-  type Post {
-    author: User!
+  enum MutationType {
+    CREATED
+    UPDATED
+    DELETED
+  }
+  
+  type BoardPreviousValues {
+    id: ID!
+    createdAt: DateTime!
+  }
+  
+  type PostSubscriptionPayload {
+    mutation: MutationType!
+    node: Post
+    updatedFields: [String!]
+    previousValues: PostPreviousValues
+  }
+  
+  type PostPreviousValues {
+    id: ID!
     content: String
     createdAt: DateTime!
-    id: ID!
     published: Boolean!
     title: String!
     updatedAt: DateTime!
   }
   
-  type PostConnection {
-    aggregate: AggregatePost!
-    edges: [PostEdge!]!
-    pageInfo: PageInfo!
+  type ThreadSubscriptionPayload {
+    mutation: MutationType!
+    node: Thread
+    updatedFields: [String!]
+    previousValues: ThreadPreviousValues
   }
   
-  type PostEdge {
-    cursor: String!
-    node: Post!
-  }
-  
-  type Query {
-    node(id: ID!): Node
-    post(where: PostWhereUniqueInput!): Post
-    posts(after: String, before: String, first: Int, last: Int, orderBy: PostOrderByInput, skip: Int, where: PostWhereInput): [Post!]!
-    postsConnection(after: String, before: String, first: Int, last: Int, orderBy: PostOrderByInput, skip: Int, where: PostWhereInput): PostConnection!
-    user(where: UserWhereUniqueInput!): User
-    users(after: String, before: String, first: Int, last: Int, orderBy: UserOrderByInput, skip: Int, where: UserWhereInput): [User!]!
-    usersConnection(after: String, before: String, first: Int, last: Int, orderBy: UserOrderByInput, skip: Int, where: UserWhereInput): UserConnection!
-  }
-  
-  type User {
-    email: String!
+  type ThreadPreviousValues {
     id: ID!
+    createdAt: DateTime!
+    name: String!
+  }
+  
+  type UserSubscriptionPayload {
+    mutation: MutationType!
+    node: User
+    updatedFields: [String!]
+    previousValues: UserPreviousValues
+  }
+  
+  type UserPreviousValues {
+    id: ID!
+    nationality: String
+    email: String!
     name: String
-    posts(after: String, before: String, first: Int, last: Int, orderBy: PostOrderByInput, skip: Int, where: PostWhereInput): [Post!]
-  }
-  
-  type UserConnection {
-    aggregate: AggregateUser!
-    edges: [UserEdge!]!
-    pageInfo: PageInfo!
-  }
-  
-  type UserEdge {
-    cursor: String!
-    node: User!
   }
 \`
 

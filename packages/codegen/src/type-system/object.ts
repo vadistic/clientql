@@ -3,7 +3,7 @@ import {
   ObjectTypeDefinitionNode,
   ObjectTypeExtensionNode,
 } from 'graphql'
-import { defaultConfig } from '../config'
+import { defaultCodegenConfig } from '../config'
 import { naming } from '../naming'
 import { printTSInterface } from '../strings'
 import { withDescription } from '../type-reference'
@@ -23,9 +23,10 @@ import {
  * - `addFieldsAsFunction`
  */
 
-export const printObject = (config = defaultConfig, schema?: GraphQLSchema) => (
-  node: ObjectTypeDefinitionNode | ObjectTypeExtensionNode,
-) => {
+export const printObject = (
+  config = defaultCodegenConfig,
+  schema?: GraphQLSchema,
+) => (node: ObjectTypeDefinitionNode | ObjectTypeExtensionNode) => {
   const name = naming.interfaceName(config)(node.name.value)
   const addDescription = withDescription(config, schema)
   const objectLikeFieldsPrinter = printObjectLikeFields(config, schema)

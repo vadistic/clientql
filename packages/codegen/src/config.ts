@@ -8,7 +8,7 @@ import {
 } from 'graphql'
 import { NullableString } from './strings'
 
-export interface CodegenPrinterConfig {
+export interface CodegenConfig {
   /**
    * add `__typename` to generated types
    *  - `string` => add it as `__typename: string` instead of specific name
@@ -152,7 +152,7 @@ export interface CodegenPrinterConfig {
   ) => string | null | undefined | void
 }
 
-export const defaultConfig: CodegenPrinterConfig = {
+export const defaultCodegenConfig: CodegenConfig = {
   addTypename: true,
   addDescription: true,
   addFieldAsFunction: false,

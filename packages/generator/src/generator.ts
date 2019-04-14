@@ -1,6 +1,7 @@
 import {
-  createGraphQLGraph,
-  GraphQLGraph,
+  CoreProps,
+  deepAssign,
+  getCoreProps,
   mergeExtensions,
 } from '@graphql-clientgen/core'
 
@@ -14,12 +15,11 @@ import {
   GeneratorPaths,
 } from './config'
 
-export interface GeneratorProps {
+export interface GeneratorProps extends CoreProps {
   doc: DocumentNode
-  graph: GraphQLGraph
   schema: GraphQLSchema
-  options: GeneratorOptions
   config: GeneratorConfig
+  options: GeneratorOptions
   paths: GeneratorPaths
 }
 
@@ -43,22 +43,10 @@ export const getGeneratorProps = (
     ...config,
   }
 
-  const mergedOptions: GeneratorOptions = options
-    ? {
-        client: {
-          ...defaultGeneratorOptions.client,
-          ...options.client,
-        },
-        graphql: {
-          ...defaultGeneratorOptions.graphql,
-          ...options.graphql,
-        },
-        typings: {
-          ...defaultGeneratorOptions.typings,
-          ...options.typings,
-        },
-      }
-    : defaultGeneratorOptions
+  const mergedOptions: GeneratorOptions = deepAssign(
+    defaultGeneratorOptions,
+    options || {},
+  )
 
   const mergedPaths: GeneratorPaths = {
     ...defaultGeneratorPaths,
@@ -72,11 +60,9 @@ export const getGeneratorProps = (
     assumeValidSDL: true,
   })
 
-  const graph = createGraphQLGraph(mergedDoc)
-
   const props: GeneratorProps = {
-    doc,
-    graph,
+    ...getCoreProps(mergedDoc),
+    doc: mergedDoc,
     schema,
     config: mergedConfig,
     options: mergedOptions,

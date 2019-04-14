@@ -1,6 +1,6 @@
 import { isNullable } from '@graphql-clientgen/core'
 import { GraphQLSchema, InputValueDefinitionNode } from 'graphql'
-import { defaultConfig } from '../config'
+import { defaultCodegenConfig } from '../config'
 import { withDescription } from './description'
 import { printType } from './type'
 
@@ -8,7 +8,7 @@ import { printType } from './type'
  * codegenFieldToTypes works just about the same but let's keep this one for semantics
  */
 export const printInputValue = (
-  config = defaultConfig,
+  config = defaultCodegenConfig,
   schema?: GraphQLSchema,
 ) => (node: InputValueDefinitionNode) => {
   const addDescription = withDescription(config, schema)

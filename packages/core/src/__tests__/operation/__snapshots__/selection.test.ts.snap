@@ -49,21 +49,5 @@ exports[`selection not very nested prisma fragment 1`] = `
     ...UserFlat
   }
 }
-
-fragment PostFlat on Post {
-  id
-  content
-  createdAt
-  published
-  title
-  updatedAt
-}
-
-fragment UserFlat on User {
-  id
-  nationality
-  email
-  name
-}
 "
 `;

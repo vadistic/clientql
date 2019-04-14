@@ -43,7 +43,7 @@ describe('operation', () => {
     const op = buildOperation(prismaProps)(['user', 'name'])!
 
     expect(print(op)).toMatchInlineSnapshot(`
-      "query TODO($where: UserWhereUniqueInput!) {
+      "query UserNameQuery($where: UserWhereUniqueInput!) {
         user(where: $where) {
           name
         }

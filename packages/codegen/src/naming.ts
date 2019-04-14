@@ -1,5 +1,5 @@
 import { capitalise } from '@graphql-clientgen/core'
-import { defaultConfig } from './config'
+import { defaultCodegenConfig } from './config'
 import { NullableString } from './strings'
 
 /**
@@ -12,17 +12,17 @@ export const pascalCase = (...inputs: NullableString[]) =>
     .map(capitalise)
     .join('')
 
-const interfacePrefix = (config = defaultConfig) =>
+const interfacePrefix = (config = defaultCodegenConfig) =>
   config.interfacePrefix === true
     ? 'I'
     : !!config.interfacePrefix
     ? config.interfacePrefix
     : ''
 
-const interfaceName = (config = defaultConfig) => (name: string) =>
+const interfaceName = (config = defaultCodegenConfig) => (name: string) =>
   interfacePrefix(config) + pascalCase(name)
 
-const argumentsInterfaceName = (config = defaultConfig) => (
+const argumentsInterfaceName = (config = defaultCodegenConfig) => (
   parent: string,
   target: string,
 ) =>
@@ -30,7 +30,7 @@ const argumentsInterfaceName = (config = defaultConfig) => (
   pascalCase(parent, target) +
   config.fieldArgumentsInterfaceSuffix
 
-const fragmentName = (config = defaultConfig) => (name: string) =>
+const fragmentName = (config = defaultCodegenConfig) => (name: string) =>
   pascalCase(name, config.fragmentSuffix)
 
 export const naming = {

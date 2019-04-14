@@ -1,5 +1,5 @@
 import { GraphQLSchema, Kind, NamedTypeNode } from 'graphql'
-import { defaultConfig } from '../config'
+import { defaultCodegenConfig } from '../config'
 import { naming } from '../naming'
 
 const mapExplicitScalar = (typename: string) => {
@@ -25,7 +25,7 @@ export const isExplicitScalar = (typename: string) =>
  * I need to know target type... this is the only reason for using schema
  */
 export const isPrefixedType = (
-  config = defaultConfig,
+  config = defaultCodegenConfig,
   schema?: GraphQLSchema,
 ) => (typename: string) => {
   // never prefix without schema
@@ -60,7 +60,7 @@ export const isPrefixedType = (
  * get only normalised type name without arr/null modifiers
  */
 export const printNamedType = (
-  config = defaultConfig,
+  config = defaultCodegenConfig,
   schema?: GraphQLSchema,
 ) => (node: NamedTypeNode) => {
   const typename = node.name.value

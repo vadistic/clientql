@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import { CodegenPrinterConfig } from '../../config'
+import { CodegenConfig } from '../../config'
 import { createCodegenPrinter } from '../../printer'
 
 describe('printer > custom transformations', () => {
@@ -13,7 +13,7 @@ describe('printer > custom transformations', () => {
       }
     `
 
-    const transform: CodegenPrinterConfig['transformFieldArguments'] = (
+    const transform: CodegenConfig['transformFieldArguments'] = (
       parent,
       field,
       prev,

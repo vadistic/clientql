@@ -12,7 +12,7 @@ import {
   ObjectTypeDefinitionNode,
   ObjectTypeExtensionNode,
 } from 'graphql'
-import { defaultConfig } from '../config'
+import { defaultCodegenConfig } from '../config'
 import { naming } from '../naming'
 import { printTSInterface } from '../strings'
 import {
@@ -31,7 +31,7 @@ import {
  * - `useFieldArgumentsInterface`
  */
 export const printObjectLikeFields = (
-  config = defaultConfig,
+  config = defaultCodegenConfig,
   schema?: GraphQLSchema,
 ) => (node: ObjectLikeNode) => {
   const fields =
@@ -139,7 +139,7 @@ export const printObjectLikeFields = (
  */
 
 export const printFieldArgumentsInterfaces = (
-  config = defaultConfig,
+  config = defaultCodegenConfig,
   schema?: GraphQLSchema,
 ) => (node: ObjectLikeNode) => {
   const parent = node.name.value
@@ -180,7 +180,7 @@ export const printFieldArgumentsInterfaces = (
  *
  */
 const filerObjectInterfaceFields = (
-  config = defaultConfig,
+  config = defaultCodegenConfig,
   schema?: GraphQLSchema,
 ) => (node: ObjectTypeDefinitionNode | ObjectTypeExtensionNode) => {
   // cannot filter
@@ -225,7 +225,7 @@ const filerObjectInterfaceFields = (
  */
 
 const printInterfacedFieldArguments = (
-  config = defaultConfig,
+  config = defaultCodegenConfig,
   schema?: GraphQLSchema,
 ) => (parent: ObjectLikeNode) => (field: FieldDefinitionNode) => {
   if (!isNotEmpty(field.arguments)) {

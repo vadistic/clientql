@@ -4,7 +4,7 @@ import {
   EnumTypeExtensionNode,
   GraphQLSchema,
 } from 'graphql'
-import { defaultConfig } from '../config'
+import { defaultCodegenConfig } from '../config'
 import { withDescription } from '../type-reference'
 
 /**
@@ -14,9 +14,10 @@ import { withDescription } from '../type-reference'
  * - `useMapsForEnum`
  */
 
-export const printEnum = (config = defaultConfig, schema?: GraphQLSchema) => (
-  node: EnumTypeDefinitionNode | EnumTypeExtensionNode,
-) => {
+export const printEnum = (
+  config = defaultCodegenConfig,
+  schema?: GraphQLSchema,
+) => (node: EnumTypeDefinitionNode | EnumTypeExtensionNode) => {
   const name = node.name.value
   const addDescription = withDescription(config, schema)
 

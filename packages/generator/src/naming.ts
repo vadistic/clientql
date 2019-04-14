@@ -44,6 +44,10 @@ const constantName = (config: GeneratorConfig) => (name: string) => {
   }
 }
 
+const fragmentConstantName = (config: GeneratorConfig) => (name: string) =>
+  constantName(config)(name + ' ' + config.fragmentJsConstantSuffix)
+
 export const naming = {
   constantName,
+  fragmentConstantName,
 }

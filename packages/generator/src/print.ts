@@ -12,14 +12,14 @@ export const printGqlTag = (
   let result = ''
 
   result += `export const ${constant} = gql\`\n`
-  result += indent(print(content), 1) + '\n'
+  result += indent(print(content), 1)
 
   if (deps) {
     result += '\n'
     result += indent(deps.map(dep => '${' + dep + '}').join('\n'), 1)
   }
 
-  result += `\``
+  result += `\n\``
 
   return result
 }

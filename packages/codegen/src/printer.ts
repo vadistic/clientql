@@ -8,7 +8,7 @@ import {
   Kind,
   parse,
 } from 'graphql'
-import { CodegenPrinterConfig, defaultConfig } from './config'
+import { CodegenConfig, defaultCodegenConfig } from './config'
 import {
   printArgument,
   printFieldDefinition,
@@ -37,11 +37,11 @@ import {
  */
 
 export const createCodegenPrinter = (
-  config?: Partial<CodegenPrinterConfig>,
+  config?: Partial<CodegenConfig>,
   schema?: GraphQLSchema | DocumentNode | string,
 ) => {
   let initalSchema: GraphQLSchema | undefined
-  const initalConfig = { ...defaultConfig, ...config }
+  const initalConfig = { ...defaultCodegenConfig, ...config }
 
   /**
    * allow providing schema as doc | string | schema +  merge extensions when possible
@@ -70,7 +70,7 @@ export const createCodegenPrinter = (
 
   const printer = (
     ast: ASTNode | ASTNode[],
-    configOverride?: Partial<CodegenPrinterConfig>,
+    configOverride?: Partial<CodegenConfig>,
   ) => {
     /*
      * dynamic extension of schema & config

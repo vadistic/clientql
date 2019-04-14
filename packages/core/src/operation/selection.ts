@@ -1,4 +1,4 @@
-import { FieldNode, Kind, SelectionNode } from 'graphql'
+import { FieldNode, FragmentDefinitionNode, Kind, SelectionNode } from 'graphql'
 import {
   createField,
   createFragment,
@@ -9,47 +9,38 @@ import {
   isObjectTypeDefinitionNode,
   isScalarTypeDefinitionNode,
   isUnionTypeDefinitionNode,
+  unwrapSelectionSet,
 } from '../ast'
 import { CoreProps, FragmentType } from '../config'
 import { Edge } from '../type-graph'
 import { isNotEmpty } from '../utils'
+import {
+  isStackCircural,
+  lastFieldname,
+  lastTypename,
+  onlyUnique,
+  replaceLastTypename,
+} from './utils'
 
 export interface SelectionResult {
-  selections: FieldNode[]
+  selection?: FieldNode
   fragmentnames: string[]
   complete: boolean
   flat: boolean
 }
 
-export interface NestedSelectionResult {
+export interface NestedSelectionsResult {
   selections: SelectionNode[]
   fragmentnames: string[]
   complete: boolean
   flat: boolean
 }
 
-export const retriveCacheFragments = (props: CoreProps) => (
-  fragmentnames: string[],
-) => onlyUnique(fragmentnames).map(name => props.fragments.get(name)!)
-
-// not sure at which stage do it and if this is performant way
-const onlyUnique = (input: string[]) => Array.from(new Set(input).values())
-
-const lastTypename = (stack: Edge[]) => stack[stack.length - 1][1]
-const lastFieldname = (stack: Edge[]) => stack[stack.length - 1][0]
-
-/**
- * no idea how to check it...
- * I'm disallowing to duplicate typename in the stack
- */
-const isCircural = (props: CoreProps) => (stack: Edge[]) => {
-  // cannot circle just on the begining
-  if (stack.length === 1) {
-    return false
-  }
-  const typename = lastTypename(stack)
-
-  return stack.slice(0, -1).some(([fname, tname]) => tname === typename)
+export interface FragmentResult {
+  definition: FragmentDefinitionNode
+  deps: string[]
+  flat: boolean
+  // always complete
 }
 
 /**
@@ -73,10 +64,10 @@ export const buildSelection = (props: CoreProps) => (
     complete: true,
     flat: true,
     fragmentnames: [],
-    selections: [],
+    selections: undefined,
   }
 
-  if (isCircural(props)(stack)) {
+  if (isStackCircural(props)(stack)) {
     return { ...noop, complete: false }
   }
 
@@ -90,7 +81,7 @@ export const buildSelection = (props: CoreProps) => (
       complete: true,
       flat: true,
       fragmentnames: [],
-      selections: [createField({ fieldname })],
+      selection: createField({ fieldname }),
     }
   }
 
@@ -109,22 +100,22 @@ export const buildSelection = (props: CoreProps) => (
     return noop
   }
 
-  // return nested on one wrapping field
   return {
     ...nestedSelection,
     flat: false,
-    selections: [
-      createField({
-        fieldname,
-        selections: nestedSelection.selections,
-      }),
-    ],
+    selection: createField({
+      fieldname,
+      selections: nestedSelection.selections,
+    }),
   }
 }
 
+/**
+ * build selection for nested types
+ */
 const buildNestedSelection = (props: CoreProps) => (
   stack: Edge[],
-): NestedSelectionResult => {
+): NestedSelectionsResult => {
   const typename = lastTypename(stack)
   const vtx = props.graph.get(typename)!
 
@@ -138,12 +129,12 @@ const buildNestedSelection = (props: CoreProps) => (
     for (const edge of vtx.edgesArr || []) {
       const res = buildSelection(props)([...stack, edge])
 
-      if (!isNotEmpty(res.selections)) {
+      if (!res.selection) {
         complete = false
         continue
       }
 
-      selections.push(...res.selections)
+      selections.push(res.selection)
       fragmentnames.push(...res.fragmentnames)
 
       flat = flat && res.flat
@@ -175,19 +166,20 @@ const buildNestedSelection = (props: CoreProps) => (
     const selections: SelectionNode[] = []
     const fragmentnames: string[] = []
 
-    const stackBase = stack.slice(0, -1)
-    const fieldname = lastFieldname(stack)
-
     for (const implem of vtx.implementations) {
       // replacing last stack entry when resolving union, kind of portal?
-      const res = buildSelection(props)([...stackBase, [fieldname, implem]])
+      const res = buildSelection(props)(replaceLastTypename(stack, implem))
 
-      if (!isNotEmpty(res.selections)) {
+      // because I did this stack replacing and
+      // it need to be on the same level as other union members
+      const unwrapped = unwrapSelectionSet(res.selection)
+
+      if (!unwrapped || !isNotEmpty(unwrapped)) {
         complete = false
         continue
       }
 
-      selections.push(createInlineFragment(implem, res.selections))
+      selections.push(createInlineFragment(implem, unwrapped))
       fragmentnames.push(...res.fragmentnames)
 
       flat = flat && res.flat
@@ -209,18 +201,15 @@ const buildNestedSelection = (props: CoreProps) => (
     const selections: SelectionNode[] = []
     const fragmentnames: string[] = []
 
-    const stackBase = stack.slice(0, -1)
-    const fieldname = lastFieldname(stack)
-
     for (const edge of vtx.edgesArr || []) {
       const res = buildSelection(props)([...stack, edge])
 
-      if (!isNotEmpty(res.selections)) {
+      if (!res.selection) {
         complete = false
         continue
       }
 
-      selections.push(...res.selections)
+      selections.push(res.selection)
       fragmentnames.push(...res.fragmentnames)
 
       flat = flat && res.flat
@@ -228,14 +217,17 @@ const buildNestedSelection = (props: CoreProps) => (
     }
 
     for (const implem of vtx.implementations || []) {
-      const res = buildSelection(props)([...stackBase, [fieldname, implem]])
+      const res = buildSelection(props)(replaceLastTypename(stack, implem))
 
-      if (!isNotEmpty(res.selections)) {
+      // because it need to be on the same level as interfaces
+      const unwrapped = unwrapSelectionSet(res.selection)
+
+      if (!unwrapped || !isNotEmpty(unwrapped)) {
         complete = false
         continue
       }
 
-      selections.push(createInlineFragment(implem, res.selections))
+      selections.push(createInlineFragment(implem, unwrapped))
       fragmentnames.push(...res.fragmentnames)
 
       flat = flat && res.flat
@@ -268,46 +260,47 @@ const buildNestedSelection = (props: CoreProps) => (
  *    pack in fragment if flat flag (which is also complete btw.)
  *    select flat if not flat
  *
+ * cache fragmentnames will store all nested fragment dependencies
+ *
  */
 const cacheAndFragment = (props: CoreProps) => (
   stack: Edge[],
-  result: NestedSelectionResult,
-): NestedSelectionResult => {
-  let fragmentedResult = result
+  result: NestedSelectionsResult,
+): NestedSelectionsResult => {
   const typename = lastTypename(stack)
+  const uniqueFragmentnames = onlyUnique(result.fragmentnames)
+  let fragmentedResult = { ...result, fragmentnames: uniqueFragmentnames }
 
   if (props.config.useFragments === FragmentType.DEEP && result.complete) {
     const fragmentname = typename + (result.flat ? 'Flat' : 'Deep')
 
     if (!props.fragments.has(fragmentname)) {
-      props.fragments.set(
-        fragmentname,
-        createFragment({
+      props.fragments.set(fragmentname, {
+        definition: createFragment({
           condition: typename,
           fragmentname,
           selections: result.selections,
         }),
-      )
+        deps: uniqueFragmentnames,
+        flat: result.flat,
+      })
     }
 
     fragmentedResult = {
-      ...result,
+      ...fragmentedResult,
       selections: [createFragmentSpread(fragmentname)],
-      fragmentnames: [fragmentname, ...result.fragmentnames],
+      fragmentnames: [fragmentname, ...uniqueFragmentnames],
     }
   }
 
   if (props.config.useFragments === FragmentType.FLAT) {
     const fragmentname = typename + 'Flat'
 
-    const { flat, deep } = result.flat
+    const { flat: flatSelections, deep: deepSelections } = result.flat
       ? { flat: result.selections, deep: [] }
       : result.selections.reduce(
           (acc, node) => {
-            if (
-              node.kind === Kind.FIELD &&
-              (!node.selectionSet || node.selectionSet.selections.length === 0)
-            ) {
+            if (node.kind === Kind.FIELD && !node.selectionSet) {
               acc.flat.push(node)
             } else {
               acc.deep.push(node)
@@ -322,20 +315,21 @@ const cacheAndFragment = (props: CoreProps) => (
         )
 
     if (!props.fragments.has(fragmentname)) {
-      props.fragments.set(
-        fragmentname,
-        createFragment({
+      props.fragments.set(fragmentname, {
+        definition: createFragment({
           condition: typename,
           fragmentname,
-          selections: flat,
+          selections: flatSelections,
         }),
-      )
+        deps: [],
+        flat: true,
+      })
     }
 
     fragmentedResult = {
-      ...result,
-      selections: [createFragmentSpread(fragmentname), ...deep],
-      fragmentnames: [fragmentname, ...result.fragmentnames],
+      ...fragmentedResult,
+      selections: [createFragmentSpread(fragmentname), ...deepSelections],
+      fragmentnames: [fragmentname, ...uniqueFragmentnames],
     }
   }
 
@@ -343,10 +337,7 @@ const cacheAndFragment = (props: CoreProps) => (
    * write to cache, if selection is complete (does not make sense to store partial ones)
    */
   if (fragmentedResult.complete && !props.selections.has(typename)) {
-    props.selections.set(typename, {
-      ...fragmentedResult,
-      fragmentnames: onlyUnique(fragmentedResult.fragmentnames),
-    })
+    props.selections.set(typename, fragmentedResult)
   }
 
   // return

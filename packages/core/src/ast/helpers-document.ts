@@ -1,4 +1,10 @@
-import { ASTKindToNode, DefinitionNode, DocumentNode, KindEnum } from 'graphql'
+import {
+  ASTKindToNode,
+  DefinitionNode,
+  DocumentNode,
+  KindEnum,
+  SelectionNode,
+} from 'graphql'
 import { truthy } from '../utils/types'
 import { Kind } from './kind'
 
@@ -46,3 +52,10 @@ export const getDocDefinition: GetDocDefinition = <K extends KindEnum>(
 
   return doc.definitions[0]
 }
+
+// for interfaces/unions that need it flat
+export const unwrapSelectionSet = (node?: SelectionNode) =>
+  (node &&
+    node.kind === Kind.FIELD &&
+    node.selectionSet && [...node.selectionSet.selections]) ||
+  undefined

@@ -1,9 +1,9 @@
 import { generateGraphqlTypedefs } from '../../generate'
-import { fixtureProps } from '../fixture'
+import { prismaProps } from '../fixture'
 
 describe('generate graphql > typedefs', () => {
   it('match snapshot', async () => {
-    const result = await generateGraphqlTypedefs(fixtureProps)
+    const result = await generateGraphqlTypedefs(prismaProps)
 
     expect(result).toMatchSnapshot()
   })

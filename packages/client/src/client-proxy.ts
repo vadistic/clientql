@@ -1,10 +1,10 @@
 import {
   buildOperation,
-  defaultCoreConfig,
+  findRootOperation,
   getCoreProps,
 } from '@graphql-clientgen/core'
 import ApolloClient from 'apollo-client'
-import { DocumentNode, print } from 'graphql'
+import { DocumentNode } from 'graphql'
 import { fluentAsyncProxy, Segments } from './fluent-async-proxy'
 
 export interface ClientProxyProps {
@@ -21,19 +21,15 @@ export const createClientProxy = ({
   const core = getCoreProps(typedefs)
 
   const execute = async (segments: Segments) => {
-    const type = 'query'
-
-    console.log('START', segments)
-
     const { path, variables } = segments.reduce(
       (acc, [fieldname, args], i) => {
         acc.path.push(fieldname as string)
 
-        const vars = args[0][0]
+        const parameterObj = args[0][0]
         const variableSuffix = i > 0 ? '' + i : ''
 
-        if (vars) {
-          Object.entries(vars).forEach(([key, value]) => {
+        if (parameterObj) {
+          Object.entries(parameterObj).forEach(([key, value]) => {
             acc.variables[key + variableSuffix] = value
           })
         }
@@ -46,24 +42,33 @@ export const createClientProxy = ({
       },
     )
 
+    const root = findRootOperation(core)(path[0])
     const operation = buildOperation(core)(path)
 
-    if (!operation) {
-      console.warn('operration not built')
-      return
+    if (!root || !operation) {
+      throw Error('Operation could not be built')
     }
 
-    console.log('PATH', path)
-    console.log('VARIABLES', variables)
+    if (root.type === 'query') {
+      return client.query({
+        query: operation,
+        variables,
+      })
+    }
 
-    console.log('OPERATION', print(operation))
+    if (root.type === 'mutation') {
+      return client.mutate({
+        mutation: operation,
+        variables,
+      })
+    }
 
-    const res = client.query({
-      query: operation,
-      variables,
-    })
-
-    return res
+    if (root.type === 'subscription') {
+      return client.subscribe({
+        query: operation,
+        variables,
+      })
+    }
   }
 
   return fluentAsyncProxy(execute)

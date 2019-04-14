@@ -8,80 +8,153 @@ exports[`generate typings > client match snapshot 1`] = `
  */
 
 export interface Mutation {
+  createBoard: (args: { data: BoardCreateInput }) => Board
+  updateBoard: (args?: {
+    data: BoardUpdateInput
+    where: BoardWhereUniqueInput
+  }) => Board | null
+  upsertBoard: (args: {
+    where: BoardWhereUniqueInput
+    create: BoardCreateInput
+    update: BoardUpdateInput
+  }) => Board
+  deleteBoard: (args?: { where: BoardWhereUniqueInput }) => Board | null
+  deleteManyBoards: (args: { where?: BoardWhereInput | null }) => BatchPayload
   createPost: (args: { data: PostCreateInput }) => Post
-  createUser: (args: { data: UserCreateInput }) => User
-  deleteManyPosts: (args: { where?: PostWhereInput | null }) => BatchPayload
-  deleteManyUsers: (args: { where?: UserWhereInput | null }) => BatchPayload
-  deletePost: (args?: { where: PostWhereUniqueInput }) => Post | null
-  deleteUser: (args?: { where: UserWhereUniqueInput }) => User | null
-  updateManyPosts: (args: {
-    data: PostUpdateManyMutationInput
-    where?: PostWhereInput | null
-  }) => BatchPayload
-  updateManyUsers: (args: {
-    data: UserUpdateManyMutationInput
-    where?: UserWhereInput | null
-  }) => BatchPayload
   updatePost: (args?: {
     data: PostUpdateInput
     where: PostWhereUniqueInput
   }) => Post | null
+  updateManyPosts: (args: {
+    data: PostUpdateManyMutationInput
+    where?: PostWhereInput | null
+  }) => BatchPayload
+  upsertPost: (args: {
+    where: PostWhereUniqueInput
+    create: PostCreateInput
+    update: PostUpdateInput
+  }) => Post
+  deletePost: (args?: { where: PostWhereUniqueInput }) => Post | null
+  deleteManyPosts: (args: { where?: PostWhereInput | null }) => BatchPayload
+  createThread: (args: { data: ThreadCreateInput }) => Thread
+  updateThread: (args?: {
+    data: ThreadUpdateInput
+    where: ThreadWhereUniqueInput
+  }) => Thread | null
+  updateManyThreads: (args: {
+    data: ThreadUpdateManyMutationInput
+    where?: ThreadWhereInput | null
+  }) => BatchPayload
+  upsertThread: (args: {
+    where: ThreadWhereUniqueInput
+    create: ThreadCreateInput
+    update: ThreadUpdateInput
+  }) => Thread
+  deleteThread: (args?: { where: ThreadWhereUniqueInput }) => Thread | null
+  deleteManyThreads: (args: { where?: ThreadWhereInput | null }) => BatchPayload
+  createUser: (args: { data: UserCreateInput }) => User
   updateUser: (args?: {
     data: UserUpdateInput
     where: UserWhereUniqueInput
   }) => User | null
-  upsertPost: (args: {
-    create: PostCreateInput
-    update: PostUpdateInput
-    where: PostWhereUniqueInput
-  }) => Post
+  updateManyUsers: (args: {
+    data: UserUpdateManyMutationInput
+    where?: UserWhereInput | null
+  }) => BatchPayload
   upsertUser: (args: {
+    where: UserWhereUniqueInput
     create: UserCreateInput
     update: UserUpdateInput
-    where: UserWhereUniqueInput
   }) => User
+  deleteUser: (args?: { where: UserWhereUniqueInput }) => User | null
+  deleteManyUsers: (args: { where?: UserWhereInput | null }) => BatchPayload
 }
 
 export interface Query {
-  node: (args?: { id: string }) => Node | null
+  board: (args?: { where: BoardWhereUniqueInput }) => Board | null
+  boards: (args: {
+    where?: BoardWhereInput | null
+    orderBy?: BoardOrderByInput | null
+    skip?: number | null
+    after?: string | null
+    before?: string | null
+    first?: number | null
+    last?: number | null
+  }) => Board
+  boardsConnection: (args: {
+    where?: BoardWhereInput | null
+    orderBy?: BoardOrderByInput | null
+    skip?: number | null
+    after?: string | null
+    before?: string | null
+    first?: number | null
+    last?: number | null
+  }) => BoardConnection
   post: (args?: { where: PostWhereUniqueInput }) => Post | null
   posts: (args: {
+    where?: PostWhereInput | null
+    orderBy?: PostOrderByInput | null
+    skip?: number | null
     after?: string | null
     before?: string | null
     first?: number | null
     last?: number | null
-    orderBy?: PostOrderByInput | null
-    skip?: number | null
-    where?: PostWhereInput | null
-  }) => Array<Post>
+  }) => Post
   postsConnection: (args: {
+    where?: PostWhereInput | null
+    orderBy?: PostOrderByInput | null
+    skip?: number | null
     after?: string | null
     before?: string | null
     first?: number | null
     last?: number | null
-    orderBy?: PostOrderByInput | null
-    skip?: number | null
-    where?: PostWhereInput | null
   }) => PostConnection
+  thread: (args?: { where: ThreadWhereUniqueInput }) => Thread | null
+  threads: (args: {
+    where?: ThreadWhereInput | null
+    orderBy?: ThreadOrderByInput | null
+    skip?: number | null
+    after?: string | null
+    before?: string | null
+    first?: number | null
+    last?: number | null
+  }) => Thread
+  threadsConnection: (args: {
+    where?: ThreadWhereInput | null
+    orderBy?: ThreadOrderByInput | null
+    skip?: number | null
+    after?: string | null
+    before?: string | null
+    first?: number | null
+    last?: number | null
+  }) => ThreadConnection
   user: (args?: { where: UserWhereUniqueInput }) => User | null
   users: (args: {
+    where?: UserWhereInput | null
+    orderBy?: UserOrderByInput | null
+    skip?: number | null
     after?: string | null
     before?: string | null
     first?: number | null
     last?: number | null
-    orderBy?: UserOrderByInput | null
-    skip?: number | null
-    where?: UserWhereInput | null
-  }) => Array<User>
+  }) => User
   usersConnection: (args: {
+    where?: UserWhereInput | null
+    orderBy?: UserOrderByInput | null
+    skip?: number | null
     after?: string | null
     before?: string | null
     first?: number | null
     last?: number | null
-    orderBy?: UserOrderByInput | null
-    skip?: number | null
-    where?: UserWhereInput | null
   }) => UserConnection
+  node: (args?: { id: string }) => Node | null
+}
+
+export interface Subscription {
+  board: (args?: { where?: BoardSubscriptionWhereInput | null }) => BoardSubscriptionPayload | null
+  post: (args?: { where?: PostSubscriptionWhereInput | null }) => PostSubscriptionPayload | null
+  thread: (args?: { where?: ThreadSubscriptionWhereInput | null }) => ThreadSubscriptionPayload | null
+  user: (args?: { where?: UserSubscriptionWhereInput | null }) => UserSubscriptionPayload | null
 }
 
 /*
@@ -90,7 +163,15 @@ export interface Query {
  *
  */
 
+export interface AggregateBoard {
+  count: () => number
+}
+
 export interface AggregatePost {
+  count: () => number
+}
+
+export interface AggregateThread {
   count: () => number
 }
 
@@ -102,58 +183,185 @@ export interface BatchPayload {
   count: () => number
 }
 
+export interface Board {
+  id: () => string
+  createdAt: () => string
+  admins: (args?: {
+    where?: UserWhereInput | null
+    orderBy?: UserOrderByInput | null
+    skip?: number | null
+    after?: string | null
+    before?: string | null
+    first?: number | null
+    last?: number | null
+  }) => Array<User> | null
+  members: (args?: {
+    where?: UserWhereInput | null
+    orderBy?: UserOrderByInput | null
+    skip?: number | null
+    after?: string | null
+    before?: string | null
+    first?: number | null
+    last?: number | null
+  }) => Array<User> | null
+  threads: (args?: {
+    where?: ThreadWhereInput | null
+    orderBy?: ThreadOrderByInput | null
+    skip?: number | null
+    after?: string | null
+    before?: string | null
+    first?: number | null
+    last?: number | null
+  }) => Array<Thread> | null
+}
+
+export interface BoardConnection {
+  pageInfo: () => PageInfo
+  edges: () => BoardEdge
+  aggregate: () => AggregateBoard
+}
+
+export interface BoardEdge {
+  node: () => Board
+  cursor: () => string
+}
+
+export interface BoardPreviousValues {
+  id: () => string
+  createdAt: () => string
+}
+
+export interface BoardSubscriptionPayload {
+  mutation: () => MutationType
+  node: () => Board | null
+  updatedFields: () => string[] | null
+  previousValues: () => BoardPreviousValues | null
+}
+
 export interface PageInfo {
-  endCursor: () => string | null
   hasNextPage: () => boolean
   hasPreviousPage: () => boolean
   startCursor: () => string | null
+  endCursor: () => string | null
 }
 
 export interface Post {
+  id: () => string
   author: () => User
   content: () => string | null
   createdAt: () => string
-  id: () => string
   published: () => boolean
   title: () => string
   updatedAt: () => string
 }
 
 export interface PostConnection {
-  aggregate: () => AggregatePost
-  edges: () => Array<PostEdge>
   pageInfo: () => PageInfo
+  edges: () => PostEdge
+  aggregate: () => AggregatePost
 }
 
 export interface PostEdge {
-  cursor: () => string
   node: () => Post
+  cursor: () => string
 }
 
-export interface User {
-  email: () => string
+export interface PostPreviousValues {
   id: () => string
-  name: () => string | null
-  posts: (args?: {
+  content: () => string | null
+  createdAt: () => string
+  published: () => boolean
+  title: () => string
+  updatedAt: () => string
+}
+
+export interface PostSubscriptionPayload {
+  mutation: () => MutationType
+  node: () => Post | null
+  updatedFields: () => string[] | null
+  previousValues: () => PostPreviousValues | null
+}
+
+export interface Thread {
+  id: () => string
+  createdAt: () => string
+  author: () => User
+  name: () => string
+  entry: () => Post
+  replies: (args?: {
+    where?: PostWhereInput | null
+    orderBy?: PostOrderByInput | null
+    skip?: number | null
     after?: string | null
     before?: string | null
     first?: number | null
     last?: number | null
+  }) => Array<Post> | null
+}
+
+export interface ThreadConnection {
+  pageInfo: () => PageInfo
+  edges: () => ThreadEdge
+  aggregate: () => AggregateThread
+}
+
+export interface ThreadEdge {
+  node: () => Thread
+  cursor: () => string
+}
+
+export interface ThreadPreviousValues {
+  id: () => string
+  createdAt: () => string
+  name: () => string
+}
+
+export interface ThreadSubscriptionPayload {
+  mutation: () => MutationType
+  node: () => Thread | null
+  updatedFields: () => string[] | null
+  previousValues: () => ThreadPreviousValues | null
+}
+
+export interface User {
+  id: () => string
+  nationality: () => string | null
+  email: () => string
+  name: () => string | null
+  posts: (args?: {
+    where?: PostWhereInput | null
     orderBy?: PostOrderByInput | null
     skip?: number | null
-    where?: PostWhereInput | null
+    after?: string | null
+    before?: string | null
+    first?: number | null
+    last?: number | null
   }) => Array<Post> | null
 }
 
 export interface UserConnection {
-  aggregate: () => AggregateUser
-  edges: () => Array<UserEdge>
   pageInfo: () => PageInfo
+  edges: () => UserEdge
+  aggregate: () => AggregateUser
 }
 
 export interface UserEdge {
-  cursor: () => string
   node: () => User
+  cursor: () => string
+}
+
+export interface UserPreviousValues {
+  id: () => string
+  nationality: () => string | null
+  email: () => string
+  name: () => string | null
+}
+
+export interface UserSubscriptionPayload {
+  mutation: () => MutationType
+  node: () => User | null
+  updatedFields: () => string[] | null
+  previousValues: () => UserPreviousValues | null
 }
 
 "

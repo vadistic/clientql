@@ -6,7 +6,8 @@ import { HttpLink } from 'apollo-link-http'
 
 const cache = new InMemoryCache()
 
-const ENDPOINT = `https://eu1.prisma.sh/vadistic/graphql-clientgen/dev`
+const ENDPOINT = `https://vats.now.sh/graphql`
+// https://eu1.prisma.sh/vadistic/graphql-clientgen/dev
 
 const httpLink = new HttpLink({
   uri: ENDPOINT,

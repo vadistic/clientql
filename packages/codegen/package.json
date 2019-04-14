@@ -20,6 +20,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@graphql-clientgen/core": "^0.1.0",
     "graphql": "^14.2.1"
   },
   "devDependencies": {

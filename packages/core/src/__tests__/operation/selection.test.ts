@@ -1,29 +1,27 @@
 import { print } from 'graphql'
 import { createField, createFragment, wrapDocument } from '../../ast'
-import { buildSelection, retriveCacheFragments } from '../../operation'
+import { buildSelection } from '../../operation'
 import { complexProps, prismaProps } from '../fixture'
 
 describe('selection', () => {
   it('not very nested prisma fragment', () => {
     const selectionFn = buildSelection(prismaProps)
 
-    const { selections, fragmentnames } = selectionFn([[null as any, 'Post']])
+    const { selection, fragmentnames } = selectionFn([[null as any, 'Post']])
 
     const frag = createFragment({
       fragmentname: 'PostFragment',
-      selections,
+      selections: [...selection!.selectionSet!.selections!],
       condition: 'Post',
     })
 
-    const fragments = retriveCacheFragments(prismaProps)(fragmentnames)
-
-    expect(print(wrapDocument(frag, ...fragments))).toMatchSnapshot()
+    expect(print(wrapDocument(frag))).toMatchSnapshot()
   })
 
   it('complex fragment selection no interface', () => {
     const selectionFn = buildSelection(complexProps)
 
-    const { selections, fragmentnames } = selectionFn([[null as any, 'Event']])
+    const { selection, fragmentnames } = selectionFn([[null as any, 'Event']])
 
     const frag = createFragment({
       fragmentname: 'EventFragment',
@@ -31,13 +29,13 @@ describe('selection', () => {
       selections: [
         createField({
           fieldname: 'event',
-          selections,
+          selections: [...selection!.selectionSet!.selections!],
         }),
       ],
     })
 
-    const fragments = retriveCacheFragments(prismaProps)(fragmentnames)
+    console.log(fragmentnames)
 
-    expect(print(wrapDocument(frag, ...fragments))).toMatchSnapshot()
+    expect(print(wrapDocument(frag))).toMatchSnapshot()
   })
 })

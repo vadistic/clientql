@@ -1,13 +1,12 @@
-import { CodegenPrinterConfig } from '@graphql-clientgen/codegen'
-import { CoreConfig, FragmentType } from '@graphql-clientgen/core'
+import { CodegenConfig, defaultCodegenConfig } from '@graphql-clientgen/codegen'
+import { CoreConfig, defaultCoreConfig } from '@graphql-clientgen/core'
 import { StringCase } from './naming'
 
 /**
  * GeneratorConfig = HOW to generate
  */
 
-export interface GeneratorConfig extends CoreConfig {
-  codegenConfig?: CodegenPrinterConfig
+export interface GeneratorConfig extends CodegenConfig, CoreConfig {
   /**
    * suffix client types
    * @default: 'Client'
@@ -38,11 +37,11 @@ export interface GeneratorConfig extends CoreConfig {
 }
 
 export const defaultGeneratorConfig: GeneratorConfig = {
+  ...defaultCoreConfig,
+  ...defaultCodegenConfig,
   clientSuffix: 'Client',
   constantCase: StringCase.CONSTANT,
-  deparametrizeSingleArgument: true,
   fragmentJsConstantSuffix: 'Fragment',
-  fragmentType: FragmentType.NONE,
   generateJsMaps: true,
   printGraphqlToJs: true,
 }

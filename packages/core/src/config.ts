@@ -1,5 +1,9 @@
 import { DocumentNode, FragmentDefinitionNode } from 'graphql'
-import { NestedSelectionResult, SelectionResult } from './operation'
+import {
+  FragmentResult,
+  NestedSelectionsResult,
+  SelectionResult,
+} from './operation'
 import { createTypeGraph, TypeGraph } from './type-graph'
 
 export enum FragmentType {
@@ -28,7 +32,7 @@ export interface CoreConfig {
    */
   useFragments: FragmentType
 
-  addTypename: boolean
+  addTypename: boolean | 'string'
 }
 
 export const defaultCoreConfig: CoreConfig = {
@@ -44,10 +48,10 @@ export interface CoreProps {
   config: CoreConfig
   graph: TypeGraph
   // lazy map for reusable fragments
-  fragments: Map<string, FragmentDefinitionNode>
+  fragments: Map<string, FragmentResult>
   // testing to avoid traversing whole tree few times each op
   // lets store only complete ones (should cover 90% of the tree)
-  selections: Map<string, NestedSelectionResult>
+  selections: Map<string, NestedSelectionsResult>
 }
 
 export const getCoreProps = (

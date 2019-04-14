@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`operation complex > deep fragments 1`] = `
-"query TODO($venueId: ID!) {
+"query FindEventsAtVenueQuery($venueId: ID!) {
   findEventsAtVenue(venueId: $venueId) {
     ...EventDeep
   }
@@ -17,19 +17,13 @@ fragment EventDeep on Event {
   }
   minAgeRestriction
   ... on Concert {
-    findEventsAtVenue {
-      ...ConcertDeep
-    }
+    ...ConcertDeep
   }
   ... on Festival {
-    findEventsAtVenue {
-      ...FestivalDeep
-    }
+    ...FestivalDeep
   }
   ... on Conference {
-    findEventsAtVenue {
-      ...ConferenceDeep
-    }
+    ...ConferenceDeep
   }
 }
 
@@ -103,46 +97,40 @@ fragment SpeakerFlat on Speaker {
 `;
 
 exports[`operation complex > interface target 1`] = `
-"query TODO($venueId: ID!) {
+"query FindEventsAtVenueQuery($venueId: ID!) {
   findEventsAtVenue(venueId: $venueId) {
     ...EventFlat
     venue {
       ...VenueFlat
     }
     ... on Concert {
-      findEventsAtVenue {
-        ...ConcertFlat
-        venue {
-          ...VenueFlat
-        }
-        previousVenues {
-          ...VenueFlat
-        }
-        performingBand {
-          ...PerformerFlat
-        }
+      ...ConcertFlat
+      venue {
+        ...VenueFlat
+      }
+      previousVenues {
+        ...VenueFlat
+      }
+      performingBand {
+        ...PerformerFlat
       }
     }
     ... on Festival {
-      findEventsAtVenue {
-        ...FestivalFlat
-        venue {
-          ...VenueFlat
-        }
-        performers {
-          ...PerformerFlat
-        }
+      ...FestivalFlat
+      venue {
+        ...VenueFlat
+      }
+      performers {
+        ...PerformerFlat
       }
     }
     ... on Conference {
-      findEventsAtVenue {
-        ...ConferenceFlat
-        venue {
-          ...VenueFlat
-        }
-        speakers {
-          ...SpeakerFlat
-        }
+      ...ConferenceFlat
+      venue {
+        ...VenueFlat
+      }
+      speakers {
+        ...SpeakerFlat
       }
     }
   }
@@ -205,7 +193,7 @@ fragment SpeakerFlat on Speaker {
 `;
 
 exports[`operation prisma > nested query 1`] = `
-"query TODO($where: UserWhereUniqueInput!, $where1: PostWhereInput, $orderBy1: PostOrderByInput, $skip1: Int, $after1: String, $before1: String, $first1: Int, $last1: Int) {
+"query UserPostsQuery($where: UserWhereUniqueInput!, $where1: PostWhereInput, $orderBy1: PostOrderByInput, $skip1: Int, $after1: String, $before1: String, $first1: Int, $last1: Int) {
   user(where: $where) {
     posts(where: $where1, orderBy: $orderBy1, skip: $skip1, after: $after1, before: $before1, first: $first1, last: $last1) {
       ...PostFlat
@@ -235,7 +223,7 @@ fragment UserFlat on User {
 `;
 
 exports[`operation prisma > non nested multi query 1`] = `
-"query TODO($where: UserWhereInput, $orderBy: UserOrderByInput, $skip: Int, $after: String, $before: String, $first: Int, $last: Int) {
+"query UsersQuery($where: UserWhereInput, $orderBy: UserOrderByInput, $skip: Int, $after: String, $before: String, $first: Int, $last: Int) {
   users(where: $where, orderBy: $orderBy, skip: $skip, after: $after, before: $before, first: $first, last: $last) {
     ...UserFlat
     posts {
@@ -263,7 +251,7 @@ fragment PostFlat on Post {
 `;
 
 exports[`operation prisma > non nested single query 1`] = `
-"query TODO($where: UserWhereUniqueInput!) {
+"query UserQuery($where: UserWhereUniqueInput!) {
   user(where: $where) {
     ...UserFlat
     posts {

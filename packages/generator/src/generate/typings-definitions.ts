@@ -17,7 +17,7 @@ export const generateTypingsDefinitions = async (props: GeneratorProps) => {
 
   const { rootTypes, objectTypes } = reduceObjectTypeDefinitions(definitions)
 
-  const print = createCodegenPrinter(props.config.codegenConfig, props.schema)
+  const print = createCodegenPrinter(props.config, props.schema)
 
   const rootsTypescript = rootTypes.map(t => print(t)).join('\n\n')
 

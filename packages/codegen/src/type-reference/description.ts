@@ -6,7 +6,7 @@ import {
   TypeDefinitionNode,
   TypeExtensionNode,
 } from 'graphql'
-import { defaultConfig } from '../config'
+import { defaultCodegenConfig } from '../config'
 import { printJSDoc } from '../strings'
 
 type DescribableNode =
@@ -19,7 +19,7 @@ type DescribableNode =
  * prints StringValue of description props as JSDoc comment
  */
 export const printDescription = (
-  config = defaultConfig,
+  config = defaultCodegenConfig,
   schema?: GraphQLSchema,
 ) => (node: DescribableNode) => {
   if (node.description) {
@@ -33,7 +33,7 @@ export const printDescription = (
  * -  fallthrough on disabled
  */
 export const withDescription = (
-  config = defaultConfig,
+  config = defaultCodegenConfig,
   schema?: GraphQLSchema,
 ) => (node: DescribableNode | TypeExtensionNode) => (content: string) => {
   // this to allow handling of extension nodes

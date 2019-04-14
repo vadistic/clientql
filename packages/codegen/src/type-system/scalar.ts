@@ -3,7 +3,7 @@ import {
   ScalarTypeDefinitionNode,
   ScalarTypeExtensionNode,
 } from 'graphql'
-import { defaultConfig } from '../config'
+import { defaultCodegenConfig } from '../config'
 import { withDescription } from '../type-reference'
 
 /**
@@ -12,9 +12,10 @@ import { withDescription } from '../type-reference'
  * supports:
  * - `customScalars`
  */
-export const printScalar = (config = defaultConfig, schema?: GraphQLSchema) => (
-  node: ScalarTypeDefinitionNode | ScalarTypeExtensionNode,
-) => {
+export const printScalar = (
+  config = defaultCodegenConfig,
+  schema?: GraphQLSchema,
+) => (node: ScalarTypeDefinitionNode | ScalarTypeExtensionNode) => {
   const name = node.name.value
   const addDescription = withDescription(config, schema)
 

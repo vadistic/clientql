@@ -6,7 +6,7 @@ import {
   InputValueDefinitionNode,
 } from 'graphql'
 import { isString } from 'util'
-import { defaultConfig } from '../config'
+import { defaultCodegenConfig } from '../config'
 import { naming } from '../naming'
 import { printTSInterface } from '../strings'
 import { printInputValue, printType, withDescription } from '../type-reference'
@@ -18,7 +18,7 @@ import { printInputValue, printType, withDescription } from '../type-reference'
  * - `transformInputValueType`
  */
 export const printInputObject = (
-  config = defaultConfig,
+  config = defaultCodegenConfig,
   schema?: GraphQLSchema,
 ) => (node: InputObjectTypeDefinitionNode | InputObjectTypeExtensionNode) => {
   const name = naming.interfaceName(config)(node.name.value)

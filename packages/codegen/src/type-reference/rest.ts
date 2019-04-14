@@ -8,21 +8,22 @@ import {
   SchemaExtensionNode,
   ValueNode,
 } from 'graphql'
-import { defaultConfig } from '../config'
+import { defaultCodegenConfig } from '../config'
 import { naming } from '../naming'
 
 /**
  * This is all pointles but nvm...
  */
 export const printObjectField = (
-  config = defaultConfig,
+  config = defaultCodegenConfig,
   schema?: GraphQLSchema,
 ) => (node: ObjectFieldNode) =>
   node.name.value + ': ' + printValue(config, schema)(node.value)
 
-export const printValue = (config = defaultConfig, schema?: GraphQLSchema) => (
-  node: ValueNode,
-): string => {
+export const printValue = (
+  config = defaultCodegenConfig,
+  schema?: GraphQLSchema,
+) => (node: ValueNode): string => {
   switch (node.kind) {
     case Kind.INT:
     case Kind.FLOAT:
@@ -66,7 +67,7 @@ export const printValue = (config = defaultConfig, schema?: GraphQLSchema) => (
 }
 
 export const printSchemaDefinition = (
-  config = defaultConfig,
+  config = defaultCodegenConfig,
   schema?: GraphQLSchema,
 ) => (node: SchemaDefinitionNode | SchemaExtensionNode) => {
   if (!node.operationTypes) {
@@ -87,7 +88,7 @@ export const printSchemaDefinition = (
  * prints explicit argument value ?
  */
 export const printArgument = (
-  config = defaultConfig,
+  config = defaultCodegenConfig,
   schema?: GraphQLSchema,
 ) => (node: ArgumentNode) => {
   const result = node.name + ': ' + printValue(config, schema)(node.value)

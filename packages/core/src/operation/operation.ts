@@ -1,9 +1,7 @@
 import {
   ArgumentNode,
-  FieldDefinitionNode,
   FieldNode,
   FragmentDefinitionNode,
-  OperationTypeNode,
   SelectionNode,
   VariableDefinitionNode,
 } from 'graphql'
@@ -14,33 +12,38 @@ import {
   createOperationVariable,
   Fieldname,
   Typename,
+  unwrapSelectionSet,
   wrapDocument,
 } from '../ast'
 import { CoreProps } from '../config'
-import { buildSelection, retriveCacheFragments } from './selection'
+import { capitalise } from '../utils'
+import { buildSelection } from './selection'
+import { findRootOperation, retriveCacheFragments } from './utils'
 
 /**
  * this needs to build operation from arr of fieldnames
  */
 
 export const buildOperation = (props: CoreProps) => (path: Fieldname[]) => {
-  const [head, ...tail] = path
-  const { type, vtx } = determineOperationType(props)(head)
+  const [head] = path
+  const root = findRootOperation(props)(head)
 
   // head not on any of roots
-  if (!vtx || !type) {
+  if (!root) {
     return
   }
 
   const { fragments, selections, variables } = buildDeepOperation(props)(
-    vtx.name,
+    root.name,
     path,
   )
 
+  const operationName = path.map(capitalise).join('') + capitalise(root.type)
+
   const operation = createOperation({
-    name: 'TODO',
+    name: operationName,
     selections,
-    type,
+    type: root.type,
     variables,
   })
 
@@ -89,24 +92,23 @@ const buildDeepOperation = (props: CoreProps) => (
 
   // base
   if (tail.length === 0) {
-    const { selections, fragmentnames } = buildSelection(props)([
+    const { selection, fragmentnames } = buildSelection(props)([
       [head, nextTarget],
     ])
 
-    const selection = {
-      // this should always be field on the top level
-      ...(selections[0] as FieldNode),
-      // inject args
+    const field = createField({
       arguments: args,
-    }
+      fieldname: head,
+      selections: unwrapSelectionSet(selection),
+    })
 
     return {
       fragments: retriveCacheFragments(props)(fragmentnames),
       variables,
-      selections: [selection],
+      selections: [field],
     }
   } else {
-    // not a base
+    // well, not a base
     const {
       selections,
       fragments,
@@ -125,29 +127,4 @@ const buildDeepOperation = (props: CoreProps) => (
       selections: [nextSelection],
     }
   }
-}
-
-export const determineOperationType = (props: CoreProps) => (
-  head: Fieldname,
-) => {
-  const query = props.graph.get('Query')
-  if (query && query.edgesMap && query.edgesMap.has(head)) {
-    return { vtx: query, type: 'query' as OperationTypeNode }
-  }
-
-  const mutation = props.graph.get('Mutation')
-  if (mutation && mutation.edgesMap && mutation.edgesMap.has(head)) {
-    return { vtx: query, type: 'mutation' as OperationTypeNode }
-  }
-
-  const subscription = props.graph.get('subscription')
-  if (
-    subscription &&
-    subscription.edgesMap &&
-    subscription.edgesMap.has(head)
-  ) {
-    return { vtx: query, type: 'subscription' as OperationTypeNode }
-  }
-
-  return { vtx: undefined, type: undefined }
 }

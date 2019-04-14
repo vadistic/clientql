@@ -3,7 +3,7 @@ import {
   InterfaceTypeDefinitionNode,
   InterfaceTypeExtensionNode,
 } from 'graphql'
-import { defaultConfig } from '../config'
+import { defaultCodegenConfig } from '../config'
 import { naming } from '../naming'
 import { printTSInterface } from '../strings'
 import { withDescription } from '../type-reference'
@@ -21,7 +21,7 @@ import {
  * - `addFieldsAsFunction`
  */
 export const printInterface = (
-  config = defaultConfig,
+  config = defaultCodegenConfig,
   schema?: GraphQLSchema,
 ) => (node: InterfaceTypeDefinitionNode | InterfaceTypeExtensionNode) => {
   const name = naming.interfaceName(config)(node.name.value)

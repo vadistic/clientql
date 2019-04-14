@@ -1,6 +1,6 @@
 import { indent, isNotEmpty, isNullable } from '@graphql-clientgen/core'
 import { FieldDefinitionNode, GraphQLSchema } from 'graphql'
-import { defaultConfig } from '../config'
+import { defaultCodegenConfig } from '../config'
 import { withDescription } from './description'
 import { printInputValue } from './input-value'
 import { printType } from './type'
@@ -13,7 +13,7 @@ import { printType } from './type'
  * - `addFieldAsFunction`
  */
 export const printFieldDefinition = (
-  config = defaultConfig,
+  config = defaultCodegenConfig,
   schema?: GraphQLSchema,
 ) => (node: FieldDefinitionNode) => {
   const name = node.name.value
@@ -45,7 +45,7 @@ export const printFieldDefinition = (
  * - `useOptionalModifier`
  */
 export const printFieldArguments = (
-  config = defaultConfig,
+  config = defaultCodegenConfig,
   schema?: GraphQLSchema,
 ) => (node: FieldDefinitionNode) => {
   if (!isNotEmpty(node.arguments)) {
