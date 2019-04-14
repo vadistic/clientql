@@ -1,6 +1,6 @@
 import { Kind } from 'graphql'
 import gql from 'graphql-tag'
-import { createCodegenPrinter } from '../../printer'
+import { defaultCodegen } from '../../codegen'
 
 describe(`printer > ${Kind.NON_NULL_TYPE} | ${Kind.LIST_TYPE}`, () => {
   it('transpile scalar nullable lists', () => {
@@ -14,9 +14,8 @@ describe(`printer > ${Kind.NON_NULL_TYPE} | ${Kind.LIST_TYPE}`, () => {
         prop: [String!]!
       }
     `
-    const print = createCodegenPrinter()
 
-    expect(print(fixture)).toMatchInlineSnapshot(`
+    expect(defaultCodegen(fixture)).toMatchInlineSnapshot(`
             "export interface MyType {
               __typename: 'MyType'
               prop?: string | null
@@ -41,19 +40,17 @@ describe(`printer > ${Kind.NON_NULL_TYPE} | ${Kind.LIST_TYPE}`, () => {
       }
     `
 
-    const print = createCodegenPrinter()
-
-    expect(print(fixture)).toMatchInlineSnapshot(`
-      "export interface MyType {
-        __typename: 'MyType'
-        prop?: string | null
-        prop: number
-        prop?: number | null
-        prop?: number | null
-        prop?: boolean | null
-        prop?: any | null
-      }"
-    `)
+    expect(defaultCodegen(fixture)).toMatchInlineSnapshot(`
+            "export interface MyType {
+              __typename: 'MyType'
+              prop?: string | null
+              prop: number
+              prop?: number | null
+              prop?: number | null
+              prop?: boolean | null
+              prop?: any | null
+            }"
+        `)
   })
 
   it('transpile named types', () => {
@@ -68,19 +65,17 @@ describe(`printer > ${Kind.NON_NULL_TYPE} | ${Kind.LIST_TYPE}`, () => {
       }
     `
 
-    const print = createCodegenPrinter()
-
-    expect(print(fixture)).toMatchInlineSnapshot(`
-            "export interface MyType {
-              __typename: 'MyType'
-              prop?: MyType | null
-              prop: MyType
-              prop?: MyType | null
-              prop?: Array<MyType> | null
-              prop: MyType
-              prop: Array<MyType>
-            }"
-        `)
+    expect(defaultCodegen(fixture)).toMatchInlineSnapshot(`
+      "export interface MyType {
+        __typename: 'MyType'
+        prop?: MyType | null
+        prop: MyType
+        prop?: MyType | null
+        prop?: Array<MyType> | null
+        prop: MyType
+        prop: Array<MyType>
+      }"
+    `)
   })
 
   it('useMaybeType: true', () => {
@@ -95,19 +90,19 @@ describe(`printer > ${Kind.NON_NULL_TYPE} | ${Kind.LIST_TYPE}`, () => {
       }
     `
 
-    const print = createCodegenPrinter({ useMaybeType: true })
+    const res = defaultCodegen(fixture, { useMaybeType: true })
 
-    expect(print(fixture)).toMatchInlineSnapshot(`
-            "export interface MyType {
-              __typename: 'MyType'
-              prop?: Maybe<MyType>
-              prop: MyType
-              prop?: Maybe<MyType>
-              prop?: Maybe<Array<MyType>>
-              prop: MyType
-              prop: Array<MyType>
-            }"
-        `)
+    expect(res).toMatchInlineSnapshot(`
+                  "export interface MyType {
+                    __typename: 'MyType'
+                    prop?: Maybe<MyType>
+                    prop: MyType
+                    prop?: Maybe<MyType>
+                    prop?: Maybe<Array<MyType>>
+                    prop: MyType
+                    prop: Array<MyType>
+                  }"
+            `)
   })
 
   it('useOptionalModifier: false', () => {
@@ -122,18 +117,18 @@ describe(`printer > ${Kind.NON_NULL_TYPE} | ${Kind.LIST_TYPE}`, () => {
       }
     `
 
-    const print = createCodegenPrinter({ useOptionalModifier: false })
+    const res = defaultCodegen(fixture, { useOptionalModifier: false })
 
-    expect(print(fixture)).toMatchInlineSnapshot(`
-            "export interface MyType {
-              __typename: 'MyType'
-              prop: MyType | null
-              prop: MyType | null
-              prop: MyType | null
-              prop: Array<MyType> | null
-              prop: MyType
-              prop: Array<MyType>
-            }"
-        `)
+    expect(res).toMatchInlineSnapshot(`
+                  "export interface MyType {
+                    __typename: 'MyType'
+                    prop: MyType | null
+                    prop: MyType | null
+                    prop: MyType | null
+                    prop: Array<MyType> | null
+                    prop: MyType
+                    prop: Array<MyType>
+                  }"
+            `)
   })
 })

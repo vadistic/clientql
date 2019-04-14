@@ -1,9 +1,5 @@
-import {
-  GraphQLSchema,
-  UnionTypeDefinitionNode,
-  UnionTypeExtensionNode,
-} from 'graphql'
-import { defaultCodegenConfig } from '../config'
+import { UnionTypeDefinitionNode, UnionTypeExtensionNode } from 'graphql'
+import { CodegenProps } from '../codegen'
 import { naming } from '../naming'
 import { printNamedType, withDescription } from '../type-reference'
 
@@ -13,15 +9,14 @@ import { printNamedType, withDescription } from '../type-reference'
  * supports:
  * -  `useInterfacePrefixForUnion`
  */
-export const printUnion = (
-  config = defaultCodegenConfig,
-  schema?: GraphQLSchema,
-) => (node: UnionTypeDefinitionNode | UnionTypeExtensionNode) => {
-  const name = config.useInterfacePrefixForUnion
-    ? naming.interfaceName(config)(node.name.value)
+export const printUnion = (props: CodegenProps) => (
+  node: UnionTypeDefinitionNode | UnionTypeExtensionNode,
+) => {
+  const name = props.config.useInterfacePrefixForUnion
+    ? naming.interfaceName(props.config)(node.name.value)
     : node.name.value
-  const addDescription = withDescription(config, schema)
-  const namedTypePrinter = printNamedType(config, schema)
+  const addDescription = withDescription(props)
+  const namedTypePrinter = printNamedType(props)
 
   const types =
     !node.types || node.types.length === 0

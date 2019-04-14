@@ -22,7 +22,7 @@ import { naming } from '../naming'
 import { printGqlTag } from '../print'
 
 /**
- * generate FragmentResult[] + dependencies FragemntResult[]
+ * generate FragmentResult[] + dependencies FragmentResult[]
  */
 
 export const generateGraphqlFragments = (props: GeneratorProps) => {

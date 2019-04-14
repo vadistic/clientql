@@ -6,6 +6,7 @@ import {
   InputValueDefinitionNode,
 } from 'graphql'
 import { isString } from 'util'
+import { CodegenProps } from '../codegen'
 import { defaultCodegenConfig } from '../config'
 import { naming } from '../naming'
 import { printTSInterface } from '../strings'
@@ -17,13 +18,12 @@ import { printInputValue, printType, withDescription } from '../type-reference'
  * supports:
  * - `transformInputValueType`
  */
-export const printInputObject = (
-  config = defaultCodegenConfig,
-  schema?: GraphQLSchema,
-) => (node: InputObjectTypeDefinitionNode | InputObjectTypeExtensionNode) => {
-  const name = naming.interfaceName(config)(node.name.value)
-  const addDescription = withDescription(config, schema)
-  const inputValuePrinter = printInputValue(config, schema)
+export const printInputObject = (props: CodegenProps) => (
+  node: InputObjectTypeDefinitionNode | InputObjectTypeExtensionNode,
+) => {
+  const name = naming.interfaceName(props.config)(node.name.value)
+  const addDescription = withDescription(props)
+  const inputValuePrinter = printInputValue(props)
 
   // empty
   if (!isNotEmpty(node.fields)) {
@@ -31,7 +31,7 @@ export const printInputObject = (
   }
 
   // standard
-  if (!config.transformInputValueType) {
+  if (!props.config.transformInputValueType) {
     const inputValuesTs = node.fields.map(inputValuePrinter)
 
     return addDescription(node)(printTSInterface(name, [], inputValuesTs))
@@ -39,20 +39,22 @@ export const printInputObject = (
 
   // custom
   const inputValueTypePrinter = (field: InputValueDefinitionNode) =>
-    printType(config, schema)(field.type)
+    printType(props)(field.type)
 
   const modifiedInputValuesTs = node.fields
     // prebuild
     .map(field => ({
       fieldname: field.name.value,
       modifier:
-        config.useOptionalModifier && isNullable(field.type) ? '?: ' : ': ',
+        props.config.useOptionalModifier && isNullable(field.type)
+          ? '?: '
+          : ': ',
       type: inputValueTypePrinter(field),
       field,
     }))
     // modify
     .map((strings, i) => {
-      const res = config.transformInputValueType!(
+      const res = props.config.transformInputValueType!(
         node,
         node.fields![i],
         strings.type,

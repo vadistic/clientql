@@ -1,6 +1,6 @@
 import { indent, isNotEmpty, isNullable } from '@graphql-clientgen/core'
-import { FieldDefinitionNode, GraphQLSchema } from 'graphql'
-import { defaultCodegenConfig } from '../config'
+import { FieldDefinitionNode } from 'graphql'
+import { CodegenProps } from '../codegen'
 import { withDescription } from './description'
 import { printInputValue } from './input-value'
 import { printType } from './type'
@@ -12,24 +12,23 @@ import { printType } from './type'
  * - `useOptionalModifier`
  * - `addFieldAsFunction`
  */
-export const printFieldDefinition = (
-  config = defaultCodegenConfig,
-  schema?: GraphQLSchema,
-) => (node: FieldDefinitionNode) => {
+export const printFieldDefinition = (props: CodegenProps) => (
+  node: FieldDefinitionNode,
+) => {
   const name = node.name.value
-  const type = printType(config, schema)(node.type)
-  const addDescription = withDescription(config, schema)
+  const type = printType(props)(node.type)
+  const addDescription = withDescription(props)
 
   // args empty when not printig them.... <== helpful, isn't it?
-  const args = config.addFieldAsFunction
-    ? printFieldArguments(config, schema)(node)
+  const args = props.config.addFieldAsFunction
+    ? printFieldArguments(props)(node)
     : ''
 
   // modifier only when not using field arguments
   const modifier =
     isNullable(node.type) &&
-    config.useOptionalModifier &&
-    !config.addFieldAsFunction
+    props.config.useOptionalModifier &&
+    !props.config.addFieldAsFunction
       ? '?: '
       : ': '
 
@@ -44,31 +43,28 @@ export const printFieldDefinition = (
  * supports:
  * - `useOptionalModifier`
  */
-export const printFieldArguments = (
-  config = defaultCodegenConfig,
-  schema?: GraphQLSchema,
-) => (node: FieldDefinitionNode) => {
+export const printFieldArguments = (props: CodegenProps) => (
+  node: FieldDefinitionNode,
+) => {
   if (!isNotEmpty(node.arguments)) {
     return `()`
   }
 
   // standard modifier
   const modifier =
-    isNullable(node.type) && config.useOptionalModifier ? '?: ' : ': '
+    isNullable(node.type) && props.config.useOptionalModifier ? '?: ' : ': '
 
   let result = '(args' + modifier + '{'
 
   // print inline for single argument
   if (node.arguments.length === 1) {
-    result +=
-      ' ' + printInputValue(config, schema)(node.arguments[0]) + ' ' + '})'
+    result += ' ' + printInputValue(props)(node.arguments[0]) + ' ' + '})'
 
     return result
   }
 
   result +=
-    '\n' +
-    indent(node.arguments.map(printInputValue(config, schema)).join('\n'), 1)
+    '\n' + indent(node.arguments.map(printInputValue(props)).join('\n'), 1)
 
   result += '\n})'
 

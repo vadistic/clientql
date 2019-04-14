@@ -1,7 +1,8 @@
+import { unwrapDocument } from '@graphql-clientgen/core'
 import { PRISMA_TYPEDEFS } from '@graphql-clientgen/testing'
-import { buildASTSchema, Kind } from 'graphql'
+import { Kind } from 'graphql'
 import gql from 'graphql-tag'
-import { createCodegenPrinter } from '../../printer'
+import { createCodegen, defaultCodegen } from '../../codegen'
 
 describe('printer > ' + Kind.OBJECT_TYPE_DEFINITION, () => {
   it('addFieldsAsFunction: true', () => {
@@ -14,15 +15,15 @@ describe('printer > ' + Kind.OBJECT_TYPE_DEFINITION, () => {
       }
     `
 
-    const print = createCodegenPrinter({ addFieldAsFunction: true })
+    const res = defaultCodegen(fixture, { addFieldAsFunction: true })
 
-    expect(print(fixture)).toMatchInlineSnapshot(`
-                        "export interface MyType {
-                          prop: () => string
-                          arr: () => string[]
-                          fn: (args: { data: string }) => string
-                        }"
-                `)
+    expect(res).toMatchInlineSnapshot(`
+            "export interface MyType {
+              prop: () => string
+              arr: () => string[]
+              fn: (args: { data: string }) => string
+            }"
+        `)
   })
 
   it('addTypename: false', () => {
@@ -35,23 +36,18 @@ describe('printer > ' + Kind.OBJECT_TYPE_DEFINITION, () => {
       }
     `
 
-    const print = createCodegenPrinter({ addTypename: false })
+    const res = defaultCodegen(fixture, { addTypename: false })
 
-    expect(print(fixture)).toMatchInlineSnapshot(`
-                        "export interface MyType {
-                          prop: string
-                          arr: string[]
-                          fn: string
-                        }"
-                `)
+    expect(res).toMatchInlineSnapshot(`
+            "export interface MyType {
+              prop: string
+              arr: string[]
+              fn: string
+            }"
+        `)
   })
 
   it('useExtendedInterfaces: true', () => {
-    const print = createCodegenPrinter({
-      useExtendedInterfaces: true,
-      useMapsForEnum: false,
-    })
-
     const fixture = gql`
       interface Animal {
         sea: Boolean
@@ -71,7 +67,12 @@ describe('printer > ' + Kind.OBJECT_TYPE_DEFINITION, () => {
       }
     `
 
-    expect(print(fixture)).toMatchInlineSnapshot(`
+    const res = defaultCodegen(fixture, {
+      useExtendedInterfaces: true,
+      useMapsForEnum: false,
+    })
+
+    expect(res).toMatchInlineSnapshot(`
       "export interface Animal {
         sea?: boolean | null
         land?: boolean | null
@@ -91,14 +92,15 @@ describe('printer > ' + Kind.OBJECT_TYPE_DEFINITION, () => {
   })
 
   it('useFieldArgumentsInterfaces: true', () => {
-    const schema = buildASTSchema(PRISMA_TYPEDEFS)
+    const print = createCodegen(PRISMA_TYPEDEFS, {
+      addFieldAsFunction: true,
+      useFieldArgumentsInterface: true,
+    })
 
-    const print = createCodegenPrinter(
-      { addFieldAsFunction: true, useFieldArgumentsInterface: true },
-      PRISMA_TYPEDEFS,
-    )
-
-    const fixture = schema.getQueryType()!.astNode!
+    const fixture = unwrapDocument(PRISMA_TYPEDEFS).find(
+      node =>
+        node.kind === 'ObjectTypeDefinition' && node.name.value === 'Query',
+    )!
 
     expect(print(fixture)).toMatchSnapshot()
   })

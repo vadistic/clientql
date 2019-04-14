@@ -1,6 +1,6 @@
 import { Kind } from 'graphql'
 import gql from 'graphql-tag'
-import { createCodegenPrinter } from '../../printer'
+import { createCodegen, defaultCodegen } from '../../codegen'
 
 describe('printer > ' + Kind.INTERFACE_TYPE_DEFINITION, () => {
   it('works', () => {
@@ -11,9 +11,7 @@ describe('printer > ' + Kind.INTERFACE_TYPE_DEFINITION, () => {
       }
     `
 
-    const print = createCodegenPrinter()
-
-    expect(print(fixture)).toMatchInlineSnapshot(`
+    expect(defaultCodegen(fixture)).toMatchInlineSnapshot(`
       "export interface MyInterface {
         field: string
         fn: Post
@@ -29,9 +27,9 @@ describe('printer > ' + Kind.INTERFACE_TYPE_DEFINITION, () => {
       }
     `
 
-    const print = createCodegenPrinter({ interfacePrefix: 'III' })
+    const res = defaultCodegen(fixture, { interfacePrefix: 'III' })
 
-    expect(print(fixture)).toMatchInlineSnapshot(`
+    expect(res).toMatchInlineSnapshot(`
       "export interface IIIMyInterface {
         field: string
         fn: Post

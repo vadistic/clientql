@@ -1,9 +1,5 @@
-import {
-  GraphQLSchema,
-  ScalarTypeDefinitionNode,
-  ScalarTypeExtensionNode,
-} from 'graphql'
-import { defaultCodegenConfig } from '../config'
+import { ScalarTypeDefinitionNode, ScalarTypeExtensionNode } from 'graphql'
+import { CodegenProps } from '../codegen'
 import { withDescription } from '../type-reference'
 
 /**
@@ -12,14 +8,14 @@ import { withDescription } from '../type-reference'
  * supports:
  * - `customScalars`
  */
-export const printScalar = (
-  config = defaultCodegenConfig,
-  schema?: GraphQLSchema,
-) => (node: ScalarTypeDefinitionNode | ScalarTypeExtensionNode) => {
+export const printScalar = (props: CodegenProps) => (
+  node: ScalarTypeDefinitionNode | ScalarTypeExtensionNode,
+) => {
   const name = node.name.value
-  const addDescription = withDescription(config, schema)
+  const addDescription = withDescription(props)
 
-  const value = (config.customScalars && config.customScalars[name]) || 'any'
+  const value =
+    (props.config.customScalars && props.config.customScalars[name]) || 'any'
 
   const result = `export type ${name} = ${value}`
 

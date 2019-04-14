@@ -3,6 +3,7 @@ import {
   ObjectTypeDefinitionNode,
   ObjectTypeExtensionNode,
 } from 'graphql'
+import { CodegenProps } from '../codegen'
 import { defaultCodegenConfig } from '../config'
 import { naming } from '../naming'
 import { printTSInterface } from '../strings'
@@ -23,34 +24,35 @@ import {
  * - `addFieldsAsFunction`
  */
 
-export const printObject = (
-  config = defaultCodegenConfig,
-  schema?: GraphQLSchema,
-) => (node: ObjectTypeDefinitionNode | ObjectTypeExtensionNode) => {
-  const name = naming.interfaceName(config)(node.name.value)
-  const addDescription = withDescription(config, schema)
-  const objectLikeFieldsPrinter = printObjectLikeFields(config, schema)
+export const printObject = (props: CodegenProps) => (
+  node: ObjectTypeDefinitionNode | ObjectTypeExtensionNode,
+) => {
+  const name = naming.interfaceName(props.config)(node.name.value)
+  const addDescription = withDescription(props)
+  const objectLikeFieldsPrinter = printObjectLikeFields(props)
 
   const ownExtend =
-    config.useExtendedInterfaces &&
+    props.config.useExtendedInterfaces &&
     node.interfaces &&
-    node.interfaces.map(inter => naming.interfaceName(config)(inter.name.value))
+    node.interfaces.map(inter =>
+      naming.interfaceName(props.config)(inter.name.value),
+    )
 
   const customExtend =
-    config.transformIntefaceExtend &&
-    config.transformIntefaceExtend(node, ownExtend || [])
+    props.config.transformIntefaceExtend &&
+    props.config.transformIntefaceExtend(node, ownExtend || [])
 
   const fieldsTs = objectLikeFieldsPrinter(node)
 
   // add when typename when not function
-  if (!config.addFieldAsFunction) {
+  if (!props.config.addFieldAsFunction) {
     // non-literal when passed 'string'
-    if (config.addTypename === 'string') {
+    if (props.config.addTypename === 'string') {
       fieldsTs.unshift(`__typename: string`)
     }
 
     // typename otherwise
-    if (config.addTypename === true) {
+    if (props.config.addTypename === true) {
       fieldsTs.unshift(`__typename: '${node.name.value}'`)
     }
   }
@@ -60,14 +62,11 @@ export const printObject = (
   )
 
   // without interfaces
-  if (!config.useFieldArgumentsInterface) {
+  if (!props.config.useFieldArgumentsInterface) {
     return objectTs
   }
 
-  const fieldArgumentsInterfacesPrinter = printFieldArgumentsInterfaces(
-    config,
-    schema,
-  )
+  const fieldArgumentsInterfacesPrinter = printFieldArgumentsInterfaces(props)
 
   const argsInterfacesTs = fieldArgumentsInterfacesPrinter(node)
 

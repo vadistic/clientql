@@ -1,4 +1,8 @@
-export const deepAssign = <T extends object>(objA: T, objB: any): T => {
+export const deepAssign = <T extends object>(objA: T, objB?: any): T => {
+  if (!objB) {
+    return objA
+  }
+
   const res: any = {
     ...objA,
     ...objB,

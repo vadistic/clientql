@@ -1,45 +1,20 @@
-import {
-  buildOperation,
-  defaultCoreConfig,
-  getCoreProps,
-  getDocDefinition,
-} from '@graphql-clientgen/core'
+import { buildOperation, getDocDefinition } from '@graphql-clientgen/core'
 import { COMPLEX_TYPEDEFS, PRISMA_TYPEDEFS } from '@graphql-clientgen/testing'
-import { buildASTSchema, Kind } from 'graphql'
-import { defaultCodegenConfig } from '../../config'
+import { Kind } from 'graphql'
+import { getCodegenProps } from '../../codegen'
 import { printSelectionSet } from '../../type-execution'
 
 /**
  * TODO: Update codegen api & bring this to fixture or smth
  */
 
-const prismaCore = getCoreProps(PRISMA_TYPEDEFS)
-const prismaSchema = buildASTSchema(PRISMA_TYPEDEFS)
+const prismaProps = getCodegenProps(PRISMA_TYPEDEFS)
 
-const prismaProps = {
-  ...prismaCore,
-  schema: prismaSchema,
-  config: {
-    ...defaultCoreConfig,
-    ...defaultCodegenConfig,
-  },
-}
-
-const complexCore = getCoreProps(COMPLEX_TYPEDEFS)
-const complexSchema = buildASTSchema(COMPLEX_TYPEDEFS)
-
-const complexProps = {
-  ...complexCore,
-  schema: complexSchema,
-  config: {
-    ...defaultCoreConfig,
-    ...defaultCodegenConfig,
-  },
-}
+const complexProps = getCodegenProps(COMPLEX_TYPEDEFS)
 
 describe('executable selection nodes', () => {
   it('prints simple prisma selections', () => {
-    const fixture = buildOperation(prismaCore)(['users'])!
+    const fixture = buildOperation(prismaProps)(['users'])!
 
     const selectionSet = getDocDefinition(fixture, Kind.OPERATION_DEFINITION)!
       .selectionSet
@@ -48,8 +23,12 @@ describe('executable selection nodes', () => {
 
     expect(res).toMatchInlineSnapshot(`
       "{
+        __typename: 'Query'
         users: UserFlat & {
-          posts?: PostFlat
+          __typename: 'User'
+          posts?: PostFlat & {
+            __typename: 'Post'
+          }
         }
       }"
     `)
@@ -65,18 +44,38 @@ describe('executable selection nodes', () => {
 
     expect(res).toMatchInlineSnapshot(`
       "{
+        __typename: 'Query'
         findEventsAtVenue?: EventFlat & {
-          venue?: VenueFlat
+          venue?: VenueFlat & {
+            __typename: 'Venue'
+          }
         } & (ConcertFlat & {
-          venue?: VenueFlat
-          previousVenues?: VenueFlat
-          performingBand?: PerformerFlat
+          __typename: 'Concert'
+          venue?: VenueFlat & {
+            __typename: 'Venue'
+          }
+          previousVenues?: VenueFlat & {
+            __typename: 'Venue'
+          }
+          performingBand?: PerformerFlat & {
+            __typename: 'Performer'
+          }
         } | FestivalFlat & {
-          venue?: VenueFlat
-          performers?: PerformerFlat
+          __typename: 'Festival'
+          venue?: VenueFlat & {
+            __typename: 'Venue'
+          }
+          performers?: PerformerFlat & {
+            __typename: 'Performer'
+          }
         } | ConferenceFlat & {
-          venue?: VenueFlat
-          speakers?: SpeakerFlat
+          __typename: 'Conference'
+          venue?: VenueFlat & {
+            __typename: 'Venue'
+          }
+          speakers?: SpeakerFlat & {
+            __typename: 'Speaker'
+          }
         })
       }"
     `)

@@ -1,6 +1,6 @@
 import { Kind } from 'graphql'
 import gql from 'graphql-tag'
-import { createCodegenPrinter } from '../../printer'
+import { defaultCodegen } from '../../codegen'
 
 describe('printer > ' + Kind.INPUT_OBJECT_TYPE_DEFINITION, () => {
   it('works', () => {
@@ -16,9 +16,8 @@ describe('printer > ' + Kind.INPUT_OBJECT_TYPE_DEFINITION, () => {
         arr: [String!]!
       }
     `
-    const print = createCodegenPrinter()
 
-    expect(print(fixture)).toMatchInlineSnapshot(`
+    expect(defaultCodegen(fixture)).toMatchInlineSnapshot(`
       "/** MyInput! */
       export interface MyInput {
         /** prop */

@@ -1,9 +1,8 @@
 import {
-  GraphQLSchema,
   InterfaceTypeDefinitionNode,
   InterfaceTypeExtensionNode,
 } from 'graphql'
-import { defaultCodegenConfig } from '../config'
+import { CodegenProps } from '../codegen'
 import { naming } from '../naming'
 import { printTSInterface } from '../strings'
 import { withDescription } from '../type-reference'
@@ -20,26 +19,22 @@ import {
  * - `useFieldArgumentsInterface`
  * - `addFieldsAsFunction`
  */
-export const printInterface = (
-  config = defaultCodegenConfig,
-  schema?: GraphQLSchema,
-) => (node: InterfaceTypeDefinitionNode | InterfaceTypeExtensionNode) => {
-  const name = naming.interfaceName(config)(node.name.value)
-  const addDescription = withDescription(config, schema)
+export const printInterface = (props: CodegenProps) => (
+  node: InterfaceTypeDefinitionNode | InterfaceTypeExtensionNode,
+) => {
+  const name = naming.interfaceName(props.config)(node.name.value)
+  const addDescription = withDescription(props)
 
-  const fieldsTs = printObjectLikeFields(config, schema)(node)
+  const fieldsTs = printObjectLikeFields(props)(node)
   const interfaceTs = addDescription(node)(printTSInterface(name, [], fieldsTs))
 
   // without interfaces
-  if (!config.useFieldArgumentsInterface) {
+  if (!props.config.useFieldArgumentsInterface) {
     return interfaceTs
   }
 
   // needs to generate field interfaces
-  const fieldArgumentsInterfacesPrinter = printFieldArgumentsInterfaces(
-    config,
-    schema,
-  )
+  const fieldArgumentsInterfacesPrinter = printFieldArgumentsInterfaces(props)
   const argsInterfacesTs = fieldArgumentsInterfacesPrinter(node)
 
   return interfaceTs + (argsInterfacesTs ? '\n\n' + argsInterfacesTs : '')

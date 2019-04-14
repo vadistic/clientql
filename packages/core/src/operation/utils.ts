@@ -1,7 +1,7 @@
 import { OperationTypeNode } from 'graphql'
 import { Fieldname, Typename } from '../ast'
 import { CoreProps } from '../config'
-import { Edge } from '../type-graph'
+import { Edge } from '../graph'
 import { nonNull } from '../utils'
 
 /**
@@ -21,7 +21,7 @@ export const getRootTypenames = (props: CoreProps) =>
 /**
  *  TODO: This should support custom schema definition too
  */
-export const rootTypenameToOperationType = (
+export const rootTypenameToOperationType = (props: CoreProps) => (
   typename: Typename,
 ): OperationTypeNode | undefined => {
   switch (typename) {
@@ -34,11 +34,24 @@ export const rootTypenameToOperationType = (
   }
 }
 
+export const operationTypeToRootTypename = (props: CoreProps) => (
+  type: OperationTypeNode,
+): Typename | undefined => {
+  switch (type) {
+    case 'query':
+      return 'Query'
+    case 'mutation':
+      return 'Mutation'
+    case 'subscription':
+      return 'Subscription'
+  }
+}
+
 export const findRootOperation = (props: CoreProps) => (head: Fieldname) => {
   for (const root of getRootTypes(props)) {
     if (root.edgesMap && root.edgesMap.has(head)) {
       return {
-        type: rootTypenameToOperationType(root.name)!,
+        type: rootTypenameToOperationType(props)(root.name)!,
         name: root.name,
         vtx: root,
       }

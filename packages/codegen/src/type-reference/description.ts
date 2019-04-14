@@ -1,12 +1,11 @@
 import {
   EnumValueDefinitionNode,
   FieldDefinitionNode,
-  GraphQLSchema,
   InputValueDefinitionNode,
   TypeDefinitionNode,
   TypeExtensionNode,
 } from 'graphql'
-import { defaultCodegenConfig } from '../config'
+import { CodegenProps } from '../codegen'
 import { printJSDoc } from '../strings'
 
 type DescribableNode =
@@ -18,10 +17,7 @@ type DescribableNode =
 /**
  * prints StringValue of description props as JSDoc comment
  */
-export const printDescription = (
-  config = defaultCodegenConfig,
-  schema?: GraphQLSchema,
-) => (node: DescribableNode) => {
+export const printDescription = (node: DescribableNode) => {
   if (node.description) {
     return printJSDoc(node.description.value)
   }
@@ -32,18 +28,17 @@ export const printDescription = (
  *
  * -  fallthrough on disabled
  */
-export const withDescription = (
-  config = defaultCodegenConfig,
-  schema?: GraphQLSchema,
-) => (node: DescribableNode | TypeExtensionNode) => (content: string) => {
+export const withDescription = (props: CodegenProps) => (
+  node: DescribableNode | TypeExtensionNode,
+) => (content: string) => {
   // this to allow handling of extension nodes
   const describable = 'description' in node && !!node.description
 
-  if (!describable || !config.addDescription) {
+  if (!describable || !props.config.addDescription) {
     return content
   }
 
-  const description = printDescription(config, schema)(node as DescribableNode)
+  const description = printDescription(node as DescribableNode)
 
   if (description) {
     return description + '\n' + content

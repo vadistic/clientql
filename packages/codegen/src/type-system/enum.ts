@@ -1,10 +1,6 @@
 import { indent, isNotEmpty } from '@graphql-clientgen/core'
-import {
-  EnumTypeDefinitionNode,
-  EnumTypeExtensionNode,
-  GraphQLSchema,
-} from 'graphql'
-import { defaultCodegenConfig } from '../config'
+import { EnumTypeDefinitionNode, EnumTypeExtensionNode } from 'graphql'
+import { CodegenProps } from '../codegen'
 import { withDescription } from '../type-reference'
 
 /**
@@ -14,15 +10,14 @@ import { withDescription } from '../type-reference'
  * - `useMapsForEnum`
  */
 
-export const printEnum = (
-  config = defaultCodegenConfig,
-  schema?: GraphQLSchema,
-) => (node: EnumTypeDefinitionNode | EnumTypeExtensionNode) => {
+export const printEnum = (props: CodegenProps) => (
+  node: EnumTypeDefinitionNode | EnumTypeExtensionNode,
+) => {
   const name = node.name.value
-  const addDescription = withDescription(config, schema)
+  const addDescription = withDescription(props)
 
   // opting for same const & interface name for declarations merging
-  if (config.useMapsForEnum) {
+  if (props.config.useMapsForEnum) {
     let inter = `export interface ${name} {\n`
     let map = `export const ${name}: ${name} = {\n`
 

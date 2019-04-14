@@ -1,5 +1,5 @@
 import { Kind, ObjectValueNode } from 'graphql'
-import { createCodegenPrinter } from '../printer'
+import { createCodegen } from '../codegen'
 
 describe('printer > AST nodes', () => {
   it(Kind.OBJECT, () => {
@@ -14,12 +14,8 @@ describe('printer > AST nodes', () => {
       ],
     }
 
-    const print = createCodegenPrinter()
+    const print = createCodegen()
 
-    expect(print(obj)).toMatchInlineSnapshot(`
-      "{
-        someProp: 123.123
-      }"
-    `)
+    expect(print(obj)).toMatchInlineSnapshot(`""`)
   })
 })

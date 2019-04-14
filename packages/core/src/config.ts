@@ -1,10 +1,6 @@
-import { DocumentNode, FragmentDefinitionNode } from 'graphql'
-import {
-  FragmentResult,
-  NestedSelectionsResult,
-  SelectionResult,
-} from './operation'
-import { createGraph, Graph } from './type-graph'
+import { DocumentNode } from 'graphql'
+import { createGraph, Graph } from './graph'
+import { FragmentResult, NestedSelectionsResult } from './operation'
 
 export enum FragmentType {
   /** use flat fragments when possible */

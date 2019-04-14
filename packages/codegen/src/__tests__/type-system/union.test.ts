@@ -1,6 +1,6 @@
 import { Kind } from 'graphql'
 import gql from 'graphql-tag'
-import { createCodegenPrinter } from '../../printer'
+import { defaultCodegen } from '../../codegen'
 
 describe('printer > ' + Kind.UNION_TYPE_DEFINITION, () => {
   it('prints union inline with one value', () => {
@@ -8,9 +8,7 @@ describe('printer > ' + Kind.UNION_TYPE_DEFINITION, () => {
       union MyUnion = Value
     `
 
-    const print = createCodegenPrinter()
-
-    expect(print(fixture)).toMatchInlineSnapshot(
+    expect(defaultCodegen(fixture)).toMatchInlineSnapshot(
       `"export type MyUnion = Value"`,
     )
   })
@@ -20,18 +18,17 @@ describe('printer > ' + Kind.UNION_TYPE_DEFINITION, () => {
       union MyUnion
     `
 
-    const print = createCodegenPrinter()
-
-    expect(print(fixture)).toMatchInlineSnapshot(`"export type MyUnion = any"`)
+    expect(defaultCodegen(fixture)).toMatchInlineSnapshot(
+      `"export type MyUnion = any"`,
+    )
   })
 
   it('prints union multiline', () => {
     const fixture = gql`
       union MyUnion = Value | AnotherValue | EvenAnotherValue
     `
-    const print = createCodegenPrinter({ interfacePrefix: 'III' })
 
-    expect(print(fixture)).toMatchInlineSnapshot(`
+    expect(defaultCodegen(fixture)).toMatchInlineSnapshot(`
       "export type MyUnion = 
         | Value
         | AnotherValue
@@ -43,12 +40,12 @@ describe('printer > ' + Kind.UNION_TYPE_DEFINITION, () => {
     const fixture = gql`
       union MyUnion = Value | AnotherValue | EvenAnotherValue
     `
-    const print = createCodegenPrinter({
-      useInterfacePrefixForUnion: true,
+    const res = defaultCodegen(fixture, {
       interfacePrefix: 'III',
+      useInterfacePrefixForUnion: true,
     })
 
-    expect(print(fixture)).toMatchInlineSnapshot(`
+    expect(res).toMatchInlineSnapshot(`
       "export type IIIMyUnion = 
         | Value
         | AnotherValue

@@ -1,23 +1,20 @@
 import { isNullable, unwrapType } from '@graphql-clientgen/core'
-import { GraphQLSchema, Kind, TypeNode } from 'graphql'
-import { defaultCodegenConfig } from '../config'
+import { Kind, TypeNode } from 'graphql'
+import { CodegenProps } from '../codegen'
 import { isExplicitScalar, printNamedType } from './named-type'
 
 /**
  * Prints nullable/list/scalar TypeNode
  */
 
-export const printType = (
-  config = defaultCodegenConfig,
-  schema?: GraphQLSchema,
-) => (node: TypeNode) => {
+export const printType = (props: CodegenProps) => (node: TypeNode) => {
   const { modifiers, typename, type } = unwrapType(node)
   const explicitScalar = isExplicitScalar(typename)
 
-  let result = printNamedType(config, schema)(type)
+  let result = printNamedType(props)(type)
 
   const addMaybe = (value: string) =>
-    config.useMaybeType ? `Maybe<${value}>` : `${value} | null`
+    props.config.useMaybeType ? `Maybe<${value}>` : `${value} | null`
 
   const addArray = (value: string) => `Array<${value}>`
 

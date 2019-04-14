@@ -1,24 +1,12 @@
-import {
-  Graph,
-  GraphVertex,
-  indent,
-  isNullable,
-  Typename,
-} from '@graphql-clientgen/core'
-import { GraphQLSchema, Kind, SelectionNode, SelectionSetNode } from 'graphql'
-import { CodegenConfig } from '../config'
+import { indent, isNullable, Typename } from '@graphql-clientgen/core'
+import { Kind, SelectionSetNode } from 'graphql'
+import { CodegenProps } from '../codegen'
 import { printType } from '../type-reference'
 
-export interface ExecutionCodegenProps {
-  graph: Graph
-  schema: GraphQLSchema
-  config: CodegenConfig
-}
-
-export const printSelectionSet = (props: ExecutionCodegenProps) => (
+export const printSelectionSet = (props: CodegenProps) => (
   parent: Typename,
   set: SelectionSetNode,
-  skipTopBrackets = false,
+  skipBrackets = false,
 ) => {
   const vtx = props.graph.get(parent)
 
@@ -34,6 +22,19 @@ export const printSelectionSet = (props: ExecutionCodegenProps) => (
   // own selection lines (for fields)
   const lines: string[] = []
 
+  // handle typename
+  if (
+    vtx.value.kind === Kind.OBJECT_TYPE_DEFINITION &&
+    props.config.addTypename
+  ) {
+    const typenameValue =
+      props.config.addTypename === 'string'
+        ? 'string'
+        : `'${vtx.value.name.value}'`
+
+    lines.push(`__typename: ${typenameValue}`)
+  }
+
   for (const node of set.selections) {
     /*
      * Field => vtx is object or interface
@@ -46,10 +47,7 @@ export const printSelectionSet = (props: ExecutionCodegenProps) => (
           ? '?: '
           : ': '
 
-      const fieldTs =
-        field.name.value +
-        modifier +
-        printType(props.config, props.schema)(field.type)
+      const fieldTs = field.name.value + modifier + printType(props)(field.type)
 
       lines.push(fieldTs)
       continue
@@ -96,10 +94,14 @@ export const printSelectionSet = (props: ExecutionCodegenProps) => (
 
   let result = ''
 
-  if (lines.length !== 0) {
-    result = skipTopBrackets ? '' : '{\n'
+  if (lines.length !== 0 && skipBrackets) {
+    result += lines.join('\n')
+  }
+
+  if (lines.length !== 0 && !skipBrackets) {
+    result = '{\n'
     result += indent(lines.join('\n'), 1)
-    result += skipTopBrackets ? '' : '\n}'
+    result += '\n}'
   }
 
   if (fragments.length !== 0) {

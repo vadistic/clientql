@@ -1,5 +1,5 @@
 import { Kind, parse } from 'graphql'
-import { createCodegenPrinter } from '../../printer'
+import { defaultCodegen } from '../../codegen'
 
 describe('printer > ' + Kind.ENUM_TYPE_DEFINITION, () => {
   it('codegens enum', () => {
@@ -13,16 +13,20 @@ describe('printer > ' + Kind.ENUM_TYPE_DEFINITION, () => {
       }
     `)
 
-    const print = createCodegenPrinter({ useMapsForEnum: false })
-
-    expect(print(fixture)).toMatchInlineSnapshot(`
-                  "export enum MyEnum {
-                    ABC = 'ABC',
-                    Value = 'Value',
-                    /**  my description  */
-                    ANOTHER = 'ANOTHER',
-                  }"
-            `)
+    expect(defaultCodegen(fixture)).toMatchInlineSnapshot(`
+            "export interface MyEnum {
+              ABC: 'ABC'
+              Value: 'Value'
+              /**  my description  */
+              ANOTHER: 'ANOTHER'
+            }
+            
+            export const MyEnum: MyEnum = {
+              ABC: 'ABC',
+              Value: 'Value',
+              ANOTHER: 'ANOTHER',
+            }"
+        `)
   })
 
   it('codegens enum as map', () => {
@@ -39,24 +43,18 @@ describe('printer > ' + Kind.ENUM_TYPE_DEFINITION, () => {
       }
     `)
 
-    const print = createCodegenPrinter({ useMapsForEnum: true })
+    const res = defaultCodegen(fixture, { useMapsForEnum: false })
 
-    expect(print(fixture)).toMatchInlineSnapshot(`
-      "export interface MyEnum {
+    expect(res).toMatchInlineSnapshot(`
+      "export enum MyEnum {
         /**
          * multiline
          * description
          */
-        ABC: 'ABC'
-        Value: 'Value'
+        ABC = 'ABC',
+        Value = 'Value',
         /**  my description  */
-        ANOTHER: 'ANOTHER'
-      }
-      
-      export const MyEnum: MyEnum = {
-        ABC: 'ABC',
-        Value: 'Value',
-        ANOTHER: 'ANOTHER',
+        ANOTHER = 'ANOTHER',
       }"
     `)
   })

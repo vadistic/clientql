@@ -1,4 +1,5 @@
 import { GraphQLSchema, Kind, NamedTypeNode } from 'graphql'
+import { CodegenProps } from '../codegen'
 import { defaultCodegenConfig } from '../config'
 import { naming } from '../naming'
 
@@ -20,27 +21,15 @@ const mapExplicitScalar = (typename: string) => {
 export const isExplicitScalar = (typename: string) =>
   mapExplicitScalar(typename) !== typename
 
-/**
- * the thing is that type value needs to match prefixed interface
- * I need to know target type... this is the only reason for using schema
- */
-export const isPrefixedType = (
-  config = defaultCodegenConfig,
-  schema?: GraphQLSchema,
-) => (typename: string) => {
-  // never prefix without schema
-  if (!schema) {
+export const isPrefixedType = (props: CodegenProps) => (typename: string) => {
+  // never prefix without schema/ not found
+  if (!props.graph.has(typename)) {
     return false
   }
 
-  const type = schema.getType(typename)
+  const node = props.graph.get(typename)!.value
 
-  // not found is not prefixed
-  if (!type || !type.astNode) {
-    return false
-  }
-
-  switch (type.astNode.kind) {
+  switch (node.kind) {
     // only those possibly can get prefix
     case Kind.OBJECT_TYPE_DEFINITION:
     case Kind.INPUT_OBJECT_TYPE_DEFINITION:
@@ -48,9 +37,7 @@ export const isPrefixedType = (
       return true
     // !!! I'm prefixing unions
     case Kind.UNION_TYPE_DEFINITION:
-      if (config.useInterfacePrefixForUnion) {
-        return true
-      }
+      return props.config.useInterfacePrefixForUnion
     default:
       return false
   }
@@ -59,13 +46,12 @@ export const isPrefixedType = (
 /**
  * get only normalised type name without arr/null modifiers
  */
-export const printNamedType = (
-  config = defaultCodegenConfig,
-  schema?: GraphQLSchema,
-) => (node: NamedTypeNode) => {
+export const printNamedType = (props: CodegenProps) => (
+  node: NamedTypeNode,
+) => {
   const typename = node.name.value
 
-  const customScalar = config.customScalars[typename]
+  const customScalar = props.config.customScalars[typename]
 
   if (customScalar) {
     return customScalar
@@ -77,10 +63,10 @@ export const printNamedType = (
     return mapExplicitScalar(typename)
   }
 
-  const prefixed = isPrefixedType(config, schema)(typename)
+  const prefixed = isPrefixedType(props)(typename)
 
   if (prefixed) {
-    return naming.interfaceName(config)(typename)
+    return naming.interfaceName(props.config)(typename)
   }
 
   return typename

@@ -1,11 +1,9 @@
 import {
   CoreProps,
-  deepAssign,
   getCoreProps,
   mergeExtensions,
 } from '@graphql-clientgen/core'
-
-import { buildASTSchema, DocumentNode, GraphQLSchema } from 'graphql'
+import { DocumentNode } from 'graphql'
 import {
   defaultGeneratorConfig,
   defaultGeneratorOptions,
@@ -17,7 +15,6 @@ import {
 
 export interface GeneratorProps extends CoreProps {
   doc: DocumentNode
-  schema: GraphQLSchema
   config: GeneratorConfig
   options: GeneratorOptions
   paths: GeneratorPaths
@@ -38,35 +35,23 @@ export const getGeneratorProps = (
   options?: Partial<GeneratorOptions>,
   paths?: Partial<GeneratorPaths>,
 ) => {
-  const mergedConfig: GeneratorConfig = {
-    ...defaultGeneratorConfig,
-    ...config,
-  }
-
-  const mergedOptions: GeneratorOptions = deepAssign(
-    defaultGeneratorOptions,
-    options || {},
-  )
-
-  const mergedPaths: GeneratorPaths = {
-    ...defaultGeneratorPaths,
-    ...paths,
-  }
-
   const mergedDoc = mergeExtensions(doc)
-
-  const schema = buildASTSchema(mergedDoc, {
-    assumeValid: true,
-    assumeValidSDL: true,
-  })
 
   const props: GeneratorProps = {
     ...getCoreProps(mergedDoc),
     doc: mergedDoc,
-    schema,
-    config: mergedConfig,
-    options: mergedOptions,
-    paths: mergedPaths,
+    config: {
+      ...defaultGeneratorConfig,
+      ...config,
+    },
+    options: {
+      ...defaultGeneratorOptions,
+      ...options,
+    },
+    paths: {
+      ...defaultGeneratorPaths,
+      ...paths,
+    },
   }
 
   return props
@@ -85,10 +70,6 @@ export const graphqlClientGenerator = async (
     graphql: {},
     typings: {},
   }
-
-  /**
-   * maybe pararelize it
-   */
 
   if (props.options.typings.definitions) {
     const {

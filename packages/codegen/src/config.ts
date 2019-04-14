@@ -1,4 +1,8 @@
-import { ObjectLikeNode } from '@graphql-clientgen/core'
+import {
+  CoreConfig,
+  defaultCoreConfig,
+  ObjectLikeNode,
+} from '@graphql-clientgen/core'
 import {
   FieldDefinitionNode,
   InputObjectTypeDefinitionNode,
@@ -8,7 +12,7 @@ import {
 } from 'graphql'
 import { NullableString } from './strings'
 
-export interface CodegenConfig {
+export interface CodegenConfig extends CoreConfig {
   /**
    * add `__typename` to generated types
    *  - `string` => add it as `__typename: string` instead of specific name
@@ -153,6 +157,7 @@ export interface CodegenConfig {
 }
 
 export const defaultCodegenConfig: CodegenConfig = {
+  ...defaultCoreConfig,
   addTypename: true,
   addDescription: true,
   addFieldAsFunction: false,

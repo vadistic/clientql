@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
+import { defaultCodegen } from '../../codegen'
 import { CodegenConfig } from '../../config'
-import { createCodegenPrinter } from '../../printer'
 
 describe('printer > custom transformations', () => {
   it('transformFieldArguments', () => {
@@ -30,12 +30,12 @@ describe('printer > custom transformations', () => {
       return
     }
 
-    const print = createCodegenPrinter({
+    const res = defaultCodegen(fixture, {
       transformFieldArguments: transform,
       addFieldAsFunction: true,
     })
 
-    expect(print(fixture)).toMatchInlineSnapshot(`
+    expect(res).toMatchInlineSnapshot(`
       "export interface MyType {
         prop: () => string
         arr: (index: number) => string[]

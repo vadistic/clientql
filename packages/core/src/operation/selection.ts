@@ -12,7 +12,7 @@ import {
   unwrapSelectionSet,
 } from '../ast'
 import { CoreProps, FragmentType } from '../config'
-import { Edge } from '../type-graph'
+import { Edge } from '../graph'
 import { isNotEmpty } from '../utils'
 import {
   isStackCircural,

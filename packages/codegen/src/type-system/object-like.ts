@@ -2,17 +2,16 @@ import {
   isNotEmpty,
   isNullable,
   isString,
+  nonNull,
   ObjectLikeNode,
   unwrapType,
 } from '@graphql-clientgen/core'
 import {
-  assertInterfaceType,
   FieldDefinitionNode,
-  GraphQLSchema,
   ObjectTypeDefinitionNode,
   ObjectTypeExtensionNode,
 } from 'graphql'
-import { defaultCodegenConfig } from '../config'
+import { CodegenProps } from '../codegen'
 import { naming } from '../naming'
 import { printTSInterface } from '../strings'
 import {
@@ -30,37 +29,36 @@ import {
  * - `transformFieldType`
  * - `useFieldArgumentsInterface`
  */
-export const printObjectLikeFields = (
-  config = defaultCodegenConfig,
-  schema?: GraphQLSchema,
-) => (node: ObjectLikeNode) => {
+export const printObjectLikeFields = (props: CodegenProps) => (
+  node: ObjectLikeNode,
+) => {
   const fields =
-    'interfaces' in node
-      ? filerObjectInterfaceFields(config, schema)(node)
-      : node.fields
+    'interfaces' in node ? filerObjectInterfaceFields(props)(node) : node.fields
 
   if (!isNotEmpty(fields)) {
     return []
   }
-  const addDescription = withDescription(config, schema)
+  const addDescription = withDescription(props)
 
-  const argumentsPrinter = config.useFieldArgumentsInterface
-    ? printInterfacedFieldArguments(config, schema)(node)
-    : printFieldArguments(config, schema)
+  const argumentsPrinter = props.config.useFieldArgumentsInterface
+    ? printInterfacedFieldArguments(props)(node)
+    : printFieldArguments(props)
 
-  const typePrinter = printType(config, schema)
+  const typePrinter = printType(props)
 
   const fieldStrings = fields.map(field => {
     const modifier =
       // modifier only when not using fields as fn
-      !config.addFieldAsFunction &&
-      config.useOptionalModifier &&
+      !props.config.addFieldAsFunction &&
+      props.config.useOptionalModifier &&
       isNullable(field.type)
         ? '?: '
         : ': '
 
     // args when using fields as fn
-    const args = config.addFieldAsFunction ? argumentsPrinter(field) : undefined
+    const args = props.config.addFieldAsFunction
+      ? argumentsPrinter(field)
+      : undefined
 
     return {
       fieldname: field.name.value,
@@ -83,7 +81,10 @@ export const printObjectLikeFields = (
     )
 
   // standard case
-  if (!config.transformFieldArguments && !config.transformFieldType) {
+  if (
+    !props.config.transformFieldArguments &&
+    !props.config.transformFieldType
+  ) {
     return fieldStrings.map(stringsPrinter)
   }
 
@@ -93,8 +94,8 @@ export const printObjectLikeFields = (
       const next = { ...prev }
 
       // apply arguments transformation
-      if (config.transformFieldArguments) {
-        const res = config.transformFieldArguments(
+      if (props.config.transformFieldArguments) {
+        const res = props.config.transformFieldArguments(
           node,
           node.fields![i],
           prev.args,
@@ -107,8 +108,8 @@ export const printObjectLikeFields = (
       }
 
       // apply type transformation
-      if (config.transformFieldType) {
-        const res = config.transformFieldType(
+      if (props.config.transformFieldType) {
+        const res = props.config.transformFieldType(
           node,
           node.fields![i],
           prev.type,
@@ -138,15 +139,14 @@ export const printObjectLikeFields = (
  * - `useExtendedInterfaces`
  */
 
-export const printFieldArgumentsInterfaces = (
-  config = defaultCodegenConfig,
-  schema?: GraphQLSchema,
-) => (node: ObjectLikeNode) => {
+export const printFieldArgumentsInterfaces = (props: CodegenProps) => (
+  node: ObjectLikeNode,
+) => {
   const parent = node.name.value
 
   const fields =
     'interfaces' in node
-      ? filerObjectInterfaceFields(config, schema)(node)
+      ? filerObjectInterfaceFields(props)(node)
       : node.fields || []
 
   const results: string[] = []
@@ -157,9 +157,12 @@ export const printFieldArgumentsInterfaces = (
     }
 
     const { typename: target } = unwrapType(field.type)
-    const interfacename = naming.argumentsInterfaceName(config)(parent, target)
+    const interfacename = naming.argumentsInterfaceName(props.config)(
+      parent,
+      target,
+    )
 
-    const inputValuesTs = field.arguments.map(printInputValue(config, schema))
+    const inputValuesTs = field.arguments.map(printInputValue(props))
 
     results.push(printTSInterface(interfacename, false, inputValuesTs))
   }
@@ -179,36 +182,41 @@ export const printFieldArgumentsInterfaces = (
  * - `useExtendedInterfaces`
  *
  */
-const filerObjectInterfaceFields = (
-  config = defaultCodegenConfig,
-  schema?: GraphQLSchema,
-) => (node: ObjectTypeDefinitionNode | ObjectTypeExtensionNode) => {
+const filerObjectInterfaceFields = (props: CodegenProps) => (
+  node: ObjectTypeDefinitionNode | ObjectTypeExtensionNode,
+) => {
   // cannot filter
-  // - without schema
   // - when disabled
   // - when no interfaces
   // - when no fields
+
   if (
-    !config.useExtendedInterfaces ||
-    !schema ||
+    !props.config.useExtendedInterfaces ||
     !isNotEmpty(node.interfaces) ||
     !isNotEmpty(node.fields)
   ) {
     return node.fields || []
   }
 
-  const interFieldnames: string[] = node.interfaces
-    .map(named => {
-      const inter = schema.getType(named.name.value)
-      const interAst = assertInterfaceType(inter).astNode
-      const fieldnames =
-        interAst &&
-        interAst.fields &&
-        interAst.fields.map(field => field.name.value)
+  const inters = node.interfaces
+    .map(inter => props.graph.get(inter.name.value))
+    .filter(nonNull)
 
-      return fieldnames || []
-    })
-    .flat(2)
+  // also when interfaces are not found
+  if (!isNotEmpty(inters)) {
+    return node.fields || []
+  }
+
+  const interFieldnames = inters.reduce(
+    (acc, vtx) => {
+      if (vtx.edgesArr) {
+        return [...acc, ...vtx.edgesArr.map(([fieldname]) => fieldname)]
+      }
+
+      return acc
+    },
+    [] as string[],
+  )
 
   const filteredFields = node.fields.filter(
     field => !interFieldnames.includes(field.name.value),
@@ -224,23 +232,22 @@ const filerObjectInterfaceFields = (
  * - `useFieldArgumentsInterface`
  */
 
-const printInterfacedFieldArguments = (
-  config = defaultCodegenConfig,
-  schema?: GraphQLSchema,
-) => (parent: ObjectLikeNode) => (field: FieldDefinitionNode) => {
+const printInterfacedFieldArguments = (props: CodegenProps) => (
+  parent: ObjectLikeNode,
+) => (field: FieldDefinitionNode) => {
   if (!isNotEmpty(field.arguments)) {
     return `()`
   }
 
   const { typename: target } = unwrapType(field.type)
 
-  const interfacename = naming.argumentsInterfaceName(config)(
+  const interfacename = naming.argumentsInterfaceName(props.config)(
     parent.name.value,
     target,
   )
 
   const modifier =
-    isNullable(field.type) && config.useOptionalModifier ? '?: ' : ': '
+    isNullable(field.type) && props.config.useOptionalModifier ? '?: ' : ': '
 
   return '(args' + modifier + interfacename + ')'
 }

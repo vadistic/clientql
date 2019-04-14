@@ -2,17 +2,43 @@
 
 exports[`printer > ObjectTypeDefinition useFieldArgumentsInterfaces: true 1`] = `
 "export interface Query {
-  node: (args?: QueryNodeArgs) => Node | null
+  board: (args?: QueryBoardArgs) => Board | null
+  boards: (args: QueryBoardArgs) => Board
+  boardsConnection: (args: QueryBoardConnectionArgs) => BoardConnection
   post: (args?: QueryPostArgs) => Post | null
-  posts: (args: QueryPostArgs) => Array<Post>
+  posts: (args: QueryPostArgs) => Post
   postsConnection: (args: QueryPostConnectionArgs) => PostConnection
+  thread: (args?: QueryThreadArgs) => Thread | null
+  threads: (args: QueryThreadArgs) => Thread
+  threadsConnection: (args: QueryThreadConnectionArgs) => ThreadConnection
   user: (args?: QueryUserArgs) => User | null
-  users: (args: QueryUserArgs) => Array<User>
+  users: (args: QueryUserArgs) => User
   usersConnection: (args: QueryUserConnectionArgs) => UserConnection
+  node: (args?: QueryNodeArgs) => Node | null
 }
 
-export interface QueryNodeArgs {
-  id: string
+export interface QueryBoardArgs {
+  where: BoardWhereUniqueInput
+}
+
+export interface QueryBoardArgs {
+  where?: BoardWhereInput | null
+  orderBy?: BoardOrderByInput | null
+  skip?: number | null
+  after?: string | null
+  before?: string | null
+  first?: number | null
+  last?: number | null
+}
+
+export interface QueryBoardConnectionArgs {
+  where?: BoardWhereInput | null
+  orderBy?: BoardOrderByInput | null
+  skip?: number | null
+  after?: string | null
+  before?: string | null
+  first?: number | null
+  last?: number | null
 }
 
 export interface QueryPostArgs {
@@ -20,23 +46,47 @@ export interface QueryPostArgs {
 }
 
 export interface QueryPostArgs {
+  where?: PostWhereInput | null
+  orderBy?: PostOrderByInput | null
+  skip?: number | null
   after?: string | null
   before?: string | null
   first?: number | null
   last?: number | null
-  orderBy?: PostOrderByInput | null
-  skip?: number | null
-  where?: PostWhereInput | null
 }
 
 export interface QueryPostConnectionArgs {
+  where?: PostWhereInput | null
+  orderBy?: PostOrderByInput | null
+  skip?: number | null
   after?: string | null
   before?: string | null
   first?: number | null
   last?: number | null
-  orderBy?: PostOrderByInput | null
+}
+
+export interface QueryThreadArgs {
+  where: ThreadWhereUniqueInput
+}
+
+export interface QueryThreadArgs {
+  where?: ThreadWhereInput | null
+  orderBy?: ThreadOrderByInput | null
   skip?: number | null
-  where?: PostWhereInput | null
+  after?: string | null
+  before?: string | null
+  first?: number | null
+  last?: number | null
+}
+
+export interface QueryThreadConnectionArgs {
+  where?: ThreadWhereInput | null
+  orderBy?: ThreadOrderByInput | null
+  skip?: number | null
+  after?: string | null
+  before?: string | null
+  first?: number | null
+  last?: number | null
 }
 
 export interface QueryUserArgs {
@@ -44,22 +94,26 @@ export interface QueryUserArgs {
 }
 
 export interface QueryUserArgs {
+  where?: UserWhereInput | null
+  orderBy?: UserOrderByInput | null
+  skip?: number | null
   after?: string | null
   before?: string | null
   first?: number | null
   last?: number | null
-  orderBy?: UserOrderByInput | null
-  skip?: number | null
-  where?: UserWhereInput | null
 }
 
 export interface QueryUserConnectionArgs {
+  where?: UserWhereInput | null
+  orderBy?: UserOrderByInput | null
+  skip?: number | null
   after?: string | null
   before?: string | null
   first?: number | null
   last?: number | null
-  orderBy?: UserOrderByInput | null
-  skip?: number | null
-  where?: UserWhereInput | null
+}
+
+export interface QueryNodeArgs {
+  id: string
 }"
 `;
