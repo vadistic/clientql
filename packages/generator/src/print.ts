@@ -15,7 +15,7 @@ export const printGqlTag = (
   result += indent(print(content), 1)
 
   if (deps) {
-    result += '\n'
+    result += '\n\n'
     result += indent(deps.map(dep => '${' + dep + '}').join('\n'), 1)
   }
 

@@ -189,6 +189,7 @@ exports[`generate graphql fragments complex > generate fragments file in js 1`] 
     company
     stake
   }
+
   
 \`
 
@@ -197,6 +198,7 @@ export const CLIENT_FLAT_FRAGMENT = gql\`
     id
     name
   }
+
   
 \`
 
@@ -208,6 +210,7 @@ export const EVENT_FLAT_FRAGMENT = gql\`
     endsAt
     minAgeRestriction
   }
+
   
 \`
 
@@ -218,6 +221,7 @@ export const VENUE_FLAT_FRAGMENT = gql\`
     address
     maxOccupancy
   }
+
   
 \`
 
@@ -229,6 +233,7 @@ export const CONCERT_FLAT_FRAGMENT = gql\`
     endsAt
     minAgeRestriction
   }
+
   
 \`
 
@@ -240,6 +245,7 @@ export const PERFORMER_FLAT_FRAGMENT = gql\`
     speciality
     fee
   }
+
   
 \`
 
@@ -251,6 +257,7 @@ export const FESTIVAL_FLAT_FRAGMENT = gql\`
     endsAt
     minAgeRestriction
   }
+
   
 \`
 
@@ -263,6 +270,7 @@ export const CONFERENCE_FLAT_FRAGMENT = gql\`
     minAgeRestriction
     workshops
   }
+
   
 \`
 
@@ -272,11 +280,13 @@ export const SPEAKER_FLAT_FRAGMENT = gql\`
     name
     contact
   }
+
   
 \`
 
 export const PERSON_FLAT_FRAGMENT = gql\`
   fragment PersonFlat on Person
+
   
 \`
 
@@ -284,6 +294,7 @@ export const STAKEHOLDER_FRAGMENT = gql\`
   fragment Stakeholder on Stakeholder {
     ...StakeholderFlat
   }
+
   \${STAKEHOLDER_FLAT_FRAGMENT}
 \`
 
@@ -327,6 +338,7 @@ export const CLIENT_FRAGMENT = gql\`
       }
     }
   }
+
   \${CLIENT_FLAT_FRAGMENT}
   \${EVENT_FLAT_FRAGMENT}
   \${VENUE_FLAT_FRAGMENT}
@@ -341,6 +353,7 @@ export const PERFORMER_FRAGMENT = gql\`
   fragment Performer on Performer {
     ...PerformerFlat
   }
+
   \${PERFORMER_FLAT_FRAGMENT}
 \`
 
@@ -348,6 +361,7 @@ export const SPEAKER_FRAGMENT = gql\`
   fragment Speaker on Speaker {
     ...SpeakerFlat
   }
+
   \${SPEAKER_FLAT_FRAGMENT}
 \`
 
@@ -403,6 +417,7 @@ export const PERSON_FRAGMENT = gql\`
       ...PerformerFlat
     }
   }
+
   \${PERSON_FLAT_FRAGMENT}
   \${CLIENT_FLAT_FRAGMENT}
   \${EVENT_FLAT_FRAGMENT}
@@ -419,6 +434,7 @@ export const VENUE_FRAGMENT = gql\`
   fragment Venue on Venue {
     ...VenueFlat
   }
+
   \${VENUE_FLAT_FRAGMENT}
 \`
 
@@ -459,6 +475,7 @@ export const EVENT_FRAGMENT = gql\`
       }
     }
   }
+
   \${EVENT_FLAT_FRAGMENT}
   \${VENUE_FLAT_FRAGMENT}
   \${CONCERT_FLAT_FRAGMENT}
@@ -481,6 +498,7 @@ export const CONCERT_FRAGMENT = gql\`
       ...PerformerFlat
     }
   }
+
   \${CONCERT_FLAT_FRAGMENT}
   \${VENUE_FLAT_FRAGMENT}
   \${PERFORMER_FLAT_FRAGMENT}
@@ -496,6 +514,7 @@ export const FESTIVAL_FRAGMENT = gql\`
       ...PerformerFlat
     }
   }
+
   \${FESTIVAL_FLAT_FRAGMENT}
   \${VENUE_FLAT_FRAGMENT}
   \${PERFORMER_FLAT_FRAGMENT}
@@ -511,6 +530,7 @@ export const CONFERENCE_FRAGMENT = gql\`
       ...SpeakerFlat
     }
   }
+
   \${CONFERENCE_FLAT_FRAGMENT}
   \${VENUE_FLAT_FRAGMENT}
   \${SPEAKER_FLAT_FRAGMENT}
@@ -894,6 +914,7 @@ exports[`generate graphql fragments prisma > generate fragments file in js 1`] =
   fragment AggregateBoardFlat on AggregateBoard {
     count
   }
+
   
 \`
 
@@ -901,6 +922,7 @@ export const AGGREGATE_POST_FLAT_FRAGMENT = gql\`
   fragment AggregatePostFlat on AggregatePost {
     count
   }
+
   
 \`
 
@@ -908,6 +930,7 @@ export const AGGREGATE_THREAD_FLAT_FRAGMENT = gql\`
   fragment AggregateThreadFlat on AggregateThread {
     count
   }
+
   
 \`
 
@@ -915,6 +938,7 @@ export const AGGREGATE_USER_FLAT_FRAGMENT = gql\`
   fragment AggregateUserFlat on AggregateUser {
     count
   }
+
   
 \`
 
@@ -922,6 +946,7 @@ export const BATCH_PAYLOAD_FLAT_FRAGMENT = gql\`
   fragment BatchPayloadFlat on BatchPayload {
     count
   }
+
   
 \`
 
@@ -930,6 +955,7 @@ export const BOARD_FLAT_FRAGMENT = gql\`
     id
     createdAt
   }
+
   
 \`
 
@@ -940,6 +966,7 @@ export const USER_FLAT_FRAGMENT = gql\`
     email
     name
   }
+
   
 \`
 
@@ -952,6 +979,7 @@ export const POST_FLAT_FRAGMENT = gql\`
     title
     updatedAt
   }
+
   
 \`
 
@@ -961,11 +989,13 @@ export const THREAD_FLAT_FRAGMENT = gql\`
     createdAt
     name
   }
+
   
 \`
 
 export const BOARD_CONNECTION_FLAT_FRAGMENT = gql\`
   fragment BoardConnectionFlat on BoardConnection
+
   
 \`
 
@@ -976,6 +1006,7 @@ export const PAGE_INFO_FLAT_FRAGMENT = gql\`
     startCursor
     endCursor
   }
+
   
 \`
 
@@ -983,6 +1014,7 @@ export const BOARD_EDGE_FLAT_FRAGMENT = gql\`
   fragment BoardEdgeFlat on BoardEdge {
     cursor
   }
+
   
 \`
 
@@ -991,6 +1023,7 @@ export const BOARD_PREVIOUS_VALUES_FLAT_FRAGMENT = gql\`
     id
     createdAt
   }
+
   
 \`
 
@@ -999,6 +1032,7 @@ export const BOARD_SUBSCRIPTION_PAYLOAD_FLAT_FRAGMENT = gql\`
     mutation
     updatedFields
   }
+
   
 \`
 
@@ -1006,11 +1040,13 @@ export const NODE_FLAT_FRAGMENT = gql\`
   fragment NodeFlat on Node {
     id
   }
+
   
 \`
 
 export const POST_CONNECTION_FLAT_FRAGMENT = gql\`
   fragment PostConnectionFlat on PostConnection
+
   
 \`
 
@@ -1018,6 +1054,7 @@ export const POST_EDGE_FLAT_FRAGMENT = gql\`
   fragment PostEdgeFlat on PostEdge {
     cursor
   }
+
   
 \`
 
@@ -1030,6 +1067,7 @@ export const POST_PREVIOUS_VALUES_FLAT_FRAGMENT = gql\`
     title
     updatedAt
   }
+
   
 \`
 
@@ -1038,11 +1076,13 @@ export const POST_SUBSCRIPTION_PAYLOAD_FLAT_FRAGMENT = gql\`
     mutation
     updatedFields
   }
+
   
 \`
 
 export const THREAD_CONNECTION_FLAT_FRAGMENT = gql\`
   fragment ThreadConnectionFlat on ThreadConnection
+
   
 \`
 
@@ -1050,6 +1090,7 @@ export const THREAD_EDGE_FLAT_FRAGMENT = gql\`
   fragment ThreadEdgeFlat on ThreadEdge {
     cursor
   }
+
   
 \`
 
@@ -1059,6 +1100,7 @@ export const THREAD_PREVIOUS_VALUES_FLAT_FRAGMENT = gql\`
     createdAt
     name
   }
+
   
 \`
 
@@ -1067,11 +1109,13 @@ export const THREAD_SUBSCRIPTION_PAYLOAD_FLAT_FRAGMENT = gql\`
     mutation
     updatedFields
   }
+
   
 \`
 
 export const USER_CONNECTION_FLAT_FRAGMENT = gql\`
   fragment UserConnectionFlat on UserConnection
+
   
 \`
 
@@ -1079,6 +1123,7 @@ export const USER_EDGE_FLAT_FRAGMENT = gql\`
   fragment UserEdgeFlat on UserEdge {
     cursor
   }
+
   
 \`
 
@@ -1089,6 +1134,7 @@ export const USER_PREVIOUS_VALUES_FLAT_FRAGMENT = gql\`
     email
     name
   }
+
   
 \`
 
@@ -1097,6 +1143,7 @@ export const USER_SUBSCRIPTION_PAYLOAD_FLAT_FRAGMENT = gql\`
     mutation
     updatedFields
   }
+
   
 \`
 
@@ -1104,6 +1151,7 @@ export const AGGREGATE_BOARD_FRAGMENT = gql\`
   fragment AggregateBoard on AggregateBoard {
     ...AggregateBoardFlat
   }
+
   \${AGGREGATE_BOARD_FLAT_FRAGMENT}
 \`
 
@@ -1111,6 +1159,7 @@ export const AGGREGATE_POST_FRAGMENT = gql\`
   fragment AggregatePost on AggregatePost {
     ...AggregatePostFlat
   }
+
   \${AGGREGATE_POST_FLAT_FRAGMENT}
 \`
 
@@ -1118,6 +1167,7 @@ export const AGGREGATE_THREAD_FRAGMENT = gql\`
   fragment AggregateThread on AggregateThread {
     ...AggregateThreadFlat
   }
+
   \${AGGREGATE_THREAD_FLAT_FRAGMENT}
 \`
 
@@ -1125,6 +1175,7 @@ export const AGGREGATE_USER_FRAGMENT = gql\`
   fragment AggregateUser on AggregateUser {
     ...AggregateUserFlat
   }
+
   \${AGGREGATE_USER_FLAT_FRAGMENT}
 \`
 
@@ -1132,6 +1183,7 @@ export const BATCH_PAYLOAD_FRAGMENT = gql\`
   fragment BatchPayload on BatchPayload {
     ...BatchPayloadFlat
   }
+
   \${BATCH_PAYLOAD_FLAT_FRAGMENT}
 \`
 
@@ -1172,6 +1224,7 @@ export const BOARD_FRAGMENT = gql\`
       }
     }
   }
+
   \${BOARD_FLAT_FRAGMENT}
   \${USER_FLAT_FRAGMENT}
   \${POST_FLAT_FRAGMENT}
@@ -1203,6 +1256,7 @@ export const BOARD_CONNECTION_FRAGMENT = gql\`
       ...AggregateBoardFlat
     }
   }
+
   \${BOARD_CONNECTION_FLAT_FRAGMENT}
   \${PAGE_INFO_FLAT_FRAGMENT}
   \${BOARD_EDGE_FLAT_FRAGMENT}
@@ -1243,6 +1297,7 @@ export const BOARD_EDGE_FRAGMENT = gql\`
       }
     }
   }
+
   \${BOARD_EDGE_FLAT_FRAGMENT}
   \${BOARD_FLAT_FRAGMENT}
   \${USER_FLAT_FRAGMENT}
@@ -1254,6 +1309,7 @@ export const BOARD_PREVIOUS_VALUES_FRAGMENT = gql\`
   fragment BoardPreviousValues on BoardPreviousValues {
     ...BoardPreviousValuesFlat
   }
+
   \${BOARD_PREVIOUS_VALUES_FLAT_FRAGMENT}
 \`
 
@@ -1291,6 +1347,7 @@ export const BOARD_SUBSCRIPTION_PAYLOAD_FRAGMENT = gql\`
       ...BoardPreviousValuesFlat
     }
   }
+
   \${BOARD_SUBSCRIPTION_PAYLOAD_FLAT_FRAGMENT}
   \${BOARD_FLAT_FRAGMENT}
   \${USER_FLAT_FRAGMENT}
@@ -1303,6 +1360,7 @@ export const NODE_FRAGMENT = gql\`
   fragment Node on Node {
     ...NodeFlat
   }
+
   \${NODE_FLAT_FRAGMENT}
 \`
 
@@ -1310,6 +1368,7 @@ export const PAGE_INFO_FRAGMENT = gql\`
   fragment PageInfo on PageInfo {
     ...PageInfoFlat
   }
+
   \${PAGE_INFO_FLAT_FRAGMENT}
 \`
 
@@ -1320,6 +1379,7 @@ export const POST_FRAGMENT = gql\`
       ...UserFlat
     }
   }
+
   \${POST_FLAT_FRAGMENT}
   \${USER_FLAT_FRAGMENT}
 \`
@@ -1343,6 +1403,7 @@ export const POST_CONNECTION_FRAGMENT = gql\`
       ...AggregatePostFlat
     }
   }
+
   \${POST_CONNECTION_FLAT_FRAGMENT}
   \${PAGE_INFO_FLAT_FRAGMENT}
   \${POST_EDGE_FLAT_FRAGMENT}
@@ -1361,6 +1422,7 @@ export const POST_EDGE_FRAGMENT = gql\`
       }
     }
   }
+
   \${POST_EDGE_FLAT_FRAGMENT}
   \${POST_FLAT_FRAGMENT}
   \${USER_FLAT_FRAGMENT}
@@ -1370,6 +1432,7 @@ export const POST_PREVIOUS_VALUES_FRAGMENT = gql\`
   fragment PostPreviousValues on PostPreviousValues {
     ...PostPreviousValuesFlat
   }
+
   \${POST_PREVIOUS_VALUES_FLAT_FRAGMENT}
 \`
 
@@ -1386,6 +1449,7 @@ export const POST_SUBSCRIPTION_PAYLOAD_FRAGMENT = gql\`
       ...PostPreviousValuesFlat
     }
   }
+
   \${POST_SUBSCRIPTION_PAYLOAD_FLAT_FRAGMENT}
   \${POST_FLAT_FRAGMENT}
   \${USER_FLAT_FRAGMENT}
@@ -1414,6 +1478,7 @@ export const THREAD_FRAGMENT = gql\`
       }
     }
   }
+
   \${THREAD_FLAT_FRAGMENT}
   \${USER_FLAT_FRAGMENT}
   \${POST_FLAT_FRAGMENT}
@@ -1444,6 +1509,7 @@ export const THREAD_CONNECTION_FRAGMENT = gql\`
       ...AggregateThreadFlat
     }
   }
+
   \${THREAD_CONNECTION_FLAT_FRAGMENT}
   \${PAGE_INFO_FLAT_FRAGMENT}
   \${THREAD_EDGE_FLAT_FRAGMENT}
@@ -1478,6 +1544,7 @@ export const THREAD_EDGE_FRAGMENT = gql\`
       }
     }
   }
+
   \${THREAD_EDGE_FLAT_FRAGMENT}
   \${THREAD_FLAT_FRAGMENT}
   \${USER_FLAT_FRAGMENT}
@@ -1488,6 +1555,7 @@ export const THREAD_PREVIOUS_VALUES_FRAGMENT = gql\`
   fragment ThreadPreviousValues on ThreadPreviousValues {
     ...ThreadPreviousValuesFlat
   }
+
   \${THREAD_PREVIOUS_VALUES_FLAT_FRAGMENT}
 \`
 
@@ -1519,6 +1587,7 @@ export const THREAD_SUBSCRIPTION_PAYLOAD_FRAGMENT = gql\`
       ...ThreadPreviousValuesFlat
     }
   }
+
   \${THREAD_SUBSCRIPTION_PAYLOAD_FLAT_FRAGMENT}
   \${THREAD_FLAT_FRAGMENT}
   \${USER_FLAT_FRAGMENT}
@@ -1533,6 +1602,7 @@ export const USER_FRAGMENT = gql\`
       ...PostFlat
     }
   }
+
   \${USER_FLAT_FRAGMENT}
   \${POST_FLAT_FRAGMENT}
 \`
@@ -1556,6 +1626,7 @@ export const USER_CONNECTION_FRAGMENT = gql\`
       ...AggregateUserFlat
     }
   }
+
   \${USER_CONNECTION_FLAT_FRAGMENT}
   \${PAGE_INFO_FLAT_FRAGMENT}
   \${USER_EDGE_FLAT_FRAGMENT}
@@ -1574,6 +1645,7 @@ export const USER_EDGE_FRAGMENT = gql\`
       }
     }
   }
+
   \${USER_EDGE_FLAT_FRAGMENT}
   \${USER_FLAT_FRAGMENT}
   \${POST_FLAT_FRAGMENT}
@@ -1583,6 +1655,7 @@ export const USER_PREVIOUS_VALUES_FRAGMENT = gql\`
   fragment UserPreviousValues on UserPreviousValues {
     ...UserPreviousValuesFlat
   }
+
   \${USER_PREVIOUS_VALUES_FLAT_FRAGMENT}
 \`
 
@@ -1599,6 +1672,7 @@ export const USER_SUBSCRIPTION_PAYLOAD_FRAGMENT = gql\`
       ...UserPreviousValuesFlat
     }
   }
+
   \${USER_SUBSCRIPTION_PAYLOAD_FLAT_FRAGMENT}
   \${USER_FLAT_FRAGMENT}
   \${POST_FLAT_FRAGMENT}

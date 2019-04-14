@@ -8,7 +8,6 @@ import {
   isUnionTypeDefinitionNode,
   nonNull,
   onlyUnique,
-  unwrapDocument,
   unwrapSelectionSet,
   wrapDocument,
 } from '@graphql-clientgen/core'
@@ -69,12 +68,37 @@ export const generateGraphqlFragments = (props: GeneratorProps) => {
 }
 
 /**
+ * separate because I may need those fragments for something else
+ */
+export const generateGraphqlFragmentsFile = (props: GeneratorProps) => {
+  const { fragments, dependencies } = generateGraphqlFragments(props)
+
+  const resolved = resolveFragmentDependencies([...dependencies, ...fragments])
+
+  const getConstantName = naming.fragmentConstantName(props.config)
+
+  if (!props.config.printGraphqlToJs) {
+    return print(wrapDocument(...resolved.map(({ definition }) => definition)))
+  }
+
+  return resolved
+    .map(({ definition, deps }) =>
+      printGqlTag(
+        getConstantName(definition.name.value),
+        definition,
+        deps.map(getConstantName),
+      ),
+    )
+    .join('\n\n')
+}
+
+/**
  * cannot write to JS file if fragment was used before declaration
  *
  * it's kind of brute force approach,
  * (there should be some dependency graph algortihms) but it does not matter
  */
-export const resolveFragmentDependencies = (fragments: FragmentResult[]) => {
+const resolveFragmentDependencies = (fragments: FragmentResult[]) => {
   const resolvedNames = new Set<string>()
   const unresolvedNames = new Set<string>()
   const fragmentMap = new Map(
@@ -111,29 +135,4 @@ export const resolveFragmentDependencies = (fragments: FragmentResult[]) => {
   }
 
   return Array.from(resolvedNames).map(name => fragmentMap.get(name)!)
-}
-
-/**
- * separate because I may need those fragments for something else
- */
-export const generateGraphqlFragmentsFile = (props: GeneratorProps) => {
-  const { fragments, dependencies } = generateGraphqlFragments(props)
-
-  const resolved = resolveFragmentDependencies([...dependencies, ...fragments])
-
-  const getConstantName = naming.fragmentConstantName(props.config)
-
-  if (!props.config.printGraphqlToJs) {
-    return print(wrapDocument(...resolved.map(({ definition }) => definition)))
-  }
-
-  return resolved
-    .map(({ definition, deps }) =>
-      printGqlTag(
-        getConstantName(definition.name.value),
-        definition,
-        deps.map(getConstantName),
-      ),
-    )
-    .join('\n\n')
 }

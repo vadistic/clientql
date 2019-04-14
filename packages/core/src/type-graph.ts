@@ -14,10 +14,10 @@ import {
   DigraphVertexEntry,
 } from './digraph'
 
-export type TypeGraph = ReturnType<typeof createTypeGraph>
+export type Graph = ReturnType<typeof createGraph>
 
 export type Edge = DigraphEdgeLinkEntry<Fieldname, Typename>
-export type EdgeType = DigraphEdgeWeigthEntry<Fieldname, FieldDefinitionNode>
+export type EdgeField = DigraphEdgeWeigthEntry<Fieldname, FieldDefinitionNode>
 
 export type GraphEntry = DigraphVertexEntry<
   Typename,
@@ -33,7 +33,7 @@ export type GraphVertex = DigraphVertex<
   FieldDefinitionNode
 >
 
-export const createTypeGraph = (ast: DocumentNode) =>
+export const createGraph = (ast: DocumentNode) =>
   Digraph.from(createGraphEntries(ast))
 
 const createGraphEntries = (ast: DocumentNode) =>
@@ -49,7 +49,7 @@ const createGraphEntries = (ast: DocumentNode) =>
         getTypename(field.type),
       ])
 
-      const fields: EdgeType[] = (node.fields || []).map(field => [
+      const fields: EdgeField[] = (node.fields || []).map(field => [
         field.name.value,
         field,
       ])

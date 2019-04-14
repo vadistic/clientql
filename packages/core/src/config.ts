@@ -4,7 +4,7 @@ import {
   NestedSelectionsResult,
   SelectionResult,
 } from './operation'
-import { createTypeGraph, TypeGraph } from './type-graph'
+import { createGraph, Graph } from './type-graph'
 
 export enum FragmentType {
   /** use flat fragments when possible */
@@ -46,7 +46,7 @@ export const defaultCoreConfig: CoreConfig = {
  */
 export interface CoreProps {
   config: CoreConfig
-  graph: TypeGraph
+  graph: Graph
   // lazy map for reusable fragments
   fragments: Map<string, FragmentResult>
   // testing to avoid traversing whole tree few times each op
@@ -58,7 +58,7 @@ export const getCoreProps = (
   doc: DocumentNode,
   config?: Partial<CoreConfig>,
 ): CoreProps => ({
-  graph: createTypeGraph(doc),
+  graph: createGraph(doc),
   config: {
     ...defaultCoreConfig,
     ...config,

@@ -39,6 +39,14 @@ export const getDocDefinition: GetDocDefinition = <K extends KindEnum>(
   doc: DocumentNode,
   kind?: K,
 ) => {
+  if (
+    !doc.kind ||
+    doc.kind !== Kind.DOCUMENT ||
+    !Array.isArray(doc.definitions)
+  ) {
+    throw Error('getDocDefinition: Invalid Document (like no document at all')
+  }
+
   if (kind) {
     for (const node of doc.definitions) {
       if (node.kind === kind) {

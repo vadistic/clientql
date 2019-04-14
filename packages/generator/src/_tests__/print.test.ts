@@ -22,6 +22,7 @@ describe('print utils', () => {
           ...SomeFragment
           ...SomeOtherFragment
         }
+      
         \${SOME_FRAGMENT}
         \${SOME_OTHER_FRAGMENT}
       \`"

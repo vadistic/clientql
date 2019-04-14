@@ -29,11 +29,6 @@ export interface GeneratorConfig extends CodegenConfig, CoreConfig {
    * @default: 'Fragment'
    */
   fragmentJsConstantSuffix: string
-  /**
-   * generate helper maps of all all generated fragments/operations by typename/field
-   * @default: true
-   */
-  generateJsMaps: boolean
 }
 
 export const defaultGeneratorConfig: GeneratorConfig = {
@@ -42,7 +37,6 @@ export const defaultGeneratorConfig: GeneratorConfig = {
   clientSuffix: 'Client',
   constantCase: StringCase.CONSTANT,
   fragmentJsConstantSuffix: 'Fragment',
-  generateJsMaps: true,
   printGraphqlToJs: true,
 }
 
