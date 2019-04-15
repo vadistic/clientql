@@ -28,13 +28,13 @@ import { printGqlTag } from '../print'
 export const generateGraphqlFragments = (props: GeneratorProps) => {
   const rootNames = getRootTypenames(props)
 
-  type NestedTypeNode =
+  type NestableTypeNode =
     | ObjectTypeDefinitionNode
     | UnionTypeDefinitionNode
     | InterfaceTypeDefinitionNode
 
   const nestedTypes = props.doc.definitions.filter(
-    (node): node is NestedTypeNode =>
+    (node): node is NestableTypeNode =>
       (isObjectTypeDefinitionNode(node) &&
         !rootNames.includes(node.name.value)) ||
       isInterfaceTypeDefinitonNode(node) ||

@@ -1,4 +1,4 @@
-import { isString } from '@graphql-clientgen/core'
+import { isString, Typename } from '@graphql-clientgen/core'
 import changeCase from 'change-case'
 import { GeneratorConfig } from './config'
 
@@ -47,7 +47,20 @@ const constantName = (config: GeneratorConfig) => (name: string) => {
 const fragmentConstantName = (config: GeneratorConfig) => (name: string) =>
   constantName(config)(name + ' ' + config.fragmentJsConstantSuffix)
 
+const handlePrefix = (input: string | boolean) =>
+  typeof input === 'string' ? input : input === true ? 'I' : ''
+
+const clientResultName = (config: GeneratorConfig) => (typename: Typename) =>
+  handlePrefix(config.interfacePrefix) +
+  pascalCase(typename + ' ' + config.clientResultSuffix)
+
+const clientInterfaceName = (config: GeneratorConfig) => (typename: Typename) =>
+  handlePrefix(config.interfacePrefix) +
+  pascalCase(typename + ' ' + config.clientSuffix)
+
 export const naming = {
   constantName,
   fragmentConstantName,
+  clientResultName,
+  clientInterfaceName,
 }

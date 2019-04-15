@@ -9,35 +9,54 @@ import { StringCase } from './naming'
 export interface GeneratorConfig extends CodegenConfig, CoreConfig {
   /**
    * suffix client types
-   * @default: 'Client'
+   * @default 'Client'
    *
    */
   clientSuffix: string
   /**
+   * suffix operation results
+   * @default 'Result'
+   *
+   */
+  clientResultSuffix: string
+  /**
+   * something that all clients will extend to hide soem common options
+   * @default 'Fragmentable'
+   */
+  clientExtend: string
+  /**
    * return graphql as string of js/ts file with graphql-tag tagged separate types
    * otherwise prints graphql
-   * @default: true
+   * @default true
    */
   printGraphqlToJs: boolean
   /**
    * casing of generated js constants
-   * @default: 'CONSTANT_CASE'
+   * @default 'CONSTANT_CASE'
    */
   constantCase: StringCase
   /**
-   * Fragments generated with convention of 1:1 to typename needs some namespacing in JS constant name
-   * @default: 'Fragment'
+   * fragments generated with convention of 1:1 to typename needs some namespacing in JS constant name
+   * @default 'Fragment'
    */
   fragmentJsConstantSuffix: string
+  /**
+   * should generated typedefs be purged of all orphaned/unused types?
+   * @default true
+   */
+  minimalTypedefs: boolean
 }
 
 export const defaultGeneratorConfig: GeneratorConfig = {
   ...defaultCoreConfig,
   ...defaultCodegenConfig,
   clientSuffix: 'Client',
+  clientResultSuffix: 'Result',
+  clientExtend: 'Fragmentable',
   constantCase: StringCase.CONSTANT,
   fragmentJsConstantSuffix: 'Fragment',
   printGraphqlToJs: true,
+  minimalTypedefs: true,
 }
 
 /**

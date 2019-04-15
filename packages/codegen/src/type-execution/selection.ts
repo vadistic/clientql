@@ -3,6 +3,12 @@ import { Kind, SelectionSetNode } from 'graphql'
 import { CodegenProps } from '../codegen'
 import { printType } from '../type-reference'
 
+/**
+ *  TODO: Add recursive flag for nested/nonested
+ *  to handle not only brackets byt top level spreads and interface exteds
+ *  and unions, somehow...
+ */
+
 export const printSelectionSet = (props: CodegenProps) => (
   parent: Typename,
   set: SelectionSetNode,

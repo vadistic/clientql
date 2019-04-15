@@ -1,4 +1,10 @@
-import { DocumentNode, FieldDefinitionNode, TypeDefinitionNode } from 'graphql'
+import {
+  ASTKindToNode,
+  DocumentNode,
+  FieldDefinitionNode,
+  KindEnum,
+  TypeDefinitionNode,
+} from 'graphql'
 import {
   Fieldname,
   getTypename,
@@ -6,6 +12,7 @@ import {
   Kind,
   Typename,
 } from './ast'
+import { CoreProps } from './config'
 import {
   Digraph,
   DigraphEdgeLinkEntry,
@@ -73,3 +80,29 @@ const createGraphEntries = (ast: DocumentNode) =>
     // InputObject
     return { name, value: node }
   })
+
+export const getVerticiesOfKind = (props: CoreProps) => (kind: KindEnum) => {
+  const result: GraphVertex[] = []
+
+  props.graph.forEach(vtx => {
+    if (vtx.value.kind === kind) {
+      result.push(vtx)
+    }
+  })
+
+  return result
+}
+
+export const getNodesOfKind = (props: CoreProps) => <K extends KindEnum>(
+  kind: K,
+) => {
+  const result: Array<ASTKindToNode[K]> = []
+
+  props.graph.forEach(vtx => {
+    if (vtx.value.kind === kind) {
+      result.push(vtx.value)
+    }
+  })
+
+  return result
+}

@@ -96,6 +96,26 @@ fragment SpeakerFlat on Speaker {
 "
 `;
 
+exports[`operation complex > interface inline target 1`] = `
+"query FindEventsAtVenueConcertVenueQuery($venueId: ID!) {
+  findEventsAtVenue(venueId: $venueId) {
+    ... on Concert {
+      venue {
+        ...VenueFlat
+      }
+    }
+  }
+}
+
+fragment VenueFlat on Venue {
+  id
+  name
+  address
+  maxOccupancy
+}
+"
+`;
+
 exports[`operation complex > interface target 1`] = `
 "query FindEventsAtVenueQuery($venueId: ID!) {
   findEventsAtVenue(venueId: $venueId) {

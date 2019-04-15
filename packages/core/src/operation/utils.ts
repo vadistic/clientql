@@ -1,69 +1,11 @@
-import { OperationTypeNode } from 'graphql'
 import { Fieldname, Typename } from '../ast'
 import { CoreProps } from '../config'
 import { Edge } from '../graph'
-import { nonNull } from '../utils'
+import { findRootOperation } from './root'
 
-/**
- *  TODO: This should support custom schema definition
- */
-export const getRootTypes = (props: CoreProps) => {
-  const query = props.graph.get('Query')
-  const mutation = props.graph.get('Mutation')
-  const subscription = props.graph.get('Subscription')
-
-  return [query, mutation, subscription].filter(nonNull)
-}
-
-export const getRootTypenames = (props: CoreProps) =>
-  getRootTypes(props).map(vtx => vtx.name)
-
-/**
- *  TODO: This should support custom schema definition too
- */
-export const rootTypenameToOperationType = (props: CoreProps) => (
-  typename: Typename,
-): OperationTypeNode | undefined => {
-  switch (typename) {
-    case 'Query':
-      return 'query'
-    case 'Mutation':
-      return 'mutation'
-    case 'Subscription':
-      return 'subscription'
-  }
-}
-
-export const operationTypeToRootTypename = (props: CoreProps) => (
-  type: OperationTypeNode,
-): Typename | undefined => {
-  switch (type) {
-    case 'query':
-      return 'Query'
-    case 'mutation':
-      return 'Mutation'
-    case 'subscription':
-      return 'Subscription'
-  }
-}
-
-export const findRootOperation = (props: CoreProps) => (head: Fieldname) => {
-  for (const root of getRootTypes(props)) {
-    if (root.edgesMap && root.edgesMap.has(head)) {
-      return {
-        type: rootTypenameToOperationType(props)(root.name)!,
-        name: root.name,
-        vtx: root,
-      }
-    }
-  }
-}
-
-// without retriving nested deps for now, because selections has all deps
-// cache is now having unique values so this utils does not make much sense
-export const retriveCacheFragments = (props: CoreProps) => (
+export const retriveFragmentsFromCache = (props: CoreProps) => (
   fragmentnames: string[],
-) => fragmentnames.map(name => props.fragments.get(name)!.definition)
+) => fragmentnames.map(name => props.fragments.get(name)!.fragment)
 
 export const onlyUnique = (input: string[]) =>
   Array.from(new Set(input).values())
@@ -77,10 +19,10 @@ export const replaceLastTypename = (
 ): Edge[] => [...stack.slice(0, -1), [stack.slice(-1)[0][0], typename]]
 
 /**
- * no idea how to check it...
- * I'm disallowing to duplicate typename in the stack
+ * no idea if I'm doing it right
+ * I'm disallowing to duplicate typename on the stack
  */
-export const isStackCircural = (props: CoreProps) => (stack: Edge[]) => {
+export const isStackCircural = (stack: Edge[]) => {
   // cannot circle just on the begining
   if (stack.length === 1) {
     return false
@@ -89,10 +31,12 @@ export const isStackCircural = (props: CoreProps) => (stack: Edge[]) => {
 
   return stack.slice(0, -1).some(([fname, tname]) => tname === typename)
 }
-
+/**
+ * TODO: probably delete this one
+ */
 export const isValidPath = (props: CoreProps) => (path: Fieldname[]) => {
   // head must be on root type
-  const root = findRootOperation(props)(path[0])
+  const root = findRootOperation(props.graph)(path[0])
 
   if (!root) {
     return false

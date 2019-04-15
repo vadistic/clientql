@@ -26,9 +26,6 @@ export type GeneratorResult = {
   }
 }
 
-/**
- * refactored to reuse in tests
- */
 export const getGeneratorProps = (
   doc: DocumentNode,
   config?: Partial<GeneratorConfig>,
@@ -36,6 +33,8 @@ export const getGeneratorProps = (
   paths?: Partial<GeneratorPaths>,
 ) => {
   const mergedDoc = mergeExtensions(doc)
+
+  // here could be minimal typedefs to avoid unnecesary typing etc
 
   const props: GeneratorProps = {
     ...getCoreProps(mergedDoc),

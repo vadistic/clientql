@@ -6,10 +6,11 @@ import {
 } from 'graphql'
 
 /*
- * for docuemntation & consistency
+ * for documentations in types, there is a lot of string tuples
  */
 export type Typename = string
 export type Fieldname = string
+export type Fragmentname = string
 
 export type ObjectLikeNode =
   | ObjectTypeDefinitionNode

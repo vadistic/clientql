@@ -1,7 +1,4 @@
-import {
-  createCodegenPrinter,
-  printCodeSection,
-} from '@graphql-clientgen/codegen'
+import { codegen, printCodeSection } from '@graphql-clientgen/codegen'
 import {
   isEnumTypeDefinitionNode,
   isInputObjectTypeDefinitionNode,
@@ -17,7 +14,7 @@ export const generateTypingsDefinitions = async (props: GeneratorProps) => {
 
   const { rootTypes, objectTypes } = reduceObjectTypeDefinitions(definitions)
 
-  const print = createCodegenPrinter(props.config, props.schema)
+  const print = codegen(props)
 
   const rootsTypescript = rootTypes.map(t => print(t)).join('\n\n')
 
@@ -50,7 +47,7 @@ export const generateTypingsDefinitions = async (props: GeneratorProps) => {
 
   let result = ''
 
-  result += printCodeSection(`ROOT`, rootsTypescript)
+  result += printCodeSection(`RootTypeDefinition`, rootsTypescript)
   result += printCodeSection(Kind.SCALAR_TYPE_DEFINITION, scalarsTypescript)
   result += printCodeSection(Kind.UNION_TYPE_DEFINITION, unionsTypescript)
 

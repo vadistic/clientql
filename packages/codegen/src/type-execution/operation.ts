@@ -7,7 +7,7 @@ import { printSelectionSet } from './selection'
 export const printOperation = (props: CodegenProps) => (
   node: OperationDefinitionNode,
 ) => {
-  const parent = operationTypeToRootTypename(props)(node.operation)
+  const parent = operationTypeToRootTypename(props.graph)(node.operation)
 
   if (!parent) {
     throw Error(`Could not find root schema node for ${node.operation}`)

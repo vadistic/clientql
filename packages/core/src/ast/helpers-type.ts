@@ -2,7 +2,7 @@ import { ListTypeNode, NamedTypeNode, TypeNode } from 'graphql'
 import { Kind, KindMap } from './kind'
 
 /**
- * alternative to those nested Null/List types that is easier to print
+ * alternative to those nested Null/List types that is easier to use
  */
 export type TypeModifier = KindMap['NON_NULL_TYPE'] | KindMap['LIST_TYPE']
 

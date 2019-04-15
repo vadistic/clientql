@@ -1,17 +1,17 @@
 import { print } from 'graphql'
 import { createField, createFragment, wrapDocument } from '../../ast'
-import { buildSelection } from '../../operation'
+import { buildSelections } from '../../operation'
 import { complexProps, prismaProps } from '../fixture'
 
 describe('selection', () => {
   it('not very nested prisma fragment', () => {
-    const selectionFn = buildSelection(prismaProps)
+    const selectionFn = buildSelections(prismaProps)
 
-    const { selection, fragmentnames } = selectionFn([[null as any, 'Post']])
+    const { selections } = selectionFn('Post')
 
     const frag = createFragment({
       fragmentname: 'PostFragment',
-      selections: [...selection!.selectionSet!.selections!],
+      selections,
       condition: 'Post',
     })
 
@@ -19,9 +19,9 @@ describe('selection', () => {
   })
 
   it('complex fragment selection no interface', () => {
-    const selectionFn = buildSelection(complexProps)
+    const selectionFn = buildSelections(complexProps)
 
-    const { selection, fragmentnames } = selectionFn([[null as any, 'Event']])
+    const { selections } = selectionFn('Event')
 
     const frag = createFragment({
       fragmentname: 'EventFragment',
@@ -29,12 +29,10 @@ describe('selection', () => {
       selections: [
         createField({
           fieldname: 'event',
-          selections: [...selection!.selectionSet!.selections!],
+          selections,
         }),
       ],
     })
-
-    console.log(fragmentnames)
 
     expect(print(wrapDocument(frag))).toMatchSnapshot()
   })

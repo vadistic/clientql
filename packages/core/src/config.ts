@@ -1,6 +1,6 @@
 import { DocumentNode } from 'graphql'
 import { createGraph, Graph } from './graph'
-import { FragmentResult, NestedSelectionsResult } from './operation'
+import { FragmentResult, OperationResult, SelectionsResult } from './operation'
 
 export enum FragmentType {
   /** use flat fragments when possible */
@@ -45,9 +45,10 @@ export interface CoreProps {
   graph: Graph
   // lazy map for reusable fragments
   fragments: Map<string, FragmentResult>
-  // testing to avoid traversing whole tree few times each op
-  // lets store only complete ones (should cover 90% of the tree)
-  selections: Map<string, NestedSelectionsResult>
+  // lazy map for complete selections
+  selections: Map<string, SelectionsResult>
+  // lazy map for operations
+  operations: Map<string, OperationResult>
 }
 
 export const getCoreProps = (
@@ -61,4 +62,5 @@ export const getCoreProps = (
   },
   fragments: new Map(),
   selections: new Map(),
+  operations: new Map(),
 })
