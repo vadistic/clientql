@@ -1,9 +1,4 @@
-import {
-  indent,
-  isNotEmpty,
-  isString,
-  TypescriptString,
-} from '@graphql-clientgen/core'
+import { indent, isNotEmpty, TypescriptString } from '@graphql-clientgen/core'
 
 /**
  * prints block comment with some content
@@ -86,3 +81,27 @@ export const printTsType = (
   name: string,
   content: TypescriptString,
 ): TypescriptString => `export type ${name} = ${content}`
+
+export const printTsImports = (
+  names: TypescriptString[],
+  from: string,
+): TypescriptString | undefined => {
+  if (names.length === 0) {
+    return
+  }
+
+  let resultTs = 'import {'
+
+  if (names.length < 3) {
+    resultTs += ' ' + names.join(', ') + ` } from '${from}'`
+    return resultTs
+  }
+
+  resultTs += '\n'
+
+  resultTs += indent(names.join(',\n'), 1)
+
+  resultTs += `\n} from '${from}'`
+
+  return resultTs
+}

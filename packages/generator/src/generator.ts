@@ -12,8 +12,10 @@ import {
   GeneratorOptions,
   GeneratorPaths,
 } from './config'
+import { GeneratorNaming, initGeneratorNaming } from './naming'
 
 export interface GeneratorProps extends CoreProps {
+  naming: GeneratorNaming
   doc: DocumentNode
   config: GeneratorConfig
   options: GeneratorOptions
@@ -32,18 +34,22 @@ export const getGeneratorProps = (
   options?: Partial<GeneratorOptions>,
   paths?: Partial<GeneratorPaths>,
 ) => {
+  const mergedConfig = {
+    ...defaultGeneratorConfig,
+    ...config,
+  }
+
   const mergedDoc = mergeExtensions(doc)
   const coreProps = getCoreProps(mergedDoc)
+  const naming = initGeneratorNaming(mergedConfig)
 
   // here could be minimal typedefs to avoid unnecesary typing etc
 
   const props: GeneratorProps = {
     ...coreProps,
+    naming,
     doc: mergedDoc,
-    config: {
-      ...defaultGeneratorConfig,
-      ...config,
-    },
+    config: mergedConfig,
     options: {
       ...defaultGeneratorOptions,
       ...options,
@@ -68,14 +74,12 @@ export const graphqlGenerator = async (
   const result: GeneratorResult = {
     client: {},
     graphql: {},
-    typings: {},
+    typescript: {},
   }
 
-  if (props.options.typings.definitions) {
-    const {
-      generateTypingsDefinitions,
-    } = await import('./generate/typings-definitions')
+  if (props.options.typescript.types) {
+    const { generateTsTypes } = await import('./extra/typescript-types')
 
-    result.typings.definitions = await generateTypingsDefinitions(props)
+    result.typescript.types = await generateTsTypes(props)
   }
 }

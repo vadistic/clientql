@@ -1,7 +1,7 @@
 import { Typename, TypescriptString } from '@graphql-clientgen/core'
 import { Kind, NamedTypeNode } from 'graphql'
 import { CodegenProps } from '../codegen'
-import { initNaming } from '../naming'
+import { initCodegenNaming } from '../naming'
 
 const mapExplicitScalar = (typename: Typename): TypescriptString => {
   switch (typename) {

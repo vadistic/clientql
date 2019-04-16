@@ -10,7 +10,7 @@ import {
 } from 'graphql'
 import { isString } from 'util'
 import { CodegenProps } from '../codegen'
-import { printTsInterface } from '../print-ts'
+import { printTsInterface } from '../print'
 import { printInputValue, printType, withDescription } from '../type-reference'
 
 /**

@@ -1,9 +1,9 @@
 import gql from 'graphql-tag'
-import { printGqlTag } from '../print'
+import { printTsGql } from '../print'
 
 describe('print utils', () => {
   it('print graphql to gql tagged const with deps', () => {
-    const fixture = printGqlTag(
+    const fixture = printTsGql(
       'MY_CONT_NAME',
       gql`
         query Myquery {

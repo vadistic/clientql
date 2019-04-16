@@ -36,11 +36,11 @@ const argumentsInterfaceName = (config: CodegenConfig) => (
 const fragmentName = (config: CodegenConfig) => (name: FragmentName) =>
   pascalCase(name, config.fragmentSuffix)
 
-export type CodegenNaming = ReturnType<typeof initNaming>
+export type CodegenNaming = ReturnType<typeof initCodegenNaming>
 
 // maybe some proxy later to allow dynamically changing scoped naming config,
 // but it does not seem important
-export const initNaming = (config: CodegenConfig) => ({
+export const initCodegenNaming = (config: CodegenConfig) => ({
   interfacePrefix: interfacePrefix(config),
   argumentsInterfaceName: argumentsInterfaceName(config),
   interfaceName: interfaceName(config),

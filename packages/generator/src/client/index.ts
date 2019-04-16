@@ -1,1 +1,6 @@
-export * from './client-boilerplate'
+export * from './boilerplate'
+export * from './generate'
+export * from './interfaces'
+export * from './responses'
+export * from './typedefs'
+export * from './types'

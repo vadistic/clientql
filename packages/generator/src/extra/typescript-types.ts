@@ -4,11 +4,14 @@ import { DefinitionNode } from 'graphql'
 import { GeneratorProps } from '../generator'
 import { groupDefinitionsByKind } from '../utils'
 
-export const generateTypingsDefinitions = async (props: GeneratorProps) => {
+/**
+ * this generate types for schema definition nodes
+ */
+export const generateTsTypes = async (props: GeneratorProps) => {
   const print = codegen(props)
   const groups = groupDefinitionsByKind(unwrapDocument(props.doc))
 
-  const resultTs = Object.entries(groups)
+  const typesTs = Object.entries(groups)
     .map(
       ([kind, nodes]) =>
         nodes &&
@@ -20,5 +23,5 @@ export const generateTypingsDefinitions = async (props: GeneratorProps) => {
     .filter(truthy)
     .join('\n\n')
 
-  return resultTs
+  return typesTs
 }

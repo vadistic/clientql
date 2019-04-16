@@ -8,7 +8,7 @@ import {
   TypeExtensionNode,
 } from 'graphql'
 import { CodegenConfig } from '../config'
-import { printJSDoc } from '../print-ts'
+import { printJSDoc } from '../print'
 
 export type DescribableNode =
   | TypeDefinitionNode

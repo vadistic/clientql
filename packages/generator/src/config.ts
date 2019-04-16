@@ -15,10 +15,10 @@ export interface GeneratorConfig extends CodegenConfig, CoreConfig {
   clientSuffix: string
   /**
    * suffix operation results
-   * @default 'Result'
+   * @default 'Response'
    *
    */
-  clientResultSuffix: string
+  clientResponseSuffix: string
   /**
    * something that all clients will extend to hide soem common options
    * @default 'Fragmentable'
@@ -45,43 +45,45 @@ export interface GeneratorConfig extends CodegenConfig, CoreConfig {
    * @default true
    */
   minimalTypedefs: boolean
+  /**
+   * should client runtime typedefs use `graphql-tag` or simple JS object
+   * @default false
+   */
+  useGqlTagTypedefs: boolean
 }
 
 export const defaultGeneratorConfig: GeneratorConfig = {
   ...defaultCoreConfig,
   ...defaultCodegenConfig,
   clientSuffix: 'Client',
-  clientResultSuffix: 'Result',
+  clientResponseSuffix: 'Response',
   clientExtend: 'Fragmentable',
   constantCase: StringCase.CONSTANT,
   fragmentJsConstantSuffix: 'Fragment',
   printGraphqlToJs: true,
   minimalTypedefs: true,
+  useGqlTagTypedefs: false,
 }
 
 /**
  * GeneratorPaths = WHERE to generate
  *
- * Constrols shape of generated client library
- * It's important for correct imports in generated strings
+ * controls shape of generated client library
+ * it's important for correct imports in generated strings
  */
 
 export interface GeneratorPaths {
-  clientDir: string
   types: string
-  client: string
-  fragments: string
-  operations: string
+  responses: string
+  clients: string
   typedefs: string
 }
 
-export const defaultGeneratorPaths = {
-  clientDir: 'src/generated/client',
-  types: 'types.ts',
-  client: 'client.ts',
-  fragments: 'fragments.ts',
-  operations: 'operations.ts',
-  typedefs: 'typedefs.ts',
+export const defaultGeneratorPaths: GeneratorPaths = {
+  types: './types',
+  responses: './responses',
+  clients: './clients',
+  typedefs: './typedefs',
 }
 
 /**
@@ -89,44 +91,22 @@ export const defaultGeneratorPaths = {
  */
 
 export interface GeneratorOptions {
-  typings: {
+  client: boolean
+  typescript: {
     /**
      * generate typescript definitions for graphql type definitions
      * @default: true
      */
-    definitions: boolean
+    types: boolean
     /**
-     * generate typescript definitions for client
-     * @default: true
-     */
-    client: true
-    /**
-     * generate typescript definitions for generated operations
+     * generate typescript definitions for operations
      * @default: true
      */
     operations: boolean
-    /**
-     * generate interfaces for field arguments
-     * @example: users(a, b) on Query => interface UsersQueryArgs = {a: any, b: any}
-     * @default: true
-     */
-    arguments: boolean
-    /**
-     * generate typescript definitions for generated fragments
-     * @default: true
-     */
-    fragments: boolean
-  }
-  client: {
-    /**
-     * generate ts runtime boilerplate for client
-     */
-    boilerplate: boolean
   }
   graphql: {
     /**
-     * generate runtime typedefs for client
-     * (trims to only what's needed & merge extendsions)\
+     * generate typedefs
      * @default: true
      */
     typedefs: boolean
@@ -144,15 +124,10 @@ export interface GeneratorOptions {
 }
 
 export const defaultGeneratorOptions: GeneratorOptions = {
-  typings: {
-    definitions: true,
-    client: true,
-    arguments: true,
+  client: true,
+  typescript: {
+    types: true,
     operations: true,
-    fragments: true,
-  },
-  client: {
-    boilerplate: true,
   },
   graphql: {
     typedefs: true,

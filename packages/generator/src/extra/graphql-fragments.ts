@@ -16,8 +16,7 @@ import {
   UnionTypeDefinitionNode,
 } from 'graphql'
 import { GeneratorProps } from '../generator'
-import { naming } from '../naming'
-import { printGqlTag } from '../print'
+import { printTsGql } from '../print'
 
 /**
  * generate FragmentResult[] + dependencies FragmentResult[]
@@ -75,8 +74,6 @@ export const generateGraphqlFragmentsFile = (props: GeneratorProps) => {
     ...fragments,
   ])
 
-  const getConstantName = naming.fragmentConstantName(props.config)
-
   if (!props.config.printGraphqlToJs) {
     return print(
       wrapDocument(...resolvedDependencies.map(({ fragment }) => fragment)),
@@ -85,10 +82,10 @@ export const generateGraphqlFragmentsFile = (props: GeneratorProps) => {
 
   return resolvedDependencies
     .map(({ fragment, dependencies: deps }) =>
-      printGqlTag(
-        getConstantName(fragment.name.value),
+      printTsGql(
+        props.naming.fragmentConstantName(fragment.name.value),
         fragment,
-        deps.map(getConstantName),
+        deps.map(props.naming.fragmentConstantName),
       ),
     )
     .join('\n\n')

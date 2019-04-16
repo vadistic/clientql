@@ -1,7 +1,7 @@
 import { TypescriptString } from '@graphql-clientgen/core'
 import { ObjectTypeDefinitionNode, ObjectTypeExtensionNode } from 'graphql'
 import { CodegenProps } from '../codegen'
-import { printTsInterface } from '../print-ts'
+import { printTsInterface } from '../print'
 import { withDescription } from '../type-reference'
 import {
   printFieldArgumentsInterfaces,

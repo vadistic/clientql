@@ -3,7 +3,7 @@ import { print } from 'graphql'
 import {
   generateGraphqlFragments,
   generateGraphqlFragmentsFile,
-} from '../../generate'
+} from '../../extra'
 import { complexProps, prismaProps } from '../fixture'
 
 describe('generate graphql fragments', () => {

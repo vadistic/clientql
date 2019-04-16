@@ -1,8 +1,11 @@
-import { isString, Typename } from '@graphql-clientgen/core'
+import { initCodegenNaming } from '@graphql-clientgen/codegen'
+import {
+  FragmentName,
+  Typename,
+  TypescriptString,
+} from '@graphql-clientgen/core'
 import changeCase from 'change-case'
 import { GeneratorConfig } from './config'
-
-type NullableStrings = Array<string | null | boolean | undefined>
 
 export enum StringCase {
   PASCAL = 'pascal-case',
@@ -13,16 +16,16 @@ export enum StringCase {
 /**
  * change-case have like 20 deps so  maybe implement this myself later
  */
-export const pascalCase = (...inputs: NullableStrings) =>
-  changeCase.pascalCase(inputs.filter(isString).join(' '))
+export const pascalCase = <T extends string>(...inputs: T[]) =>
+  changeCase.pascalCase(inputs.join(' ')) as T
 
-export const constantCase = (...inputs: NullableStrings) =>
-  changeCase.constantCase(inputs.filter(isString).join(' '))
+export const constantCase = <T extends string>(...inputs: T[]) =>
+  changeCase.constantCase(inputs.join(' ')) as T
 
-export const camelCase = (...inputs: NullableStrings) =>
-  changeCase.camelCase(inputs.filter(isString).join(' '))
+export const camelCase = <T extends string>(...inputs: T[]) =>
+  changeCase.camelCase(inputs.join(' ')) as T
 
-export const toCase = (type: StringCase, ...inputs: NullableStrings) => {
+export const toCase = <T extends string>(type: StringCase, ...inputs: T[]) => {
   switch (type) {
     case StringCase.PASCAL:
       return pascalCase(...inputs)
@@ -46,27 +49,35 @@ const constantName = (config: GeneratorConfig) => (name: string) => {
 
 export const TYPEDEFS_CONST_NAME = 'TYPEDEFS'
 
-const typedefsConstName = (config: GeneratorConfig) =>
-  constantName(config)(TYPEDEFS_CONST_NAME)
-
-const fragmentConstantName = (config: GeneratorConfig) => (name: string) =>
-  constantName(config)(name + ' ' + config.fragmentJsConstantSuffix)
-
-const handlePrefix = (input: string | boolean) =>
+const interfacePrefix = (input: string | boolean) =>
   typeof input === 'string' ? input : input === true ? 'I' : ''
 
-const clientResultName = (config: GeneratorConfig) => (typename: Typename) =>
-  handlePrefix(config.interfacePrefix) +
-  pascalCase(typename + ' ' + config.clientResultSuffix)
+const typedefsConstName = (config: GeneratorConfig): TypescriptString =>
+  constantName(config)(TYPEDEFS_CONST_NAME)
 
-const clientInterfaceName = (config: GeneratorConfig) => (typename: Typename) =>
-  handlePrefix(config.interfacePrefix) +
+const fragmentConstantName = (config: GeneratorConfig) => (
+  fragmentName: FragmentName,
+): TypescriptString =>
+  constantName(config)(fragmentName + ' ' + config.fragmentJsConstantSuffix)
+
+const clientResponseName = (config: GeneratorConfig) => (
+  typename: Typename,
+): TypescriptString =>
+  interfacePrefix(config.interfacePrefix) +
+  pascalCase(typename + ' ' + config.clientResponseSuffix)
+
+const clientInterfaceName = (config: GeneratorConfig) => (
+  typename: Typename,
+): TypescriptString =>
+  interfacePrefix(config.interfacePrefix) +
   pascalCase(typename + ' ' + config.clientSuffix)
 
-export const naming = {
-  constantName,
-  typedefsConstName,
-  fragmentConstantName,
-  clientResultName,
-  clientInterfaceName,
-}
+export type GeneratorNaming = ReturnType<typeof initGeneratorNaming>
+
+export const initGeneratorNaming = (config: GeneratorConfig) => ({
+  ...initCodegenNaming(config),
+  typedefsConstName: typedefsConstName(config),
+  fragmentConstantName: fragmentConstantName(config),
+  clientResponseName: clientResponseName(config),
+  clientInterfaceName: clientInterfaceName(config),
+})

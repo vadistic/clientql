@@ -2,7 +2,7 @@ import {
   printBlockComment,
   printCodeSection,
   printTsInterface,
-} from '../print-ts'
+} from '../print'
 
 describe('print typescript utils', () => {
   it('print block comment', () => {
@@ -31,21 +31,21 @@ describe('print typescript utils', () => {
        * FIRST
        *
        */
-      
+
       HELLO
       HELLO
       HELLO
-      
+
       /*
        *
        * SECOND
        *
        */
-      
+
       HELLO
       HELLO
       HELLO
-      
+
       "
     `)
   })

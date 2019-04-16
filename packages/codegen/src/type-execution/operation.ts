@@ -1,7 +1,7 @@
 import { Typename, TypescriptString } from '@graphql-clientgen/core'
 import { FragmentDefinitionNode, OperationDefinitionNode } from 'graphql'
 import { CodegenProps } from '../codegen'
-import { printTsType } from '../print-ts'
+import { printTsType } from '../print'
 import { printSelections } from './selection'
 
 export const printOperation = (props: CodegenProps) => (

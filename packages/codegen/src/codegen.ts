@@ -6,7 +6,7 @@ import {
 } from '@graphql-clientgen/core'
 import { ASTNode, DocumentNode, Kind, parse } from 'graphql'
 import { CodegenConfig, defaultCodegenConfig } from './config'
-import { CodegenNaming, initNaming } from './naming'
+import { CodegenNaming, initCodegenNaming } from './naming'
 import {
   printEnum,
   printInputObject,
@@ -33,7 +33,7 @@ export const getCodegenProps = (
     ...config,
   }
   const coreProps = getCoreProps(mergedDoc, mergedConfig)
-  const naming = initNaming(mergedConfig)
+  const naming = initCodegenNaming(mergedConfig)
 
   return {
     ...coreProps,

@@ -9,7 +9,7 @@ import {
 } from 'graphql'
 import { CodegenProps } from '../codegen'
 import { CodegenConfig } from '../config'
-import { initNaming } from '../naming'
+import { initCodegenNaming } from '../naming'
 
 /**
  * This is all pointles but nvm...

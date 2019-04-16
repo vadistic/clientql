@@ -14,7 +14,7 @@ import {
   ObjectTypeExtensionNode,
 } from 'graphql'
 import { CodegenProps } from '../codegen'
-import { printTsInterface } from '../print-ts'
+import { printTsInterface } from '../print'
 import {
   printFieldArguments,
   printInputValue,

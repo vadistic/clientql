@@ -77,6 +77,9 @@ const getGraphEntries = (ast: DocumentNode) =>
     })
     .filter(nonNull)
 
+/**
+ * TODO: fix this
+ */
 export const getVerticiesOfKind = (graph: Graph) => (kind: KindEnum) => {
   const result: GraphVertex[] = []
 

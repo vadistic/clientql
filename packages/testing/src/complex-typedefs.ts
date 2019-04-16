@@ -2,15 +2,16 @@ import gql from 'graphql-tag'
 
 export const COMPLEX_TYPEDEFS = gql`
   schema {
-    query: Query
+    query: MyQuery
+    mutation: MyMutation
   }
 
-  type Query {
+  type MyQuery {
     findEventsAtVenue(venueId: ID!): [Event]
     findPerson(id: ID!): Person
   }
 
-  type Mutation {
+  type MyMutation {
     deleteEvent(eventId: ID!): [Event]
   }
 

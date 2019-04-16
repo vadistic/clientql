@@ -71,14 +71,3 @@ export const traverseGraph = (props: GeneratorProps) => (
   )
 }
 
-export const getMinimalTypedefs = (props: GeneratorProps) => {
-  const register = new Set<Typename>()
-
-  traverseGraph(props)(vtx => {
-    register.add(vtx.name)
-  })
-
-  return wrapDocument(
-    ...Array.from(register).map(typename => props.graph.get(typename)!.value),
-  )
-}
