@@ -5,12 +5,21 @@ import {
   Typename,
   wrapDocument,
 } from '@graphql-clientgen/core'
-import { ASTKindToNode, DefinitionNode } from 'graphql'
+import { ASTKindToNode, DefinitionNode, Kind } from 'graphql'
 import { GeneratorProps } from './generator'
 import { traverseGraph } from './traverse'
 
 export const groupDefinitionsByKind = (definitions: DefinitionNode[]) => {
-  const groups: { [K in DefinitionNode['kind']]?: Array<ASTKindToNode[K]> } = {}
+  const groups: { [K in DefinitionNode['kind']]?: Array<ASTKindToNode[K]> } = {
+    // predefine some order
+    [Kind.SCHEMA_DEFINITION]: undefined,
+    [Kind.SCALAR_TYPE_DEFINITION]: undefined,
+    [Kind.UNION_TYPE_DEFINITION]: undefined,
+    [Kind.INTERFACE_TYPE_DEFINITION]: undefined,
+    [Kind.OBJECT_TYPE_DEFINITION]: undefined,
+    [Kind.INPUT_OBJECT_TYPE_DEFINITION]: undefined,
+    [Kind.ENUM_TYPE_DEFINITION]: undefined,
+  }
 
   for (const node of definitions) {
     if (!groups[node.kind]) {
@@ -64,15 +73,15 @@ export const getMinimalTypedefs = (props: GeneratorProps) => {
 }
 
 /**
- * trying to mimalise typedefs
+ * trying to minimalise typedefs size
  */
-export const stripLocationAndEmpty = <T>(input: T): T => {
+export const stripLocationDescriptionAndEmpty = <T>(input: T): T => {
   if (!!input && typeof input === 'object') {
     if (Array.isArray(input)) {
       const result: any[] = []
 
       for (const el of input) {
-        result.push(stripLocationAndEmpty(el))
+        result.push(stripLocationDescriptionAndEmpty(el))
       }
 
       return (result as unknown) as T
@@ -86,8 +95,8 @@ export const stripLocationAndEmpty = <T>(input: T): T => {
           continue
         }
 
-        if (key !== 'loc') {
-          result[key] = stripLocationAndEmpty((input as any)[key])
+        if (key !== 'loc' && key !== 'description') {
+          result[key] = stripLocationDescriptionAndEmpty((input as any)[key])
         }
       }
 

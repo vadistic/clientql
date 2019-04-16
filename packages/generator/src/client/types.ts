@@ -1,8 +1,4 @@
-import {
-  codegen,
-  printBlockComment,
-  printCodeSection,
-} from '@graphql-clientgen/codegen'
+import { codegen, printCodeSection } from '@graphql-clientgen/codegen'
 import {
   truthy,
   TypescriptString,

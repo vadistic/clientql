@@ -11,9 +11,9 @@ import {
   QueryClient,
   MutationClient,
   SubscriptionClient
-} from './clients'
+} from './interfaces'
 
-export * from './clients'
+export * from './interfaces'
 export * from './responses'
 export * from './types'
 export * from './typedefs'

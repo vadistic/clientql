@@ -7,6 +7,8 @@
  *
  */
 
+import { Stake } from './types'
+
 /*
  *
  * Responses

@@ -9,6 +9,20 @@
 
 /*
  *
+ * ScalarTypeDefinition Typings
+ *
+ */
+
+export type DateTime = string
+
+export type Json = any
+
+export type Long = any
+
+
+
+/*
+ *
  * ObjectTypeDefinition Typings
  *
  */
@@ -5780,20 +5794,6 @@ export const WorkflowOrderByInput: WorkflowOrderByInput = {
   description_ASC: 'description_ASC',
   description_DESC: 'description_DESC',
 }
-
-
-
-/*
- *
- * ScalarTypeDefinition Typings
- *
- */
-
-export type DateTime = string
-
-export type Json = any
-
-export type Long = any
 
 
 

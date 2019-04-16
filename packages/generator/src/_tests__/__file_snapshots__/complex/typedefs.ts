@@ -13,7 +13,7 @@
  *
  */
 
-export const  TYPEDEFS = {
+export const TYPEDEFS = {
   kind: "Document",
   definitions: [
     {

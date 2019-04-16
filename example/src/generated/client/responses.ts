@@ -95,24 +95,6 @@ export type BoardEdgeResponse = BoardEdgeFlat & {
 
 export type AggregateBoardResponse = AggregateBoardFlat
 
-export type PostConnectionResponse = {
-  pageInfo: PageInfoFlat
-  edges: PostEdgeFlat & {
-    node: PostFlat & {
-      author: UserFlat
-    }
-  }
-  aggregate: AggregatePostFlat
-}
-
-export type PostEdgeResponse = PostEdgeFlat & {
-  node: PostFlat & {
-    author: UserFlat
-  }
-}
-
-export type AggregatePostResponse = AggregatePostFlat
-
 export type ThreadConnectionResponse = {
   pageInfo: PageInfoFlat
   edges: ThreadEdgeFlat & {
@@ -159,7 +141,57 @@ export type UserEdgeResponse = UserEdgeFlat & {
 
 export type AggregateUserResponse = AggregateUserFlat
 
-export type NodeResponse = NodeFlat
+export type PostConnectionResponse = {
+  pageInfo: PageInfoFlat
+  edges: PostEdgeFlat & {
+    node: PostFlat & {
+      author: UserFlat
+    }
+  }
+  aggregate: AggregatePostFlat
+}
+
+export type PostEdgeResponse = PostEdgeFlat & {
+  node: PostFlat & {
+    author: UserFlat
+  }
+}
+
+export type AggregatePostResponse = AggregatePostFlat
+
+export type NodeResponse = NodeFlat & (BoardFlat & {
+  admins?: UserFlat & {
+    posts?: PostFlat
+  }
+  members?: UserFlat & {
+    posts?: PostFlat
+  }
+  threads?: ThreadFlat & {
+    author: UserFlat & {
+      posts?: PostFlat
+    }
+    entry: PostFlat & {
+      author: UserFlat
+    }
+    replies?: PostFlat & {
+      author: UserFlat
+    }
+  }
+} | PostFlat & {
+  author: UserFlat
+} | ThreadFlat & {
+  author: UserFlat & {
+    posts?: PostFlat
+  }
+  entry: PostFlat & {
+    author: UserFlat
+  }
+  replies?: PostFlat & {
+    author: UserFlat
+  }
+} | UserFlat & {
+  posts?: PostFlat
+})
 
 export type BatchPayloadResponse = BatchPayloadFlat
 
@@ -181,15 +213,6 @@ export type BoardSubscriptionPayloadResponse = BoardSubscriptionPayloadFlat & {
 }
 
 export type BoardPreviousValuesResponse = BoardPreviousValuesFlat
-
-export type PostSubscriptionPayloadResponse = PostSubscriptionPayloadFlat & {
-  node?: PostFlat & {
-    author: UserFlat
-  }
-  previousValues?: PostPreviousValuesFlat
-}
-
-export type PostPreviousValuesResponse = PostPreviousValuesFlat
 
 export type ThreadSubscriptionPayloadResponse = ThreadSubscriptionPayloadFlat & {
   node?: ThreadFlat & {
@@ -216,6 +239,15 @@ export type UserSubscriptionPayloadResponse = UserSubscriptionPayloadFlat & {
 }
 
 export type UserPreviousValuesResponse = UserPreviousValuesFlat
+
+export type PostSubscriptionPayloadResponse = PostSubscriptionPayloadFlat & {
+  node?: PostFlat & {
+    author: UserFlat
+  }
+  previousValues?: PostPreviousValuesFlat
+}
+
+export type PostPreviousValuesResponse = PostPreviousValuesFlat
 
 /*
  *
@@ -265,14 +297,6 @@ export type AggregateBoardFlat = {
   count: number
 }
 
-export type PostEdgeFlat = {
-  cursor: string
-}
-
-export type AggregatePostFlat = {
-  count: number
-}
-
 export type ThreadEdgeFlat = {
   cursor: string
 }
@@ -286,6 +310,14 @@ export type UserEdgeFlat = {
 }
 
 export type AggregateUserFlat = {
+  count: number
+}
+
+export type PostEdgeFlat = {
+  cursor: string
+}
+
+export type AggregatePostFlat = {
   count: number
 }
 
@@ -305,20 +337,6 @@ export type BoardSubscriptionPayloadFlat = {
 export type BoardPreviousValuesFlat = {
   id: string
   createdAt: string
-}
-
-export type PostSubscriptionPayloadFlat = {
-  mutation: MutationType
-  updatedFields?: string[] | null
-}
-
-export type PostPreviousValuesFlat = {
-  id: string
-  content?: string | null
-  createdAt: string
-  published: boolean
-  title: string
-  updatedAt: string
 }
 
 export type ThreadSubscriptionPayloadFlat = {
@@ -342,5 +360,19 @@ export type UserPreviousValuesFlat = {
   nationality?: string | null
   email: string
   name?: string | null
+}
+
+export type PostSubscriptionPayloadFlat = {
+  mutation: MutationType
+  updatedFields?: string[] | null
+}
+
+export type PostPreviousValuesFlat = {
+  id: string
+  content?: string | null
+  createdAt: string
+  published: boolean
+  title: string
+  updatedAt: string
 }
 

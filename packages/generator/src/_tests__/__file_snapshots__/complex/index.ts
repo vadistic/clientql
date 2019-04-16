@@ -7,9 +7,9 @@
  *
  */
 
-import { MyQueryClient, MyMutationClient } from './clients'
+import { MyQueryClient, MyMutationClient } from './interfaces'
 
-export * from './clients'
+export * from './interfaces'
 export * from './responses'
 export * from './types'
 export * from './typedefs'

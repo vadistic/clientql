@@ -9,6 +9,49 @@
 
 /*
  *
+ * SchemaDefinition Typings
+ *
+ */
+
+export type Query = MyQuery
+
+export type Mutation = MyMutation
+
+
+
+/*
+ *
+ * UnionTypeDefinition Typings
+ *
+ */
+
+export type Person = 
+  | Client
+  | Stakeholder
+  | Speaker
+  | Performer
+
+
+
+/*
+ *
+ * InterfaceTypeDefinition Typings
+ *
+ */
+
+export interface Event {
+  id: string
+  name: string
+  startsAt?: string | null
+  endsAt?: string | null
+  venue?: Venue | null
+  minAgeRestriction?: number | null
+}
+
+
+
+/*
+ *
  * ObjectTypeDefinition Typings
  *
  */
@@ -117,49 +160,6 @@ export const Stake: Stake = {
   MEDIUM: 'MEDIUM',
   HIGH: 'HIGH',
 }
-
-
-
-/*
- *
- * UnionTypeDefinition Typings
- *
- */
-
-export type Person = 
-  | Client
-  | Stakeholder
-  | Speaker
-  | Performer
-
-
-
-/*
- *
- * InterfaceTypeDefinition Typings
- *
- */
-
-export interface Event {
-  id: string
-  name: string
-  startsAt?: string | null
-  endsAt?: string | null
-  venue?: Venue | null
-  minAgeRestriction?: number | null
-}
-
-
-
-/*
- *
- * SchemaDefinition Typings
- *
- */
-
-export type Query = MyQuery
-
-export type Mutation = MyMutation
 
 
 

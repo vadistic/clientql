@@ -18,9 +18,9 @@ describe('generate client on complex props', () => {
     )
   })
 
-  it('print complex client clients', async () => {
+  it('print complex client interfaces', async () => {
     expect((await res).clients).toMatchFile(
-      ...fileSnapPath('clients.ts', 'complex'),
+      ...fileSnapPath('interfaces.ts', 'complex'),
     )
   })
 
@@ -49,9 +49,9 @@ describe('generate client on prisma props >', () => {
     expect((await res).index).toMatchFile(...fileSnapPath('index.ts', 'prisma'))
   })
 
-  it('print prisma client clients', async () => {
+  it('print prisma client interfaces', async () => {
     expect((await res).clients).toMatchFile(
-      ...fileSnapPath('clients.ts', 'prisma'),
+      ...fileSnapPath('interfaces.ts', 'prisma'),
     )
   })
 
@@ -78,9 +78,9 @@ describe('generate client on vats props >', () => {
     expect((await res).index).toMatchFile(...fileSnapPath('index.ts', 'vats'))
   })
 
-  it('print vats client clients', async () => {
+  it('print vats client interfaces', async () => {
     expect((await res).clients).toMatchFile(
-      ...fileSnapPath('clients.ts', 'vats'),
+      ...fileSnapPath('interfaces.ts', 'vats'),
     )
   })
 

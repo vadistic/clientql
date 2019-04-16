@@ -76,32 +76,3 @@ const getGraphEntries = (ast: DocumentNode) =>
       }
     })
     .filter(nonNull)
-
-/**
- * TODO: fix this
- */
-export const getVerticiesOfKind = (graph: Graph) => (kind: KindEnum) => {
-  const result: GraphVertex[] = []
-
-  graph.forEach(vtx => {
-    if (vtx.value.kind === kind) {
-      result.push(vtx)
-    }
-  })
-
-  return result
-}
-
-export const getNodesOfKind = (graph: Graph) => <K extends KindEnum>(
-  kind: K,
-) => {
-  const result: Array<ASTKindToNode[K]> = []
-
-  graph.forEach(vtx => {
-    if (vtx.value.kind === kind) {
-      result.push(vtx.value)
-    }
-  })
-
-  return result
-}

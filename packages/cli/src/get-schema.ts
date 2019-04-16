@@ -45,8 +45,6 @@ export const remoteSchema = async (
       return { status: 'err', message: JSON.stringify(errors, null, 2) }
     }
 
-    console.log(data)
-
     const schema = buildClientSchema(data)
     const typdefs = printSchema(schema)
     const doc = parse(typdefs)
@@ -93,11 +91,13 @@ const urlRegex = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-
 export const getSchemaDoc = async (input: string) => {
   const isRemote = urlRegex.test(input)
 
-  console.log(`Locading ${isRemote ? 'remote' : 'local'} schema...`)
+  console.log(`Loading ${isRemote ? 'remote' : 'local'} schema...`)
 
   const schemaRes = isRemote
     ? await remoteSchema(input)
     : await localSchema(input)
+
+  console.log(`Loaded!`)
 
   if (schemaRes.status === 'err') {
     console.warn(`Could not load ${isRemote ? 'remote' : 'local'} schema`)

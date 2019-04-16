@@ -7,7 +7,6 @@ import {
   printTypeModifiers,
 } from '@graphql-clientgen/codegen'
 import {
-  getVerticiesOfKind,
   GraphVertex,
   indent,
   isInterfaceTypeDefinitonNode,
@@ -19,7 +18,7 @@ import {
   unwrapDocument,
   unwrapType,
 } from '@graphql-clientgen/core'
-import { Kind, ObjectTypeDefinitionNode } from 'graphql'
+import { ObjectTypeDefinitionNode } from 'graphql'
 import { GeneratorProps } from '../generator'
 import { printYadaYada } from '../print'
 import { groupDefinitionsByKind } from '../utils'
@@ -49,27 +48,28 @@ export const printClientInterfaces = (props: GeneratorProps) => (
 
   // for each target
   const clientsTs: TypescriptString[] = []
+  const clientExtendsTs = props.naming.interfaceName(props.config.clientExtend)
 
   targets.forEach(typename => {
     const vtx = props.graph.get(typename)!
     const nameTs = props.naming.clientInterfaceName(typename)
 
     const contentTs = inlineableFieldsPrinter(vtx)
-    const interfaceTs = printTsInterface(
-      nameTs,
-      contentTs,
-      props.config.clientExtend,
-    )
+    const interfaceTs = printTsInterface(nameTs, contentTs, clientExtendsTs)
 
     clientsTs.push(interfaceTs)
   })
 
   const importsTs = printImportsForClientInterfaces(props)(targets)
 
+  const boilerplateTs = printClientInterfacesBoilerplate(props)
+
   let resultTs = ''
 
   resultTs += printYadaYada() + '\n\n'
   resultTs += importsTs + '\n\n'
+
+  resultTs += boilerplateTs + '\n\n'
 
   resultTs += printBlockComment('Root Client Interfaces') + '\n\n'
   resultTs += rootClientsTs.join('\n\n') + '\n\n'
@@ -78,52 +78,6 @@ export const printClientInterfaces = (props: GeneratorProps) => (
   resultTs += clientsTs.join('\n\n') + '\n\n'
 
   return resultTs
-}
-
-/**
- * needs to import:
- * - all responses form './responses'
- * - input + scalars + enums from './types'
- */
-const printImportsForClientInterfaces = (props: GeneratorProps) => (
-  targets: Set<Typename>,
-): TypescriptString => {
-  const responsesNamesTs = Array.from(targets).map(typename =>
-    props.naming.clientResponseName(typename),
-  )
-
-  const repsonsesImportsTs = printTsImports(
-    responsesNamesTs,
-    props.paths.responses,
-  )
-
-  const groups = groupDefinitionsByKind(unwrapDocument(props.doc))
-
-  const inputNamesTs = (groups.InputObjectTypeDefinition || []).map(node =>
-    props.naming.interfaceName(node.name.value),
-  )
-  const scalarNamesTs = (groups.ScalarTypeDefinition || []).map(node =>
-    props.naming.interfaceName(node.name.value),
-  )
-  const enumNamesTs = (groups.EnumTypeDefinition || []).map(node =>
-    props.naming.interfaceName(node.name.value),
-  )
-
-  // it would be better to import only those used but later
-  const typesImportsTs = printTsImports(
-    [...inputNamesTs, ...scalarNamesTs, ...enumNamesTs],
-    props.paths.types,
-  )
-
-  let importsTs = ''
-
-  if (typesImportsTs) {
-    importsTs += typesImportsTs + '\n\n'
-  }
-
-  importsTs += repsonsesImportsTs
-
-  return importsTs
 }
 
 /**
@@ -214,4 +168,65 @@ const printClientObjectFields = (props: GeneratorProps) => (
   })
 
   return clientFieldsPrinter
+}
+
+/**
+ * needs to import:
+ * - all responses form './responses'
+ * - input + scalars + enums from './types'
+ */
+const printImportsForClientInterfaces = (props: GeneratorProps) => (
+  targets: Set<Typename>,
+): TypescriptString => {
+  const responsesNamesTs = Array.from(targets).map(typename =>
+    props.naming.clientResponseName(typename),
+  )
+
+  const repsonsesImportsTs = printTsImports(
+    responsesNamesTs,
+    props.paths.responses,
+  )
+
+  const groups = groupDefinitionsByKind(unwrapDocument(props.doc))
+
+  const inputNamesTs = (groups.InputObjectTypeDefinition || []).map(node =>
+    props.naming.interfaceName(node.name.value),
+  )
+  const scalarNamesTs = (groups.ScalarTypeDefinition || []).map(node =>
+    props.naming.interfaceName(node.name.value),
+  )
+  const enumNamesTs = (groups.EnumTypeDefinition || []).map(node =>
+    props.naming.interfaceName(node.name.value),
+  )
+
+  // it would be better to import only those used but later
+  const typesImportsTs = printTsImports(
+    [...inputNamesTs, ...scalarNamesTs, ...enumNamesTs],
+    props.paths.types,
+  )
+
+  let importsTs = ''
+
+  if (typesImportsTs) {
+    importsTs += typesImportsTs + '\n\n'
+  }
+
+  importsTs += repsonsesImportsTs
+
+  return importsTs
+}
+
+const printClientInterfacesBoilerplate = (
+  props: GeneratorProps,
+): TypescriptString => {
+  const clientExtendsTs = props.naming.interfaceName(props.config.clientExtend)
+
+  // TODO: later think about how to make some cool customizations api
+  const boilerplateTs = `
+  export interface ${clientExtendsTs} {
+    $fragment: <T = any>(fragment: any) => Promise<T>
+  }
+  `.trim()
+
+  return boilerplateTs
 }

@@ -1,8 +1,4 @@
-import {
-  printBlockComment,
-  printTsImports,
-  printTsInterface,
-} from '@graphql-clientgen/codegen'
+import { printTsImports, printTsInterface } from '@graphql-clientgen/codegen'
 import { GeneratorProps } from '../generator'
 import { printYadaYada } from '../print'
 
@@ -19,10 +15,10 @@ export const printClientBoilerplate = (props: GeneratorProps) => {
     props.naming.clientInterfaceName(typename),
   )
 
-  const importsTs = printTsImports(rootsNamesTs, props.paths.clients)
+  const importsTs = printTsImports(rootsNamesTs, props.paths.interfaces)
 
   const exportsTs = [
-    props.paths.clients,
+    props.paths.interfaces,
     props.paths.responses,
     props.paths.types,
     props.paths.typedefs,

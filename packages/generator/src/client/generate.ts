@@ -11,7 +11,7 @@ export interface GenerateClientResult {
   typedefs: string
   types: string
   responses: string
-  clients: string
+  interfaces: string
 }
 /**
  * generate client lib
@@ -33,13 +33,13 @@ export const generateClient = async (
   const typedefs = printClientTypedefs(props)
   const types = printClientTypes(props)
   const responses = printClientsResponses(props)(targets)
-  const clients = printClientInterfaces(props)(targets)
+  const interfaces = printClientInterfaces(props)(targets)
 
   return {
     index,
     typedefs,
     types,
     responses,
-    clients,
+    interfaces,
   }
 }

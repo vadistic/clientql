@@ -21,7 +21,7 @@ export const clientgenCmd = async (cli: Result) => {
 
   const write = await writeFlatDir(cli.flags.output, {
     'index.ts': result.index,
-    [props.paths.clients + '.ts']: result.clients,
+    [props.paths.interfaces + '.ts']: result.interfaces,
     [props.paths.responses + '.ts']: result.responses,
     [props.paths.typedefs + '.ts']: result.typedefs,
     [props.paths.types + '.ts']: result.types,

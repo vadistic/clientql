@@ -75,14 +75,14 @@ export const defaultGeneratorConfig: GeneratorConfig = {
 export interface GeneratorPaths {
   types: string
   responses: string
-  clients: string
+  interfaces: string
   typedefs: string
 }
 
 export const defaultGeneratorPaths: GeneratorPaths = {
   types: './types',
   responses: './responses',
-  clients: './clients',
+  interfaces: './interfaces',
   typedefs: './typedefs',
 }
 

@@ -8,8 +8,9 @@ import {
 import {
   buildSelections,
   FragmentName,
-  getVerticiesOfKind,
+  isEnumTypeDefinitionNode,
   isNotEmpty,
+  isScalarTypeDefinitionNode,
   Typename,
   TypescriptString,
 } from '@graphql-clientgen/core'
@@ -63,13 +64,13 @@ export const printClientsResponses = (props: GeneratorProps) => (
 const printClientResponsesImports = (
   props: GeneratorProps,
 ): TypescriptString | undefined => {
-  const scalarNamesTs = getVerticiesOfKind(props.graph)(
-    Kind.SCALAR_TYPE_DEFINITION,
-  ).map(vtx => vtx.name as TypescriptString)
+  const scalarNamesTs = props.doc.definitions
+    .filter(isScalarTypeDefinitionNode)
+    .map(node => node.name.value)
 
-  const enumNamesTs = getVerticiesOfKind(props.graph)(
-    Kind.ENUM_TYPE_DEFINITION,
-  ).map(vtx => vtx.name as TypescriptString)
+  const enumNamesTs = props.doc.definitions
+    .filter(isEnumTypeDefinitionNode)
+    .map(node => node.name.value)
 
   // it would be better to import only those used but later
   const typesImportsTs = printTsImports(

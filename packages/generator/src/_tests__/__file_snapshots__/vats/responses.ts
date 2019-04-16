@@ -7,6 +7,34 @@
  *
  */
 
+import {
+  DateTime,
+  Json,
+  Long,
+  ApplicationOrderByInput,
+  ApplicationType,
+  CandidateOrderByInput,
+  CommentOrderByInput,
+  DisqualificationOrderByInput,
+  FieldInstanceOrderByInput,
+  FieldOrderByInput,
+  FieldType,
+  FileOrderByInput,
+  InviteOrderByInput,
+  JobOrderByInput,
+  JobType,
+  LocationOrderByInput,
+  ReviewInstanceOrderByInput,
+  ReviewOrderByInput,
+  SourceOrderByInput,
+  StageOrderByInput,
+  StageType,
+  TagOrderByInput,
+  TaskOrderByInput,
+  UserOrderByInput,
+  WorkflowOrderByInput
+} from './types'
+
 /*
  *
  * Responses

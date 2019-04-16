@@ -15,6 +15,10 @@
 
 export type DateTime = string
 
+/**
+ * The `Long` scalar type represents non-fractional signed whole numeric values.
+ * Long can represent values between -(2^63) and 2^63 - 1.
+ */
 export type Long = any
 
 
@@ -25,7 +29,9 @@ export type Long = any
  *
  */
 
+/** An object with an ID */
 export interface Node {
+  /** The id of the object. */
   id: string
 }
 
@@ -59,6 +65,7 @@ export interface AggregateUser {
 
 export interface BatchPayload {
   __typename: 'BatchPayload'
+  /** The number of nodes that have been affected by the Batch operation. */
   count: number
 }
 
@@ -71,16 +78,22 @@ export interface Board {
   threads?: Thread[] | null
 }
 
+/** A connection to a list of items. */
 export interface BoardConnection {
   __typename: 'BoardConnection'
+  /** Information to aid in pagination. */
   pageInfo: PageInfo
+  /** A list of edges. */
   edges: Array<BoardEdge | null>
   aggregate: AggregateBoard
 }
 
+/** An edge in a connection. */
 export interface BoardEdge {
   __typename: 'BoardEdge'
+  /** The item at the end of the edge. */
   node: Board
+  /** A cursor for use in pagination. */
   cursor: string
 }
 
@@ -101,35 +114,40 @@ export interface BoardSubscriptionPayload {
 export interface Mutation {
   __typename: 'Mutation'
   createBoard: Board
-  updateBoard?: Board | null
-  upsertBoard: Board
-  deleteBoard?: Board | null
-  deleteManyBoards: BatchPayload
-  createPost: Post
-  updatePost?: Post | null
-  updateManyPosts: BatchPayload
-  upsertPost: Post
-  deletePost?: Post | null
-  deleteManyPosts: BatchPayload
   createThread: Thread
-  updateThread?: Thread | null
-  updateManyThreads: BatchPayload
-  upsertThread: Thread
-  deleteThread?: Thread | null
-  deleteManyThreads: BatchPayload
   createUser: User
+  createPost: Post
+  updateBoard?: Board | null
+  updateThread?: Thread | null
   updateUser?: User | null
-  updateManyUsers: BatchPayload
-  upsertUser: User
+  updatePost?: Post | null
+  deleteBoard?: Board | null
+  deleteThread?: Thread | null
   deleteUser?: User | null
+  deletePost?: Post | null
+  upsertBoard: Board
+  upsertThread: Thread
+  upsertUser: User
+  upsertPost: Post
+  updateManyThreads: BatchPayload
+  updateManyUsers: BatchPayload
+  updateManyPosts: BatchPayload
+  deleteManyBoards: BatchPayload
+  deleteManyThreads: BatchPayload
   deleteManyUsers: BatchPayload
+  deleteManyPosts: BatchPayload
 }
 
+/** Information about pagination in a connection. */
 export interface PageInfo {
   __typename: 'PageInfo'
+  /** When paginating forwards, are there more items? */
   hasNextPage: boolean
+  /** When paginating backwards, are there more items? */
   hasPreviousPage: boolean
+  /** When paginating backwards, the cursor to continue. */
   startCursor?: string | null
+  /** When paginating forwards, the cursor to continue. */
   endCursor?: string | null
 }
 
@@ -144,16 +162,22 @@ export interface Post {
   updatedAt: string
 }
 
+/** A connection to a list of items. */
 export interface PostConnection {
   __typename: 'PostConnection'
+  /** Information to aid in pagination. */
   pageInfo: PageInfo
+  /** A list of edges. */
   edges: Array<PostEdge | null>
   aggregate: AggregatePost
 }
 
+/** An edge in a connection. */
 export interface PostEdge {
   __typename: 'PostEdge'
+  /** The item at the end of the edge. */
   node: Post
+  /** A cursor for use in pagination. */
   cursor: string
 }
 
@@ -177,27 +201,28 @@ export interface PostSubscriptionPayload {
 
 export interface Query {
   __typename: 'Query'
-  board?: Board | null
   boards: Array<Board | null>
-  boardsConnection: BoardConnection
-  post?: Post | null
-  posts: Array<Post | null>
-  postsConnection: PostConnection
-  thread?: Thread | null
   threads: Array<Thread | null>
-  threadsConnection: ThreadConnection
-  user?: User | null
   users: Array<User | null>
+  posts: Array<Post | null>
+  board?: Board | null
+  thread?: Thread | null
+  user?: User | null
+  post?: Post | null
+  boardsConnection: BoardConnection
+  threadsConnection: ThreadConnection
   usersConnection: UserConnection
+  postsConnection: PostConnection
+  /** Fetches an object given its ID */
   node?: Node | null
 }
 
 export interface Subscription {
   __typename: 'Subscription'
   board?: BoardSubscriptionPayload | null
-  post?: PostSubscriptionPayload | null
   thread?: ThreadSubscriptionPayload | null
   user?: UserSubscriptionPayload | null
+  post?: PostSubscriptionPayload | null
 }
 
 export interface Thread {
@@ -210,16 +235,22 @@ export interface Thread {
   replies?: Post[] | null
 }
 
+/** A connection to a list of items. */
 export interface ThreadConnection {
   __typename: 'ThreadConnection'
+  /** Information to aid in pagination. */
   pageInfo: PageInfo
+  /** A list of edges. */
   edges: Array<ThreadEdge | null>
   aggregate: AggregateThread
 }
 
+/** An edge in a connection. */
 export interface ThreadEdge {
   __typename: 'ThreadEdge'
+  /** The item at the end of the edge. */
   node: Thread
+  /** A cursor for use in pagination. */
   cursor: string
 }
 
@@ -247,16 +278,22 @@ export interface User {
   posts?: Post[] | null
 }
 
+/** A connection to a list of items. */
 export interface UserConnection {
   __typename: 'UserConnection'
+  /** Information to aid in pagination. */
   pageInfo: PageInfo
+  /** A list of edges. */
   edges: Array<UserEdge | null>
   aggregate: AggregateUser
 }
 
+/** An edge in a connection. */
 export interface UserEdge {
   __typename: 'UserEdge'
+  /** The item at the end of the edge. */
   node: User
+  /** A cursor for use in pagination. */
   cursor: string
 }
 
@@ -285,20 +322,28 @@ export interface UserSubscriptionPayload {
  */
 
 export interface BoardCreateInput {
+  id?: string | null
   admins?: UserCreateManyInput | null
   members?: UserCreateManyInput | null
   threads?: ThreadCreateManyInput | null
 }
 
 export interface BoardSubscriptionWhereInput {
+  /** Logical AND on all given filters. */
+  AND?: BoardSubscriptionWhereInput[] | null
+  /** Logical OR on all given filters. */
+  OR?: BoardSubscriptionWhereInput[] | null
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: BoardSubscriptionWhereInput[] | null
+  /** The subscription event gets dispatched when it's listed in mutation_in */
   mutation_in?: MutationType[] | null
+  /** The subscription event gets only dispatched when one of the updated fields names is included in this list */
   updatedFields_contains?: string | null
+  /** The subscription event gets only dispatched when all of the field names included in this list have been updated */
   updatedFields_contains_every?: string[] | null
+  /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: string[] | null
   node?: BoardWhereInput | null
-  AND?: BoardSubscriptionWhereInput[] | null
-  OR?: BoardSubscriptionWhereInput[] | null
-  NOT?: BoardSubscriptionWhereInput[] | null
 }
 
 export interface BoardUpdateInput {
@@ -308,27 +353,53 @@ export interface BoardUpdateInput {
 }
 
 export interface BoardWhereInput {
+  /** Logical AND on all given filters. */
+  AND?: BoardWhereInput[] | null
+  /** Logical OR on all given filters. */
+  OR?: BoardWhereInput[] | null
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: BoardWhereInput[] | null
   id?: string | null
+  /** All values that are not equal to given value. */
   id_not?: string | null
+  /** All values that are contained in given list. */
   id_in?: string[] | null
+  /** All values that are not contained in given list. */
   id_not_in?: string[] | null
+  /** All values less than the given value. */
   id_lt?: string | null
+  /** All values less than or equal the given value. */
   id_lte?: string | null
+  /** All values greater than the given value. */
   id_gt?: string | null
+  /** All values greater than or equal the given value. */
   id_gte?: string | null
+  /** All values containing the given string. */
   id_contains?: string | null
+  /** All values not containing the given string. */
   id_not_contains?: string | null
+  /** All values starting with the given string. */
   id_starts_with?: string | null
+  /** All values not starting with the given string. */
   id_not_starts_with?: string | null
+  /** All values ending with the given string. */
   id_ends_with?: string | null
+  /** All values not ending with the given string. */
   id_not_ends_with?: string | null
   createdAt?: string | null
+  /** All values that are not equal to given value. */
   createdAt_not?: string | null
+  /** All values that are contained in given list. */
   createdAt_in?: string[] | null
+  /** All values that are not contained in given list. */
   createdAt_not_in?: string[] | null
+  /** All values less than the given value. */
   createdAt_lt?: string | null
+  /** All values less than or equal the given value. */
   createdAt_lte?: string | null
+  /** All values greater than the given value. */
   createdAt_gt?: string | null
+  /** All values greater than or equal the given value. */
   createdAt_gte?: string | null
   admins_every?: UserWhereInput | null
   admins_some?: UserWhereInput | null
@@ -339,9 +410,6 @@ export interface BoardWhereInput {
   threads_every?: ThreadWhereInput | null
   threads_some?: ThreadWhereInput | null
   threads_none?: ThreadWhereInput | null
-  AND?: BoardWhereInput[] | null
-  OR?: BoardWhereInput[] | null
-  NOT?: BoardWhereInput[] | null
 }
 
 export interface BoardWhereUniqueInput {
@@ -349,10 +417,11 @@ export interface BoardWhereUniqueInput {
 }
 
 export interface PostCreateInput {
-  author: UserCreateOneWithoutPostsInput
+  id?: string | null
   content?: string | null
   published: boolean
   title: string
+  author: UserCreateOneWithoutPostsInput
 }
 
 export interface PostCreateManyInput {
@@ -371,100 +440,165 @@ export interface PostCreateOneInput {
 }
 
 export interface PostCreateWithoutAuthorInput {
+  id?: string | null
   content?: string | null
   published: boolean
   title: string
 }
 
 export interface PostScalarWhereInput {
+  /** Logical AND on all given filters. */
+  AND?: PostScalarWhereInput[] | null
+  /** Logical OR on all given filters. */
+  OR?: PostScalarWhereInput[] | null
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: PostScalarWhereInput[] | null
   id?: string | null
+  /** All values that are not equal to given value. */
   id_not?: string | null
+  /** All values that are contained in given list. */
   id_in?: string[] | null
+  /** All values that are not contained in given list. */
   id_not_in?: string[] | null
+  /** All values less than the given value. */
   id_lt?: string | null
+  /** All values less than or equal the given value. */
   id_lte?: string | null
+  /** All values greater than the given value. */
   id_gt?: string | null
+  /** All values greater than or equal the given value. */
   id_gte?: string | null
+  /** All values containing the given string. */
   id_contains?: string | null
+  /** All values not containing the given string. */
   id_not_contains?: string | null
+  /** All values starting with the given string. */
   id_starts_with?: string | null
+  /** All values not starting with the given string. */
   id_not_starts_with?: string | null
+  /** All values ending with the given string. */
   id_ends_with?: string | null
+  /** All values not ending with the given string. */
   id_not_ends_with?: string | null
   content?: string | null
+  /** All values that are not equal to given value. */
   content_not?: string | null
+  /** All values that are contained in given list. */
   content_in?: string[] | null
+  /** All values that are not contained in given list. */
   content_not_in?: string[] | null
+  /** All values less than the given value. */
   content_lt?: string | null
+  /** All values less than or equal the given value. */
   content_lte?: string | null
+  /** All values greater than the given value. */
   content_gt?: string | null
+  /** All values greater than or equal the given value. */
   content_gte?: string | null
+  /** All values containing the given string. */
   content_contains?: string | null
+  /** All values not containing the given string. */
   content_not_contains?: string | null
+  /** All values starting with the given string. */
   content_starts_with?: string | null
+  /** All values not starting with the given string. */
   content_not_starts_with?: string | null
+  /** All values ending with the given string. */
   content_ends_with?: string | null
+  /** All values not ending with the given string. */
   content_not_ends_with?: string | null
   createdAt?: string | null
+  /** All values that are not equal to given value. */
   createdAt_not?: string | null
+  /** All values that are contained in given list. */
   createdAt_in?: string[] | null
+  /** All values that are not contained in given list. */
   createdAt_not_in?: string[] | null
+  /** All values less than the given value. */
   createdAt_lt?: string | null
+  /** All values less than or equal the given value. */
   createdAt_lte?: string | null
+  /** All values greater than the given value. */
   createdAt_gt?: string | null
+  /** All values greater than or equal the given value. */
   createdAt_gte?: string | null
   published?: boolean | null
+  /** All values that are not equal to given value. */
   published_not?: boolean | null
   title?: string | null
+  /** All values that are not equal to given value. */
   title_not?: string | null
+  /** All values that are contained in given list. */
   title_in?: string[] | null
+  /** All values that are not contained in given list. */
   title_not_in?: string[] | null
+  /** All values less than the given value. */
   title_lt?: string | null
+  /** All values less than or equal the given value. */
   title_lte?: string | null
+  /** All values greater than the given value. */
   title_gt?: string | null
+  /** All values greater than or equal the given value. */
   title_gte?: string | null
+  /** All values containing the given string. */
   title_contains?: string | null
+  /** All values not containing the given string. */
   title_not_contains?: string | null
+  /** All values starting with the given string. */
   title_starts_with?: string | null
+  /** All values not starting with the given string. */
   title_not_starts_with?: string | null
+  /** All values ending with the given string. */
   title_ends_with?: string | null
+  /** All values not ending with the given string. */
   title_not_ends_with?: string | null
   updatedAt?: string | null
+  /** All values that are not equal to given value. */
   updatedAt_not?: string | null
+  /** All values that are contained in given list. */
   updatedAt_in?: string[] | null
+  /** All values that are not contained in given list. */
   updatedAt_not_in?: string[] | null
+  /** All values less than the given value. */
   updatedAt_lt?: string | null
+  /** All values less than or equal the given value. */
   updatedAt_lte?: string | null
+  /** All values greater than the given value. */
   updatedAt_gt?: string | null
+  /** All values greater than or equal the given value. */
   updatedAt_gte?: string | null
-  AND?: PostScalarWhereInput[] | null
-  OR?: PostScalarWhereInput[] | null
-  NOT?: PostScalarWhereInput[] | null
 }
 
 export interface PostSubscriptionWhereInput {
+  /** Logical AND on all given filters. */
+  AND?: PostSubscriptionWhereInput[] | null
+  /** Logical OR on all given filters. */
+  OR?: PostSubscriptionWhereInput[] | null
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: PostSubscriptionWhereInput[] | null
+  /** The subscription event gets dispatched when it's listed in mutation_in */
   mutation_in?: MutationType[] | null
+  /** The subscription event gets only dispatched when one of the updated fields names is included in this list */
   updatedFields_contains?: string | null
+  /** The subscription event gets only dispatched when all of the field names included in this list have been updated */
   updatedFields_contains_every?: string[] | null
+  /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: string[] | null
   node?: PostWhereInput | null
-  AND?: PostSubscriptionWhereInput[] | null
-  OR?: PostSubscriptionWhereInput[] | null
-  NOT?: PostSubscriptionWhereInput[] | null
 }
 
 export interface PostUpdateDataInput {
-  author?: UserUpdateOneRequiredWithoutPostsInput | null
   content?: string | null
   published?: boolean | null
   title?: string | null
+  author?: UserUpdateOneRequiredWithoutPostsInput | null
 }
 
 export interface PostUpdateInput {
-  author?: UserUpdateOneRequiredWithoutPostsInput | null
   content?: string | null
   published?: boolean | null
   title?: string | null
+  author?: UserUpdateOneRequiredWithoutPostsInput | null
 }
 
 export interface PostUpdateManyDataInput {
@@ -475,14 +609,14 @@ export interface PostUpdateManyDataInput {
 
 export interface PostUpdateManyInput {
   create?: PostCreateInput[] | null
-  update?: PostUpdateWithWhereUniqueNestedInput[] | null
-  upsert?: PostUpsertWithWhereUniqueNestedInput[] | null
-  delete?: PostWhereUniqueInput[] | null
   connect?: PostWhereUniqueInput[] | null
   set?: PostWhereUniqueInput[] | null
   disconnect?: PostWhereUniqueInput[] | null
-  deleteMany?: PostScalarWhereInput[] | null
+  delete?: PostWhereUniqueInput[] | null
+  update?: PostUpdateWithWhereUniqueNestedInput[] | null
   updateMany?: PostUpdateManyWithWhereNestedInput[] | null
+  deleteMany?: PostScalarWhereInput[] | null
+  upsert?: PostUpsertWithWhereUniqueNestedInput[] | null
 }
 
 export interface PostUpdateManyMutationInput {
@@ -493,14 +627,14 @@ export interface PostUpdateManyMutationInput {
 
 export interface PostUpdateManyWithoutAuthorInput {
   create?: PostCreateWithoutAuthorInput[] | null
-  delete?: PostWhereUniqueInput[] | null
   connect?: PostWhereUniqueInput[] | null
   set?: PostWhereUniqueInput[] | null
   disconnect?: PostWhereUniqueInput[] | null
+  delete?: PostWhereUniqueInput[] | null
   update?: PostUpdateWithWhereUniqueWithoutAuthorInput[] | null
-  upsert?: PostUpsertWithWhereUniqueWithoutAuthorInput[] | null
-  deleteMany?: PostScalarWhereInput[] | null
   updateMany?: PostUpdateManyWithWhereNestedInput[] | null
+  deleteMany?: PostScalarWhereInput[] | null
+  upsert?: PostUpsertWithWhereUniqueWithoutAuthorInput[] | null
 }
 
 export interface PostUpdateManyWithWhereNestedInput {
@@ -510,9 +644,9 @@ export interface PostUpdateManyWithWhereNestedInput {
 
 export interface PostUpdateOneRequiredInput {
   create?: PostCreateInput | null
+  connect?: PostWhereUniqueInput | null
   update?: PostUpdateDataInput | null
   upsert?: PostUpsertNestedInput | null
-  connect?: PostWhereUniqueInput | null
 }
 
 export interface PostUpdateWithoutAuthorDataInput {
@@ -549,70 +683,127 @@ export interface PostUpsertWithWhereUniqueWithoutAuthorInput {
 }
 
 export interface PostWhereInput {
+  /** Logical AND on all given filters. */
+  AND?: PostWhereInput[] | null
+  /** Logical OR on all given filters. */
+  OR?: PostWhereInput[] | null
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: PostWhereInput[] | null
   id?: string | null
+  /** All values that are not equal to given value. */
   id_not?: string | null
+  /** All values that are contained in given list. */
   id_in?: string[] | null
+  /** All values that are not contained in given list. */
   id_not_in?: string[] | null
+  /** All values less than the given value. */
   id_lt?: string | null
+  /** All values less than or equal the given value. */
   id_lte?: string | null
+  /** All values greater than the given value. */
   id_gt?: string | null
+  /** All values greater than or equal the given value. */
   id_gte?: string | null
+  /** All values containing the given string. */
   id_contains?: string | null
+  /** All values not containing the given string. */
   id_not_contains?: string | null
+  /** All values starting with the given string. */
   id_starts_with?: string | null
+  /** All values not starting with the given string. */
   id_not_starts_with?: string | null
+  /** All values ending with the given string. */
   id_ends_with?: string | null
+  /** All values not ending with the given string. */
   id_not_ends_with?: string | null
-  author?: UserWhereInput | null
   content?: string | null
+  /** All values that are not equal to given value. */
   content_not?: string | null
+  /** All values that are contained in given list. */
   content_in?: string[] | null
+  /** All values that are not contained in given list. */
   content_not_in?: string[] | null
+  /** All values less than the given value. */
   content_lt?: string | null
+  /** All values less than or equal the given value. */
   content_lte?: string | null
+  /** All values greater than the given value. */
   content_gt?: string | null
+  /** All values greater than or equal the given value. */
   content_gte?: string | null
+  /** All values containing the given string. */
   content_contains?: string | null
+  /** All values not containing the given string. */
   content_not_contains?: string | null
+  /** All values starting with the given string. */
   content_starts_with?: string | null
+  /** All values not starting with the given string. */
   content_not_starts_with?: string | null
+  /** All values ending with the given string. */
   content_ends_with?: string | null
+  /** All values not ending with the given string. */
   content_not_ends_with?: string | null
   createdAt?: string | null
+  /** All values that are not equal to given value. */
   createdAt_not?: string | null
+  /** All values that are contained in given list. */
   createdAt_in?: string[] | null
+  /** All values that are not contained in given list. */
   createdAt_not_in?: string[] | null
+  /** All values less than the given value. */
   createdAt_lt?: string | null
+  /** All values less than or equal the given value. */
   createdAt_lte?: string | null
+  /** All values greater than the given value. */
   createdAt_gt?: string | null
+  /** All values greater than or equal the given value. */
   createdAt_gte?: string | null
   published?: boolean | null
+  /** All values that are not equal to given value. */
   published_not?: boolean | null
   title?: string | null
+  /** All values that are not equal to given value. */
   title_not?: string | null
+  /** All values that are contained in given list. */
   title_in?: string[] | null
+  /** All values that are not contained in given list. */
   title_not_in?: string[] | null
+  /** All values less than the given value. */
   title_lt?: string | null
+  /** All values less than or equal the given value. */
   title_lte?: string | null
+  /** All values greater than the given value. */
   title_gt?: string | null
+  /** All values greater than or equal the given value. */
   title_gte?: string | null
+  /** All values containing the given string. */
   title_contains?: string | null
+  /** All values not containing the given string. */
   title_not_contains?: string | null
+  /** All values starting with the given string. */
   title_starts_with?: string | null
+  /** All values not starting with the given string. */
   title_not_starts_with?: string | null
+  /** All values ending with the given string. */
   title_ends_with?: string | null
+  /** All values not ending with the given string. */
   title_not_ends_with?: string | null
   updatedAt?: string | null
+  /** All values that are not equal to given value. */
   updatedAt_not?: string | null
+  /** All values that are contained in given list. */
   updatedAt_in?: string[] | null
+  /** All values that are not contained in given list. */
   updatedAt_not_in?: string[] | null
+  /** All values less than the given value. */
   updatedAt_lt?: string | null
+  /** All values less than or equal the given value. */
   updatedAt_lte?: string | null
+  /** All values greater than the given value. */
   updatedAt_gt?: string | null
+  /** All values greater than or equal the given value. */
   updatedAt_gte?: string | null
-  AND?: PostWhereInput[] | null
-  OR?: PostWhereInput[] | null
-  NOT?: PostWhereInput[] | null
+  author?: UserWhereInput | null
 }
 
 export interface PostWhereUniqueInput {
@@ -620,8 +811,9 @@ export interface PostWhereUniqueInput {
 }
 
 export interface ThreadCreateInput {
-  author: UserCreateOneInput
+  id?: string | null
   name: string
+  author: UserCreateOneInput
   entry: PostCreateOneInput
   replies?: PostCreateManyInput | null
 }
@@ -632,68 +824,111 @@ export interface ThreadCreateManyInput {
 }
 
 export interface ThreadScalarWhereInput {
+  /** Logical AND on all given filters. */
+  AND?: ThreadScalarWhereInput[] | null
+  /** Logical OR on all given filters. */
+  OR?: ThreadScalarWhereInput[] | null
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: ThreadScalarWhereInput[] | null
   id?: string | null
+  /** All values that are not equal to given value. */
   id_not?: string | null
+  /** All values that are contained in given list. */
   id_in?: string[] | null
+  /** All values that are not contained in given list. */
   id_not_in?: string[] | null
+  /** All values less than the given value. */
   id_lt?: string | null
+  /** All values less than or equal the given value. */
   id_lte?: string | null
+  /** All values greater than the given value. */
   id_gt?: string | null
+  /** All values greater than or equal the given value. */
   id_gte?: string | null
+  /** All values containing the given string. */
   id_contains?: string | null
+  /** All values not containing the given string. */
   id_not_contains?: string | null
+  /** All values starting with the given string. */
   id_starts_with?: string | null
+  /** All values not starting with the given string. */
   id_not_starts_with?: string | null
+  /** All values ending with the given string. */
   id_ends_with?: string | null
+  /** All values not ending with the given string. */
   id_not_ends_with?: string | null
   createdAt?: string | null
+  /** All values that are not equal to given value. */
   createdAt_not?: string | null
+  /** All values that are contained in given list. */
   createdAt_in?: string[] | null
+  /** All values that are not contained in given list. */
   createdAt_not_in?: string[] | null
+  /** All values less than the given value. */
   createdAt_lt?: string | null
+  /** All values less than or equal the given value. */
   createdAt_lte?: string | null
+  /** All values greater than the given value. */
   createdAt_gt?: string | null
+  /** All values greater than or equal the given value. */
   createdAt_gte?: string | null
   name?: string | null
+  /** All values that are not equal to given value. */
   name_not?: string | null
+  /** All values that are contained in given list. */
   name_in?: string[] | null
+  /** All values that are not contained in given list. */
   name_not_in?: string[] | null
+  /** All values less than the given value. */
   name_lt?: string | null
+  /** All values less than or equal the given value. */
   name_lte?: string | null
+  /** All values greater than the given value. */
   name_gt?: string | null
+  /** All values greater than or equal the given value. */
   name_gte?: string | null
+  /** All values containing the given string. */
   name_contains?: string | null
+  /** All values not containing the given string. */
   name_not_contains?: string | null
+  /** All values starting with the given string. */
   name_starts_with?: string | null
+  /** All values not starting with the given string. */
   name_not_starts_with?: string | null
+  /** All values ending with the given string. */
   name_ends_with?: string | null
+  /** All values not ending with the given string. */
   name_not_ends_with?: string | null
-  AND?: ThreadScalarWhereInput[] | null
-  OR?: ThreadScalarWhereInput[] | null
-  NOT?: ThreadScalarWhereInput[] | null
 }
 
 export interface ThreadSubscriptionWhereInput {
+  /** Logical AND on all given filters. */
+  AND?: ThreadSubscriptionWhereInput[] | null
+  /** Logical OR on all given filters. */
+  OR?: ThreadSubscriptionWhereInput[] | null
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: ThreadSubscriptionWhereInput[] | null
+  /** The subscription event gets dispatched when it's listed in mutation_in */
   mutation_in?: MutationType[] | null
+  /** The subscription event gets only dispatched when one of the updated fields names is included in this list */
   updatedFields_contains?: string | null
+  /** The subscription event gets only dispatched when all of the field names included in this list have been updated */
   updatedFields_contains_every?: string[] | null
+  /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: string[] | null
   node?: ThreadWhereInput | null
-  AND?: ThreadSubscriptionWhereInput[] | null
-  OR?: ThreadSubscriptionWhereInput[] | null
-  NOT?: ThreadSubscriptionWhereInput[] | null
 }
 
 export interface ThreadUpdateDataInput {
-  author?: UserUpdateOneRequiredInput | null
   name?: string | null
+  author?: UserUpdateOneRequiredInput | null
   entry?: PostUpdateOneRequiredInput | null
   replies?: PostUpdateManyInput | null
 }
 
 export interface ThreadUpdateInput {
-  author?: UserUpdateOneRequiredInput | null
   name?: string | null
+  author?: UserUpdateOneRequiredInput | null
   entry?: PostUpdateOneRequiredInput | null
   replies?: PostUpdateManyInput | null
 }
@@ -704,14 +939,14 @@ export interface ThreadUpdateManyDataInput {
 
 export interface ThreadUpdateManyInput {
   create?: ThreadCreateInput[] | null
-  update?: ThreadUpdateWithWhereUniqueNestedInput[] | null
-  upsert?: ThreadUpsertWithWhereUniqueNestedInput[] | null
-  delete?: ThreadWhereUniqueInput[] | null
   connect?: ThreadWhereUniqueInput[] | null
   set?: ThreadWhereUniqueInput[] | null
   disconnect?: ThreadWhereUniqueInput[] | null
-  deleteMany?: ThreadScalarWhereInput[] | null
+  delete?: ThreadWhereUniqueInput[] | null
+  update?: ThreadUpdateWithWhereUniqueNestedInput[] | null
   updateMany?: ThreadUpdateManyWithWhereNestedInput[] | null
+  deleteMany?: ThreadScalarWhereInput[] | null
+  upsert?: ThreadUpsertWithWhereUniqueNestedInput[] | null
 }
 
 export interface ThreadUpdateManyMutationInput {
@@ -735,50 +970,86 @@ export interface ThreadUpsertWithWhereUniqueNestedInput {
 }
 
 export interface ThreadWhereInput {
+  /** Logical AND on all given filters. */
+  AND?: ThreadWhereInput[] | null
+  /** Logical OR on all given filters. */
+  OR?: ThreadWhereInput[] | null
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: ThreadWhereInput[] | null
   id?: string | null
+  /** All values that are not equal to given value. */
   id_not?: string | null
+  /** All values that are contained in given list. */
   id_in?: string[] | null
+  /** All values that are not contained in given list. */
   id_not_in?: string[] | null
+  /** All values less than the given value. */
   id_lt?: string | null
+  /** All values less than or equal the given value. */
   id_lte?: string | null
+  /** All values greater than the given value. */
   id_gt?: string | null
+  /** All values greater than or equal the given value. */
   id_gte?: string | null
+  /** All values containing the given string. */
   id_contains?: string | null
+  /** All values not containing the given string. */
   id_not_contains?: string | null
+  /** All values starting with the given string. */
   id_starts_with?: string | null
+  /** All values not starting with the given string. */
   id_not_starts_with?: string | null
+  /** All values ending with the given string. */
   id_ends_with?: string | null
+  /** All values not ending with the given string. */
   id_not_ends_with?: string | null
   createdAt?: string | null
+  /** All values that are not equal to given value. */
   createdAt_not?: string | null
+  /** All values that are contained in given list. */
   createdAt_in?: string[] | null
+  /** All values that are not contained in given list. */
   createdAt_not_in?: string[] | null
+  /** All values less than the given value. */
   createdAt_lt?: string | null
+  /** All values less than or equal the given value. */
   createdAt_lte?: string | null
+  /** All values greater than the given value. */
   createdAt_gt?: string | null
+  /** All values greater than or equal the given value. */
   createdAt_gte?: string | null
-  author?: UserWhereInput | null
   name?: string | null
+  /** All values that are not equal to given value. */
   name_not?: string | null
+  /** All values that are contained in given list. */
   name_in?: string[] | null
+  /** All values that are not contained in given list. */
   name_not_in?: string[] | null
+  /** All values less than the given value. */
   name_lt?: string | null
+  /** All values less than or equal the given value. */
   name_lte?: string | null
+  /** All values greater than the given value. */
   name_gt?: string | null
+  /** All values greater than or equal the given value. */
   name_gte?: string | null
+  /** All values containing the given string. */
   name_contains?: string | null
+  /** All values not containing the given string. */
   name_not_contains?: string | null
+  /** All values starting with the given string. */
   name_starts_with?: string | null
+  /** All values not starting with the given string. */
   name_not_starts_with?: string | null
+  /** All values ending with the given string. */
   name_ends_with?: string | null
+  /** All values not ending with the given string. */
   name_not_ends_with?: string | null
+  author?: UserWhereInput | null
   entry?: PostWhereInput | null
   replies_every?: PostWhereInput | null
   replies_some?: PostWhereInput | null
   replies_none?: PostWhereInput | null
-  AND?: ThreadWhereInput[] | null
-  OR?: ThreadWhereInput[] | null
-  NOT?: ThreadWhereInput[] | null
 }
 
 export interface ThreadWhereUniqueInput {
@@ -786,6 +1057,7 @@ export interface ThreadWhereUniqueInput {
 }
 
 export interface UserCreateInput {
+  id?: string | null
   nationality?: string | null
   email: string
   name?: string | null
@@ -808,82 +1080,145 @@ export interface UserCreateOneWithoutPostsInput {
 }
 
 export interface UserCreateWithoutPostsInput {
+  id?: string | null
   nationality?: string | null
   email: string
   name?: string | null
 }
 
 export interface UserScalarWhereInput {
+  /** Logical AND on all given filters. */
+  AND?: UserScalarWhereInput[] | null
+  /** Logical OR on all given filters. */
+  OR?: UserScalarWhereInput[] | null
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: UserScalarWhereInput[] | null
   id?: string | null
+  /** All values that are not equal to given value. */
   id_not?: string | null
+  /** All values that are contained in given list. */
   id_in?: string[] | null
+  /** All values that are not contained in given list. */
   id_not_in?: string[] | null
+  /** All values less than the given value. */
   id_lt?: string | null
+  /** All values less than or equal the given value. */
   id_lte?: string | null
+  /** All values greater than the given value. */
   id_gt?: string | null
+  /** All values greater than or equal the given value. */
   id_gte?: string | null
+  /** All values containing the given string. */
   id_contains?: string | null
+  /** All values not containing the given string. */
   id_not_contains?: string | null
+  /** All values starting with the given string. */
   id_starts_with?: string | null
+  /** All values not starting with the given string. */
   id_not_starts_with?: string | null
+  /** All values ending with the given string. */
   id_ends_with?: string | null
+  /** All values not ending with the given string. */
   id_not_ends_with?: string | null
   nationality?: string | null
+  /** All values that are not equal to given value. */
   nationality_not?: string | null
+  /** All values that are contained in given list. */
   nationality_in?: string[] | null
+  /** All values that are not contained in given list. */
   nationality_not_in?: string[] | null
+  /** All values less than the given value. */
   nationality_lt?: string | null
+  /** All values less than or equal the given value. */
   nationality_lte?: string | null
+  /** All values greater than the given value. */
   nationality_gt?: string | null
+  /** All values greater than or equal the given value. */
   nationality_gte?: string | null
+  /** All values containing the given string. */
   nationality_contains?: string | null
+  /** All values not containing the given string. */
   nationality_not_contains?: string | null
+  /** All values starting with the given string. */
   nationality_starts_with?: string | null
+  /** All values not starting with the given string. */
   nationality_not_starts_with?: string | null
+  /** All values ending with the given string. */
   nationality_ends_with?: string | null
+  /** All values not ending with the given string. */
   nationality_not_ends_with?: string | null
   email?: string | null
+  /** All values that are not equal to given value. */
   email_not?: string | null
+  /** All values that are contained in given list. */
   email_in?: string[] | null
+  /** All values that are not contained in given list. */
   email_not_in?: string[] | null
+  /** All values less than the given value. */
   email_lt?: string | null
+  /** All values less than or equal the given value. */
   email_lte?: string | null
+  /** All values greater than the given value. */
   email_gt?: string | null
+  /** All values greater than or equal the given value. */
   email_gte?: string | null
+  /** All values containing the given string. */
   email_contains?: string | null
+  /** All values not containing the given string. */
   email_not_contains?: string | null
+  /** All values starting with the given string. */
   email_starts_with?: string | null
+  /** All values not starting with the given string. */
   email_not_starts_with?: string | null
+  /** All values ending with the given string. */
   email_ends_with?: string | null
+  /** All values not ending with the given string. */
   email_not_ends_with?: string | null
   name?: string | null
+  /** All values that are not equal to given value. */
   name_not?: string | null
+  /** All values that are contained in given list. */
   name_in?: string[] | null
+  /** All values that are not contained in given list. */
   name_not_in?: string[] | null
+  /** All values less than the given value. */
   name_lt?: string | null
+  /** All values less than or equal the given value. */
   name_lte?: string | null
+  /** All values greater than the given value. */
   name_gt?: string | null
+  /** All values greater than or equal the given value. */
   name_gte?: string | null
+  /** All values containing the given string. */
   name_contains?: string | null
+  /** All values not containing the given string. */
   name_not_contains?: string | null
+  /** All values starting with the given string. */
   name_starts_with?: string | null
+  /** All values not starting with the given string. */
   name_not_starts_with?: string | null
+  /** All values ending with the given string. */
   name_ends_with?: string | null
+  /** All values not ending with the given string. */
   name_not_ends_with?: string | null
-  AND?: UserScalarWhereInput[] | null
-  OR?: UserScalarWhereInput[] | null
-  NOT?: UserScalarWhereInput[] | null
 }
 
 export interface UserSubscriptionWhereInput {
+  /** Logical AND on all given filters. */
+  AND?: UserSubscriptionWhereInput[] | null
+  /** Logical OR on all given filters. */
+  OR?: UserSubscriptionWhereInput[] | null
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: UserSubscriptionWhereInput[] | null
+  /** The subscription event gets dispatched when it's listed in mutation_in */
   mutation_in?: MutationType[] | null
+  /** The subscription event gets only dispatched when one of the updated fields names is included in this list */
   updatedFields_contains?: string | null
+  /** The subscription event gets only dispatched when all of the field names included in this list have been updated */
   updatedFields_contains_every?: string[] | null
+  /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: string[] | null
   node?: UserWhereInput | null
-  AND?: UserSubscriptionWhereInput[] | null
-  OR?: UserSubscriptionWhereInput[] | null
-  NOT?: UserSubscriptionWhereInput[] | null
 }
 
 export interface UserUpdateDataInput {
@@ -908,14 +1243,14 @@ export interface UserUpdateManyDataInput {
 
 export interface UserUpdateManyInput {
   create?: UserCreateInput[] | null
-  update?: UserUpdateWithWhereUniqueNestedInput[] | null
-  upsert?: UserUpsertWithWhereUniqueNestedInput[] | null
-  delete?: UserWhereUniqueInput[] | null
   connect?: UserWhereUniqueInput[] | null
   set?: UserWhereUniqueInput[] | null
   disconnect?: UserWhereUniqueInput[] | null
-  deleteMany?: UserScalarWhereInput[] | null
+  delete?: UserWhereUniqueInput[] | null
+  update?: UserUpdateWithWhereUniqueNestedInput[] | null
   updateMany?: UserUpdateManyWithWhereNestedInput[] | null
+  deleteMany?: UserScalarWhereInput[] | null
+  upsert?: UserUpsertWithWhereUniqueNestedInput[] | null
 }
 
 export interface UserUpdateManyMutationInput {
@@ -931,16 +1266,16 @@ export interface UserUpdateManyWithWhereNestedInput {
 
 export interface UserUpdateOneRequiredInput {
   create?: UserCreateInput | null
+  connect?: UserWhereUniqueInput | null
   update?: UserUpdateDataInput | null
   upsert?: UserUpsertNestedInput | null
-  connect?: UserWhereUniqueInput | null
 }
 
 export interface UserUpdateOneRequiredWithoutPostsInput {
   create?: UserCreateWithoutPostsInput | null
+  connect?: UserWhereUniqueInput | null
   update?: UserUpdateWithoutPostsDataInput | null
   upsert?: UserUpsertWithoutPostsInput | null
-  connect?: UserWhereUniqueInput | null
 }
 
 export interface UserUpdateWithoutPostsDataInput {
@@ -971,68 +1306,123 @@ export interface UserUpsertWithWhereUniqueNestedInput {
 }
 
 export interface UserWhereInput {
+  /** Logical AND on all given filters. */
+  AND?: UserWhereInput[] | null
+  /** Logical OR on all given filters. */
+  OR?: UserWhereInput[] | null
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: UserWhereInput[] | null
   id?: string | null
+  /** All values that are not equal to given value. */
   id_not?: string | null
+  /** All values that are contained in given list. */
   id_in?: string[] | null
+  /** All values that are not contained in given list. */
   id_not_in?: string[] | null
+  /** All values less than the given value. */
   id_lt?: string | null
+  /** All values less than or equal the given value. */
   id_lte?: string | null
+  /** All values greater than the given value. */
   id_gt?: string | null
+  /** All values greater than or equal the given value. */
   id_gte?: string | null
+  /** All values containing the given string. */
   id_contains?: string | null
+  /** All values not containing the given string. */
   id_not_contains?: string | null
+  /** All values starting with the given string. */
   id_starts_with?: string | null
+  /** All values not starting with the given string. */
   id_not_starts_with?: string | null
+  /** All values ending with the given string. */
   id_ends_with?: string | null
+  /** All values not ending with the given string. */
   id_not_ends_with?: string | null
   nationality?: string | null
+  /** All values that are not equal to given value. */
   nationality_not?: string | null
+  /** All values that are contained in given list. */
   nationality_in?: string[] | null
+  /** All values that are not contained in given list. */
   nationality_not_in?: string[] | null
+  /** All values less than the given value. */
   nationality_lt?: string | null
+  /** All values less than or equal the given value. */
   nationality_lte?: string | null
+  /** All values greater than the given value. */
   nationality_gt?: string | null
+  /** All values greater than or equal the given value. */
   nationality_gte?: string | null
+  /** All values containing the given string. */
   nationality_contains?: string | null
+  /** All values not containing the given string. */
   nationality_not_contains?: string | null
+  /** All values starting with the given string. */
   nationality_starts_with?: string | null
+  /** All values not starting with the given string. */
   nationality_not_starts_with?: string | null
+  /** All values ending with the given string. */
   nationality_ends_with?: string | null
+  /** All values not ending with the given string. */
   nationality_not_ends_with?: string | null
   email?: string | null
+  /** All values that are not equal to given value. */
   email_not?: string | null
+  /** All values that are contained in given list. */
   email_in?: string[] | null
+  /** All values that are not contained in given list. */
   email_not_in?: string[] | null
+  /** All values less than the given value. */
   email_lt?: string | null
+  /** All values less than or equal the given value. */
   email_lte?: string | null
+  /** All values greater than the given value. */
   email_gt?: string | null
+  /** All values greater than or equal the given value. */
   email_gte?: string | null
+  /** All values containing the given string. */
   email_contains?: string | null
+  /** All values not containing the given string. */
   email_not_contains?: string | null
+  /** All values starting with the given string. */
   email_starts_with?: string | null
+  /** All values not starting with the given string. */
   email_not_starts_with?: string | null
+  /** All values ending with the given string. */
   email_ends_with?: string | null
+  /** All values not ending with the given string. */
   email_not_ends_with?: string | null
   name?: string | null
+  /** All values that are not equal to given value. */
   name_not?: string | null
+  /** All values that are contained in given list. */
   name_in?: string[] | null
+  /** All values that are not contained in given list. */
   name_not_in?: string[] | null
+  /** All values less than the given value. */
   name_lt?: string | null
+  /** All values less than or equal the given value. */
   name_lte?: string | null
+  /** All values greater than the given value. */
   name_gt?: string | null
+  /** All values greater than or equal the given value. */
   name_gte?: string | null
+  /** All values containing the given string. */
   name_contains?: string | null
+  /** All values not containing the given string. */
   name_not_contains?: string | null
+  /** All values starting with the given string. */
   name_starts_with?: string | null
+  /** All values not starting with the given string. */
   name_not_starts_with?: string | null
+  /** All values ending with the given string. */
   name_ends_with?: string | null
+  /** All values not ending with the given string. */
   name_not_ends_with?: string | null
   posts_every?: PostWhereInput | null
   posts_some?: PostWhereInput | null
   posts_none?: PostWhereInput | null
-  AND?: UserWhereInput[] | null
-  OR?: UserWhereInput[] | null
-  NOT?: UserWhereInput[] | null
 }
 
 export interface UserWhereUniqueInput {
@@ -1138,10 +1528,10 @@ export interface UserOrderByInput {
   email_DESC: 'email_DESC'
   name_ASC: 'name_ASC'
   name_DESC: 'name_DESC'
-  createdAt_ASC: 'createdAt_ASC'
-  createdAt_DESC: 'createdAt_DESC'
   updatedAt_ASC: 'updatedAt_ASC'
   updatedAt_DESC: 'updatedAt_DESC'
+  createdAt_ASC: 'createdAt_ASC'
+  createdAt_DESC: 'createdAt_DESC'
 }
 
 export const UserOrderByInput: UserOrderByInput = {
@@ -1153,10 +1543,10 @@ export const UserOrderByInput: UserOrderByInput = {
   email_DESC: 'email_DESC',
   name_ASC: 'name_ASC',
   name_DESC: 'name_DESC',
-  createdAt_ASC: 'createdAt_ASC',
-  createdAt_DESC: 'createdAt_DESC',
   updatedAt_ASC: 'updatedAt_ASC',
   updatedAt_DESC: 'updatedAt_DESC',
+  createdAt_ASC: 'createdAt_ASC',
+  createdAt_DESC: 'createdAt_DESC',
 }
 
 
