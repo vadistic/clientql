@@ -40,6 +40,10 @@ export const isUnionTypeDefinitionNode = (
   node: ASTNode,
 ): node is UnionTypeDefinitionNode => node.kind === Kind.UNION_TYPE_DEFINITION
 
+export const isSchemaDefinitionNode = (
+  node: ASTNode,
+): node is UnionTypeDefinitionNode => node.kind === Kind.SCHEMA_DEFINITION
+
 /**
  * Those 2 are in the `graphql` lib but let's try to keep it deps free
  */

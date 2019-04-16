@@ -1,6 +1,6 @@
 import { Kind } from 'graphql'
 import gql from 'graphql-tag'
-import { defaultCodegen } from '../../codegen'
+import { createCodegen, defaultCodegen } from '../../codegen'
 
 describe('printer > ' + Kind.UNION_TYPE_DEFINITION, () => {
   it('prints union inline with one value', () => {
@@ -40,10 +40,10 @@ describe('printer > ' + Kind.UNION_TYPE_DEFINITION, () => {
     const fixture = gql`
       union MyUnion = Value | AnotherValue | EvenAnotherValue
     `
-    const res = defaultCodegen(fixture, {
+    const res = createCodegen(fixture, {
       interfacePrefix: 'III',
       useInterfacePrefixForUnion: true,
-    })
+    })(fixture)
 
     expect(res).toMatchInlineSnapshot(`
       "export type IIIMyUnion = 

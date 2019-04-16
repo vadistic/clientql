@@ -5,7 +5,7 @@ import {
   createFragmentSpread,
   createInlineFragment,
   Fieldname,
-  Fragmentname,
+  FragmentName,
   isEnumTypeDefinitionNode,
   isInterfaceTypeDefinitonNode,
   isObjectTypeDefinitionNode,
@@ -13,7 +13,8 @@ import {
   isUnionTypeDefinitionNode,
   Typename,
 } from '../ast'
-import { CoreProps, FragmentType } from '../config'
+import { FragmentType } from '../config'
+import { CoreProps } from '../core'
 import { Edge } from '../graph'
 import { isNotEmpty } from '../utils'
 import {
@@ -88,8 +89,8 @@ const buildRecursiveSelections = (props: CoreProps) => (
   }
 
   // load from cache or build
-  const nestedSelection = props.selections.has(typename)
-    ? props.selections.get(typename)!
+  const nestedSelection = props.cache.selections.has(typename)
+    ? props.cache.selections.get(typename)!
     : buildNestedSelections(props)(stack)
 
   // another noop
@@ -149,7 +150,7 @@ const buildNestedSelections = (props: CoreProps) => (
   let flat = true
 
   const selections: SelectionNode[] = []
-  const dependencies: Fragmentname[] = []
+  const dependencies: FragmentName[] = []
 
   /*
    * handle ObjectTypes
@@ -279,9 +280,10 @@ const cacheAndFragment = (props: CoreProps) => (
    */
 
   if (props.config.useFragments === FragmentType.DEEP && result.complete) {
-    const fragmentname = typename + (result.flat ? 'Flat' : 'Deep')
+    const fragmentname: FragmentName =
+      typename + (result.flat ? 'Flat' : 'Deep')
 
-    if (!props.fragments.has(fragmentname)) {
+    if (!props.cache.fragments.has(fragmentname)) {
       const fragmentResult: FragmentResult = {
         fragment: createFragment({
           condition: typename,
@@ -293,7 +295,7 @@ const cacheAndFragment = (props: CoreProps) => (
         complete: true,
       }
 
-      props.fragments.set(fragmentname, fragmentResult)
+      props.cache.fragments.set(fragmentname, fragmentResult)
     }
 
     fragmented = {
@@ -309,7 +311,7 @@ const cacheAndFragment = (props: CoreProps) => (
    */
 
   if (props.config.useFragments === FragmentType.FLAT) {
-    const fragmentname = typename + 'Flat'
+    const fragmentname: FragmentName = typename + 'Flat'
 
     const { flat: flatSelections, deep: deepSelections } = result.flat
       ? { flat: result.selections, deep: [] }
@@ -329,7 +331,7 @@ const cacheAndFragment = (props: CoreProps) => (
           },
         )
 
-    if (!props.fragments.has(fragmentname)) {
+    if (!props.cache.fragments.has(fragmentname)) {
       const fragmentResult: FragmentResult = {
         fragment: createFragment({
           condition: typename,
@@ -342,7 +344,7 @@ const cacheAndFragment = (props: CoreProps) => (
         complete: true,
       }
 
-      props.fragments.set(fragmentname, fragmentResult)
+      props.cache.fragments.set(fragmentname, fragmentResult)
     }
 
     fragmented = {
@@ -356,8 +358,8 @@ const cacheAndFragment = (props: CoreProps) => (
    * write to cache,
    * if selection is complete (complex and uneffective to store partial ones)
    */
-  if (fragmented.complete && !props.selections.has(typename)) {
-    props.selections.set(typename, fragmented)
+  if (fragmented.complete && !props.cache.selections.has(typename)) {
+    props.cache.selections.set(typename, fragmented)
   }
 
   // return

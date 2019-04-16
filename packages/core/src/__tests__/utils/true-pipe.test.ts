@@ -29,6 +29,6 @@ describe('types', () => {
       P => P.toUpperCase(),
     )
 
-    expect(pipe4([1, 1])).toEqual(false)
+    expect(pipe4([1, 1])).toBeUndefined()
   })
 })

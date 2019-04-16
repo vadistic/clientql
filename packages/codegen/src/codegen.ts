@@ -2,37 +2,42 @@ import {
   CoreProps,
   getCoreProps,
   mergeExtensions,
+  TypescriptString,
 } from '@graphql-clientgen/core'
 import { ASTNode, DocumentNode, Kind, parse } from 'graphql'
 import { CodegenConfig, defaultCodegenConfig } from './config'
-import { printSchemaDefinition } from './type-reference'
+import { CodegenNaming, initNaming } from './naming'
 import {
   printEnum,
   printInputObject,
   printInterface,
   printObject,
   printScalar,
+  printSchemaDefinition,
   printUnion,
 } from './type-system'
 
 export interface CodegenProps extends CoreProps {
   config: CodegenConfig
   doc: DocumentNode
+  naming: CodegenNaming
 }
 
 export const getCodegenProps = (
   doc: DocumentNode,
   config?: Partial<CodegenConfig>,
 ): CodegenProps => {
+  const mergedDoc = mergeExtensions(doc)
   const mergedConfig = {
     ...defaultCodegenConfig,
     ...config,
   }
-
-  const mergedDoc = mergeExtensions(doc)
+  const coreProps = getCoreProps(mergedDoc, mergedConfig)
+  const naming = initNaming(mergedConfig)
 
   return {
-    ...getCoreProps(mergedDoc, mergedConfig),
+    ...coreProps,
+    naming,
     doc: mergedDoc,
     config: {
       ...defaultCodegenConfig,
@@ -85,9 +90,11 @@ export const defaultCodegen = (
 ) => createCodegen(doc)(doc, overrides)
 
 /**
- * rescursive main loop
+ * rescursive main reducer loop
  */
-export const codegen = (props: CodegenProps) => (node: ASTNode): string => {
+export const codegen = (props: CodegenProps) => (
+  node: ASTNode,
+): TypescriptString => {
   switch (node.kind) {
     /**
      * enter recursion

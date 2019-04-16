@@ -1,41 +1,48 @@
-import { capitalise } from '@graphql-clientgen/core'
-import { defaultCodegenConfig } from './config'
-import { NullableString } from './strings'
+import {
+  capitalise,
+  Fieldname,
+  FragmentName,
+  Typename,
+  TypescriptString,
+} from '@graphql-clientgen/core'
+import { CodegenConfig, defaultCodegenConfig } from './config'
 
 /**
  * TODO: some sort of spliting
  */
 
-export const pascalCase = (...inputs: NullableString[]) =>
-  inputs
-    .filter((el): el is string => !!el && typeof el === 'string')
-    .map(capitalise)
-    .join('')
+export const pascalCase = (...inputs: string[]) =>
+  inputs.map(capitalise).join('')
 
-const interfacePrefix = (config = defaultCodegenConfig) =>
+const interfacePrefix = (config: CodegenConfig): TypescriptString =>
   config.interfacePrefix === true
     ? 'I'
-    : !!config.interfacePrefix
+    : typeof config.interfacePrefix === 'string'
     ? config.interfacePrefix
     : ''
 
-const interfaceName = (config = defaultCodegenConfig) => (name: string) =>
-  interfacePrefix(config) + pascalCase(name)
+const interfaceName = (config: CodegenConfig) => (
+  typename: Typename,
+): TypescriptString => interfacePrefix(config) + pascalCase(typename)
 
-const argumentsInterfaceName = (config = defaultCodegenConfig) => (
-  parent: string,
-  target: string,
-) =>
+const argumentsInterfaceName = (config: CodegenConfig) => (
+  parent: Typename,
+  fieldname: Fieldname,
+): TypescriptString =>
   interfacePrefix(config) +
-  pascalCase(parent, target) +
+  pascalCase(parent, fieldname) +
   config.fieldArgumentsInterfaceSuffix
 
-const fragmentName = (config = defaultCodegenConfig) => (name: string) =>
+const fragmentName = (config: CodegenConfig) => (name: FragmentName) =>
   pascalCase(name, config.fragmentSuffix)
 
-export const naming = {
-  interfacePrefix,
-  argumentsInterfaceName,
-  interfaceName,
-  fragmentName,
-}
+export type CodegenNaming = ReturnType<typeof initNaming>
+
+// maybe some proxy later to allow dynamically changing scoped naming config,
+// but it does not seem important
+export const initNaming = (config: CodegenConfig) => ({
+  interfacePrefix: interfacePrefix(config),
+  argumentsInterfaceName: argumentsInterfaceName(config),
+  interfaceName: interfaceName(config),
+  fragmentName: fragmentName(config),
+})

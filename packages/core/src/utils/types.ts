@@ -75,3 +75,13 @@ export type Mutable<T> = {
     ? Array<Mutable<U>>
     : Mutable<T[P]>
 }
+
+/*
+ * flavour/brands
+ */
+
+interface Flavouring<FlavourT> {
+  _type?: FlavourT
+}
+
+export type Flavour<T, FlavourT> = T & Flavouring<FlavourT>

@@ -1,23 +1,15 @@
-import { isObjectTypeDefinitionNode } from '@graphql-clientgen/core'
-import { DefinitionNode, ObjectTypeDefinitionNode } from 'graphql'
+import { ASTKindToNode, DefinitionNode } from 'graphql'
 
-/**
- * Refactores since it really repetitive.
- * I could, and probably will use my ast map for this but let's keep it simple
- */
-export const reduceObjectTypeDefinitions = (definitions: DefinitionNode[]) =>
-  definitions.filter(isObjectTypeDefinitionNode).reduce(
-    (acc, node) => {
-      if (['Query', 'Mutation', 'Subscription'].includes(node.name.value)) {
-        acc.rootTypes.push(node)
-      } else {
-        acc.objectTypes.push(node)
-      }
+export const groupDefinitionsByKind = (definitions: DefinitionNode[]) => {
+  const groups: { [K in DefinitionNode['kind']]?: Array<ASTKindToNode[K]> } = {}
 
-      return acc
-    },
-    {
-      rootTypes: [] as ObjectTypeDefinitionNode[],
-      objectTypes: [] as ObjectTypeDefinitionNode[],
-    },
-  )
+  for (const node of definitions) {
+    if (!groups[node.kind]) {
+      groups[node.kind] = []
+    }
+
+    groups[node.kind]!.push(node as any)
+  }
+
+  return groups
+}

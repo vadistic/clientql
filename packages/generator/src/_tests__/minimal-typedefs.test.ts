@@ -1,7 +1,7 @@
 import { unwrapDocument } from '@graphql-clientgen/core'
 import gql from 'graphql-tag'
-import { getMinimalTypedefs } from '../generate'
 import { getGeneratorProps } from '../generator'
+import { getMinimalTypedefs } from '../traverse'
 
 describe('check', () => {
   it('traverse tree to purge unused typedefs', () => {

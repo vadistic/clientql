@@ -1,9 +1,9 @@
-import { GraphQLSchema, Kind, NamedTypeNode } from 'graphql'
+import { Typename, TypescriptString } from '@graphql-clientgen/core'
+import { Kind, NamedTypeNode } from 'graphql'
 import { CodegenProps } from '../codegen'
-import { defaultCodegenConfig } from '../config'
-import { naming } from '../naming'
+import { initNaming } from '../naming'
 
-const mapExplicitScalar = (typename: string) => {
+const mapExplicitScalar = (typename: Typename): TypescriptString => {
   switch (typename) {
     case 'String':
       return 'string'
@@ -14,14 +14,14 @@ const mapExplicitScalar = (typename: string) => {
     case 'Float':
       return 'number'
     default:
-      return typename
+      return typename as TypescriptString
   }
 }
 
-export const isExplicitScalar = (typename: string) =>
+export const isExplicitScalar = (typename: Typename) =>
   mapExplicitScalar(typename) !== typename
 
-export const isPrefixedType = (props: CodegenProps) => (typename: string) => {
+export const isPrefixedType = (props: CodegenProps) => (typename: Typename) => {
   // never prefix without schema/ not found
   if (!props.graph.has(typename)) {
     return false
@@ -48,8 +48,8 @@ export const isPrefixedType = (props: CodegenProps) => (typename: string) => {
  */
 export const printNamedType = (props: CodegenProps) => (
   node: NamedTypeNode,
-) => {
-  const typename = node.name.value
+): TypescriptString => {
+  const typename: Typename = node.name.value
 
   const customScalar = props.config.customScalars[typename]
 
@@ -66,8 +66,8 @@ export const printNamedType = (props: CodegenProps) => (
   const prefixed = isPrefixedType(props)(typename)
 
   if (prefixed) {
-    return naming.interfaceName(props.config)(typename)
+    return props.naming.interfaceName(typename)
   }
 
-  return typename
+  return typename as TypescriptString
 }

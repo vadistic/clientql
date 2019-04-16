@@ -1,10 +1,12 @@
 import {
+  Fieldname,
   isNotEmpty,
   isNullable,
   isString,
   nonNull,
   ObjectLikeNode,
-  unwrapType,
+  Typename,
+  TypescriptString,
 } from '@graphql-clientgen/core'
 import {
   FieldDefinitionNode,
@@ -12,8 +14,7 @@ import {
   ObjectTypeExtensionNode,
 } from 'graphql'
 import { CodegenProps } from '../codegen'
-import { naming } from '../naming'
-import { printTSInterface } from '../strings'
+import { printTsInterface } from '../print-ts'
 import {
   printFieldArguments,
   printInputValue,
@@ -31,23 +32,21 @@ import {
  */
 export const printObjectLikeFields = (props: CodegenProps) => (
   node: ObjectLikeNode,
-) => {
+): TypescriptString[] => {
   const fields =
     'interfaces' in node ? filerObjectInterfaceFields(props)(node) : node.fields
 
   if (!isNotEmpty(fields)) {
     return []
   }
-  const addDescription = withDescription(props)
-
+  const addDescription = withDescription(props.config)
+  const typePrinter = printType(props)
   const argumentsPrinter = props.config.useFieldArgumentsInterface
     ? printInterfacedFieldArguments(props)(node)
     : printFieldArguments(props)
 
-  const typePrinter = printType(props)
-
   const fieldStrings = fields.map(field => {
-    const modifier =
+    const modifierTs: TypescriptString =
       // modifier only when not using fields as fn
       !props.config.addFieldAsFunction &&
       props.config.useOptionalModifier &&
@@ -56,28 +55,30 @@ export const printObjectLikeFields = (props: CodegenProps) => (
         : ': '
 
     // args when using fields as fn
-    const args = props.config.addFieldAsFunction
+    const argsTs = props.config.addFieldAsFunction
       ? argumentsPrinter(field)
       : undefined
 
+    const typeTs = typePrinter(field.type)
+
     return {
-      fieldname: field.name.value,
-      modifier,
-      args,
-      type: typePrinter(field.type),
+      fieldname: field.name.value as Fieldname,
+      modifierTs,
+      argsTs,
+      typeTs,
       field,
     }
   })
 
   const stringsPrinter = ({
     fieldname,
-    type,
-    args,
-    modifier,
+    typeTs,
+    argsTs,
+    modifierTs,
     field,
   }: typeof fieldStrings[0]) =>
     addDescription(field)(
-      fieldname + modifier + (args ? `${args} => ${type}` : type),
+      fieldname + modifierTs + (argsTs ? `${argsTs} => ${typeTs}` : typeTs),
     )
 
   // standard case
@@ -98,12 +99,12 @@ export const printObjectLikeFields = (props: CodegenProps) => (
         const res = props.config.transformFieldArguments(
           node,
           node.fields![i],
-          prev.args,
+          prev.argsTs,
           argumentsPrinter,
         )
 
         if (isString(res) || res === null) {
-          next.args = res as any
+          next.argsTs = res as any
         }
       }
 
@@ -112,19 +113,19 @@ export const printObjectLikeFields = (props: CodegenProps) => (
         const res = props.config.transformFieldType(
           node,
           node.fields![i],
-          prev.type,
+          prev.typeTs,
           typePrinter,
         )
 
         if (isString(res) || res === null) {
-          next.type = res as any
+          next.typeTs = res as any
         }
       }
 
       return next
     })
     // remove nulled values
-    .filter(el => el.args !== null && el.type !== null)
+    .filter(el => el.argsTs !== null && el.typeTs !== null)
 
   return modifiedFieldStrings.map(stringsPrinter)
 }
@@ -141,38 +142,34 @@ export const printObjectLikeFields = (props: CodegenProps) => (
 
 export const printFieldArgumentsInterfaces = (props: CodegenProps) => (
   node: ObjectLikeNode,
-) => {
-  const parent = node.name.value
+): TypescriptString | undefined => {
+  const parent: Typename = node.name.value
 
   const fields =
     'interfaces' in node
       ? filerObjectInterfaceFields(props)(node)
       : node.fields || []
 
-  const results: string[] = []
+  const resultsTs: TypescriptString[] = []
 
   for (const field of fields) {
     if (!field.arguments || field.arguments.length === 0) {
       continue
     }
 
-    const { typename: target } = unwrapType(field.type)
-    const interfacename = naming.argumentsInterfaceName(props.config)(
-      parent,
-      target,
-    )
+    const nameTs = props.naming.argumentsInterfaceName(parent, field.name.value)
 
     const inputValuesTs = field.arguments.map(printInputValue(props))
 
-    results.push(printTSInterface(interfacename, false, inputValuesTs))
+    resultsTs.push(printTsInterface(nameTs, inputValuesTs))
   }
 
   // no interfaces - undefined for easier formatting
-  if (results.length === 0) {
+  if (resultsTs.length === 0) {
     return
   }
 
-  return results.join('\n\n')
+  return resultsTs.join('\n\n')
 }
 
 /**
@@ -234,20 +231,18 @@ const filerObjectInterfaceFields = (props: CodegenProps) => (
 
 const printInterfacedFieldArguments = (props: CodegenProps) => (
   parent: ObjectLikeNode,
-) => (field: FieldDefinitionNode) => {
+) => (field: FieldDefinitionNode): TypescriptString => {
   if (!isNotEmpty(field.arguments)) {
     return `()`
   }
 
-  const { typename: target } = unwrapType(field.type)
-
-  const interfacename = naming.argumentsInterfaceName(props.config)(
+  const nameTs = props.naming.argumentsInterfaceName(
     parent.name.value,
-    target,
+    field.name.value,
   )
 
-  const modifier =
+  const modifierTs =
     isNullable(field.type) && props.config.useOptionalModifier ? '?: ' : ': '
 
-  return '(args' + modifier + interfacename + ')'
+  return '(args' + modifierTs + nameTs + ')'
 }

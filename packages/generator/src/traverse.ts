@@ -1,25 +1,44 @@
 import {
   Edge,
-  getRootTypes,
-  Graph,
   GraphVertex,
   isStackCircural,
   replaceLastTypename,
-  rootTypenameToOperationType,
   Typename,
   wrapDocument,
 } from '@graphql-clientgen/core'
+import { GeneratorProps } from './generator'
 
 export type TraverseCallback = (
   vtx: GraphVertex,
   stack: Edge[],
 ) => undefined | null | void
 
-// for now without editing, null to stop
-export const traverseGraph = (graph: Graph) => (cb: TraverseCallback) => {
+export const traverseGraph = (props: GeneratorProps) => (
+  cb: TraverseCallback,
+) => {
+  /**
+   * kind of hard to avoid infinite loops in some weird cases of nested unions etc
+   * also - lots of duplicate path traversals in deeper nesting
+   * so lets just keep global stack registry
+   *
+   * it may be cleaner to use my OperationEdge instead, but stack in callback seems more useful
+   */
+
+  const register = new Set<string>()
+  const serialise = (stack: Edge[]) =>
+    stack.map(tuple => tuple.join('/')).join('///')
+
   const traverse = (vtx: GraphVertex | undefined, stack: Edge[]) => {
     if (!vtx) {
       return
+    }
+
+    const stackString = serialise(stack)
+
+    if (register.has(stackString)) {
+      return
+    } else {
+      register.add(stackString)
     }
 
     const res = cb(vtx, stack)
@@ -30,13 +49,10 @@ export const traverseGraph = (graph: Graph) => (cb: TraverseCallback) => {
 
     if (vtx.implementations) {
       vtx.implementations.forEach(implem => {
-        traverse(graph.get(implem), replaceLastTypename(stack, implem))
-      })
-    }
-
-    if (vtx.prototypes) {
-      vtx.prototypes.forEach(implem => {
-        traverse(graph.get(implem), replaceLastTypename(stack, implem))
+        const nextStack = replaceLastTypename(stack, implem)
+        if (!isStackCircural(nextStack)) {
+          traverse(props.graph.get(implem), nextStack)
+        }
       })
     }
 
@@ -44,27 +60,25 @@ export const traverseGraph = (graph: Graph) => (cb: TraverseCallback) => {
       vtx.edgesMap.forEach((target, fieldname) => {
         const nextStack: Edge[] = [...stack, [fieldname, target]]
         if (!isStackCircural(nextStack)) {
-          traverse(graph.get(target), [...stack, [fieldname, target]])
+          traverse(props.graph.get(target), [...stack, [fieldname, target]])
         }
       })
     }
   }
 
-  getRootTypes(graph).forEach(root =>
-    traverse(root, [
-      [rootTypenameToOperationType(graph)(root.name)!, root.name],
-    ]),
+  props.roots.forEach((root, operationType) =>
+    traverse(props.graph.get(root)!, [[operationType, root]]),
   )
 }
 
-export const getMinimalTypedefs = (graph: Graph) => {
+export const getMinimalTypedefs = (props: GeneratorProps) => {
   const register = new Set<Typename>()
 
-  traverseGraph(graph)(vtx => {
+  traverseGraph(props)(vtx => {
     register.add(vtx.name)
   })
 
   return wrapDocument(
-    ...Array.from(register).map(typename => graph.get(typename)!.value),
+    ...Array.from(register).map(typename => props.graph.get(typename)!.value),
   )
 }

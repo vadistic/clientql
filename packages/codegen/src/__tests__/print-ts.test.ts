@@ -1,20 +1,20 @@
 import {
   printBlockComment,
   printCodeSection,
-  printTSInterface,
-} from '../strings'
+  printTsInterface,
+} from '../print-ts'
 
-describe('string utils', () => {
+describe('print typescript utils', () => {
   it('print block comment', () => {
     const fixture = printBlockComment('MY IMPORTANT BLOCK')
 
     expect(fixture).toMatchInlineSnapshot(`
-            "/*
-             *
-             * MY IMPORTANT BLOCK
-             *
-             */"
-        `)
+                  "/*
+                   *
+                   * MY IMPORTANT BLOCK
+                   *
+                   */"
+            `)
   })
 
   it('print sections', () => {
@@ -57,21 +57,21 @@ describe('string utils', () => {
     const name = 'MyInterface'
     const extend = ['First', 'Second']
 
-    const res1 = printTSInterface(name, false, arr)
-    const res2 = printTSInterface(name, extend, str)
+    const res1 = printTsInterface(name, arr)
+    const res2 = printTsInterface(name, str, extend)
 
     expect(res1).toMatchInlineSnapshot(`
-            "export interface MyInterface {
-              prop?: Value
-              arr?: any[]
-            }"
-        `)
+                  "export interface MyInterface {
+                    prop?: Value
+                    arr?: any[]
+                  }"
+            `)
 
     expect(res2).toMatchInlineSnapshot(`
-            "export interface MyInterface extends First, Second {
-              prop?: Value
-              arr?: any[]
-            }"
-        `)
+                  "export interface MyInterface extends First, Second {
+                    prop?: Value
+                    arr?: any[]
+                  }"
+            `)
   })
 })

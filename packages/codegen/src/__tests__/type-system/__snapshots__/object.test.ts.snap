@@ -3,17 +3,17 @@
 exports[`printer > ObjectTypeDefinition useFieldArgumentsInterfaces: true 1`] = `
 "export interface Query {
   board: (args?: QueryBoardArgs) => Board | null
-  boards: (args: QueryBoardArgs) => Board
-  boardsConnection: (args: QueryBoardConnectionArgs) => BoardConnection
+  boards: (args: QueryBoardsArgs) => Array<Board | null>
+  boardsConnection: (args: QueryBoardsConnectionArgs) => BoardConnection
   post: (args?: QueryPostArgs) => Post | null
-  posts: (args: QueryPostArgs) => Post
-  postsConnection: (args: QueryPostConnectionArgs) => PostConnection
+  posts: (args: QueryPostsArgs) => Array<Post | null>
+  postsConnection: (args: QueryPostsConnectionArgs) => PostConnection
   thread: (args?: QueryThreadArgs) => Thread | null
-  threads: (args: QueryThreadArgs) => Thread
-  threadsConnection: (args: QueryThreadConnectionArgs) => ThreadConnection
+  threads: (args: QueryThreadsArgs) => Array<Thread | null>
+  threadsConnection: (args: QueryThreadsConnectionArgs) => ThreadConnection
   user: (args?: QueryUserArgs) => User | null
-  users: (args: QueryUserArgs) => User
-  usersConnection: (args: QueryUserConnectionArgs) => UserConnection
+  users: (args: QueryUsersArgs) => Array<User | null>
+  usersConnection: (args: QueryUsersConnectionArgs) => UserConnection
   node: (args?: QueryNodeArgs) => Node | null
 }
 
@@ -21,7 +21,7 @@ export interface QueryBoardArgs {
   where: BoardWhereUniqueInput
 }
 
-export interface QueryBoardArgs {
+export interface QueryBoardsArgs {
   where?: BoardWhereInput | null
   orderBy?: BoardOrderByInput | null
   skip?: number | null
@@ -31,7 +31,7 @@ export interface QueryBoardArgs {
   last?: number | null
 }
 
-export interface QueryBoardConnectionArgs {
+export interface QueryBoardsConnectionArgs {
   where?: BoardWhereInput | null
   orderBy?: BoardOrderByInput | null
   skip?: number | null
@@ -45,7 +45,7 @@ export interface QueryPostArgs {
   where: PostWhereUniqueInput
 }
 
-export interface QueryPostArgs {
+export interface QueryPostsArgs {
   where?: PostWhereInput | null
   orderBy?: PostOrderByInput | null
   skip?: number | null
@@ -55,7 +55,7 @@ export interface QueryPostArgs {
   last?: number | null
 }
 
-export interface QueryPostConnectionArgs {
+export interface QueryPostsConnectionArgs {
   where?: PostWhereInput | null
   orderBy?: PostOrderByInput | null
   skip?: number | null
@@ -69,7 +69,7 @@ export interface QueryThreadArgs {
   where: ThreadWhereUniqueInput
 }
 
-export interface QueryThreadArgs {
+export interface QueryThreadsArgs {
   where?: ThreadWhereInput | null
   orderBy?: ThreadOrderByInput | null
   skip?: number | null
@@ -79,7 +79,7 @@ export interface QueryThreadArgs {
   last?: number | null
 }
 
-export interface QueryThreadConnectionArgs {
+export interface QueryThreadsConnectionArgs {
   where?: ThreadWhereInput | null
   orderBy?: ThreadOrderByInput | null
   skip?: number | null
@@ -93,7 +93,7 @@ export interface QueryUserArgs {
   where: UserWhereUniqueInput
 }
 
-export interface QueryUserArgs {
+export interface QueryUsersArgs {
   where?: UserWhereInput | null
   orderBy?: UserOrderByInput | null
   skip?: number | null
@@ -103,7 +103,7 @@ export interface QueryUserArgs {
   last?: number | null
 }
 
-export interface QueryUserConnectionArgs {
+export interface QueryUsersConnectionArgs {
   where?: UserWhereInput | null
   orderBy?: UserOrderByInput | null
   skip?: number | null

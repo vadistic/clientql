@@ -1,7 +1,3 @@
-import { DocumentNode } from 'graphql'
-import { createGraph, Graph } from './graph'
-import { FragmentResult, OperationResult, SelectionsResult } from './operation'
-
 export enum FragmentType {
   /** use flat fragments when possible */
   FLAT = 'Flat',
@@ -36,31 +32,3 @@ export const defaultCoreConfig: CoreConfig = {
   useFragments: FragmentType.FLAT,
   addTypename: true,
 }
-
-/**
- * Uniform props for utils options
- */
-export interface CoreProps {
-  config: CoreConfig
-  graph: Graph
-  // lazy map for reusable fragments
-  fragments: Map<string, FragmentResult>
-  // lazy map for complete selections
-  selections: Map<string, SelectionsResult>
-  // lazy map for operations
-  operations: Map<string, OperationResult>
-}
-
-export const getCoreProps = (
-  doc: DocumentNode,
-  config?: Partial<CoreConfig>,
-): CoreProps => ({
-  graph: createGraph(doc),
-  config: {
-    ...defaultCoreConfig,
-    ...config,
-  },
-  fragments: new Map(),
-  selections: new Map(),
-  operations: new Map(),
-})

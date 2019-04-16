@@ -1,4 +1,4 @@
-import { BidirectionalMap } from '../../bidirectional-map'
+import { BidirectionalMap } from '../../graph/bidirectional-map'
 
 describe('BidirectionalMap', () => {
   it('get/set/delete & in reverse', () => {

@@ -1,44 +1,45 @@
+import { TypescriptString } from '@graphql-clientgen/core'
 import {
+  ASTNode,
   EnumValueDefinitionNode,
   FieldDefinitionNode,
   InputValueDefinitionNode,
   TypeDefinitionNode,
   TypeExtensionNode,
 } from 'graphql'
-import { CodegenProps } from '../codegen'
-import { printJSDoc } from '../strings'
+import { CodegenConfig } from '../config'
+import { printJSDoc } from '../print-ts'
 
-type DescribableNode =
+export type DescribableNode =
   | TypeDefinitionNode
   | FieldDefinitionNode
   | InputValueDefinitionNode
   | EnumValueDefinitionNode
 
+export const isDescribableNode = (node: ASTNode): node is DescribableNode =>
+  'description' in node
+
 /**
  * prints StringValue of description props as JSDoc comment
  */
-export const printDescription = (node: DescribableNode) => {
-  if (node.description) {
-    return printJSDoc(node.description.value)
-  }
-}
+export const printDescription = (
+  node: DescribableNode,
+): TypescriptString | undefined =>
+  !!node.description ? printJSDoc(node.description.value) : undefined
 
 /**
  * hook? to just add description to the result string
  *
  * -  fallthrough on disabled
  */
-export const withDescription = (props: CodegenProps) => (
+export const withDescription = (config: CodegenConfig) => (
   node: DescribableNode | TypeExtensionNode,
-) => (content: string) => {
-  // this to allow handling of extension nodes
-  const describable = 'description' in node && !!node.description
-
-  if (!describable || !props.config.addDescription) {
+) => (content: TypescriptString): TypescriptString => {
+  if (!isDescribableNode(node) || !config.addDescription) {
     return content
   }
 
-  const description = printDescription(node as DescribableNode)
+  const description = printDescription(node)
 
   if (description) {
     return description + '\n' + content

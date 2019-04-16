@@ -15,10 +15,10 @@ import {
   Typename,
   wrapDocument,
 } from '../ast'
-import { CoreProps } from '../config'
+import { CoreProps } from '../core'
+import { operationTypes } from '../graph'
 import { capitalise } from '../utils'
 import { buildSelections } from './build-selection'
-import { operationTypeToRootTypename } from './root'
 import {
   OperationEdge,
   OperationResult,
@@ -51,13 +51,11 @@ export const buildOperation = (props: CoreProps) => (
     throw Error(`buildOperation: operationType is missing in path`)
   }
 
-  const operationTypes = ['query', 'mutation', 'subscription']
-
   if (!operationTypes.includes(operationType)) {
     throw Error(`buildOperation: invalid operationType (${operationType})`)
   }
 
-  const rootTypename = operationTypeToRootTypename(props.graph)(operationType)
+  const rootTypename = props.roots.get(operationType)
 
   if (!rootTypename) {
     throw Error(`buildOperation: there is no schema node for ${operationType}`)
@@ -74,11 +72,9 @@ export const buildOperation = (props: CoreProps) => (
       .map(([fieldname, typename]) => capitalise(fieldname || typename || ''))
       .join('') + capitalise(rootTypename)
 
-  /**
-   * use caching
-   */
-  if (props.operations.has(operationName)) {
-    return props.operations.get(operationName)!
+  // read from cache
+  if (props.cache.operations.has(operationName)) {
+    return props.cache.operations.get(operationName)!
   }
 
   const { selections, variables, ...rest } = buildOperationSelection(props)(
@@ -99,8 +95,8 @@ export const buildOperation = (props: CoreProps) => (
     operation,
   }
 
-  // wrtie to cache
-  props.operations.set(operationName, operationResult)
+  // write to cache
+  props.cache.operations.set(operationName, operationResult)
 
   return operationResult
 }
@@ -157,18 +153,18 @@ const buildOperationSelection = (props: CoreProps) => (
   const vtx = props.graph.get(parent)
 
   if (!vtx || !vtx.weightsMap || !vtx.edgesMap) {
-    throw Error('Invalid operation path')
+    throw Error('Invalid operation path (parent not found)')
   }
 
   if (!fieldname) {
-    throw Error('Invalid operation path')
+    throw Error('Invalid operation path (no fieldname)')
   }
 
   const edgeData = vtx.weightsMap.get(fieldname)
   const child = vtx.edgesMap.get(fieldname)
 
   if (!edgeData || !child || !fieldname) {
-    throw Error('Invalid operation path')
+    throw Error('Invalid operation path (target not found)')
   }
 
   /*

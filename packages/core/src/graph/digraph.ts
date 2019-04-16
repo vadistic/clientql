@@ -19,15 +19,15 @@ export interface DigraphVertex<Name, Value, Edge, Weigth>
 /**
  *  some sort of read-only Directed Multigraph with verticle inheritance
  *
- *   - it would be cool but to avoid bloat no editing capabilities
+ *   - it would be cool but to avoid bloat - no editing capabilities
  *
- *   - it would be also cool to have some helper class and
- *     (bidirectional) edge map for each vertex but does not seem necessary and I'm afraif of cost
+ *   - (it would be also cool) to have some helper class and
+ *     (bidirectional) edge map for each vertex but I'm afraid of the cost
  *
- *   ! it's weird to handle semantically because
+ *   ! note on inheritance: it's weird to handle semantically because:
  *      - object implements interface,
  *      - union allow some objects to be it's "prototype"
- *     so I'll just allow setting this by proptype OR implementation and then recalc
+ *     so I'll just allow setting inheritance by proptype OR implementation and then resolve it
  */
 
 export class Digraph<Name, Value, Edge, Weigth> extends Map<

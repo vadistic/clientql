@@ -16,16 +16,16 @@ describe(`printer > ${Kind.NON_NULL_TYPE} | ${Kind.LIST_TYPE}`, () => {
     `
 
     expect(defaultCodegen(fixture)).toMatchInlineSnapshot(`
-            "export interface MyType {
-              __typename: 'MyType'
-              prop?: string | null
-              prop: string
-              prop?: Array<string | null> | null
-              prop?: string[] | null
-              prop: Array<string | null>
-              prop: string[]
-            }"
-        `)
+                  "export interface MyType {
+                    __typename: 'MyType'
+                    prop?: string | null
+                    prop: string
+                    prop?: Array<string | null> | null
+                    prop?: string[] | null
+                    prop: Array<string | null>
+                    prop: string[]
+                  }"
+            `)
   })
 
   it('transpile predefined scalar values', () => {
@@ -41,16 +41,16 @@ describe(`printer > ${Kind.NON_NULL_TYPE} | ${Kind.LIST_TYPE}`, () => {
     `
 
     expect(defaultCodegen(fixture)).toMatchInlineSnapshot(`
-            "export interface MyType {
-              __typename: 'MyType'
-              prop?: string | null
-              prop: number
-              prop?: number | null
-              prop?: number | null
-              prop?: boolean | null
-              prop?: any | null
-            }"
-        `)
+                  "export interface MyType {
+                    __typename: 'MyType'
+                    prop?: string | null
+                    prop: number
+                    prop?: number | null
+                    prop?: number | null
+                    prop?: boolean | null
+                    prop?: any | null
+                  }"
+            `)
   })
 
   it('transpile named types', () => {
@@ -70,10 +70,10 @@ describe(`printer > ${Kind.NON_NULL_TYPE} | ${Kind.LIST_TYPE}`, () => {
         __typename: 'MyType'
         prop?: MyType | null
         prop: MyType
-        prop?: MyType | null
-        prop?: Array<MyType> | null
-        prop: MyType
-        prop: Array<MyType>
+        prop?: Array<MyType | null> | null
+        prop?: MyType[] | null
+        prop: Array<MyType | null>
+        prop: MyType[]
       }"
     `)
   })
@@ -93,16 +93,16 @@ describe(`printer > ${Kind.NON_NULL_TYPE} | ${Kind.LIST_TYPE}`, () => {
     const res = defaultCodegen(fixture, { useMaybeType: true })
 
     expect(res).toMatchInlineSnapshot(`
-                  "export interface MyType {
-                    __typename: 'MyType'
-                    prop?: Maybe<MyType>
-                    prop: MyType
-                    prop?: Maybe<MyType>
-                    prop?: Maybe<Array<MyType>>
-                    prop: MyType
-                    prop: Array<MyType>
-                  }"
-            `)
+      "export interface MyType {
+        __typename: 'MyType'
+        prop?: Maybe<MyType>
+        prop: MyType
+        prop?: Maybe<Array<Maybe<MyType>>>
+        prop?: Maybe<MyType[]>
+        prop: Array<Maybe<MyType>>
+        prop: MyType[]
+      }"
+    `)
   })
 
   it('useOptionalModifier: false', () => {
@@ -120,15 +120,15 @@ describe(`printer > ${Kind.NON_NULL_TYPE} | ${Kind.LIST_TYPE}`, () => {
     const res = defaultCodegen(fixture, { useOptionalModifier: false })
 
     expect(res).toMatchInlineSnapshot(`
-                  "export interface MyType {
-                    __typename: 'MyType'
-                    prop: MyType | null
-                    prop: MyType | null
-                    prop: MyType | null
-                    prop: Array<MyType> | null
-                    prop: MyType
-                    prop: Array<MyType>
-                  }"
-            `)
+      "export interface MyType {
+        __typename: 'MyType'
+        prop: MyType | null
+        prop: MyType | null
+        prop: Array<MyType | null> | null
+        prop: MyType[] | null
+        prop: Array<MyType | null>
+        prop: MyType[]
+      }"
+    `)
   })
 })

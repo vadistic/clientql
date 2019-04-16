@@ -1,7 +1,6 @@
-import { indent } from '@graphql-clientgen/core'
+import { capitalise, indent, TypescriptString } from '@graphql-clientgen/core'
 import {
   ArgumentNode,
-  GraphQLSchema,
   Kind,
   ObjectFieldNode,
   SchemaDefinitionNode,
@@ -9,16 +8,16 @@ import {
   ValueNode,
 } from 'graphql'
 import { CodegenProps } from '../codegen'
-import { defaultCodegenConfig } from '../config'
-import { naming } from '../naming'
+import { CodegenConfig } from '../config'
+import { initNaming } from '../naming'
 
 /**
  * This is all pointles but nvm...
  */
-export const printObjectField = (node: ObjectFieldNode) =>
+export const printObjectField = (node: ObjectFieldNode): TypescriptString =>
   node.name.value + ': ' + printValue(node.value)
 
-export const printValue = (node: ValueNode): string => {
+export const printValue = (node: ValueNode): TypescriptString => {
   switch (node.kind) {
     case Kind.INT:
     case Kind.FLOAT:
@@ -59,30 +58,10 @@ export const printValue = (node: ValueNode): string => {
   }
 }
 
-export const printSchemaDefinition = (props: CodegenProps) => (
-  node: SchemaDefinitionNode | SchemaExtensionNode,
-) => {
-  if (!node.operationTypes) {
-    return
-  }
-
-  const getName = naming.interfaceName(props.config)
-
-  const result = node.operationTypes
-    .map(el => [getName(el.operation), getName(el.type.name.value)])
-    .map(([type, target]) => `export type ${type} = ${target}`)
-    .join('\n\n')
-
-  return result
-}
-
 /**
  * prints explicit argument value, why?
  */
-export const printArgument = (
-  config = defaultCodegenConfig,
-  schema?: GraphQLSchema,
-) => (node: ArgumentNode) => {
+export const printArgument = (node: ArgumentNode): TypescriptString => {
   const result = node.name + ': ' + printValue(node.value)
 
   return result

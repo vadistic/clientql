@@ -1,13 +1,37 @@
-/*
- * Idea for strongly typed piping fn
- * (since I like using logic operators)
+/**
+ * Strongly typed piping fn with booleans as result monad
+ * (since I like using logic operators, like a lot)
  *
- * - fails (no shorcircuit yet) on false or undefined value
- * - returns fail as undef for easy !bang assertion when needed
+ * - fails (with shortcircuit) on false or undefined value
+ * - returns undef on fail for easy bang! assertion and clean typing typing od result
+ * - it's like using result monad (when you do not need result monad) and boolean is your result monad
  *
- * it's hard to handle infering false from true so let's tying is as Nonboolean
+ * it's hard to reliably infer false from true so result is nonboolean
  *
  */
+export const truePipe: TruePipe = (...fns: any[]) => (input: any) => {
+  /*
+   * Standard implementation is something like
+   *
+   * fns.reduce(
+   *   (val, fn: any) => (val === undefined || val === false ? val : fn(val)),
+   *  input,
+   * )
+   *
+   * but this will be 10x faster + shortcircuited
+   */
+
+  let val = input
+
+  for (const fn of fns) {
+    if (val === undefined || val === false) {
+      return undefined
+    }
+    val = fn(val)
+  }
+
+  return val
+}
 
 export type NonBoolean<T> = T extends boolean ? never : T
 export type NonUndefined<T> = T extends undefined ? never : T
@@ -46,9 +70,3 @@ export interface TruePipe {
     fn5: (arg: Truely<R4>) => R5,
   ): (...args: I) => Truely<R5> | undefined
 }
-
-export const truePipe: TruePipe = (...fns: any[]) => (input: any) =>
-  fns.reduce(
-    (val, fn: any) => (val === undefined || val === false ? val : fn(val)),
-    input,
-  )

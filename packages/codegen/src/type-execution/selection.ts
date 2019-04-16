@@ -1,19 +1,22 @@
-import { indent, isNullable, Typename } from '@graphql-clientgen/core'
-import { Kind, SelectionSetNode } from 'graphql'
+import {
+  indent,
+  isNullable,
+  Typename,
+  TypescriptString,
+} from '@graphql-clientgen/core'
+import { Kind, SelectionNode } from 'graphql'
 import { CodegenProps } from '../codegen'
 import { printType } from '../type-reference'
 
 /**
- *  TODO: Add recursive flag for nested/nonested
- *  to handle not only brackets byt top level spreads and interface exteds
- *  and unions, somehow...
+ * prints operation selection,
+ * returning bracketed fields with fragment intersections and unions - well, unions
  */
 
-export const printSelectionSet = (props: CodegenProps) => (
+export const printSelections = (props: CodegenProps) => (
   parent: Typename,
-  set: SelectionSetNode,
-  skipBrackets = false,
-) => {
+  selections: ReadonlyArray<SelectionNode>,
+): TypescriptString => {
   const vtx = props.graph.get(parent)
 
   // weird
@@ -22,38 +25,36 @@ export const printSelectionSet = (props: CodegenProps) => (
   }
 
   // intersection for each fragment spread
-  const fragments: string[] = []
-  // Union for each inline spread
-  const unions: string[] = []
-  // own selection lines (for fields)
-  const lines: string[] = []
+  const intersections: TypescriptString[] = []
+  // union for each inline spread
+  const unions: TypescriptString[] = []
+  // own selection lines (for fields of object/interface)
+  const lines: TypescriptString[] = []
 
-  // handle typename
-  if (
-    vtx.value.kind === Kind.OBJECT_TYPE_DEFINITION &&
-    props.config.addTypename
-  ) {
-    const typenameValue =
-      props.config.addTypename === 'string'
-        ? 'string'
-        : `'${vtx.value.name.value}'`
-
-    lines.push(`__typename: ${typenameValue}`)
-  }
-
-  for (const node of set.selections) {
+  for (const node of selections) {
     /*
      * Field => vtx is object or interface
      */
     if (node.kind === Kind.FIELD && !node.selectionSet) {
+      /**
+       * typename could be added to all entries, but
+       * I think that for operations it's a bit more semantic to just reflect provided selection
+       */
+      if (node.name.value === '__typename') {
+        const typenameString =
+          props.config.addTypename === 'string' ? 'string' : `'${parent}'`
+        return `__typename: ${typenameString}`
+      }
+
       const field = vtx.weightsMap!.get(node.name.value)!
 
-      const modifier =
+      const modifierTs =
         isNullable(field.type) && props.config.useOptionalModifier
           ? '?: '
           : ': '
 
-      const fieldTs = field.name.value + modifier + printType(props)(field.type)
+      const fieldTs =
+        field.name.value + modifierTs + printType(props)(field.type)
 
       lines.push(fieldTs)
       continue
@@ -64,24 +65,27 @@ export const printSelectionSet = (props: CodegenProps) => (
       const field = vtx.weightsMap!.get(node.name.value)
 
       if (!field || !child) {
-        throw Error(`Missing node for field ${node.name.value} on ${parent}`)
+        throw Error(`Missing target for field ${node.name.value} on ${parent}`)
       }
 
-      const nested = printSelectionSet(props)(child, node.selectionSet)
+      const nestedTs = printSelections(props)(
+        child,
+        node.selectionSet.selections,
+      )
 
-      const modifier =
+      const modifierTs =
         isNullable(field.type) && props.config.useOptionalModifier
           ? '?: '
           : ': '
 
-      const fieldTs = field.name.value + modifier + nested
+      const fieldTs = field.name.value + modifierTs + nestedTs
 
       lines.push(fieldTs)
       continue
     }
 
     if (node.kind === Kind.FRAGMENT_SPREAD) {
-      fragments.push(node.name.value)
+      intersections.push(props.naming.interfaceName(node.name.value))
     }
 
     if (node.kind === Kind.INLINE_FRAGMENT) {
@@ -89,38 +93,34 @@ export const printSelectionSet = (props: CodegenProps) => (
         throw Error(`Missing typeCondition for inline spread on ${parent}`)
       }
 
-      const nested = printSelectionSet(props)(
+      const nestedTs = printSelections(props)(
         node.typeCondition.name.value,
-        node.selectionSet,
+        node.selectionSet.selections,
       )
 
-      unions.push(nested)
+      unions.push(nestedTs)
     }
   }
 
-  let result = ''
+  let resultTs = ''
 
-  if (lines.length !== 0 && skipBrackets) {
-    result += lines.join('\n')
+  if (lines.length !== 0) {
+    resultTs = '{\n'
+    resultTs += indent(lines.join('\n'), 1)
+    resultTs += '\n}'
   }
 
-  if (lines.length !== 0 && !skipBrackets) {
-    result = '{\n'
-    result += indent(lines.join('\n'), 1)
-    result += '\n}'
-  }
-
-  if (fragments.length !== 0) {
-    result = [...fragments, ...(!!result ? [result] : [])].join(' & ')
+  if (intersections.length !== 0) {
+    resultTs = [...intersections, ...(!!resultTs ? [resultTs] : [])].join(' & ')
   }
 
   if (unions.length === 1) {
-    result += ' & ' + unions[0]
+    resultTs += ' & ' + unions[0]
   }
 
   if (unions.length > 1) {
-    result += ' & (' + unions.join(' | ') + ')'
+    resultTs += ' & (' + unions.join(' | ') + ')'
   }
 
-  return result
+  return resultTs
 }

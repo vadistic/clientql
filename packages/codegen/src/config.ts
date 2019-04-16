@@ -2,6 +2,7 @@ import {
   CoreConfig,
   defaultCoreConfig,
   ObjectLikeNode,
+  TypescriptString,
 } from '@graphql-clientgen/core'
 import {
   FieldDefinitionNode,
@@ -10,7 +11,6 @@ import {
   InputValueDefinitionNode,
   TypeNode,
 } from 'graphql'
-import { NullableString } from './strings'
 
 export interface CodegenConfig extends CoreConfig {
   /**
@@ -104,7 +104,7 @@ export interface CodegenConfig extends CoreConfig {
   transformIntefaceExtend?: (
     node: ObjectLikeNode,
     prev: string[],
-  ) => NullableString | NullableString[]
+  ) => TypescriptString | TypescriptString[]
   /**
    * callback to modify field arguments of ObjectType/ InterfaceType
    *

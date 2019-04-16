@@ -27,7 +27,7 @@ describe('printer > ' + Kind.INTERFACE_TYPE_DEFINITION, () => {
       }
     `
 
-    const res = defaultCodegen(fixture, { interfacePrefix: 'III' })
+    const res = createCodegen(fixture, { interfacePrefix: 'III' })(fixture)
 
     expect(res).toMatchInlineSnapshot(`
       "export interface IIIMyInterface {

@@ -1,15 +1,16 @@
-import { isNotEmpty, isNullable } from '@graphql-clientgen/core'
 import {
-  GraphQLSchema,
+  isNotEmpty,
+  isNullable,
+  TypescriptString,
+} from '@graphql-clientgen/core'
+import {
   InputObjectTypeDefinitionNode,
   InputObjectTypeExtensionNode,
   InputValueDefinitionNode,
 } from 'graphql'
 import { isString } from 'util'
 import { CodegenProps } from '../codegen'
-import { defaultCodegenConfig } from '../config'
-import { naming } from '../naming'
-import { printTSInterface } from '../strings'
+import { printTsInterface } from '../print-ts'
 import { printInputValue, printType, withDescription } from '../type-reference'
 
 /**
@@ -20,24 +21,25 @@ import { printInputValue, printType, withDescription } from '../type-reference'
  */
 export const printInputObject = (props: CodegenProps) => (
   node: InputObjectTypeDefinitionNode | InputObjectTypeExtensionNode,
-) => {
-  const name = naming.interfaceName(props.config)(node.name.value)
-  const addDescription = withDescription(props)
+): TypescriptString => {
+  const addDescription = withDescription(props.config)
   const inputValuePrinter = printInputValue(props)
+
+  const nameTs = props.naming.interfaceName(node.name.value)
 
   // empty
   if (!isNotEmpty(node.fields)) {
-    return addDescription(node)(printTSInterface(name, [], []))
+    return addDescription(node)(printTsInterface(nameTs))
   }
 
   // standard
   if (!props.config.transformInputValueType) {
     const inputValuesTs = node.fields.map(inputValuePrinter)
 
-    return addDescription(node)(printTSInterface(name, [], inputValuesTs))
+    return addDescription(node)(printTsInterface(nameTs, inputValuesTs))
   }
 
-  // custom
+  // allow customisations
   const inputValueTypePrinter = (field: InputValueDefinitionNode) =>
     printType(props)(field.type)
 
@@ -74,5 +76,5 @@ export const printInputObject = (props: CodegenProps) => (
       addDescription(field)(fieldname + modifier + type),
     )
 
-  return addDescription(node)(printTSInterface(name, [], modifiedInputValuesTs))
+  return addDescription(node)(printTsInterface(nameTs, modifiedInputValuesTs))
 }

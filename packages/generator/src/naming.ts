@@ -44,6 +44,11 @@ const constantName = (config: GeneratorConfig) => (name: string) => {
   }
 }
 
+export const TYPEDEFS_CONST_NAME = 'TYPEDEFS'
+
+const typedefsConstName = (config: GeneratorConfig) =>
+  constantName(config)(TYPEDEFS_CONST_NAME)
+
 const fragmentConstantName = (config: GeneratorConfig) => (name: string) =>
   constantName(config)(name + ' ' + config.fragmentJsConstantSuffix)
 
@@ -60,6 +65,7 @@ const clientInterfaceName = (config: GeneratorConfig) => (typename: Typename) =>
 
 export const naming = {
   constantName,
+  typedefsConstName,
   fragmentConstantName,
   clientResultName,
   clientInterfaceName,

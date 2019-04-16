@@ -1,6 +1,7 @@
+import { Typename, TypescriptString } from '@graphql-clientgen/core'
 import { UnionTypeDefinitionNode, UnionTypeExtensionNode } from 'graphql'
 import { CodegenProps } from '../codegen'
-import { naming } from '../naming'
+import { printTsType } from '../print-ts'
 import { printNamedType, withDescription } from '../type-reference'
 
 /**
@@ -11,30 +12,34 @@ import { printNamedType, withDescription } from '../type-reference'
  */
 export const printUnion = (props: CodegenProps) => (
   node: UnionTypeDefinitionNode | UnionTypeExtensionNode,
-) => {
-  const name = props.config.useInterfacePrefixForUnion
-    ? naming.interfaceName(props.config)(node.name.value)
+): TypescriptString => {
+  const nameTs = props.config.useInterfacePrefixForUnion
+    ? props.naming.interfaceName(node.name.value)
     : node.name.value
-  const addDescription = withDescription(props)
+
+  const addDescription = withDescription(props.config)
   const namedTypePrinter = printNamedType(props)
 
-  const types =
-    !node.types || node.types.length === 0
-      ? // any for unions without members
-        ['any']
-      : node.types.map(type => namedTypePrinter(type))
+  const typesTs = node.types
+    ? node.types.map(type => namedTypePrinter(type))
+    : []
 
-  let result = `export type ${name} = `
+  let contentTs = ``
+
+  // any for no members
+  if (typesTs.length === 0) {
+    contentTs += 'any'
+  }
 
   // inline for one memebr
-  if (types.length === 1) {
-    result += types[0]
+  if (typesTs.length === 1) {
+    contentTs += typesTs[0]
   }
 
   // otherwise multiline
-  if (types.length > 1) {
-    result += '\n' + types.map(type => `  | ${type}`).join('\n')
+  if (typesTs.length > 1) {
+    contentTs += '\n' + typesTs.map(typeTs => `  | ${typeTs}`).join('\n')
   }
 
-  return addDescription(node)(result)
+  return addDescription(node)(printTsType(nameTs, contentTs))
 }

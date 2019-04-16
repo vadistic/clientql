@@ -1,6 +1,7 @@
 import { COMPLEX_TYPEDEFS } from '@graphql-clientgen/testing'
 import { print } from 'graphql'
-import { FragmentType, getCoreProps } from '../../config'
+import { FragmentType } from '../../config'
+import { getCoreProps } from '../../core'
 import { buildOperationDoc } from '../../operation'
 import { complexProps, prismaProps } from '../fixture'
 

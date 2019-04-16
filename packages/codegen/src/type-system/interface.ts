@@ -3,8 +3,7 @@ import {
   InterfaceTypeExtensionNode,
 } from 'graphql'
 import { CodegenProps } from '../codegen'
-import { naming } from '../naming'
-import { printTSInterface } from '../strings'
+import { printTsInterface } from '../print-ts'
 import { withDescription } from '../type-reference'
 import {
   printFieldArgumentsInterfaces,
@@ -22,11 +21,11 @@ import {
 export const printInterface = (props: CodegenProps) => (
   node: InterfaceTypeDefinitionNode | InterfaceTypeExtensionNode,
 ) => {
-  const name = naming.interfaceName(props.config)(node.name.value)
-  const addDescription = withDescription(props)
+  const addDescription = withDescription(props.config)
 
+  const nameTs = props.naming.interfaceName(node.name.value)
   const fieldsTs = printObjectLikeFields(props)(node)
-  const interfaceTs = addDescription(node)(printTSInterface(name, [], fieldsTs))
+  const interfaceTs = addDescription(node)(printTsInterface(nameTs, fieldsTs))
 
   // without interfaces
   if (!props.config.useFieldArgumentsInterface) {

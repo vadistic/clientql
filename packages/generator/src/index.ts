@@ -1,4 +1,4 @@
-export * from './codegen-client'
+export * from './client'
 
 export * from './generator'
 export * from './config'

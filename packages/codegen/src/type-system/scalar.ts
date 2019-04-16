@@ -1,5 +1,7 @@
+import { Typename, TypescriptString } from '@graphql-clientgen/core'
 import { ScalarTypeDefinitionNode, ScalarTypeExtensionNode } from 'graphql'
 import { CodegenProps } from '../codegen'
+import { printTsType } from '../print-ts'
 import { withDescription } from '../type-reference'
 
 /**
@@ -10,14 +12,13 @@ import { withDescription } from '../type-reference'
  */
 export const printScalar = (props: CodegenProps) => (
   node: ScalarTypeDefinitionNode | ScalarTypeExtensionNode,
-) => {
-  const name = node.name.value
-  const addDescription = withDescription(props)
+): TypescriptString => {
+  const typename: Typename = node.name.value
+  const addDescription = withDescription(props.config)
 
-  const value =
-    (props.config.customScalars && props.config.customScalars[name]) || 'any'
+  const valueTs: TypescriptString =
+    (props.config.customScalars && props.config.customScalars[typename]) ||
+    'any'
 
-  const result = `export type ${name} = ${value}`
-
-  return addDescription(node)(result)
+  return addDescription(node)(printTsType(typename, valueTs))
 }

@@ -1,14 +1,12 @@
 import {
-  buildSelection,
+  buildSelections,
   createFragment,
   FragmentResult,
-  getRootTypenames,
   isInterfaceTypeDefinitonNode,
   isObjectTypeDefinitionNode,
   isUnionTypeDefinitionNode,
   nonNull,
   onlyUnique,
-  unwrapSelectionSet,
   wrapDocument,
 } from '@graphql-clientgen/core'
 import {
@@ -26,14 +24,14 @@ import { printGqlTag } from '../print'
  */
 
 export const generateGraphqlFragments = (props: GeneratorProps) => {
-  const rootNames = getRootTypenames(props)
+  const rootNames = Array.from(props.roots.values())
 
   type NestableTypeNode =
     | ObjectTypeDefinitionNode
     | UnionTypeDefinitionNode
     | InterfaceTypeDefinitionNode
 
-  const nestedTypes = props.doc.definitions.filter(
+  const nestableTypes = props.doc.definitions.filter(
     (node): node is NestableTypeNode =>
       (isObjectTypeDefinitionNode(node) &&
         !rootNames.includes(node.name.value)) ||
@@ -41,28 +39,27 @@ export const generateGraphqlFragments = (props: GeneratorProps) => {
       isUnionTypeDefinitionNode(node),
   )
 
-  const fragmentResults = nestedTypes
-    .map(node => buildSelection(props)([['$ROOT', node.name.value]]))
+  const fragmentResults = nestableTypes
+    .map(node => buildSelections(props)(node.name.value))
     .map<FragmentResult | undefined>(
-      ({ selection, fragmentnames, flat }, i) =>
-        selection && {
-          definition: createFragment({
-            condition: nestedTypes[i].name.value,
-            fragmentname: nestedTypes[i].name.value,
-            selections: unwrapSelectionSet(selection)!,
+      ({ selections, ...rest }, i) =>
+        selections && {
+          fragment: createFragment({
+            condition: nestableTypes[i].name.value,
+            fragmentname: nestableTypes[i].name.value,
+            selections,
           }),
-          flat,
-          deps: fragmentnames,
+          ...rest,
         },
     )
     .filter(nonNull)
 
   const dependencyResults = onlyUnique(
     fragmentResults.reduce(
-      (acc, { deps }) => [...acc, ...deps],
+      (acc, { dependencies }) => [...acc, ...dependencies],
       [] as string[],
     ),
-  ).map(name => props.fragments.get(name)!)
+  ).map(name => props.cache.fragments.get(name)!)
 
   return { fragments: fragmentResults, dependencies: dependencyResults }
 }
@@ -73,19 +70,24 @@ export const generateGraphqlFragments = (props: GeneratorProps) => {
 export const generateGraphqlFragmentsFile = (props: GeneratorProps) => {
   const { fragments, dependencies } = generateGraphqlFragments(props)
 
-  const resolved = resolveFragmentDependencies([...dependencies, ...fragments])
+  const resolvedDependencies = resolveFragmentDependencies([
+    ...dependencies,
+    ...fragments,
+  ])
 
   const getConstantName = naming.fragmentConstantName(props.config)
 
   if (!props.config.printGraphqlToJs) {
-    return print(wrapDocument(...resolved.map(({ definition }) => definition)))
+    return print(
+      wrapDocument(...resolvedDependencies.map(({ fragment }) => fragment)),
+    )
   }
 
-  return resolved
-    .map(({ definition, deps }) =>
+  return resolvedDependencies
+    .map(({ fragment, dependencies: deps }) =>
       printGqlTag(
-        getConstantName(definition.name.value),
-        definition,
+        getConstantName(fragment.name.value),
+        fragment,
         deps.map(getConstantName),
       ),
     )
@@ -102,15 +104,15 @@ const resolveFragmentDependencies = (fragments: FragmentResult[]) => {
   const resolvedNames = new Set<string>()
   const unresolvedNames = new Set<string>()
   const fragmentMap = new Map(
-    fragments.map(frag => [frag.definition.name.value, frag]),
+    fragments.map(fragResult => [fragResult.fragment.name.value, fragResult]),
   )
 
   // add no deps fragments
-  fragments.forEach(frag => {
-    if (frag.deps.length === 0) {
-      resolvedNames.add(frag.definition.name.value)
+  fragments.forEach(fragmentResult => {
+    if (fragmentResult.dependencies.length === 0) {
+      resolvedNames.add(fragmentResult.fragment.name.value)
     } else {
-      unresolvedNames.add(frag.definition.name.value)
+      unresolvedNames.add(fragmentResult.fragment.name.value)
     }
   })
 
@@ -120,9 +122,9 @@ const resolveFragmentDependencies = (fragments: FragmentResult[]) => {
 
   while (unresolvedNames.size !== 0) {
     unresolvedNames.forEach(name => {
-      const frag = fragmentMap.get(name)!
+      const fragmentResult = fragmentMap.get(name)!
 
-      if (frag.deps.every(dep => resolvedNames.has(dep))) {
+      if (fragmentResult.dependencies.every(dep => resolvedNames.has(dep))) {
         resolvedNames.add(name)
         unresolvedNames.delete(name)
       }

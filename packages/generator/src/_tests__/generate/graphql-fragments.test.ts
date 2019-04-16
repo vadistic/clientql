@@ -8,20 +8,20 @@ import { complexProps, prismaProps } from '../fixture'
 
 describe('generate graphql fragments', () => {
   it('prisma > generate fragment definitions', () => {
-    const { fragments, dependencies } = generateGraphqlFragments(prismaProps)
+    const { fragments } = generateGraphqlFragments(prismaProps)
 
     const res = print(
-      wrapDocument(...fragments.map(({ definition }) => definition)),
+      wrapDocument(...fragments.map(({ fragment }) => fragment)),
     )
 
     expect(res).toMatchSnapshot()
   })
 
   it('complex > generate fragment definitions', () => {
-    const { fragments, dependencies } = generateGraphqlFragments(complexProps)
+    const { fragments } = generateGraphqlFragments(complexProps)
 
     const res = print(
-      wrapDocument(...fragments.map(({ definition }) => definition)),
+      wrapDocument(...fragments.map(({ fragment }) => fragment)),
     )
 
     expect(res).toMatchSnapshot()

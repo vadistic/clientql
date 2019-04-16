@@ -1,33 +1,44 @@
-import { operationTypeToRootTypename } from '@graphql-clientgen/core'
+import { Typename, TypescriptString } from '@graphql-clientgen/core'
 import { FragmentDefinitionNode, OperationDefinitionNode } from 'graphql'
 import { CodegenProps } from '../codegen'
-import { printTSInterface } from '../strings'
-import { printSelectionSet } from './selection'
+import { printTsType } from '../print-ts'
+import { printSelections } from './selection'
 
 export const printOperation = (props: CodegenProps) => (
   node: OperationDefinitionNode,
-) => {
-  const parent = operationTypeToRootTypename(props.graph)(node.operation)
+): TypescriptString => {
+  const parent = props.roots.get(node.operation)
 
   if (!parent) {
     throw Error(`Could not find root schema node for ${node.operation}`)
   }
 
   if (!node.name) {
-    throw Error(`Cannot print typings fo unnamed operation`)
+    throw Error(`Cannot print typings for anonymous operation`)
   }
 
-  const selection = printSelectionSet(props)(parent, node.selectionSet, true)
+  const nameTs = props.naming.interfaceName(node.name.value)
+  const selectionTs = printSelections(props)(
+    parent,
+    node.selectionSet.selections,
+  )
 
-  return printTSInterface(node.name.value, undefined, selection)
+  // cannot be printed as interface
+  // since it can consist of inline fragment or fragment spread
+  return printTsType(nameTs, selectionTs)
 }
 
 export const printFragment = (props: CodegenProps) => (
   node: FragmentDefinitionNode,
-) => {
-  const parent = node.typeCondition.name.value
+): TypescriptString => {
+  const parent: Typename = node.typeCondition.name.value
 
-  const selection = printSelectionSet(props)(parent, node.selectionSet, true)
+  const selectionTs = printSelections(props)(
+    parent,
+    node.selectionSet.selections,
+  )
 
-  return printTSInterface(node.name.value, undefined, selection)
+  const nameTs = props.naming.interfaceName(node.name.value)
+
+  return printTsType(nameTs, selectionTs)
 }

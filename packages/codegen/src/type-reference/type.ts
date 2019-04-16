@@ -1,28 +1,48 @@
-import { isNullable, unwrapType } from '@graphql-clientgen/core'
+import {
+  TypeModifier,
+  TypescriptString,
+  unwrapType,
+} from '@graphql-clientgen/core'
 import { Kind, TypeNode } from 'graphql'
 import { CodegenProps } from '../codegen'
-import { isExplicitScalar, printNamedType } from './named-type'
+import { CodegenConfig } from '../config'
+import { printNamedType } from './named-type'
 
 /**
- * Prints nullable/list/scalar TypeNode
+ * prints nullable/list/scalar etc. TypeNode
  */
 
-export const printType = (props: CodegenProps) => (node: TypeNode) => {
-  const { modifiers, typename, type } = unwrapType(node)
-  const explicitScalar = isExplicitScalar(typename)
+export const printType = (props: CodegenProps) => (
+  node: TypeNode,
+): TypescriptString => {
+  const { modifiers, type } = unwrapType(node)
 
-  let result = printNamedType(props)(type)
+  return printTypeModifiers(props.config)(
+    printNamedType(props)(type),
+    modifiers,
+  )
+}
 
+/**
+ * apply type modifies from modifiers array to provided string
+ *
+ * config to support
+ *  - `useMaybeType`
+ */
+export const printTypeModifiers = (config: CodegenConfig) => (
+  content: TypescriptString,
+  modifiers: TypeModifier[],
+  useSimpleArray = true,
+): TypescriptString => {
   const addMaybe = (value: string) =>
-    props.config.useMaybeType ? `Maybe<${value}>` : `${value} | null`
-
+    config.useMaybeType ? `Maybe<${value}>` : `${value} | null`
   const addArray = (value: string) => `Array<${value}>`
 
-  // apply list pf modifiers
-  if (modifiers && modifiers.length !== 0) {
-    // wherher arrays should be added as []
-    let useSimpleArrFlag = explicitScalar
+  let resultTs = content
+  // wherher arrays should be added as []
+  let useSimpleArrFlag = useSimpleArray
 
+  if (modifiers && modifiers.length !== 0) {
     modifiers
       // reverse is mutable!
       .slice()
@@ -33,28 +53,28 @@ export const printType = (props: CodegenProps) => (node: TypeNode) => {
 
         if (modifier === Kind.LIST_TYPE) {
           if (useSimpleArrFlag && prevModifier === Kind.NON_NULL_TYPE) {
-            result = `${result}[]`
+            resultTs = `${resultTs}[]`
             return
           }
 
           if (useSimpleArrFlag && prevModifier !== Kind.NON_NULL_TYPE) {
             useSimpleArrFlag = false
-            result = addArray(addMaybe(result))
+            resultTs = addArray(addMaybe(resultTs))
             return
           }
 
           if (!useSimpleArrFlag && prevModifier === Kind.NON_NULL_TYPE) {
-            result = addArray(result)
+            resultTs = addArray(resultTs)
             return
           }
         }
       })
   }
 
-  // apply wrapping null modifier
-  if (isNullable(node)) {
-    result = addMaybe(result)
+  // apply wrapping null modifier if top level is not non-nullable
+  if (modifiers[0] !== Kind.NON_NULL_TYPE) {
+    resultTs = addMaybe(resultTs)
   }
 
-  return result
+  return resultTs
 }

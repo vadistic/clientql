@@ -1,4 +1,10 @@
-import { indent, isNotEmpty, isNullable } from '@graphql-clientgen/core'
+import {
+  Fieldname,
+  indent,
+  isNotEmpty,
+  isNullable,
+  TypescriptString,
+} from '@graphql-clientgen/core'
 import { FieldDefinitionNode } from 'graphql'
 import { CodegenProps } from '../codegen'
 import { withDescription } from './description'
@@ -14,18 +20,17 @@ import { printType } from './type'
  */
 export const printFieldDefinition = (props: CodegenProps) => (
   node: FieldDefinitionNode,
-) => {
-  const name = node.name.value
-  const type = printType(props)(node.type)
-  const addDescription = withDescription(props)
+): TypescriptString => {
+  const fieldname: Fieldname = node.name.value
+  const typeTs = printType(props)(node.type)
+  const addDescription = withDescription(props.config)
 
   // args empty when not printig them.... <== helpful, isn't it?
-  const args = props.config.addFieldAsFunction
-    ? printFieldArguments(props)(node)
-    : ''
+  const argsTs =
+    props.config.addFieldAsFunction && printFieldArguments(props)(node)
 
   // modifier only when not using field arguments
-  const modifier =
+  const modifierTs =
     isNullable(node.type) &&
     props.config.useOptionalModifier &&
     !props.config.addFieldAsFunction
@@ -33,7 +38,7 @@ export const printFieldDefinition = (props: CodegenProps) => (
       : ': '
 
   return addDescription(node)(
-    name + modifier + (args ? `${args} => ${type}` : type),
+    fieldname + modifierTs + (argsTs ? `${argsTs} => ${typeTs}` : typeTs),
   )
 }
 
@@ -45,28 +50,27 @@ export const printFieldDefinition = (props: CodegenProps) => (
  */
 export const printFieldArguments = (props: CodegenProps) => (
   node: FieldDefinitionNode,
-) => {
+): TypescriptString => {
   if (!isNotEmpty(node.arguments)) {
     return `()`
   }
 
   // standard modifier
-  const modifier =
+  const modifierTs =
     isNullable(node.type) && props.config.useOptionalModifier ? '?: ' : ': '
 
-  let result = '(args' + modifier + '{'
+  let resultTs: TypescriptString = '(args' + modifierTs + '{'
 
   // print inline for single argument
   if (node.arguments.length === 1) {
-    result += ' ' + printInputValue(props)(node.arguments[0]) + ' ' + '})'
+    resultTs += ' ' + printInputValue(props)(node.arguments[0]) + ' ' + '})'
 
-    return result
+    return resultTs
   }
 
-  result +=
-    '\n' + indent(node.arguments.map(printInputValue(props)).join('\n'), 1)
+  resultTs += '\n'
+  resultTs += indent(node.arguments.map(printInputValue(props)).join('\n'), 1)
+  resultTs += '\n})'
 
-  result += '\n})'
-
-  return result
+  return resultTs
 }

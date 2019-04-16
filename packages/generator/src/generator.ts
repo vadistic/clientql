@@ -33,11 +33,12 @@ export const getGeneratorProps = (
   paths?: Partial<GeneratorPaths>,
 ) => {
   const mergedDoc = mergeExtensions(doc)
+  const coreProps = getCoreProps(mergedDoc)
 
   // here could be minimal typedefs to avoid unnecesary typing etc
 
   const props: GeneratorProps = {
-    ...getCoreProps(mergedDoc),
+    ...coreProps,
     doc: mergedDoc,
     config: {
       ...defaultGeneratorConfig,
@@ -56,7 +57,7 @@ export const getGeneratorProps = (
   return props
 }
 
-export const graphqlClientGenerator = async (
+export const graphqlGenerator = async (
   doc: DocumentNode,
   config: Partial<GeneratorConfig>,
   options: Partial<GeneratorOptions>,

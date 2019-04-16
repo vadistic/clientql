@@ -4,7 +4,7 @@ import {
   SelectionNode,
   VariableDefinitionNode,
 } from 'graphql'
-import { Fieldname, Fragmentname, Typename } from '../ast'
+import { Fieldname, FragmentName, Typename } from '../ast'
 
 /**
  * represents operation nesting level
@@ -25,17 +25,17 @@ export interface OperationResult {
 
 export interface SelectionsResult {
   selections?: SelectionNode[]
-  dependencies: Fragmentname[]
+  dependencies: FragmentName[]
   complete: boolean
   flat: boolean
 }
 
 export interface FragmentResult {
   fragment: FragmentDefinitionNode
-  dependencies: Fragmentname[]
+  dependencies: FragmentName[]
   flat: boolean
   // I'm building & caching only complete fragments
-  complete: true
+  complete: boolean // true
 }
 
 /*
@@ -43,7 +43,7 @@ export interface FragmentResult {
  */
 export interface NestableSelectionResult {
   selection?: SelectionNode
-  dependencies: Fragmentname[]
+  dependencies: FragmentName[]
   complete: boolean
   flat: boolean
 }

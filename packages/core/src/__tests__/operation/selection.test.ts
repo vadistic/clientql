@@ -11,7 +11,7 @@ describe('selection', () => {
 
     const frag = createFragment({
       fragmentname: 'PostFragment',
-      selections,
+      selections: selections!,
       condition: 'Post',
     })
 
