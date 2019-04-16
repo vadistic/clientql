@@ -6,6 +6,13 @@ import { printClientsResponses } from './responses'
 import { printClientTypedefs } from './typedefs'
 import { printClientTypes } from './types'
 
+export interface GenerateClientResult {
+  index: string
+  typedefs: string
+  types: string
+  responses: string
+  clients: string
+}
 /**
  * generate client lib
  *
@@ -17,7 +24,9 @@ import { printClientTypes } from './types'
  * - `client-boilerplate` => typed client factory
  */
 
-export const generateClient = async (props: GeneratorProps) => {
+export const generateClient = async (
+  props: GeneratorProps,
+): Promise<GenerateClientResult> => {
   const targets = resolvePossibleTargets(props)
 
   const index = printClientBoilerplate(props)

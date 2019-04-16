@@ -4,5 +4,5 @@
     "rootDir": "src"
   },
   "include": ["src"],
-  "exclude": ["node_mdules", "dist"]
+  "exclude": ["node_modules", "dist", "__snapshots__", "__file_snapshots__"]
 }

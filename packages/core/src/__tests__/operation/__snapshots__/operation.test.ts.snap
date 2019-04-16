@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`operation complex > deep fragments 1`] = `
-"query FindEventsAtVenueQuery($venueId: ID!) {
+"query FindEventsAtVenueMyQuery($venueId: ID!) {
   findEventsAtVenue(venueId: $venueId) {
     ...EventDeep
   }
@@ -97,7 +97,7 @@ fragment SpeakerFlat on Speaker {
 `;
 
 exports[`operation complex > interface inline target 1`] = `
-"query FindEventsAtVenueConcertVenueQuery($venueId: ID!) {
+"query FindEventsAtVenueConcertVenueMyQuery($venueId: ID!) {
   findEventsAtVenue(venueId: $venueId) {
     ... on Concert {
       venue {
@@ -117,7 +117,7 @@ fragment VenueFlat on Venue {
 `;
 
 exports[`operation complex > interface target 1`] = `
-"query FindEventsAtVenueQuery($venueId: ID!) {
+"query FindEventsAtVenueMyQuery($venueId: ID!) {
   findEventsAtVenue(venueId: $venueId) {
     ...EventFlat
     venue {

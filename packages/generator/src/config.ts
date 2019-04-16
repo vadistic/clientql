@@ -87,51 +87,5 @@ export const defaultGeneratorPaths: GeneratorPaths = {
 }
 
 /**
- * GeneratorOptions = WHAT to generate
+ * GeneratorMode = WHAT to generate
  */
-
-export interface GeneratorOptions {
-  client: boolean
-  typescript: {
-    /**
-     * generate typescript definitions for graphql type definitions
-     * @default: true
-     */
-    types: boolean
-    /**
-     * generate typescript definitions for operations
-     * @default: true
-     */
-    operations: boolean
-  }
-  graphql: {
-    /**
-     * generate typedefs
-     * @default: true
-     */
-    typedefs: boolean
-    /**
-     * generate fragments for object types
-     * @default: true
-     */
-    fragments: boolean
-    /**
-     * generate avalible operations with configured fragments/nofragments
-     * @default: true
-     */
-    operations: boolean
-  }
-}
-
-export const defaultGeneratorOptions: GeneratorOptions = {
-  client: true,
-  typescript: {
-    types: true,
-    operations: true,
-  },
-  graphql: {
-    typedefs: true,
-    fragments: true,
-    operations: true,
-  },
-}

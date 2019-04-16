@@ -19,10 +19,20 @@
     ],
     "no-implicit-dependencies": [
       true,
-      ["graphql", "graphql-tag", "@graphql-clientgen/testing"]
+      [
+        "graphql",
+        "graphql-tag",
+        "@graphql-clientgen/testing",
+        "jest-file-snapshot"
+      ]
     ]
   },
   "linterOptions": {
-    "exclude": ["**/generated/**", "**/node_modules/**"]
+    "exclude": [
+      "**/generated/**",
+      "**/node_modules/**",
+      "**/__snapshots__/**",
+      "**/__file_snapshots__/**"
+    ]
   }
 }

@@ -9,6 +9,7 @@ import {
   buildSelections,
   FragmentName,
   getVerticiesOfKind,
+  isNotEmpty,
   Typename,
   TypescriptString,
 } from '@graphql-clientgen/core'
@@ -97,7 +98,7 @@ const buildClientSelections = (props: GeneratorProps) => (
     const { selections, dependencies } = buildSelections(props)(target)
 
     // should be noop
-    if (!selections) {
+    if (!isNotEmpty(selections)) {
       return
     }
 

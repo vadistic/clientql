@@ -7,6 +7,7 @@ import {
 import { Kind } from 'graphql'
 import { GeneratorProps } from '../generator'
 import { printTsGql, printYadaYada } from '../print'
+import { stripLocationAndEmpty } from '../utils'
 
 /*
  * this will save typedefs for runtime client
@@ -40,7 +41,11 @@ export const printClientTypedefs = (
     resultTs += `import gql from 'graphql-tag'` + '\n\n'
     resultTs += typedefsTs + '\n\n'
   } else {
-    const typedefsJson = JSON.stringify(filteredDoc, null, 2)
+    const typedefsJson = JSON.stringify(
+      stripLocationAndEmpty(filteredDoc),
+      null,
+      2,
+    )
       .replace(/\"([^(\")"]+)\":/g, '$1:')
       .replace(/\\/g, '')
 

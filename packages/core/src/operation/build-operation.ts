@@ -18,7 +18,7 @@ import {
 import { CoreProps } from '../core'
 import { operationTypes } from '../graph'
 import { capitalise } from '../utils'
-import { buildSelections } from './build-selection'
+import { buildSelections } from './build-selections'
 import {
   OperationEdge,
   OperationResult,

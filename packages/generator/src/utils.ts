@@ -62,3 +62,38 @@ export const getMinimalTypedefs = (props: GeneratorProps) => {
     ...Array.from(register).map(typename => props.graph.get(typename)!.value),
   )
 }
+
+/**
+ * trying to mimalise typedefs
+ */
+export const stripLocationAndEmpty = <T>(input: T): T => {
+  if (!!input && typeof input === 'object') {
+    if (Array.isArray(input)) {
+      const result: any[] = []
+
+      for (const el of input) {
+        result.push(stripLocationAndEmpty(el))
+      }
+
+      return (result as unknown) as T
+    } else {
+      const result: any = {}
+
+      for (const key of Object.keys(input)) {
+        const prop = (input as any)[key]
+
+        if (Array.isArray(prop) && prop.length === 0) {
+          continue
+        }
+
+        if (key !== 'loc') {
+          result[key] = stripLocationAndEmpty((input as any)[key])
+        }
+      }
+
+      return result
+    }
+  } else {
+    return input
+  }
+}

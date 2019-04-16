@@ -28,6 +28,7 @@
     "@graphql-clientgen/codegen": "../packages/codegen",
     "@graphql-clientgen/generator": "../packages/generator",
     "@graphql-clientgen/testing": "../packages/testing",
+    "@graphql-clientgen/cli": "../packages/cli",
     "@types/graphql": "^14.2.0",
     "@types/jest": "^24.0.11",
     "@types/node": "^11.13.0",
@@ -41,7 +42,8 @@
     "@graphql-clientgen/client": "../packages/client",
     "@graphql-clientgen/generator": "../packages/generator",
     "@graphql-clientgen/codegen": "../packages/codegen",
-    "@graphql-clientgen/testing": "../packages/testing"
+    "@graphql-clientgen/testing": "../packages/testing",
+    "@graphql-clientgen/cli": "../packages/cli"
   },
   "browserslist": [
     ">0.2%",

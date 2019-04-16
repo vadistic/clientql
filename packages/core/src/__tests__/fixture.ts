@@ -1,4 +1,8 @@
-import { COMPLEX_TYPEDEFS, PRISMA_TYPEDEFS } from '@graphql-clientgen/testing'
+import {
+  COMPLEX_TYPEDEFS,
+  PRISMA_TYPEDEFS,
+  VATS_TYPEDEFS,
+} from '@graphql-clientgen/testing'
 import { DocumentNode } from 'graphql'
 import { unwrapDocument, wrapDocument } from '../ast'
 import { CoreConfig } from '../config'
@@ -31,3 +35,5 @@ export const extendComplexProps = (
 
   return getCoreProps(extendedAst, config)
 }
+
+export const vatsProps = getCoreProps(VATS_TYPEDEFS)

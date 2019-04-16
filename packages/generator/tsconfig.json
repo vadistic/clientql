@@ -3,6 +3,11 @@
   "compilerOptions": {
     "rootDir": "src"
   },
-  "include": ["src", "../print-typings/typings-printer"],
-  "exclude": ["node_mdules", "dist"]
+  "include": ["src"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/__snapshots__/**",
+    "**/__file_snapshots__/**"
+  ]
 }

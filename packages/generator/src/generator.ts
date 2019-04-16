@@ -4,12 +4,11 @@ import {
   mergeExtensions,
 } from '@graphql-clientgen/core'
 import { DocumentNode } from 'graphql'
+import { GenerateClientResult } from './client'
 import {
   defaultGeneratorConfig,
-  defaultGeneratorOptions,
   defaultGeneratorPaths,
   GeneratorConfig,
-  GeneratorOptions,
   GeneratorPaths,
 } from './config'
 import { GeneratorNaming, initGeneratorNaming } from './naming'
@@ -18,21 +17,31 @@ export interface GeneratorProps extends CoreProps {
   naming: GeneratorNaming
   doc: DocumentNode
   config: GeneratorConfig
-  options: GeneratorOptions
   paths: GeneratorPaths
 }
 
-export type GeneratorResult = {
-  [Group in keyof GeneratorOptions]: {
-    [Result in keyof GeneratorOptions[Group]]?: string
-  }
+export enum GeneratorMode {
+  CLIENT = 'CLIENT',
+  TYPESCRIPT_TYPES = 'TYPESCRIPT_TYPES',
+  GRAPHQL_FRAGMENTS = 'GRAPHQL_FRAGMENTS',
+}
+
+export interface GeneratorModeToResult {
+  CLIENT: GeneratorResult<GeneratorMode.CLIENT, GenerateClientResult>
+  TYPESCRIPT_TYPES: undefined
+  GRAPHQL_FRAGMENTS: undefined
+}
+
+export interface GeneratorResult<M, R> {
+  props: GeneratorProps
+  mode: M
+  result: R
 }
 
 export const getGeneratorProps = (
   doc: DocumentNode,
   config?: Partial<GeneratorConfig>,
-  options?: Partial<GeneratorOptions>,
-  paths?: Partial<GeneratorPaths>,
+  paths?: GeneratorPaths,
 ) => {
   const mergedConfig = {
     ...defaultGeneratorConfig,
@@ -50,36 +59,24 @@ export const getGeneratorProps = (
     naming,
     doc: mergedDoc,
     config: mergedConfig,
-    options: {
-      ...defaultGeneratorOptions,
-      ...options,
-    },
-    paths: {
-      ...defaultGeneratorPaths,
-      ...paths,
-    },
+    paths: paths || defaultGeneratorPaths,
   }
 
   return props
 }
 
-export const graphqlGenerator = async (
+export const clientgen = (
   doc: DocumentNode,
-  config: Partial<GeneratorConfig>,
-  options: Partial<GeneratorOptions>,
-  paths: Partial<GeneratorPaths>,
-) => {
-  const props = getGeneratorProps(doc, config, options, paths)
+  config?: Partial<GeneratorConfig>,
+  paths?: GeneratorPaths,
+) => async <M extends GeneratorMode>(
+  mode: M,
+): Promise<GeneratorModeToResult[M]> => {
+  const props = getGeneratorProps(doc, config, paths)
 
-  const result: GeneratorResult = {
-    client: {},
-    graphql: {},
-    typescript: {},
-  }
-
-  if (props.options.typescript.types) {
-    const { generateTsTypes } = await import('./extra/typescript-types')
-
-    result.typescript.types = await generateTsTypes(props)
+  if (mode === GeneratorMode.CLIENT) {
+    const { generateClient } = await import('./client/generate')
+    const result = await generateClient(props)
+    return { result, props, mode: GeneratorMode.CLIENT }
   }
 }

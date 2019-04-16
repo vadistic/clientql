@@ -1,17 +1,38 @@
 #!/usr/bin/env node
 
-const cli = async () => {
-  const argv = process.argv
+import meow from 'meow'
+import { clientgenCmd } from './commands'
 
-  const remoteflag = argv.findIndex(el => el === '-e')
-  const remote = remoteflag !== -1 ? argv[remoteflag + 1] : undefined
+const cli = meow(
+  `
+	Usage
+	  $ clientgen -s src/schema.graphql -o src/generated/client
 
-  const localflag = argv.findIndex(el => el === '-s')
-  const local = localflag !== -1 ? argv[localflag + 1] : undefined
+	Options
+    --schema, -s typedefs file or graphql endpoint
+    --output, -o directory for generated client lib
+    --config, -c json file with generator options
 
-  console.log('generate start')
+`,
+  {
+    flags: {
+      schema: {
+        type: 'string',
+        alias: 's',
+      },
+      output: {
+        type: 'string',
+        alias: 'o',
+      },
+      config: {
+        type: 'string',
+        alias: 'c',
+      },
+    },
+  },
+)
 
-  console.log('generate success')
+// default command
+if (cli.input.length === 0 || cli.input[0] === 'generate') {
+  clientgenCmd(cli)
 }
-
-cli()

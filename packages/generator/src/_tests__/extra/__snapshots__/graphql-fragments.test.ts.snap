@@ -54,7 +54,6 @@ fragment Speaker on Speaker {
 }
 
 fragment Person on Person {
-  ...PersonFlat
   ... on Client {
     ...ClientFlat
     events {
@@ -284,12 +283,6 @@ export const SPEAKER_FLAT_FRAGMENT = gql\`
   
 \`
 
-export const PERSON_FLAT_FRAGMENT = gql\`
-  fragment PersonFlat on Person
-
-  
-\`
-
 export const STAKEHOLDER_FRAGMENT = gql\`
   fragment Stakeholder on Stakeholder {
     ...StakeholderFlat
@@ -367,7 +360,6 @@ export const SPEAKER_FRAGMENT = gql\`
 
 export const PERSON_FRAGMENT = gql\`
   fragment Person on Person {
-    ...PersonFlat
     ... on Client {
       ...ClientFlat
       events {
@@ -418,7 +410,6 @@ export const PERSON_FRAGMENT = gql\`
     }
   }
 
-  \${PERSON_FLAT_FRAGMENT}
   \${CLIENT_FLAT_FRAGMENT}
   \${EVENT_FLAT_FRAGMENT}
   \${VENUE_FLAT_FRAGMENT}
@@ -596,7 +587,6 @@ fragment Board on Board {
 }
 
 fragment BoardConnection on BoardConnection {
-  ...BoardConnectionFlat
   pageInfo {
     ...PageInfoFlat
   }
@@ -705,7 +695,6 @@ fragment Post on Post {
 }
 
 fragment PostConnection on PostConnection {
-  ...PostConnectionFlat
   pageInfo {
     ...PageInfoFlat
   }
@@ -773,7 +762,6 @@ fragment Thread on Thread {
 }
 
 fragment ThreadConnection on ThreadConnection {
-  ...ThreadConnectionFlat
   pageInfo {
     ...PageInfoFlat
   }
@@ -862,7 +850,6 @@ fragment User on User {
 }
 
 fragment UserConnection on UserConnection {
-  ...UserConnectionFlat
   pageInfo {
     ...PageInfoFlat
   }
@@ -993,12 +980,6 @@ export const THREAD_FLAT_FRAGMENT = gql\`
   
 \`
 
-export const BOARD_CONNECTION_FLAT_FRAGMENT = gql\`
-  fragment BoardConnectionFlat on BoardConnection
-
-  
-\`
-
 export const PAGE_INFO_FLAT_FRAGMENT = gql\`
   fragment PageInfoFlat on PageInfo {
     hasNextPage
@@ -1044,12 +1025,6 @@ export const NODE_FLAT_FRAGMENT = gql\`
   
 \`
 
-export const POST_CONNECTION_FLAT_FRAGMENT = gql\`
-  fragment PostConnectionFlat on PostConnection
-
-  
-\`
-
 export const POST_EDGE_FLAT_FRAGMENT = gql\`
   fragment PostEdgeFlat on PostEdge {
     cursor
@@ -1080,12 +1055,6 @@ export const POST_SUBSCRIPTION_PAYLOAD_FLAT_FRAGMENT = gql\`
   
 \`
 
-export const THREAD_CONNECTION_FLAT_FRAGMENT = gql\`
-  fragment ThreadConnectionFlat on ThreadConnection
-
-  
-\`
-
 export const THREAD_EDGE_FLAT_FRAGMENT = gql\`
   fragment ThreadEdgeFlat on ThreadEdge {
     cursor
@@ -1109,12 +1078,6 @@ export const THREAD_SUBSCRIPTION_PAYLOAD_FLAT_FRAGMENT = gql\`
     mutation
     updatedFields
   }
-
-  
-\`
-
-export const USER_CONNECTION_FLAT_FRAGMENT = gql\`
-  fragment UserConnectionFlat on UserConnection
 
   
 \`
@@ -1233,7 +1196,6 @@ export const BOARD_FRAGMENT = gql\`
 
 export const BOARD_CONNECTION_FRAGMENT = gql\`
   fragment BoardConnection on BoardConnection {
-    ...BoardConnectionFlat
     pageInfo {
       ...PageInfoFlat
     }
@@ -1257,7 +1219,6 @@ export const BOARD_CONNECTION_FRAGMENT = gql\`
     }
   }
 
-  \${BOARD_CONNECTION_FLAT_FRAGMENT}
   \${PAGE_INFO_FLAT_FRAGMENT}
   \${BOARD_EDGE_FLAT_FRAGMENT}
   \${BOARD_FLAT_FRAGMENT}
@@ -1386,7 +1347,6 @@ export const POST_FRAGMENT = gql\`
 
 export const POST_CONNECTION_FRAGMENT = gql\`
   fragment PostConnection on PostConnection {
-    ...PostConnectionFlat
     pageInfo {
       ...PageInfoFlat
     }
@@ -1404,7 +1364,6 @@ export const POST_CONNECTION_FRAGMENT = gql\`
     }
   }
 
-  \${POST_CONNECTION_FLAT_FRAGMENT}
   \${PAGE_INFO_FLAT_FRAGMENT}
   \${POST_EDGE_FLAT_FRAGMENT}
   \${POST_FLAT_FRAGMENT}
@@ -1486,7 +1445,6 @@ export const THREAD_FRAGMENT = gql\`
 
 export const THREAD_CONNECTION_FRAGMENT = gql\`
   fragment ThreadConnection on ThreadConnection {
-    ...ThreadConnectionFlat
     pageInfo {
       ...PageInfoFlat
     }
@@ -1510,7 +1468,6 @@ export const THREAD_CONNECTION_FRAGMENT = gql\`
     }
   }
 
-  \${THREAD_CONNECTION_FLAT_FRAGMENT}
   \${PAGE_INFO_FLAT_FRAGMENT}
   \${THREAD_EDGE_FLAT_FRAGMENT}
   \${THREAD_FLAT_FRAGMENT}
@@ -1609,7 +1566,6 @@ export const USER_FRAGMENT = gql\`
 
 export const USER_CONNECTION_FRAGMENT = gql\`
   fragment UserConnection on UserConnection {
-    ...UserConnectionFlat
     pageInfo {
       ...PageInfoFlat
     }
@@ -1627,7 +1583,6 @@ export const USER_CONNECTION_FRAGMENT = gql\`
     }
   }
 
-  \${USER_CONNECTION_FLAT_FRAGMENT}
   \${PAGE_INFO_FLAT_FRAGMENT}
   \${USER_EDGE_FLAT_FRAGMENT}
   \${USER_FLAT_FRAGMENT}

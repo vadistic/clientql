@@ -266,14 +266,23 @@ const cacheAndFragment = (props: CoreProps) => (
   result: SelectionsResult,
 ): SelectionsResult => {
   if (!isNotEmpty(result.selections)) {
-    return result
+    return noopResult
   }
-
-  const typename = lastTypename(stack)
 
   // ensure unique fragmentnames from nested deps
   const uniqueDependencies = onlyUnique(result.dependencies)
-  let fragmented = { ...result, dependencies: uniqueDependencies }
+  /*
+   * write to cache,
+   * if selection is complete (complex and uneffective to store partial ones)
+   */
+  const withCache = (res: SelectionsResult) => {
+    if (res.complete && !props.cache.selections.has(typename)) {
+      props.cache.selections.set(typename, res)
+    }
+    return res
+  }
+
+  const typename = lastTypename(stack)
 
   /*
    * selecions with DEEP fragments are fragmented only when selection was complete
@@ -298,11 +307,11 @@ const cacheAndFragment = (props: CoreProps) => (
       props.cache.fragments.set(fragmentname, fragmentResult)
     }
 
-    fragmented = {
-      ...fragmented,
+    return withCache({
+      ...result,
       selections: [createFragmentSpread(fragmentname)],
       dependencies: [fragmentname, ...uniqueDependencies],
-    }
+    })
   }
 
   /*
@@ -331,6 +340,15 @@ const cacheAndFragment = (props: CoreProps) => (
           },
         )
 
+    // need to check for emptines or the empty fragment will be created
+    if (!isNotEmpty(flatSelections)) {
+      return withCache({
+        ...result,
+        selections: deepSelections,
+        dependencies: uniqueDependencies,
+      })
+    }
+
     if (!props.cache.fragments.has(fragmentname)) {
       const fragmentResult: FragmentResult = {
         fragment: createFragment({
@@ -347,21 +365,16 @@ const cacheAndFragment = (props: CoreProps) => (
       props.cache.fragments.set(fragmentname, fragmentResult)
     }
 
-    fragmented = {
-      ...fragmented,
+    return withCache({
+      ...result,
       selections: [createFragmentSpread(fragmentname), ...deepSelections],
       dependencies: [fragmentname, ...uniqueDependencies],
-    }
+    })
   }
 
-  /*
-   * write to cache,
-   * if selection is complete (complex and uneffective to store partial ones)
-   */
-  if (fragmented.complete && !props.cache.selections.has(typename)) {
-    props.cache.selections.set(typename, fragmented)
-  }
-
-  // return
-  return fragmented
+  // pass through
+  return withCache({
+    ...result,
+    dependencies: uniqueDependencies,
+  })
 }
