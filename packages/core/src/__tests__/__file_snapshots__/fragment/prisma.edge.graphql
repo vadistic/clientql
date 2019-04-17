@@ -1,0 +1,66 @@
+fragment BoardEdgePartial on BoardEdge {
+  ...BoardEdgeFlat
+  node {
+    ...BoardFlat
+    admins {
+      ...UserFlat
+      posts {
+        ...PostFlat
+      }
+    }
+    members {
+      ...UserFlat
+      posts {
+        ...PostFlat
+      }
+    }
+    threads {
+      ...ThreadFlat
+      author {
+        ...UserFlat
+      }
+      entry {
+        ...PostFlat
+      }
+      replies {
+        ...PostFlat
+      }
+    }
+  }
+}
+
+fragment BoardEdgeFlat on BoardEdge {
+  __typename
+  cursor
+}
+
+fragment BoardFlat on Board {
+  __typename
+  id
+  createdAt
+}
+
+fragment UserFlat on User {
+  __typename
+  id
+  nationality
+  email
+  name
+}
+
+fragment PostFlat on Post {
+  __typename
+  id
+  content
+  createdAt
+  published
+  title
+  updatedAt
+}
+
+fragment ThreadFlat on Thread {
+  __typename
+  id
+  createdAt
+  name
+}

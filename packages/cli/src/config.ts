@@ -4,9 +4,11 @@ import {
 } from '@graphql-clientgen/generator'
 import { readFile } from './read-write'
 
-export const getConfig = async (path?: string): Promise<GeneratorConfig> => {
+export const getConfig = async (
+  path?: string,
+): Promise<Partial<GeneratorConfig>> => {
   if (!path) {
-    return defaultGeneratorConfig
+    return {}
   }
 
   const res = await readFile(path)
@@ -26,10 +28,7 @@ export const getConfig = async (path?: string): Promise<GeneratorConfig> => {
       return defaultGeneratorConfig
     }
 
-    return {
-      ...defaultGeneratorConfig,
-      ...config,
-    }
+    return config
   }
 }
 

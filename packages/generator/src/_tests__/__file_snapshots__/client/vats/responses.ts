@@ -425,6 +425,7 @@ export type InviteResponse = InviteFlat & {
 export type LocationResponse = LocationFlat
 
 export type ApplicationConnectionResponse = {
+  __typename: 'ApplicationConnection'
   pageInfo: PageInfoFlat
   edges: ApplicationEdgeFlat & {
     node: ApplicationFlat & {
@@ -480,6 +481,7 @@ export type ApplicationEdgeResponse = ApplicationEdgeFlat & {
 export type AggregateApplicationResponse = AggregateApplicationFlat
 
 export type CandidateConnectionResponse = {
+  __typename: 'CandidateConnection'
   pageInfo: PageInfoFlat
   edges: CandidateEdgeFlat & {
     node: CandidateFlat & {
@@ -527,6 +529,7 @@ export type CandidateEdgeResponse = CandidateEdgeFlat & {
 export type AggregateCandidateResponse = AggregateCandidateFlat
 
 export type JobConnectionResponse = {
+  __typename: 'JobConnection'
   pageInfo: PageInfoFlat
   edges: JobEdgeFlat & {
     node: JobFlat & {
@@ -572,6 +575,7 @@ export type JobEdgeResponse = JobEdgeFlat & {
 export type AggregateJobResponse = AggregateJobFlat
 
 export type SourceConnectionResponse = {
+  __typename: 'SourceConnection'
   pageInfo: PageInfoFlat
   edges: SourceEdgeFlat & {
     node: SourceFlat
@@ -586,6 +590,7 @@ export type SourceEdgeResponse = SourceEdgeFlat & {
 export type AggregateSourceResponse = AggregateSourceFlat
 
 export type TagConnectionResponse = {
+  __typename: 'TagConnection'
   pageInfo: PageInfoFlat
   edges: TagEdgeFlat & {
     node: TagFlat
@@ -600,6 +605,7 @@ export type TagEdgeResponse = TagEdgeFlat & {
 export type AggregateTagResponse = AggregateTagFlat
 
 export type TaskConnectionResponse = {
+  __typename: 'TaskConnection'
   pageInfo: PageInfoFlat
   edges: TaskEdgeFlat & {
     node: TaskFlat & {
@@ -633,6 +639,7 @@ export type TaskEdgeResponse = TaskEdgeFlat & {
 export type AggregateTaskResponse = AggregateTaskFlat
 
 export type UserConnectionResponse = {
+  __typename: 'UserConnection'
   pageInfo: PageInfoFlat
   edges: UserEdgeFlat & {
     node: UserFlat & {
@@ -655,6 +662,7 @@ export type UserEdgeResponse = UserEdgeFlat & {
 export type AggregateUserResponse = AggregateUserFlat
 
 export type WorkflowConnectionResponse = {
+  __typename: 'WorkflowConnection'
   pageInfo: PageInfoFlat
   edges: WorkflowEdgeFlat & {
     node: WorkflowFlat & {
@@ -698,6 +706,7 @@ export type BatchPayloadResponse = BatchPayloadFlat
  */
 
 export type ApplicationFlat = {
+  __typename: 'Application'
   createdAt: string
   id: string
   updatedAt: string
@@ -705,6 +714,7 @@ export type ApplicationFlat = {
 }
 
 export type DisqualificationInstanceFlat = {
+  __typename: 'DisqualificationInstance'
   id: string
   createdAt: string
   updatedAt: string
@@ -712,6 +722,7 @@ export type DisqualificationInstanceFlat = {
 }
 
 export type DisqualificationFlat = {
+  __typename: 'Disqualification'
   id: string
   createdAt: string
   updatedAt: string
@@ -720,6 +731,7 @@ export type DisqualificationFlat = {
 }
 
 export type UserFlat = {
+  __typename: 'User'
   id: string
   createdAt: string
   updatedAt: string
@@ -734,6 +746,7 @@ export type UserFlat = {
 }
 
 export type TaskFlat = {
+  __typename: 'Task'
   id: string
   createdAt: string
   updatedAt: string
@@ -743,6 +756,7 @@ export type TaskFlat = {
 }
 
 export type FileFlat = {
+  __typename: 'File'
   id: string
   createdAt: string
   updatedAt: string
@@ -753,6 +767,7 @@ export type FileFlat = {
 }
 
 export type StageFlat = {
+  __typename: 'Stage'
   id: string
   createdAt: string
   updatedAt: string
@@ -763,6 +778,7 @@ export type StageFlat = {
 }
 
 export type ReviewInstanceFlat = {
+  __typename: 'ReviewInstance'
   id: string
   createdAt: string
   updatedAt: string
@@ -771,6 +787,7 @@ export type ReviewInstanceFlat = {
 }
 
 export type ReviewFlat = {
+  __typename: 'Review'
   id: string
   createdAt: string
   updatedAt: string
@@ -778,6 +795,7 @@ export type ReviewFlat = {
 }
 
 export type FieldFlat = {
+  __typename: 'Field'
   id: string
   createdAt: string
   updatedAt: string
@@ -787,6 +805,7 @@ export type FieldFlat = {
 }
 
 export type FieldInstanceFlat = {
+  __typename: 'FieldInstance'
   id: string
   createdAt: string
   updatedAt: string
@@ -794,6 +813,7 @@ export type FieldInstanceFlat = {
 }
 
 export type JobFlat = {
+  __typename: 'Job'
   id: string
   createdAt: string
   updatedAt: string
@@ -807,6 +827,7 @@ export type JobFlat = {
 }
 
 export type WorkspaceFlat = {
+  __typename: 'Workspace'
   id: string
   createdAt: string
   updatedAt: string
@@ -815,6 +836,7 @@ export type WorkspaceFlat = {
 }
 
 export type CandidateFlat = {
+  __typename: 'Candidate'
   id: string
   createdAt: string
   updatedAt: string
@@ -831,6 +853,7 @@ export type CandidateFlat = {
 }
 
 export type WorkflowFlat = {
+  __typename: 'Workflow'
   id: string
   createdAt: string
   updatedAt: string
@@ -839,6 +862,7 @@ export type WorkflowFlat = {
 }
 
 export type InviteFlat = {
+  __typename: 'Invite'
   id: string
   createdAt: string
   updatedAt: string
@@ -847,6 +871,7 @@ export type InviteFlat = {
 }
 
 export type CommentFlat = {
+  __typename: 'Comment'
   id: string
   createdAt: string
   updatedAt: string
@@ -854,6 +879,7 @@ export type CommentFlat = {
 }
 
 export type LocationFlat = {
+  __typename: 'Location'
   id: string
   createdAt: string
   updatedAt: string
@@ -864,6 +890,7 @@ export type LocationFlat = {
 }
 
 export type TagFlat = {
+  __typename: 'Tag'
   id: string
   createdAt: string
   updatedAt: string
@@ -872,6 +899,7 @@ export type TagFlat = {
 }
 
 export type SourceFlat = {
+  __typename: 'Source'
   id: string
   createdAt: string
   updatedAt: string
@@ -880,6 +908,7 @@ export type SourceFlat = {
 }
 
 export type PageInfoFlat = {
+  __typename: 'PageInfo'
   hasNextPage: boolean
   hasPreviousPage: boolean
   startCursor?: string | null
@@ -887,70 +916,87 @@ export type PageInfoFlat = {
 }
 
 export type ApplicationEdgeFlat = {
+  __typename: 'ApplicationEdge'
   cursor: string
 }
 
 export type AggregateApplicationFlat = {
+  __typename: 'AggregateApplication'
   count: number
 }
 
 export type CandidateEdgeFlat = {
+  __typename: 'CandidateEdge'
   cursor: string
 }
 
 export type AggregateCandidateFlat = {
+  __typename: 'AggregateCandidate'
   count: number
 }
 
 export type JobEdgeFlat = {
+  __typename: 'JobEdge'
   cursor: string
 }
 
 export type AggregateJobFlat = {
+  __typename: 'AggregateJob'
   count: number
 }
 
 export type SourceEdgeFlat = {
+  __typename: 'SourceEdge'
   cursor: string
 }
 
 export type AggregateSourceFlat = {
+  __typename: 'AggregateSource'
   count: number
 }
 
 export type TagEdgeFlat = {
+  __typename: 'TagEdge'
   cursor: string
 }
 
 export type AggregateTagFlat = {
+  __typename: 'AggregateTag'
   count: number
 }
 
 export type TaskEdgeFlat = {
+  __typename: 'TaskEdge'
   cursor: string
 }
 
 export type AggregateTaskFlat = {
+  __typename: 'AggregateTask'
   count: number
 }
 
 export type UserEdgeFlat = {
+  __typename: 'UserEdge'
   cursor: string
 }
 
 export type AggregateUserFlat = {
+  __typename: 'AggregateUser'
   count: number
 }
 
 export type WorkflowEdgeFlat = {
+  __typename: 'WorkflowEdge'
   cursor: string
 }
 
 export type AggregateWorkflowFlat = {
+  __typename: 'AggregateWorkflow'
   count: number
 }
 
 export type BatchPayloadFlat = {
+  __typename: 'BatchPayload'
   count: number
 }
 

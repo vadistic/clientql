@@ -8,7 +8,7 @@ const prismaProps = getCodegenProps(PRISMA_TYPEDEFS)
 
 const complexProps = getCodegenProps(COMPLEX_TYPEDEFS)
 
-describe('executable selection nodes', () => {
+describe('executable codegen', () => {
   it('prints simple prisma selections', () => {
     const fixture = buildOperationDoc(prismaProps)([
       ['query', undefined],
@@ -29,7 +29,7 @@ describe('executable selection nodes', () => {
     `)
   })
 
-  it('prints complex  selections', () => {
+  it('prints complex selections', () => {
     const fixture = buildOperationDoc(complexProps)([
       ['query', undefined],
       ['findEventsAtVenue', undefined],
@@ -38,7 +38,10 @@ describe('executable selection nodes', () => {
     const selections = getDocDefinition(fixture, Kind.OPERATION_DEFINITION)!
       .selectionSet.selections
 
-    const res = printSelections(complexProps)('Query', selections)
+    const res = printSelections(complexProps)(
+      complexProps.roots.get('query')!,
+      selections,
+    )
 
     expect(res).toMatchInlineSnapshot(`
       "{

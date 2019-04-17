@@ -53,14 +53,14 @@ export const generateGraphqlFragments = (props: GeneratorProps) => {
     )
     .filter(nonNull)
 
-  const dependencyResults = onlyUnique(
+  const fragmentDependencies = onlyUnique(
     fragmentResults.reduce(
-      (acc, { dependencies }) => [...acc, ...dependencies],
+      (acc, { fragmentNames }) => [...acc, ...fragmentNames],
       [] as string[],
     ),
   ).map(name => props.cache.fragments.get(name)!)
 
-  return { fragments: fragmentResults, dependencies: dependencyResults }
+  return { fragments: fragmentResults, dependencies: fragmentDependencies }
 }
 
 /**
@@ -81,11 +81,11 @@ export const generateGraphqlFragmentsFile = (props: GeneratorProps) => {
   }
 
   return resolvedDependencies
-    .map(({ fragment, dependencies: deps }) =>
+    .map(({ fragment, fragmentNames }) =>
       printTsGql(
         props.naming.fragmentConstantName(fragment.name.value),
         fragment,
-        deps.map(props.naming.fragmentConstantName),
+        fragmentNames.map(props.naming.fragmentConstantName),
       ),
     )
     .join('\n\n')
@@ -100,13 +100,13 @@ export const generateGraphqlFragmentsFile = (props: GeneratorProps) => {
 const resolveFragmentDependencies = (fragments: FragmentResult[]) => {
   const resolvedNames = new Set<string>()
   const unresolvedNames = new Set<string>()
-  const fragmentMap = new Map(
+  const fragmentsMap = new Map(
     fragments.map(fragResult => [fragResult.fragment.name.value, fragResult]),
   )
 
   // add no deps fragments
   fragments.forEach(fragmentResult => {
-    if (fragmentResult.dependencies.length === 0) {
+    if (fragmentResult.fragmentNames.length === 0) {
       resolvedNames.add(fragmentResult.fragment.name.value)
     } else {
       unresolvedNames.add(fragmentResult.fragment.name.value)
@@ -119,9 +119,13 @@ const resolveFragmentDependencies = (fragments: FragmentResult[]) => {
 
   while (unresolvedNames.size !== 0) {
     unresolvedNames.forEach(name => {
-      const fragmentResult = fragmentMap.get(name)!
+      const fragmentResult = fragmentsMap.get(name)!
 
-      if (fragmentResult.dependencies.every(dep => resolvedNames.has(dep))) {
+      if (
+        fragmentResult.fragmentNames.every(fragName =>
+          resolvedNames.has(fragName),
+        )
+      ) {
         resolvedNames.add(name)
         unresolvedNames.delete(name)
       }
@@ -133,5 +137,5 @@ const resolveFragmentDependencies = (fragments: FragmentResult[]) => {
     }
   }
 
-  return Array.from(resolvedNames).map(name => fragmentMap.get(name)!)
+  return Array.from(resolvedNames).map(name => fragmentsMap.get(name)!)
 }

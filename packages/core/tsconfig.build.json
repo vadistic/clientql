@@ -5,6 +5,8 @@
     "dist",
     "**/tests/**",
     "**/__tests__/**",
-    "**/*.test.ts"
+    "**/*.test.ts",
+    "**/__snapshots__/**",
+    "**/__file_snapshots__/**"
   ]
 }

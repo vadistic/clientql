@@ -183,6 +183,7 @@ fragment Conference on Conference {
 exports[`generate graphql fragments complex > generate fragments file in js 1`] = `
 "export const STAKEHOLDER_FLAT_FRAGMENT = gql\`
   fragment StakeholderFlat on Stakeholder {
+    __typename
     id
     name
     company
@@ -194,6 +195,7 @@ exports[`generate graphql fragments complex > generate fragments file in js 1`] 
 
 export const CLIENT_FLAT_FRAGMENT = gql\`
   fragment ClientFlat on Client {
+    __typename
     id
     name
   }
@@ -215,6 +217,7 @@ export const EVENT_FLAT_FRAGMENT = gql\`
 
 export const VENUE_FLAT_FRAGMENT = gql\`
   fragment VenueFlat on Venue {
+    __typename
     id
     name
     address
@@ -226,6 +229,7 @@ export const VENUE_FLAT_FRAGMENT = gql\`
 
 export const CONCERT_FLAT_FRAGMENT = gql\`
   fragment ConcertFlat on Concert {
+    __typename
     id
     name
     startsAt
@@ -238,6 +242,7 @@ export const CONCERT_FLAT_FRAGMENT = gql\`
 
 export const PERFORMER_FLAT_FRAGMENT = gql\`
   fragment PerformerFlat on Performer {
+    __typename
     id
     name
     contact
@@ -250,6 +255,7 @@ export const PERFORMER_FLAT_FRAGMENT = gql\`
 
 export const FESTIVAL_FLAT_FRAGMENT = gql\`
   fragment FestivalFlat on Festival {
+    __typename
     id
     name
     startsAt
@@ -262,6 +268,7 @@ export const FESTIVAL_FLAT_FRAGMENT = gql\`
 
 export const CONFERENCE_FLAT_FRAGMENT = gql\`
   fragment ConferenceFlat on Conference {
+    __typename
     id
     name
     startsAt
@@ -275,6 +282,7 @@ export const CONFERENCE_FLAT_FRAGMENT = gql\`
 
 export const SPEAKER_FLAT_FRAGMENT = gql\`
   fragment SpeakerFlat on Speaker {
+    __typename
     id
     name
     contact
@@ -587,6 +595,7 @@ fragment Board on Board {
 }
 
 fragment BoardConnection on BoardConnection {
+  __typename
   pageInfo {
     ...PageInfoFlat
   }
@@ -695,6 +704,7 @@ fragment Post on Post {
 }
 
 fragment PostConnection on PostConnection {
+  __typename
   pageInfo {
     ...PageInfoFlat
   }
@@ -762,6 +772,7 @@ fragment Thread on Thread {
 }
 
 fragment ThreadConnection on ThreadConnection {
+  __typename
   pageInfo {
     ...PageInfoFlat
   }
@@ -850,6 +861,7 @@ fragment User on User {
 }
 
 fragment UserConnection on UserConnection {
+  __typename
   pageInfo {
     ...PageInfoFlat
   }
@@ -899,6 +911,7 @@ fragment UserSubscriptionPayload on UserSubscriptionPayload {
 exports[`generate graphql fragments prisma > generate fragments file in js 1`] = `
 "export const AGGREGATE_BOARD_FLAT_FRAGMENT = gql\`
   fragment AggregateBoardFlat on AggregateBoard {
+    __typename
     count
   }
 
@@ -907,6 +920,7 @@ exports[`generate graphql fragments prisma > generate fragments file in js 1`] =
 
 export const AGGREGATE_POST_FLAT_FRAGMENT = gql\`
   fragment AggregatePostFlat on AggregatePost {
+    __typename
     count
   }
 
@@ -915,6 +929,7 @@ export const AGGREGATE_POST_FLAT_FRAGMENT = gql\`
 
 export const AGGREGATE_THREAD_FLAT_FRAGMENT = gql\`
   fragment AggregateThreadFlat on AggregateThread {
+    __typename
     count
   }
 
@@ -923,6 +938,7 @@ export const AGGREGATE_THREAD_FLAT_FRAGMENT = gql\`
 
 export const AGGREGATE_USER_FLAT_FRAGMENT = gql\`
   fragment AggregateUserFlat on AggregateUser {
+    __typename
     count
   }
 
@@ -931,6 +947,7 @@ export const AGGREGATE_USER_FLAT_FRAGMENT = gql\`
 
 export const BATCH_PAYLOAD_FLAT_FRAGMENT = gql\`
   fragment BatchPayloadFlat on BatchPayload {
+    __typename
     count
   }
 
@@ -939,6 +956,7 @@ export const BATCH_PAYLOAD_FLAT_FRAGMENT = gql\`
 
 export const BOARD_FLAT_FRAGMENT = gql\`
   fragment BoardFlat on Board {
+    __typename
     id
     createdAt
   }
@@ -948,6 +966,7 @@ export const BOARD_FLAT_FRAGMENT = gql\`
 
 export const USER_FLAT_FRAGMENT = gql\`
   fragment UserFlat on User {
+    __typename
     id
     nationality
     email
@@ -959,6 +978,7 @@ export const USER_FLAT_FRAGMENT = gql\`
 
 export const POST_FLAT_FRAGMENT = gql\`
   fragment PostFlat on Post {
+    __typename
     id
     content
     createdAt
@@ -972,6 +992,7 @@ export const POST_FLAT_FRAGMENT = gql\`
 
 export const THREAD_FLAT_FRAGMENT = gql\`
   fragment ThreadFlat on Thread {
+    __typename
     id
     createdAt
     name
@@ -982,6 +1003,7 @@ export const THREAD_FLAT_FRAGMENT = gql\`
 
 export const PAGE_INFO_FLAT_FRAGMENT = gql\`
   fragment PageInfoFlat on PageInfo {
+    __typename
     hasNextPage
     hasPreviousPage
     startCursor
@@ -993,6 +1015,7 @@ export const PAGE_INFO_FLAT_FRAGMENT = gql\`
 
 export const BOARD_EDGE_FLAT_FRAGMENT = gql\`
   fragment BoardEdgeFlat on BoardEdge {
+    __typename
     cursor
   }
 
@@ -1001,6 +1024,7 @@ export const BOARD_EDGE_FLAT_FRAGMENT = gql\`
 
 export const BOARD_PREVIOUS_VALUES_FLAT_FRAGMENT = gql\`
   fragment BoardPreviousValuesFlat on BoardPreviousValues {
+    __typename
     id
     createdAt
   }
@@ -1010,6 +1034,7 @@ export const BOARD_PREVIOUS_VALUES_FLAT_FRAGMENT = gql\`
 
 export const BOARD_SUBSCRIPTION_PAYLOAD_FLAT_FRAGMENT = gql\`
   fragment BoardSubscriptionPayloadFlat on BoardSubscriptionPayload {
+    __typename
     mutation
     updatedFields
   }
@@ -1027,6 +1052,7 @@ export const NODE_FLAT_FRAGMENT = gql\`
 
 export const POST_EDGE_FLAT_FRAGMENT = gql\`
   fragment PostEdgeFlat on PostEdge {
+    __typename
     cursor
   }
 
@@ -1035,6 +1061,7 @@ export const POST_EDGE_FLAT_FRAGMENT = gql\`
 
 export const POST_PREVIOUS_VALUES_FLAT_FRAGMENT = gql\`
   fragment PostPreviousValuesFlat on PostPreviousValues {
+    __typename
     id
     content
     createdAt
@@ -1048,6 +1075,7 @@ export const POST_PREVIOUS_VALUES_FLAT_FRAGMENT = gql\`
 
 export const POST_SUBSCRIPTION_PAYLOAD_FLAT_FRAGMENT = gql\`
   fragment PostSubscriptionPayloadFlat on PostSubscriptionPayload {
+    __typename
     mutation
     updatedFields
   }
@@ -1057,6 +1085,7 @@ export const POST_SUBSCRIPTION_PAYLOAD_FLAT_FRAGMENT = gql\`
 
 export const THREAD_EDGE_FLAT_FRAGMENT = gql\`
   fragment ThreadEdgeFlat on ThreadEdge {
+    __typename
     cursor
   }
 
@@ -1065,6 +1094,7 @@ export const THREAD_EDGE_FLAT_FRAGMENT = gql\`
 
 export const THREAD_PREVIOUS_VALUES_FLAT_FRAGMENT = gql\`
   fragment ThreadPreviousValuesFlat on ThreadPreviousValues {
+    __typename
     id
     createdAt
     name
@@ -1075,6 +1105,7 @@ export const THREAD_PREVIOUS_VALUES_FLAT_FRAGMENT = gql\`
 
 export const THREAD_SUBSCRIPTION_PAYLOAD_FLAT_FRAGMENT = gql\`
   fragment ThreadSubscriptionPayloadFlat on ThreadSubscriptionPayload {
+    __typename
     mutation
     updatedFields
   }
@@ -1084,6 +1115,7 @@ export const THREAD_SUBSCRIPTION_PAYLOAD_FLAT_FRAGMENT = gql\`
 
 export const USER_EDGE_FLAT_FRAGMENT = gql\`
   fragment UserEdgeFlat on UserEdge {
+    __typename
     cursor
   }
 
@@ -1092,6 +1124,7 @@ export const USER_EDGE_FLAT_FRAGMENT = gql\`
 
 export const USER_PREVIOUS_VALUES_FLAT_FRAGMENT = gql\`
   fragment UserPreviousValuesFlat on UserPreviousValues {
+    __typename
     id
     nationality
     email
@@ -1103,6 +1136,7 @@ export const USER_PREVIOUS_VALUES_FLAT_FRAGMENT = gql\`
 
 export const USER_SUBSCRIPTION_PAYLOAD_FLAT_FRAGMENT = gql\`
   fragment UserSubscriptionPayloadFlat on UserSubscriptionPayload {
+    __typename
     mutation
     updatedFields
   }
@@ -1196,6 +1230,7 @@ export const BOARD_FRAGMENT = gql\`
 
 export const BOARD_CONNECTION_FRAGMENT = gql\`
   fragment BoardConnection on BoardConnection {
+    __typename
     pageInfo {
       ...PageInfoFlat
     }
@@ -1347,6 +1382,7 @@ export const POST_FRAGMENT = gql\`
 
 export const POST_CONNECTION_FRAGMENT = gql\`
   fragment PostConnection on PostConnection {
+    __typename
     pageInfo {
       ...PageInfoFlat
     }
@@ -1445,6 +1481,7 @@ export const THREAD_FRAGMENT = gql\`
 
 export const THREAD_CONNECTION_FRAGMENT = gql\`
   fragment ThreadConnection on ThreadConnection {
+    __typename
     pageInfo {
       ...PageInfoFlat
     }
@@ -1566,6 +1603,7 @@ export const USER_FRAGMENT = gql\`
 
 export const USER_CONNECTION_FRAGMENT = gql\`
   fragment UserConnection on UserConnection {
+    __typename
     pageInfo {
       ...PageInfoFlat
     }

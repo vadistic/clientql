@@ -17,7 +17,7 @@ export type OperationEdge = [Fieldname, undefined] | [undefined, Typename]
 
 export interface OperationResult {
   operation: OperationDefinitionNode
-  dependencies: string[]
+  fragmentNames: FragmentName[]
   complete: boolean
   // flat operation would be simple (query {hello})...
   flat: boolean
@@ -25,14 +25,14 @@ export interface OperationResult {
 
 export interface SelectionsResult {
   selections?: SelectionNode[]
-  dependencies: FragmentName[]
+  fragmentNames: FragmentName[]
   complete: boolean
   flat: boolean
 }
 
 export interface FragmentResult {
   fragment: FragmentDefinitionNode
-  dependencies: FragmentName[]
+  fragmentNames: FragmentName[]
   flat: boolean
   // I'm building & caching only complete fragments
   complete: boolean // true
@@ -43,14 +43,14 @@ export interface FragmentResult {
  */
 export interface NestableSelectionResult {
   selection?: SelectionNode
-  dependencies: FragmentName[]
+  fragmentNames: FragmentName[]
   complete: boolean
   flat: boolean
 }
 
 export interface OperationSelectionResult {
   variables: VariableDefinitionNode[]
-  dependencies: string[]
+  fragmentNames: FragmentName[]
   selections: SelectionNode[]
   complete: boolean
   flat: boolean

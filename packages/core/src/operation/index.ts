@@ -1,4 +1,5 @@
-export * from './build-selections'
-export * from './build-operation'
+export * from './selections'
+export * from './operation'
+export * from './fragment'
 export * from './utils'
 export * from './types'

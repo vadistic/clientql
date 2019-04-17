@@ -100,6 +100,7 @@ export type EventFlat = {
 }
 
 export type VenueFlat = {
+  __typename: 'Venue'
   id: string
   name: string
   address?: string | null
@@ -107,6 +108,7 @@ export type VenueFlat = {
 }
 
 export type ConcertFlat = {
+  __typename: 'Concert'
   id: string
   name: string
   startsAt?: string | null
@@ -115,6 +117,7 @@ export type ConcertFlat = {
 }
 
 export type PerformerFlat = {
+  __typename: 'Performer'
   id: string
   name: string
   contact?: string | null
@@ -123,6 +126,7 @@ export type PerformerFlat = {
 }
 
 export type FestivalFlat = {
+  __typename: 'Festival'
   id: string
   name: string
   startsAt?: string | null
@@ -131,6 +135,7 @@ export type FestivalFlat = {
 }
 
 export type ConferenceFlat = {
+  __typename: 'Conference'
   id: string
   name: string
   startsAt?: string | null
@@ -140,17 +145,20 @@ export type ConferenceFlat = {
 }
 
 export type SpeakerFlat = {
+  __typename: 'Speaker'
   id: string
   name: string
   contact?: string | null
 }
 
 export type ClientFlat = {
+  __typename: 'Client'
   id: string
   name: string
 }
 
 export type StakeholderFlat = {
+  __typename: 'Stakeholder'
   id: string
   name: string
   company?: string | null

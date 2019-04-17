@@ -1,0 +1,17 @@
+query FindEventsAtVenueConcertVenueMyQuery($venueId: ID!) {
+  findEventsAtVenue(venueId: $venueId) {
+    ... on Concert {
+      venue {
+        ...VenueFlat
+      }
+    }
+  }
+}
+
+fragment VenueFlat on Venue {
+  __typename
+  id
+  name
+  address
+  maxOccupancy
+}

@@ -21,6 +21,7 @@ export const printSelections = (props: CodegenProps) => (
 
   // weird
   if (!vtx) {
+    console.log(parent, selections)
     throw Error(`Missing parent node ${parent}`)
   }
 
@@ -41,9 +42,11 @@ export const printSelections = (props: CodegenProps) => (
        * I think that for operations it's a bit more semantic to just reflect provided selection
        */
       if (node.name.value === '__typename') {
-        const typenameString =
+        const typenameTs =
           props.config.addTypename === 'string' ? 'string' : `'${parent}'`
-        return `__typename: ${typenameString}`
+
+        lines.push(`__typename: ${typenameTs}`)
+        continue
       }
 
       const field = vtx.weightsMap!.get(node.name.value)!

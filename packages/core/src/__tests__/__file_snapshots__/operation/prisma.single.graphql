@@ -1,0 +1,26 @@
+query UserQuery($where: UserWhereUniqueInput!) {
+  user(where: $where) {
+    ...UserFlat
+    posts {
+      ...PostFlat
+    }
+  }
+}
+
+fragment UserFlat on User {
+  __typename
+  id
+  nationality
+  email
+  name
+}
+
+fragment PostFlat on Post {
+  __typename
+  id
+  content
+  createdAt
+  published
+  title
+  updatedAt
+}

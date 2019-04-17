@@ -1,0 +1,98 @@
+query FindEventsAtVenueMyQuery($venueId: ID!) {
+  findEventsAtVenue(venueId: $venueId) {
+    ...EventFlat
+    venue {
+      ...VenueFlat
+    }
+    ... on Concert {
+      ...ConcertFlat
+      venue {
+        ...VenueFlat
+      }
+      previousVenues {
+        ...VenueFlat
+      }
+      performingBand {
+        ...PerformerFlat
+      }
+    }
+    ... on Festival {
+      ...FestivalFlat
+      venue {
+        ...VenueFlat
+      }
+      performers {
+        ...PerformerFlat
+      }
+    }
+    ... on Conference {
+      ...ConferenceFlat
+      venue {
+        ...VenueFlat
+      }
+      speakers {
+        ...SpeakerFlat
+      }
+    }
+  }
+}
+
+fragment EventFlat on Event {
+  id
+  name
+  startsAt
+  endsAt
+  minAgeRestriction
+}
+
+fragment VenueFlat on Venue {
+  __typename
+  id
+  name
+  address
+  maxOccupancy
+}
+
+fragment ConcertFlat on Concert {
+  __typename
+  id
+  name
+  startsAt
+  endsAt
+  minAgeRestriction
+}
+
+fragment PerformerFlat on Performer {
+  __typename
+  id
+  name
+  contact
+  speciality
+  fee
+}
+
+fragment FestivalFlat on Festival {
+  __typename
+  id
+  name
+  startsAt
+  endsAt
+  minAgeRestriction
+}
+
+fragment ConferenceFlat on Conference {
+  __typename
+  id
+  name
+  startsAt
+  endsAt
+  minAgeRestriction
+  workshops
+}
+
+fragment SpeakerFlat on Speaker {
+  __typename
+  id
+  name
+  contact
+}

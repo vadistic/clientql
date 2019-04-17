@@ -93,10 +93,10 @@ const buildClientSelections = (props: GeneratorProps) => (
 ) => {
   const selectionsMap = new Map<Typename, SelectionNode[]>()
   // resolve unique fragments
-  const dependenciesSet = new Set<FragmentName>()
+  const fragmentNamesSet = new Set<FragmentName>()
 
   targets.forEach(target => {
-    const { selections, dependencies } = buildSelections(props)(target)
+    const { selections, fragmentNames } = buildSelections(props)(target)
 
     // should be noop
     if (!isNotEmpty(selections)) {
@@ -104,14 +104,14 @@ const buildClientSelections = (props: GeneratorProps) => (
     }
 
     selectionsMap.set(target, selections)
-    dependencies.forEach(name => {
-      dependenciesSet.add(name)
+    fragmentNames.forEach(name => {
+      fragmentNamesSet.add(name)
     })
   })
 
   // retrive fragments form cache
   const fragments: FragmentDefinitionNode[] = []
-  dependenciesSet.forEach(name => {
+  fragmentNamesSet.forEach(name => {
     fragments.push(props.cache.fragments.get(name)!.fragment)
   })
 

@@ -1,4 +1,4 @@
-import { Kind, SelectionNode } from 'graphql'
+import { FieldDefinitionNode, Kind, SelectionNode } from 'graphql'
 import {
   createField,
   createFragment,
@@ -17,6 +17,7 @@ import { FragmentType } from '../config'
 import { CoreProps } from '../core'
 import { Edge } from '../graph'
 import { isNotEmpty } from '../utils'
+import { getFragmentName } from './fragment'
 import {
   FragmentResult,
   NestableSelectionResult,
@@ -49,7 +50,7 @@ export const buildSelections = (props: CoreProps) => (typename: Typename) => {
 const noopResult: SelectionsResult = {
   complete: true,
   flat: true,
-  dependencies: [],
+  fragmentNames: [],
   selections: undefined,
 }
 
@@ -108,9 +109,8 @@ const buildRecursiveSelections = (props: CoreProps) => (
 /**
  * wraps non-flat selection result in field and passthrough flat fields
  *
- * I want `buildSelections` fn to retun flat/spreaded result for easier use in other modules,
- * but recursion needs to wrap nested in - well nested field
- * hence this helper
+ * I want `buildSelections` fn to return flat/spreaded result for easier use in other modules,
+ * but recursion needs to wrap nesting on each level - hence this helper
  */
 
 const wrapNestedSelections = (
@@ -150,7 +150,7 @@ const buildNestedSelections = (props: CoreProps) => (
   let flat = true
 
   const selections: SelectionNode[] = []
-  const dependencies: FragmentName[] = []
+  const fragmentNames: FragmentName[] = []
 
   /*
    * handle ObjectTypes
@@ -168,11 +168,17 @@ const buildNestedSelections = (props: CoreProps) => (
       }
 
       selections.push(wrapped.selection)
-      dependencies.push(...wrapped.dependencies)
+      fragmentNames.push(...wrapped.fragmentNames)
 
       // basically AND gate^^
       flat = flat && recursive.flat
       complete = complete && recursive.complete
+    }
+
+    // add typename if config and not empty
+    // not adding to interface since inlines will have it, it makes things easier
+    if (props.config.addTypename && selections.length !== 0) {
+      selections.unshift(createField({ fieldname: '__typename' }))
     }
   }
 
@@ -200,7 +206,7 @@ const buildNestedSelections = (props: CoreProps) => (
 
       // but wrapping in inline fragment
       selections.push(createInlineFragment(implem, recursive.selections))
-      dependencies.push(...recursive.dependencies)
+      fragmentNames.push(...recursive.fragmentNames)
 
       flat = flat && recursive.flat
       complete = complete && recursive.complete
@@ -224,7 +230,7 @@ const buildNestedSelections = (props: CoreProps) => (
       }
 
       selections.push(wrapped.selection)
-      dependencies.push(...wrapped.dependencies)
+      fragmentNames.push(...wrapped.fragmentNames)
 
       flat = flat && recursive.flat
       complete = complete && recursive.complete
@@ -242,7 +248,7 @@ const buildNestedSelections = (props: CoreProps) => (
       }
 
       selections.push(createInlineFragment(implem, recursive.selections))
-      dependencies.push(...recursive.dependencies)
+      fragmentNames.push(...recursive.fragmentNames)
 
       flat = flat && recursive.flat
       complete = complete && recursive.complete
@@ -256,7 +262,7 @@ const buildNestedSelections = (props: CoreProps) => (
   return cacheAndFragment(props)(stack, {
     complete,
     flat,
-    dependencies,
+    fragmentNames,
     selections,
   })
 }
@@ -270,7 +276,14 @@ const cacheAndFragment = (props: CoreProps) => (
   }
 
   // ensure unique fragmentnames from nested deps
-  const uniqueDependencies = onlyUnique(result.dependencies)
+  const uniqueFragmentNames = onlyUnique(result.fragmentNames)
+  const typename = lastTypename(stack)
+
+  const uniquedResult: SelectionsResult = {
+    ...result,
+    fragmentNames: uniqueFragmentNames,
+  }
+
   /*
    * write to cache,
    * if selection is complete (complex and uneffective to store partial ones)
@@ -282,46 +295,45 @@ const cacheAndFragment = (props: CoreProps) => (
     return res
   }
 
-  const typename = lastTypename(stack)
-
   /*
    * selecions with DEEP fragments are fragmented only when selection was complete
    */
 
   if (props.config.useFragments === FragmentType.DEEP && result.complete) {
-    const fragmentname: FragmentName =
-      typename + (result.flat ? 'Flat' : 'Deep')
+    const fragmentName = getFragmentName(props)({
+      typename,
+      flat: false,
+      complete: true,
+    })
 
-    if (!props.cache.fragments.has(fragmentname)) {
+    if (!props.cache.fragments.has(fragmentName)) {
       const fragmentResult: FragmentResult = {
         fragment: createFragment({
           condition: typename,
-          fragmentname,
+          fragmentname: fragmentName,
           selections: result.selections,
         }),
-        dependencies: uniqueDependencies,
+        fragmentNames: uniqueFragmentNames,
         flat: result.flat,
         complete: true,
       }
 
-      props.cache.fragments.set(fragmentname, fragmentResult)
+      props.cache.fragments.set(fragmentName, fragmentResult)
     }
 
     return withCache({
       ...result,
-      selections: [createFragmentSpread(fragmentname)],
-      dependencies: [fragmentname, ...uniqueDependencies],
+      selections: [createFragmentSpread(fragmentName)],
+      fragmentNames: [fragmentName, ...uniqueFragmentNames],
     })
   }
 
   /*
-   * selecions with FLAT can always store flat part of selection
+   * selecions with FLAT can always store (non-empty) flat part of selection
    * (inlines & spreads are not considered flat part)
    */
 
   if (props.config.useFragments === FragmentType.FLAT) {
-    const fragmentname: FragmentName = typename + 'Flat'
-
     const { flat: flatSelections, deep: deepSelections } = result.flat
       ? { flat: result.selections, deep: [] }
       : result.selections.reduce(
@@ -341,40 +353,46 @@ const cacheAndFragment = (props: CoreProps) => (
         )
 
     // need to check for emptines or the empty fragment will be created
-    if (!isNotEmpty(flatSelections)) {
-      return withCache({
-        ...result,
-        selections: deepSelections,
-        dependencies: uniqueDependencies,
-      })
+    //  => no flat parth => return default since this setting is on flat
+    //  => only typename in flat part => also empty & default
+    const hasOnlyTypename =
+      flatSelections.length === 1 &&
+      flatSelections[0].kind === Kind.FIELD &&
+      (flatSelections[0] as any).name.value === '__typename'
+
+    if (!isNotEmpty(flatSelections) || hasOnlyTypename) {
+      return withCache(uniquedResult)
     }
 
-    if (!props.cache.fragments.has(fragmentname)) {
+    const fragmentName = getFragmentName(props)({
+      typename,
+      flat: true,
+      complete: true,
+    })
+
+    if (!props.cache.fragments.has(fragmentName)) {
       const fragmentResult: FragmentResult = {
         fragment: createFragment({
           condition: typename,
-          fragmentname,
+          fragmentname: fragmentName,
           selections: flatSelections,
         }),
-        // flat fragment has no dependencies
-        dependencies: [],
+        // flat fragment has no dependant fragments
+        fragmentNames: [],
         flat: true,
         complete: true,
       }
 
-      props.cache.fragments.set(fragmentname, fragmentResult)
+      props.cache.fragments.set(fragmentName, fragmentResult)
     }
 
     return withCache({
       ...result,
-      selections: [createFragmentSpread(fragmentname), ...deepSelections],
-      dependencies: [fragmentname, ...uniqueDependencies],
+      selections: [createFragmentSpread(fragmentName), ...deepSelections],
+      fragmentNames: [fragmentName, ...uniqueFragmentNames],
     })
   }
 
   // pass through
-  return withCache({
-    ...result,
-    dependencies: uniqueDependencies,
-  })
+  return withCache(uniquedResult)
 }

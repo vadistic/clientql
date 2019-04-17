@@ -18,13 +18,26 @@ import {
 import { CoreProps } from '../core'
 import { operationTypes } from '../graph'
 import { capitalise } from '../utils'
-import { buildSelections } from './build-selections'
+import { buildSelections } from './selections'
 import {
   OperationEdge,
   OperationResult,
   OperationSelectionResult,
 } from './types'
 import { retriveFragmentsFromCache } from './utils'
+
+/**
+ * helper to build operation + retrive fragments
+ *
+ */
+export const buildOperationDoc = (props: CoreProps) => (
+  path: OperationEdge[],
+): DocumentNode => {
+  const { fragmentNames: dependencies, operation } = buildOperation(props)(path)
+  const fragments = retriveFragmentsFromCache(props)(dependencies)
+
+  return wrapDocument(operation, ...fragments)
+}
 
 /**
  * operation builder transform OperationEdges/paths to:
@@ -99,19 +112,6 @@ export const buildOperation = (props: CoreProps) => (
   props.cache.operations.set(operationName, operationResult)
 
   return operationResult
-}
-
-/**
- * helper to build operation + retrive fragments
- *
- */
-export const buildOperationDoc = (props: CoreProps) => (
-  path: OperationEdge[],
-): DocumentNode => {
-  const { dependencies, operation } = buildOperation(props)(path)
-  const fragments = retriveFragmentsFromCache(props)(dependencies)
-
-  return wrapDocument(operation, ...fragments)
 }
 
 /**

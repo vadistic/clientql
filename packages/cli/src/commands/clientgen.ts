@@ -15,9 +15,13 @@ export const clientgenCmd = async (cli: Result) => {
 
   console.log('Generating client...')
 
-  const { clientgen } = await import('@graphql-clientgen/generator')
+  const { generator, getGeneratorProps } = await import(
+    '@graphql-clientgen/generator'
+  )
 
-  const { result, props } = await clientgen(doc, config)(GeneratorMode.CLIENT)
+  const props = getGeneratorProps(doc, config)
+
+  const result = await generator(props)(GeneratorMode.CLIENT)
 
   const write = await writeFlatDir(cli.flags.output, {
     'index.ts': result.index,

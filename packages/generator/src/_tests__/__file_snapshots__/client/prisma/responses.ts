@@ -64,6 +64,7 @@ export type ThreadResponse = ThreadFlat & {
 }
 
 export type BoardConnectionResponse = {
+  __typename: 'BoardConnection'
   pageInfo: PageInfoFlat
   edges: BoardEdgeFlat & {
     node: BoardFlat & {
@@ -96,6 +97,7 @@ export type BoardEdgeResponse = BoardEdgeFlat & {
 export type AggregateBoardResponse = AggregateBoardFlat
 
 export type PostConnectionResponse = {
+  __typename: 'PostConnection'
   pageInfo: PageInfoFlat
   edges: PostEdgeFlat & {
     node: PostFlat & {
@@ -114,6 +116,7 @@ export type PostEdgeResponse = PostEdgeFlat & {
 export type AggregatePostResponse = AggregatePostFlat
 
 export type ThreadConnectionResponse = {
+  __typename: 'ThreadConnection'
   pageInfo: PageInfoFlat
   edges: ThreadEdgeFlat & {
     node: ThreadFlat & {
@@ -142,6 +145,7 @@ export type ThreadEdgeResponse = ThreadEdgeFlat & {
 export type AggregateThreadResponse = AggregateThreadFlat
 
 export type UserConnectionResponse = {
+  __typename: 'UserConnection'
   pageInfo: PageInfoFlat
   edges: UserEdgeFlat & {
     node: UserFlat & {
@@ -224,11 +228,13 @@ export type UserPreviousValuesResponse = UserPreviousValuesFlat
  */
 
 export type BoardFlat = {
+  __typename: 'Board'
   id: string
   createdAt: string
 }
 
 export type UserFlat = {
+  __typename: 'User'
   id: string
   nationality?: string | null
   email: string
@@ -236,6 +242,7 @@ export type UserFlat = {
 }
 
 export type PostFlat = {
+  __typename: 'Post'
   id: string
   content?: string | null
   createdAt: string
@@ -245,12 +252,14 @@ export type PostFlat = {
 }
 
 export type ThreadFlat = {
+  __typename: 'Thread'
   id: string
   createdAt: string
   name: string
 }
 
 export type PageInfoFlat = {
+  __typename: 'PageInfo'
   hasNextPage: boolean
   hasPreviousPage: boolean
   startCursor?: string | null
@@ -258,34 +267,42 @@ export type PageInfoFlat = {
 }
 
 export type BoardEdgeFlat = {
+  __typename: 'BoardEdge'
   cursor: string
 }
 
 export type AggregateBoardFlat = {
+  __typename: 'AggregateBoard'
   count: number
 }
 
 export type PostEdgeFlat = {
+  __typename: 'PostEdge'
   cursor: string
 }
 
 export type AggregatePostFlat = {
+  __typename: 'AggregatePost'
   count: number
 }
 
 export type ThreadEdgeFlat = {
+  __typename: 'ThreadEdge'
   cursor: string
 }
 
 export type AggregateThreadFlat = {
+  __typename: 'AggregateThread'
   count: number
 }
 
 export type UserEdgeFlat = {
+  __typename: 'UserEdge'
   cursor: string
 }
 
 export type AggregateUserFlat = {
+  __typename: 'AggregateUser'
   count: number
 }
 
@@ -294,25 +311,30 @@ export type NodeFlat = {
 }
 
 export type BatchPayloadFlat = {
+  __typename: 'BatchPayload'
   count: number
 }
 
 export type BoardSubscriptionPayloadFlat = {
+  __typename: 'BoardSubscriptionPayload'
   mutation: MutationType
   updatedFields?: string[] | null
 }
 
 export type BoardPreviousValuesFlat = {
+  __typename: 'BoardPreviousValues'
   id: string
   createdAt: string
 }
 
 export type PostSubscriptionPayloadFlat = {
+  __typename: 'PostSubscriptionPayload'
   mutation: MutationType
   updatedFields?: string[] | null
 }
 
 export type PostPreviousValuesFlat = {
+  __typename: 'PostPreviousValues'
   id: string
   content?: string | null
   createdAt: string
@@ -322,22 +344,26 @@ export type PostPreviousValuesFlat = {
 }
 
 export type ThreadSubscriptionPayloadFlat = {
+  __typename: 'ThreadSubscriptionPayload'
   mutation: MutationType
   updatedFields?: string[] | null
 }
 
 export type ThreadPreviousValuesFlat = {
+  __typename: 'ThreadPreviousValues'
   id: string
   createdAt: string
   name: string
 }
 
 export type UserSubscriptionPayloadFlat = {
+  __typename: 'UserSubscriptionPayload'
   mutation: MutationType
   updatedFields?: string[] | null
 }
 
 export type UserPreviousValuesFlat = {
+  __typename: 'UserPreviousValues'
   id: string
   nationality?: string | null
   email: string

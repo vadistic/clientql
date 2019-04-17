@@ -27,15 +27,9 @@ export enum GeneratorMode {
 }
 
 export interface GeneratorModeToResult {
-  CLIENT: GeneratorResult<GeneratorMode.CLIENT, GenerateClientResult>
+  CLIENT: GenerateClientResult
   TYPESCRIPT_TYPES: undefined
   GRAPHQL_FRAGMENTS: undefined
-}
-
-export interface GeneratorResult<M, R> {
-  props: GeneratorProps
-  mode: M
-  result: R
 }
 
 export const getGeneratorProps = (
@@ -65,18 +59,23 @@ export const getGeneratorProps = (
   return props
 }
 
-export const clientgen = (
+export const createGenerator = (
   doc: DocumentNode,
   config?: Partial<GeneratorConfig>,
   paths?: GeneratorPaths,
-) => async <M extends GeneratorMode>(
-  mode: M,
-): Promise<GeneratorModeToResult[M]> => {
+) => {
   const props = getGeneratorProps(doc, config, paths)
 
+  return generator(props)
+}
+
+export const generator = (props: GeneratorProps) => async <
+  M extends GeneratorMode
+>(
+  mode: M,
+): Promise<GeneratorModeToResult[M]> => {
   if (mode === GeneratorMode.CLIENT) {
     const { generateClient } = await import('./client/generate')
-    const result = await generateClient(props)
-    return { result, props, mode: GeneratorMode.CLIENT }
+    return generateClient(props)
   }
 }

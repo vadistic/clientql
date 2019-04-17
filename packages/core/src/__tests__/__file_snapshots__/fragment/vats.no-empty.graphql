@@ -1,0 +1,115 @@
+fragment ApplicationConnectionPartial on ApplicationConnection {
+  __typename
+  pageInfo {
+    ...PageInfoFlat
+  }
+  edges {
+    ...ApplicationEdgeFlat
+    node {
+      ...ApplicationFlat
+      disqualification {
+        ...DisqualificationInstanceFlat
+      }
+      stage {
+        ...StageFlat
+      }
+      reviews {
+        ...ReviewInstanceFlat
+      }
+      job {
+        ...JobFlat
+      }
+      candidate {
+        ...CandidateFlat
+      }
+    }
+  }
+  aggregate {
+    ...AggregateApplicationFlat
+  }
+}
+
+fragment PageInfoFlat on PageInfo {
+  __typename
+  hasNextPage
+  hasPreviousPage
+  startCursor
+  endCursor
+}
+
+fragment ApplicationEdgeFlat on ApplicationEdge {
+  __typename
+  cursor
+}
+
+fragment ApplicationFlat on Application {
+  __typename
+  createdAt
+  id
+  updatedAt
+  type
+}
+
+fragment DisqualificationInstanceFlat on DisqualificationInstance {
+  __typename
+  id
+  createdAt
+  updatedAt
+  content
+}
+
+fragment StageFlat on Stage {
+  __typename
+  id
+  createdAt
+  updatedAt
+  name
+  description
+  type
+  index
+}
+
+fragment ReviewInstanceFlat on ReviewInstance {
+  __typename
+  id
+  createdAt
+  updatedAt
+  rating
+  content
+}
+
+fragment JobFlat on Job {
+  __typename
+  id
+  createdAt
+  updatedAt
+  type
+  department
+  name
+  excerpt
+  companyDescription
+  description
+  requirements
+}
+
+fragment CandidateFlat on Candidate {
+  __typename
+  id
+  createdAt
+  updatedAt
+  firstName
+  lastName
+  emails
+  phones
+  links
+  company
+  headline
+  position
+  resumesString
+  coverLettersString
+}
+
+fragment AggregateApplicationFlat on AggregateApplication {
+  __typename
+  count
+}
