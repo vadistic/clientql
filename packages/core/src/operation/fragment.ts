@@ -85,14 +85,29 @@ export const getFragmentName = (props: CoreProps) => ({
   flat,
   typename,
 }: GetFragmentNameOptions): FragmentName => {
-  if (flat) {
+  // lets differentiate when flat is complete
+  if (flat && complete) {
     return typename + props.config.fragmentFlatSuffix
   }
 
+  // or is only part of a type
+  if (flat && !complete) {
+    return (
+      typename +
+      props.config.fragmentFlatSuffix +
+      props.config.fragmentPartialSuffix
+    )
+  }
+
+  // deep
   if (complete) {
     return typename + props.config.fragmentDeepSuffix
   }
 
-  // deep, non-complete selection is a (deep) partial
-  return typename + props.config.fragmentPartialSuffix
+  // deep partial
+  return (
+    typename +
+    props.config.fragmentDeepSuffix +
+    props.config.fragmentPartialSuffix
+  )
 }

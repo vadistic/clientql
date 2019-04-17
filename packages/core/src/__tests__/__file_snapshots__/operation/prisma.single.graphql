@@ -1,13 +1,13 @@
 query UserQuery($where: UserWhereUniqueInput!) {
   user(where: $where) {
-    ...UserFlat
+    ...UserFlatPartial
     posts {
-      ...PostFlat
+      ...PostFlatPartial
     }
   }
 }
 
-fragment UserFlat on User {
+fragment UserFlatPartial on User {
   __typename
   id
   nationality
@@ -15,7 +15,7 @@ fragment UserFlat on User {
   name
 }
 
-fragment PostFlat on Post {
+fragment PostFlatPartial on Post {
   __typename
   id
   content

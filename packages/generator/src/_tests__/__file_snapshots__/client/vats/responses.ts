@@ -41,35 +41,35 @@ import {
  *
  */
 
-export type ApplicationResponse = ApplicationFlat & {
-  disqualification?: DisqualificationInstanceFlat & {
+export type ApplicationResponse = ApplicationFlatPartial & {
+  disqualification?: DisqualificationInstanceFlatPartial & {
     prototype: DisqualificationFlat
-    createdBy: UserFlat & {
-      tasks?: TaskFlat
+    createdBy: UserFlatPartial & {
+      tasks?: TaskFlatPartial
       avatar?: FileFlat
     }
   }
   stage: StageFlat
-  reviews?: ReviewInstanceFlat & {
+  reviews?: ReviewInstanceFlatPartial & {
     prototype?: ReviewFlat & {
       fields?: FieldFlat
     }
     fields?: FieldInstanceFlat & {
       prototype: FieldFlat
     }
-    createdBy: UserFlat & {
-      tasks?: TaskFlat
+    createdBy: UserFlatPartial & {
+      tasks?: TaskFlatPartial
       avatar?: FileFlat
     }
   }
-  job: JobFlat & {
-    workspace: WorkspaceFlat & {
-      users?: UserFlat
-      candidates?: CandidateFlat
-      workflows?: WorkflowFlat
-      invites?: InviteFlat
+  job: JobFlatPartial & {
+    workspace: WorkspaceFlatPartial & {
+      users?: UserFlatPartial
+      candidates?: CandidateFlatPartial
+      workflows?: WorkflowFlatPartial
+      invites?: InviteFlatPartial
     }
-    workflow: WorkflowFlat & {
+    workflow: WorkflowFlatPartial & {
       stages?: StageFlat
       disqualifications?: DisqualificationFlat
       fields?: FieldFlat
@@ -77,12 +77,12 @@ export type ApplicationResponse = ApplicationFlat & {
         fields?: FieldFlat
       }
     }
-    comments?: CommentFlat & {
-      createdBy: UserFlat
+    comments?: CommentFlatPartial & {
+      createdBy: UserFlatPartial
     }
     locations?: LocationFlat
   }
-  candidate: CandidateFlat & {
+  candidate: CandidateFlatPartial & {
     avatar?: FileFlat
     resumesFile?: FileFlat
     coverLettersFile?: FileFlat
@@ -91,20 +91,20 @@ export type ApplicationResponse = ApplicationFlat & {
     fields?: FieldInstanceFlat & {
       prototype: FieldFlat
     }
-    tasks?: TaskFlat & {
-      owners?: UserFlat
+    tasks?: TaskFlatPartial & {
+      owners?: UserFlatPartial
     }
-    comments?: CommentFlat & {
-      createdBy: UserFlat
+    comments?: CommentFlatPartial & {
+      createdBy: UserFlatPartial
     }
   }
 }
 
-export type DisqualificationInstanceResponse = DisqualificationInstanceFlat & {
+export type DisqualificationInstanceResponse = DisqualificationInstanceFlatPartial & {
   prototype: DisqualificationFlat
-  createdBy: UserFlat & {
-    tasks?: TaskFlat & {
-      candidate?: CandidateFlat
+  createdBy: UserFlatPartial & {
+    tasks?: TaskFlatPartial & {
+      candidate?: CandidateFlatPartial
     }
     avatar?: FileFlat
   }
@@ -112,9 +112,9 @@ export type DisqualificationInstanceResponse = DisqualificationInstanceFlat & {
 
 export type DisqualificationResponse = DisqualificationFlat
 
-export type UserResponse = UserFlat & {
-  tasks?: TaskFlat & {
-    candidate?: CandidateFlat & {
+export type UserResponse = UserFlatPartial & {
+  tasks?: TaskFlatPartial & {
+    candidate?: CandidateFlatPartial & {
       avatar?: FileFlat
       resumesFile?: FileFlat
       coverLettersFile?: FileFlat
@@ -123,18 +123,18 @@ export type UserResponse = UserFlat & {
       fields?: FieldInstanceFlat & {
         prototype: FieldFlat
       }
-      applications?: ApplicationFlat
-      comments?: CommentFlat
+      applications?: ApplicationFlatPartial
+      comments?: CommentFlatPartial
     }
   }
   avatar?: FileFlat
 }
 
-export type TaskResponse = TaskFlat & {
-  owners?: UserFlat & {
+export type TaskResponse = TaskFlatPartial & {
+  owners?: UserFlatPartial & {
     avatar?: FileFlat
   }
-  candidate?: CandidateFlat & {
+  candidate?: CandidateFlatPartial & {
     avatar?: FileFlat
     resumesFile?: FileFlat
     coverLettersFile?: FileFlat
@@ -143,19 +143,19 @@ export type TaskResponse = TaskFlat & {
     fields?: FieldInstanceFlat & {
       prototype: FieldFlat
     }
-    applications?: ApplicationFlat & {
-      disqualification?: DisqualificationInstanceFlat
+    applications?: ApplicationFlatPartial & {
+      disqualification?: DisqualificationInstanceFlatPartial
       stage: StageFlat
-      reviews?: ReviewInstanceFlat
-      job: JobFlat
+      reviews?: ReviewInstanceFlatPartial
+      job: JobFlatPartial
     }
-    comments?: CommentFlat & {
-      createdBy: UserFlat
+    comments?: CommentFlatPartial & {
+      createdBy: UserFlatPartial
     }
   }
 }
 
-export type CandidateResponse = CandidateFlat & {
+export type CandidateResponse = CandidateFlatPartial & {
   avatar?: FileFlat
   resumesFile?: FileFlat
   coverLettersFile?: FileFlat
@@ -164,36 +164,36 @@ export type CandidateResponse = CandidateFlat & {
   fields?: FieldInstanceFlat & {
     prototype: FieldFlat
   }
-  tasks?: TaskFlat & {
-    owners?: UserFlat & {
+  tasks?: TaskFlatPartial & {
+    owners?: UserFlatPartial & {
       avatar?: FileFlat
     }
   }
-  applications?: ApplicationFlat & {
-    disqualification?: DisqualificationInstanceFlat & {
+  applications?: ApplicationFlatPartial & {
+    disqualification?: DisqualificationInstanceFlatPartial & {
       prototype: DisqualificationFlat
-      createdBy: UserFlat
+      createdBy: UserFlatPartial
     }
     stage: StageFlat
-    reviews?: ReviewInstanceFlat & {
+    reviews?: ReviewInstanceFlatPartial & {
       prototype?: ReviewFlat & {
         fields?: FieldFlat
       }
       fields?: FieldInstanceFlat & {
         prototype: FieldFlat
       }
-      createdBy: UserFlat
+      createdBy: UserFlatPartial
     }
-    job: JobFlat & {
-      workspace: WorkspaceFlat
-      workflow: WorkflowFlat
-      comments?: CommentFlat
+    job: JobFlatPartial & {
+      workspace: WorkspaceFlatPartial
+      workflow: WorkflowFlatPartial
+      comments?: CommentFlatPartial
       locations?: LocationFlat
     }
   }
-  comments?: CommentFlat & {
-    createdBy: UserFlat & {
-      tasks?: TaskFlat
+  comments?: CommentFlatPartial & {
+    createdBy: UserFlatPartial & {
+      tasks?: TaskFlatPartial
       avatar?: FileFlat
     }
   }
@@ -211,10 +211,10 @@ export type FieldInstanceResponse = FieldInstanceFlat & {
 
 export type FieldResponse = FieldFlat
 
-export type CommentResponse = CommentFlat & {
-  createdBy: UserFlat & {
-    tasks?: TaskFlat & {
-      candidate?: CandidateFlat
+export type CommentResponse = CommentFlatPartial & {
+  createdBy: UserFlatPartial & {
+    tasks?: TaskFlatPartial & {
+      candidate?: CandidateFlatPartial
     }
     avatar?: FileFlat
   }
@@ -222,16 +222,16 @@ export type CommentResponse = CommentFlat & {
 
 export type StageResponse = StageFlat
 
-export type ReviewInstanceResponse = ReviewInstanceFlat & {
+export type ReviewInstanceResponse = ReviewInstanceFlatPartial & {
   prototype?: ReviewFlat & {
     fields?: FieldFlat
   }
   fields?: FieldInstanceFlat & {
     prototype: FieldFlat
   }
-  createdBy: UserFlat & {
-    tasks?: TaskFlat & {
-      candidate?: CandidateFlat
+  createdBy: UserFlatPartial & {
+    tasks?: TaskFlatPartial & {
+      candidate?: CandidateFlatPartial
     }
     avatar?: FileFlat
   }
@@ -241,13 +241,13 @@ export type ReviewResponse = ReviewFlat & {
   fields?: FieldFlat
 }
 
-export type JobResponse = JobFlat & {
-  workspace: WorkspaceFlat & {
-    users?: UserFlat & {
-      tasks?: TaskFlat
+export type JobResponse = JobFlatPartial & {
+  workspace: WorkspaceFlatPartial & {
+    users?: UserFlatPartial & {
+      tasks?: TaskFlatPartial
       avatar?: FileFlat
     }
-    candidates?: CandidateFlat & {
+    candidates?: CandidateFlatPartial & {
       avatar?: FileFlat
       resumesFile?: FileFlat
       coverLettersFile?: FileFlat
@@ -256,11 +256,11 @@ export type JobResponse = JobFlat & {
       fields?: FieldInstanceFlat & {
         prototype: FieldFlat
       }
-      tasks?: TaskFlat
-      applications?: ApplicationFlat
-      comments?: CommentFlat
+      tasks?: TaskFlatPartial
+      applications?: ApplicationFlatPartial
+      comments?: CommentFlatPartial
     }
-    workflows?: WorkflowFlat & {
+    workflows?: WorkflowFlatPartial & {
       stages?: StageFlat
       disqualifications?: DisqualificationFlat
       fields?: FieldFlat
@@ -268,26 +268,26 @@ export type JobResponse = JobFlat & {
         fields?: FieldFlat
       }
     }
-    invites?: InviteFlat & {
-      invitedBy: UserFlat
+    invites?: InviteFlatPartial & {
+      invitedBy: UserFlatPartial
     }
   }
-  applications?: ApplicationFlat & {
-    disqualification?: DisqualificationInstanceFlat & {
+  applications?: ApplicationFlatPartial & {
+    disqualification?: DisqualificationInstanceFlatPartial & {
       prototype: DisqualificationFlat
-      createdBy: UserFlat
+      createdBy: UserFlatPartial
     }
     stage: StageFlat
-    reviews?: ReviewInstanceFlat & {
+    reviews?: ReviewInstanceFlatPartial & {
       prototype?: ReviewFlat & {
         fields?: FieldFlat
       }
       fields?: FieldInstanceFlat & {
         prototype: FieldFlat
       }
-      createdBy: UserFlat
+      createdBy: UserFlatPartial
     }
-    candidate: CandidateFlat & {
+    candidate: CandidateFlatPartial & {
       avatar?: FileFlat
       resumesFile?: FileFlat
       coverLettersFile?: FileFlat
@@ -296,11 +296,11 @@ export type JobResponse = JobFlat & {
       fields?: FieldInstanceFlat & {
         prototype: FieldFlat
       }
-      tasks?: TaskFlat
-      comments?: CommentFlat
+      tasks?: TaskFlatPartial
+      comments?: CommentFlatPartial
     }
   }
-  workflow: WorkflowFlat & {
+  workflow: WorkflowFlatPartial & {
     stages?: StageFlat
     disqualifications?: DisqualificationFlat
     fields?: FieldFlat
@@ -308,30 +308,30 @@ export type JobResponse = JobFlat & {
       fields?: FieldFlat
     }
   }
-  comments?: CommentFlat & {
-    createdBy: UserFlat & {
-      tasks?: TaskFlat
+  comments?: CommentFlatPartial & {
+    createdBy: UserFlatPartial & {
+      tasks?: TaskFlatPartial
       avatar?: FileFlat
     }
   }
   locations?: LocationFlat
 }
 
-export type WorkspaceResponse = WorkspaceFlat & {
-  users?: UserFlat & {
-    tasks?: TaskFlat & {
-      candidate?: CandidateFlat
+export type WorkspaceResponse = WorkspaceFlatPartial & {
+  users?: UserFlatPartial & {
+    tasks?: TaskFlatPartial & {
+      candidate?: CandidateFlatPartial
     }
     avatar?: FileFlat
   }
-  jobs?: JobFlat & {
-    applications?: ApplicationFlat & {
-      disqualification?: DisqualificationInstanceFlat
+  jobs?: JobFlatPartial & {
+    applications?: ApplicationFlatPartial & {
+      disqualification?: DisqualificationInstanceFlatPartial
       stage: StageFlat
-      reviews?: ReviewInstanceFlat
-      candidate: CandidateFlat
+      reviews?: ReviewInstanceFlatPartial
+      candidate: CandidateFlatPartial
     }
-    workflow: WorkflowFlat & {
+    workflow: WorkflowFlatPartial & {
       stages?: StageFlat
       disqualifications?: DisqualificationFlat
       fields?: FieldFlat
@@ -339,12 +339,12 @@ export type WorkspaceResponse = WorkspaceFlat & {
         fields?: FieldFlat
       }
     }
-    comments?: CommentFlat & {
-      createdBy: UserFlat
+    comments?: CommentFlatPartial & {
+      createdBy: UserFlatPartial
     }
     locations?: LocationFlat
   }
-  candidates?: CandidateFlat & {
+  candidates?: CandidateFlatPartial & {
     avatar?: FileFlat
     resumesFile?: FileFlat
     coverLettersFile?: FileFlat
@@ -353,23 +353,23 @@ export type WorkspaceResponse = WorkspaceFlat & {
     fields?: FieldInstanceFlat & {
       prototype: FieldFlat
     }
-    tasks?: TaskFlat & {
-      owners?: UserFlat
+    tasks?: TaskFlatPartial & {
+      owners?: UserFlatPartial
     }
-    applications?: ApplicationFlat & {
-      disqualification?: DisqualificationInstanceFlat
+    applications?: ApplicationFlatPartial & {
+      disqualification?: DisqualificationInstanceFlatPartial
       stage: StageFlat
-      reviews?: ReviewInstanceFlat
-      job: JobFlat
+      reviews?: ReviewInstanceFlatPartial
+      job: JobFlatPartial
     }
-    comments?: CommentFlat & {
-      createdBy: UserFlat
+    comments?: CommentFlatPartial & {
+      createdBy: UserFlatPartial
     }
   }
-  workflows?: WorkflowFlat & {
-    jobs?: JobFlat & {
-      applications?: ApplicationFlat
-      comments?: CommentFlat
+  workflows?: WorkflowFlatPartial & {
+    jobs?: JobFlatPartial & {
+      applications?: ApplicationFlatPartial
+      comments?: CommentFlatPartial
       locations?: LocationFlat
     }
     stages?: StageFlat
@@ -379,29 +379,29 @@ export type WorkspaceResponse = WorkspaceFlat & {
       fields?: FieldFlat
     }
   }
-  invites?: InviteFlat & {
-    invitedBy: UserFlat & {
-      tasks?: TaskFlat
+  invites?: InviteFlatPartial & {
+    invitedBy: UserFlatPartial & {
+      tasks?: TaskFlatPartial
       avatar?: FileFlat
     }
   }
 }
 
-export type WorkflowResponse = WorkflowFlat & {
-  jobs?: JobFlat & {
-    workspace: WorkspaceFlat & {
-      users?: UserFlat
-      candidates?: CandidateFlat
-      invites?: InviteFlat
+export type WorkflowResponse = WorkflowFlatPartial & {
+  jobs?: JobFlatPartial & {
+    workspace: WorkspaceFlatPartial & {
+      users?: UserFlatPartial
+      candidates?: CandidateFlatPartial
+      invites?: InviteFlatPartial
     }
-    applications?: ApplicationFlat & {
-      disqualification?: DisqualificationInstanceFlat
+    applications?: ApplicationFlatPartial & {
+      disqualification?: DisqualificationInstanceFlatPartial
       stage: StageFlat
-      reviews?: ReviewInstanceFlat
-      candidate: CandidateFlat
+      reviews?: ReviewInstanceFlatPartial
+      candidate: CandidateFlatPartial
     }
-    comments?: CommentFlat & {
-      createdBy: UserFlat
+    comments?: CommentFlatPartial & {
+      createdBy: UserFlatPartial
     }
     locations?: LocationFlat
   }
@@ -413,10 +413,10 @@ export type WorkflowResponse = WorkflowFlat & {
   }
 }
 
-export type InviteResponse = InviteFlat & {
-  invitedBy: UserFlat & {
-    tasks?: TaskFlat & {
-      candidate?: CandidateFlat
+export type InviteResponse = InviteFlatPartial & {
+  invitedBy: UserFlatPartial & {
+    tasks?: TaskFlatPartial & {
+      candidate?: CandidateFlatPartial
     }
     avatar?: FileFlat
   }
@@ -427,13 +427,13 @@ export type LocationResponse = LocationFlat
 export type ApplicationConnectionResponse = {
   __typename: 'ApplicationConnection'
   pageInfo: PageInfoFlat
-  edges: ApplicationEdgeFlat & {
-    node: ApplicationFlat & {
-      disqualification?: DisqualificationInstanceFlat
+  edges: ApplicationEdgeFlatPartial & {
+    node: ApplicationFlatPartial & {
+      disqualification?: DisqualificationInstanceFlatPartial
       stage: StageFlat
-      reviews?: ReviewInstanceFlat
-      job: JobFlat
-      candidate: CandidateFlat
+      reviews?: ReviewInstanceFlatPartial
+      job: JobFlatPartial
+      candidate: CandidateFlatPartial
     }
   }
   aggregate: AggregateApplicationFlat
@@ -441,29 +441,29 @@ export type ApplicationConnectionResponse = {
 
 export type PageInfoResponse = PageInfoFlat
 
-export type ApplicationEdgeResponse = ApplicationEdgeFlat & {
-  node: ApplicationFlat & {
-    disqualification?: DisqualificationInstanceFlat & {
+export type ApplicationEdgeResponse = ApplicationEdgeFlatPartial & {
+  node: ApplicationFlatPartial & {
+    disqualification?: DisqualificationInstanceFlatPartial & {
       prototype: DisqualificationFlat
-      createdBy: UserFlat
+      createdBy: UserFlatPartial
     }
     stage: StageFlat
-    reviews?: ReviewInstanceFlat & {
+    reviews?: ReviewInstanceFlatPartial & {
       prototype?: ReviewFlat & {
         fields?: FieldFlat
       }
       fields?: FieldInstanceFlat & {
         prototype: FieldFlat
       }
-      createdBy: UserFlat
+      createdBy: UserFlatPartial
     }
-    job: JobFlat & {
-      workspace: WorkspaceFlat
-      workflow: WorkflowFlat
-      comments?: CommentFlat
+    job: JobFlatPartial & {
+      workspace: WorkspaceFlatPartial
+      workflow: WorkflowFlatPartial
+      comments?: CommentFlatPartial
       locations?: LocationFlat
     }
-    candidate: CandidateFlat & {
+    candidate: CandidateFlatPartial & {
       avatar?: FileFlat
       resumesFile?: FileFlat
       coverLettersFile?: FileFlat
@@ -472,8 +472,8 @@ export type ApplicationEdgeResponse = ApplicationEdgeFlat & {
       fields?: FieldInstanceFlat & {
         prototype: FieldFlat
       }
-      tasks?: TaskFlat
-      comments?: CommentFlat
+      tasks?: TaskFlatPartial
+      comments?: CommentFlatPartial
     }
   }
 }
@@ -483,8 +483,8 @@ export type AggregateApplicationResponse = AggregateApplicationFlat
 export type CandidateConnectionResponse = {
   __typename: 'CandidateConnection'
   pageInfo: PageInfoFlat
-  edges: CandidateEdgeFlat & {
-    node: CandidateFlat & {
+  edges: CandidateEdgeFlatPartial & {
+    node: CandidateFlatPartial & {
       avatar?: FileFlat
       resumesFile?: FileFlat
       coverLettersFile?: FileFlat
@@ -493,16 +493,16 @@ export type CandidateConnectionResponse = {
       fields?: FieldInstanceFlat & {
         prototype: FieldFlat
       }
-      tasks?: TaskFlat
-      applications?: ApplicationFlat
-      comments?: CommentFlat
+      tasks?: TaskFlatPartial
+      applications?: ApplicationFlatPartial
+      comments?: CommentFlatPartial
     }
   }
   aggregate: AggregateCandidateFlat
 }
 
-export type CandidateEdgeResponse = CandidateEdgeFlat & {
-  node: CandidateFlat & {
+export type CandidateEdgeResponse = CandidateEdgeFlatPartial & {
+  node: CandidateFlatPartial & {
     avatar?: FileFlat
     resumesFile?: FileFlat
     coverLettersFile?: FileFlat
@@ -511,17 +511,17 @@ export type CandidateEdgeResponse = CandidateEdgeFlat & {
     fields?: FieldInstanceFlat & {
       prototype: FieldFlat
     }
-    tasks?: TaskFlat & {
-      owners?: UserFlat
+    tasks?: TaskFlatPartial & {
+      owners?: UserFlatPartial
     }
-    applications?: ApplicationFlat & {
-      disqualification?: DisqualificationInstanceFlat
+    applications?: ApplicationFlatPartial & {
+      disqualification?: DisqualificationInstanceFlatPartial
       stage: StageFlat
-      reviews?: ReviewInstanceFlat
-      job: JobFlat
+      reviews?: ReviewInstanceFlatPartial
+      job: JobFlatPartial
     }
-    comments?: CommentFlat & {
-      createdBy: UserFlat
+    comments?: CommentFlatPartial & {
+      createdBy: UserFlatPartial
     }
   }
 }
@@ -531,33 +531,33 @@ export type AggregateCandidateResponse = AggregateCandidateFlat
 export type JobConnectionResponse = {
   __typename: 'JobConnection'
   pageInfo: PageInfoFlat
-  edges: JobEdgeFlat & {
-    node: JobFlat & {
-      workspace: WorkspaceFlat
-      applications?: ApplicationFlat
-      workflow: WorkflowFlat
-      comments?: CommentFlat
+  edges: JobEdgeFlatPartial & {
+    node: JobFlatPartial & {
+      workspace: WorkspaceFlatPartial
+      applications?: ApplicationFlatPartial
+      workflow: WorkflowFlatPartial
+      comments?: CommentFlatPartial
       locations?: LocationFlat
     }
   }
   aggregate: AggregateJobFlat
 }
 
-export type JobEdgeResponse = JobEdgeFlat & {
-  node: JobFlat & {
-    workspace: WorkspaceFlat & {
-      users?: UserFlat
-      candidates?: CandidateFlat
-      workflows?: WorkflowFlat
-      invites?: InviteFlat
+export type JobEdgeResponse = JobEdgeFlatPartial & {
+  node: JobFlatPartial & {
+    workspace: WorkspaceFlatPartial & {
+      users?: UserFlatPartial
+      candidates?: CandidateFlatPartial
+      workflows?: WorkflowFlatPartial
+      invites?: InviteFlatPartial
     }
-    applications?: ApplicationFlat & {
-      disqualification?: DisqualificationInstanceFlat
+    applications?: ApplicationFlatPartial & {
+      disqualification?: DisqualificationInstanceFlatPartial
       stage: StageFlat
-      reviews?: ReviewInstanceFlat
-      candidate: CandidateFlat
+      reviews?: ReviewInstanceFlatPartial
+      candidate: CandidateFlatPartial
     }
-    workflow: WorkflowFlat & {
+    workflow: WorkflowFlatPartial & {
       stages?: StageFlat
       disqualifications?: DisqualificationFlat
       fields?: FieldFlat
@@ -565,8 +565,8 @@ export type JobEdgeResponse = JobEdgeFlat & {
         fields?: FieldFlat
       }
     }
-    comments?: CommentFlat & {
-      createdBy: UserFlat
+    comments?: CommentFlatPartial & {
+      createdBy: UserFlatPartial
     }
     locations?: LocationFlat
   }
@@ -607,21 +607,21 @@ export type AggregateTagResponse = AggregateTagFlat
 export type TaskConnectionResponse = {
   __typename: 'TaskConnection'
   pageInfo: PageInfoFlat
-  edges: TaskEdgeFlat & {
-    node: TaskFlat & {
-      owners?: UserFlat
-      candidate?: CandidateFlat
+  edges: TaskEdgeFlatPartial & {
+    node: TaskFlatPartial & {
+      owners?: UserFlatPartial
+      candidate?: CandidateFlatPartial
     }
   }
   aggregate: AggregateTaskFlat
 }
 
-export type TaskEdgeResponse = TaskEdgeFlat & {
-  node: TaskFlat & {
-    owners?: UserFlat & {
+export type TaskEdgeResponse = TaskEdgeFlatPartial & {
+  node: TaskFlatPartial & {
+    owners?: UserFlatPartial & {
       avatar?: FileFlat
     }
-    candidate?: CandidateFlat & {
+    candidate?: CandidateFlatPartial & {
       avatar?: FileFlat
       resumesFile?: FileFlat
       coverLettersFile?: FileFlat
@@ -630,8 +630,8 @@ export type TaskEdgeResponse = TaskEdgeFlat & {
       fields?: FieldInstanceFlat & {
         prototype: FieldFlat
       }
-      applications?: ApplicationFlat
-      comments?: CommentFlat
+      applications?: ApplicationFlatPartial
+      comments?: CommentFlatPartial
     }
   }
 }
@@ -641,19 +641,19 @@ export type AggregateTaskResponse = AggregateTaskFlat
 export type UserConnectionResponse = {
   __typename: 'UserConnection'
   pageInfo: PageInfoFlat
-  edges: UserEdgeFlat & {
-    node: UserFlat & {
-      tasks?: TaskFlat
+  edges: UserEdgeFlatPartial & {
+    node: UserFlatPartial & {
+      tasks?: TaskFlatPartial
       avatar?: FileFlat
     }
   }
   aggregate: AggregateUserFlat
 }
 
-export type UserEdgeResponse = UserEdgeFlat & {
-  node: UserFlat & {
-    tasks?: TaskFlat & {
-      candidate?: CandidateFlat
+export type UserEdgeResponse = UserEdgeFlatPartial & {
+  node: UserFlatPartial & {
+    tasks?: TaskFlatPartial & {
+      candidate?: CandidateFlatPartial
     }
     avatar?: FileFlat
   }
@@ -664,9 +664,9 @@ export type AggregateUserResponse = AggregateUserFlat
 export type WorkflowConnectionResponse = {
   __typename: 'WorkflowConnection'
   pageInfo: PageInfoFlat
-  edges: WorkflowEdgeFlat & {
-    node: WorkflowFlat & {
-      jobs?: JobFlat
+  edges: WorkflowEdgeFlatPartial & {
+    node: WorkflowFlatPartial & {
+      jobs?: JobFlatPartial
       stages?: StageFlat
       disqualifications?: DisqualificationFlat
       fields?: FieldFlat
@@ -678,12 +678,12 @@ export type WorkflowConnectionResponse = {
   aggregate: AggregateWorkflowFlat
 }
 
-export type WorkflowEdgeResponse = WorkflowEdgeFlat & {
-  node: WorkflowFlat & {
-    jobs?: JobFlat & {
-      workspace: WorkspaceFlat
-      applications?: ApplicationFlat
-      comments?: CommentFlat
+export type WorkflowEdgeResponse = WorkflowEdgeFlatPartial & {
+  node: WorkflowFlatPartial & {
+    jobs?: JobFlatPartial & {
+      workspace: WorkspaceFlatPartial
+      applications?: ApplicationFlatPartial
+      comments?: CommentFlatPartial
       locations?: LocationFlat
     }
     stages?: StageFlat
@@ -705,7 +705,7 @@ export type BatchPayloadResponse = BatchPayloadFlat
  *
  */
 
-export type ApplicationFlat = {
+export type ApplicationFlatPartial = {
   __typename: 'Application'
   createdAt: string
   id: string
@@ -713,7 +713,7 @@ export type ApplicationFlat = {
   type: ApplicationType
 }
 
-export type DisqualificationInstanceFlat = {
+export type DisqualificationInstanceFlatPartial = {
   __typename: 'DisqualificationInstance'
   id: string
   createdAt: string
@@ -730,7 +730,7 @@ export type DisqualificationFlat = {
   description?: string | null
 }
 
-export type UserFlat = {
+export type UserFlatPartial = {
   __typename: 'User'
   id: string
   createdAt: string
@@ -745,7 +745,7 @@ export type UserFlat = {
   position?: string | null
 }
 
-export type TaskFlat = {
+export type TaskFlatPartial = {
   __typename: 'Task'
   id: string
   createdAt: string
@@ -777,7 +777,7 @@ export type StageFlat = {
   index: number
 }
 
-export type ReviewInstanceFlat = {
+export type ReviewInstanceFlatPartial = {
   __typename: 'ReviewInstance'
   id: string
   createdAt: string
@@ -812,7 +812,7 @@ export type FieldInstanceFlat = {
   value?: string | null
 }
 
-export type JobFlat = {
+export type JobFlatPartial = {
   __typename: 'Job'
   id: string
   createdAt: string
@@ -826,7 +826,7 @@ export type JobFlat = {
   requirements?: string | null
 }
 
-export type WorkspaceFlat = {
+export type WorkspaceFlatPartial = {
   __typename: 'Workspace'
   id: string
   createdAt: string
@@ -835,7 +835,7 @@ export type WorkspaceFlat = {
   name: string
 }
 
-export type CandidateFlat = {
+export type CandidateFlatPartial = {
   __typename: 'Candidate'
   id: string
   createdAt: string
@@ -852,7 +852,7 @@ export type CandidateFlat = {
   coverLettersString: string[]
 }
 
-export type WorkflowFlat = {
+export type WorkflowFlatPartial = {
   __typename: 'Workflow'
   id: string
   createdAt: string
@@ -861,7 +861,7 @@ export type WorkflowFlat = {
   description?: string | null
 }
 
-export type InviteFlat = {
+export type InviteFlatPartial = {
   __typename: 'Invite'
   id: string
   createdAt: string
@@ -870,7 +870,7 @@ export type InviteFlat = {
   expireAt: string
 }
 
-export type CommentFlat = {
+export type CommentFlatPartial = {
   __typename: 'Comment'
   id: string
   createdAt: string
@@ -915,7 +915,7 @@ export type PageInfoFlat = {
   endCursor?: string | null
 }
 
-export type ApplicationEdgeFlat = {
+export type ApplicationEdgeFlatPartial = {
   __typename: 'ApplicationEdge'
   cursor: string
 }
@@ -925,7 +925,7 @@ export type AggregateApplicationFlat = {
   count: number
 }
 
-export type CandidateEdgeFlat = {
+export type CandidateEdgeFlatPartial = {
   __typename: 'CandidateEdge'
   cursor: string
 }
@@ -935,7 +935,7 @@ export type AggregateCandidateFlat = {
   count: number
 }
 
-export type JobEdgeFlat = {
+export type JobEdgeFlatPartial = {
   __typename: 'JobEdge'
   cursor: string
 }
@@ -965,7 +965,7 @@ export type AggregateTagFlat = {
   count: number
 }
 
-export type TaskEdgeFlat = {
+export type TaskEdgeFlatPartial = {
   __typename: 'TaskEdge'
   cursor: string
 }
@@ -975,7 +975,7 @@ export type AggregateTaskFlat = {
   count: number
 }
 
-export type UserEdgeFlat = {
+export type UserEdgeFlatPartial = {
   __typename: 'UserEdge'
   cursor: string
 }
@@ -985,7 +985,7 @@ export type AggregateUserFlat = {
   count: number
 }
 
-export type WorkflowEdgeFlat = {
+export type WorkflowEdgeFlatPartial = {
   __typename: 'WorkflowEdge'
   cursor: string
 }

@@ -33,8 +33,7 @@ export interface CoreConfig {
    */
   fragmentDeepSuffix: string
   /**
-   * suffix for deep fragments that does not have their whole tree
-   * only for custom fragments, operations do not use it since it's not normalised
+   * suffix for fragment that does not have all fields (on any nesting level)
    * @default 'Partial'
    */
   fragmentPartialSuffix: string

@@ -1,15 +1,15 @@
 query UserPostsQuery($where: UserWhereUniqueInput!, $where1: PostWhereInput, $orderBy1: PostOrderByInput, $skip1: Int, $after1: String, $before1: String, $first1: Int, $last1: Int) {
   user(where: $where) {
     posts(where: $where1, orderBy: $orderBy1, skip: $skip1, after: $after1, before: $before1, first: $first1, last: $last1) {
-      ...PostFlat
+      ...PostFlatPartial
       author {
-        ...UserFlat
+        ...UserFlatPartial
       }
     }
   }
 }
 
-fragment PostFlat on Post {
+fragment PostFlatPartial on Post {
   __typename
   id
   content
@@ -19,7 +19,7 @@ fragment PostFlat on Post {
   updatedAt
 }
 
-fragment UserFlat on User {
+fragment UserFlatPartial on User {
   __typename
   id
   nationality

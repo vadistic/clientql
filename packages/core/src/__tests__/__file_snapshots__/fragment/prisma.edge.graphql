@@ -1,46 +1,46 @@
-fragment BoardEdgePartial on BoardEdge {
-  ...BoardEdgeFlat
+fragment BoardEdgeDeepPartial on BoardEdge {
+  ...BoardEdgeFlatPartial
   node {
-    ...BoardFlat
+    ...BoardFlatPartial
     admins {
-      ...UserFlat
+      ...UserFlatPartial
       posts {
-        ...PostFlat
+        ...PostFlatPartial
       }
     }
     members {
-      ...UserFlat
+      ...UserFlatPartial
       posts {
-        ...PostFlat
+        ...PostFlatPartial
       }
     }
     threads {
-      ...ThreadFlat
+      ...ThreadFlatPartial
       author {
-        ...UserFlat
+        ...UserFlatPartial
       }
       entry {
-        ...PostFlat
+        ...PostFlatPartial
       }
       replies {
-        ...PostFlat
+        ...PostFlatPartial
       }
     }
   }
 }
 
-fragment BoardEdgeFlat on BoardEdge {
+fragment BoardEdgeFlatPartial on BoardEdge {
   __typename
   cursor
 }
 
-fragment BoardFlat on Board {
+fragment BoardFlatPartial on Board {
   __typename
   id
   createdAt
 }
 
-fragment UserFlat on User {
+fragment UserFlatPartial on User {
   __typename
   id
   nationality
@@ -48,7 +48,7 @@ fragment UserFlat on User {
   name
 }
 
-fragment PostFlat on Post {
+fragment PostFlatPartial on Post {
   __typename
   id
   content
@@ -58,7 +58,7 @@ fragment PostFlat on Post {
   updatedAt
 }
 
-fragment ThreadFlat on Thread {
+fragment ThreadFlatPartial on Thread {
   __typename
   id
   createdAt

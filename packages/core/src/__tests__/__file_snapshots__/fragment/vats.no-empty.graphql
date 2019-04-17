@@ -1,26 +1,26 @@
-fragment ApplicationConnectionPartial on ApplicationConnection {
+fragment ApplicationConnectionDeepPartial on ApplicationConnection {
   __typename
   pageInfo {
     ...PageInfoFlat
   }
   edges {
-    ...ApplicationEdgeFlat
+    ...ApplicationEdgeFlatPartial
     node {
-      ...ApplicationFlat
+      ...ApplicationFlatPartial
       disqualification {
-        ...DisqualificationInstanceFlat
+        ...DisqualificationInstanceFlatPartial
       }
       stage {
         ...StageFlat
       }
       reviews {
-        ...ReviewInstanceFlat
+        ...ReviewInstanceFlatPartial
       }
       job {
-        ...JobFlat
+        ...JobFlatPartial
       }
       candidate {
-        ...CandidateFlat
+        ...CandidateFlatPartial
       }
     }
   }
@@ -37,12 +37,12 @@ fragment PageInfoFlat on PageInfo {
   endCursor
 }
 
-fragment ApplicationEdgeFlat on ApplicationEdge {
+fragment ApplicationEdgeFlatPartial on ApplicationEdge {
   __typename
   cursor
 }
 
-fragment ApplicationFlat on Application {
+fragment ApplicationFlatPartial on Application {
   __typename
   createdAt
   id
@@ -50,7 +50,7 @@ fragment ApplicationFlat on Application {
   type
 }
 
-fragment DisqualificationInstanceFlat on DisqualificationInstance {
+fragment DisqualificationInstanceFlatPartial on DisqualificationInstance {
   __typename
   id
   createdAt
@@ -69,7 +69,7 @@ fragment StageFlat on Stage {
   index
 }
 
-fragment ReviewInstanceFlat on ReviewInstance {
+fragment ReviewInstanceFlatPartial on ReviewInstance {
   __typename
   id
   createdAt
@@ -78,7 +78,7 @@ fragment ReviewInstanceFlat on ReviewInstance {
   content
 }
 
-fragment JobFlat on Job {
+fragment JobFlatPartial on Job {
   __typename
   id
   createdAt
@@ -92,7 +92,7 @@ fragment JobFlat on Job {
   requirements
 }
 
-fragment CandidateFlat on Candidate {
+fragment CandidateFlatPartial on Candidate {
   __typename
   id
   createdAt

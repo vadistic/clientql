@@ -332,7 +332,6 @@ const cacheAndFragment = (props: CoreProps) => (
    * selecions with FLAT can always store (non-empty) flat part of selection
    * (inlines & spreads are not considered flat part)
    */
-
   if (props.config.useFragments === FragmentType.FLAT) {
     const { flat: flatSelections, deep: deepSelections } = result.flat
       ? { flat: result.selections, deep: [] }
@@ -353,7 +352,7 @@ const cacheAndFragment = (props: CoreProps) => (
         )
 
     // need to check for emptines or the empty fragment will be created
-    //  => no flat parth => return default since this setting is on flat
+    //  => no flat part => return default since this setting is on flat
     //  => only typename in flat part => also empty & default
     const hasOnlyTypename =
       flatSelections.length === 1 &&
@@ -367,7 +366,8 @@ const cacheAndFragment = (props: CoreProps) => (
     const fragmentName = getFragmentName(props)({
       typename,
       flat: true,
-      complete: true,
+      // flat is complete when deep.length === 0
+      complete: result.complete,
     })
 
     if (!props.cache.fragments.has(fragmentName)) {

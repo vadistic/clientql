@@ -1,11 +1,11 @@
-fragment PostPartial on Post {
-  ...PostFlat
+fragment PostDeepPartial on Post {
+  ...PostFlatPartial
   author {
-    ...UserFlat
+    ...UserFlatPartial
   }
 }
 
-fragment PostFlat on Post {
+fragment PostFlatPartial on Post {
   __typename
   id
   content
@@ -15,7 +15,7 @@ fragment PostFlat on Post {
   updatedAt
 }
 
-fragment UserFlat on User {
+fragment UserFlatPartial on User {
   __typename
   id
   nationality

@@ -34,8 +34,8 @@ export interface FragmentResult {
   fragment: FragmentDefinitionNode
   fragmentNames: FragmentName[]
   flat: boolean
-  // I'm building & caching only complete fragments
-  complete: boolean // true
+  // I'm building & caching only flat or (deep & complete) fragments
+  complete: boolean
 }
 
 /*
