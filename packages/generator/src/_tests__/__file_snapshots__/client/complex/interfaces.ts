@@ -33,12 +33,12 @@ export interface Fragmentable {
  */
 
 export interface MyQueryClient {
-  findEventsAtVenue: (args?: { venueId: string }) => Promise<Array<EventResponse | null> | null> & EventClient
-  findPerson: (args?: { id: string }) => Promise<PersonResponse | null> & PersonClient
+  findEventsAtVenue: (args: { venueId: string }) => Promise<Array<EventResponse | null> | null> & EventClient
+  findPerson: (args: { id: string }) => Promise<PersonResponse | null> & PersonClient
 }
 
 export interface MyMutationClient {
-  deleteEvent: (args?: { eventId: string }) => Promise<Array<EventResponse | null> | null> & EventClient
+  deleteEvent: (args: { eventId: string }) => Promise<Array<EventResponse | null> | null> & EventClient
 }
 
 /*

@@ -403,8 +403,8 @@ export interface Fragmentable {
  */
 
 export interface QueryClient {
-  application: (args?: { where: ApplicationWhereUniqueInput }) => Promise<ApplicationResponse | null> & ApplicationClient
-  applications: (args: {
+  application: (args: { where: ApplicationWhereUniqueInput }) => Promise<ApplicationResponse | null> & ApplicationClient
+  applications: (args?: {
     where?: ApplicationWhereInput | null
     orderBy?: ApplicationOrderByInput | null
     skip?: number | null
@@ -413,7 +413,7 @@ export interface QueryClient {
     first?: number | null
     last?: number | null
   }) => Promise<Array<ApplicationResponse | null>> & ApplicationClient
-  applicationsConnection: (args: {
+  applicationsConnection: (args?: {
     where?: ApplicationWhereInput | null
     orderBy?: ApplicationOrderByInput | null
     skip?: number | null
@@ -422,8 +422,8 @@ export interface QueryClient {
     first?: number | null
     last?: number | null
   }) => Promise<ApplicationConnectionResponse> & ApplicationConnectionClient
-  candidate: (args?: { where: CandidateWhereUniqueInput }) => Promise<CandidateResponse | null> & CandidateClient
-  candidates: (args: {
+  candidate: (args: { where: CandidateWhereUniqueInput }) => Promise<CandidateResponse | null> & CandidateClient
+  candidates: (args?: {
     where?: CandidateWhereInput | null
     orderBy?: CandidateOrderByInput | null
     skip?: number | null
@@ -432,7 +432,7 @@ export interface QueryClient {
     first?: number | null
     last?: number | null
   }) => Promise<Array<CandidateResponse | null>> & CandidateClient
-  candidatesConnection: (args: {
+  candidatesConnection: (args?: {
     where?: CandidateWhereInput | null
     orderBy?: CandidateOrderByInput | null
     skip?: number | null
@@ -441,8 +441,8 @@ export interface QueryClient {
     first?: number | null
     last?: number | null
   }) => Promise<CandidateConnectionResponse> & CandidateConnectionClient
-  job: (args?: { where: JobWhereUniqueInput }) => Promise<JobResponse | null> & JobClient
-  jobs: (args: {
+  job: (args: { where: JobWhereUniqueInput }) => Promise<JobResponse | null> & JobClient
+  jobs: (args?: {
     where?: JobWhereInput | null
     orderBy?: JobOrderByInput | null
     skip?: number | null
@@ -451,7 +451,7 @@ export interface QueryClient {
     first?: number | null
     last?: number | null
   }) => Promise<Array<JobResponse | null>> & JobClient
-  jobsConnection: (args: {
+  jobsConnection: (args?: {
     where?: JobWhereInput | null
     orderBy?: JobOrderByInput | null
     skip?: number | null
@@ -460,8 +460,8 @@ export interface QueryClient {
     first?: number | null
     last?: number | null
   }) => Promise<JobConnectionResponse> & JobConnectionClient
-  source: (args?: { where: SourceWhereUniqueInput }) => Promise<SourceResponse | null> & SourceClient
-  sources: (args: {
+  source: (args: { where: SourceWhereUniqueInput }) => Promise<SourceResponse | null> & SourceClient
+  sources: (args?: {
     where?: SourceWhereInput | null
     orderBy?: SourceOrderByInput | null
     skip?: number | null
@@ -470,7 +470,7 @@ export interface QueryClient {
     first?: number | null
     last?: number | null
   }) => Promise<Array<SourceResponse | null>> & SourceClient
-  sourcesConnection: (args: {
+  sourcesConnection: (args?: {
     where?: SourceWhereInput | null
     orderBy?: SourceOrderByInput | null
     skip?: number | null
@@ -479,8 +479,8 @@ export interface QueryClient {
     first?: number | null
     last?: number | null
   }) => Promise<SourceConnectionResponse> & SourceConnectionClient
-  tag: (args?: { where: TagWhereUniqueInput }) => Promise<TagResponse | null> & TagClient
-  tags: (args: {
+  tag: (args: { where: TagWhereUniqueInput }) => Promise<TagResponse | null> & TagClient
+  tags: (args?: {
     where?: TagWhereInput | null
     orderBy?: TagOrderByInput | null
     skip?: number | null
@@ -489,7 +489,7 @@ export interface QueryClient {
     first?: number | null
     last?: number | null
   }) => Promise<Array<TagResponse | null>> & TagClient
-  tagsConnection: (args: {
+  tagsConnection: (args?: {
     where?: TagWhereInput | null
     orderBy?: TagOrderByInput | null
     skip?: number | null
@@ -498,8 +498,8 @@ export interface QueryClient {
     first?: number | null
     last?: number | null
   }) => Promise<TagConnectionResponse> & TagConnectionClient
-  task: (args?: { where: TaskWhereUniqueInput }) => Promise<TaskResponse | null> & TaskClient
-  tasks: (args: {
+  task: (args: { where: TaskWhereUniqueInput }) => Promise<TaskResponse | null> & TaskClient
+  tasks: (args?: {
     where?: TaskWhereInput | null
     orderBy?: TaskOrderByInput | null
     skip?: number | null
@@ -508,7 +508,7 @@ export interface QueryClient {
     first?: number | null
     last?: number | null
   }) => Promise<Array<TaskResponse | null>> & TaskClient
-  tasksConnection: (args: {
+  tasksConnection: (args?: {
     where?: TaskWhereInput | null
     orderBy?: TaskOrderByInput | null
     skip?: number | null
@@ -517,8 +517,8 @@ export interface QueryClient {
     first?: number | null
     last?: number | null
   }) => Promise<TaskConnectionResponse> & TaskConnectionClient
-  user: (args?: { where: UserWhereUniqueInput }) => Promise<UserResponse | null> & UserClient
-  users: (args: {
+  user: (args: { where: UserWhereUniqueInput }) => Promise<UserResponse | null> & UserClient
+  users: (args?: {
     where?: UserWhereInput | null
     orderBy?: UserOrderByInput | null
     skip?: number | null
@@ -527,7 +527,7 @@ export interface QueryClient {
     first?: number | null
     last?: number | null
   }) => Promise<Array<UserResponse | null>> & UserClient
-  usersConnection: (args: {
+  usersConnection: (args?: {
     where?: UserWhereInput | null
     orderBy?: UserOrderByInput | null
     skip?: number | null
@@ -536,8 +536,8 @@ export interface QueryClient {
     first?: number | null
     last?: number | null
   }) => Promise<UserConnectionResponse> & UserConnectionClient
-  workflow: (args?: { where: WorkflowWhereUniqueInput }) => Promise<WorkflowResponse | null> & WorkflowClient
-  workflows: (args: {
+  workflow: (args: { where: WorkflowWhereUniqueInput }) => Promise<WorkflowResponse | null> & WorkflowClient
+  workflows: (args?: {
     where?: WorkflowWhereInput | null
     orderBy?: WorkflowOrderByInput | null
     skip?: number | null
@@ -546,7 +546,7 @@ export interface QueryClient {
     first?: number | null
     last?: number | null
   }) => Promise<Array<WorkflowResponse | null>> & WorkflowClient
-  workflowsConnection: (args: {
+  workflowsConnection: (args?: {
     where?: WorkflowWhereInput | null
     orderBy?: WorkflowOrderByInput | null
     skip?: number | null
@@ -559,7 +559,7 @@ export interface QueryClient {
 
 export interface MutationClient {
   createApplication: (args: { data: ApplicationCreateInput }) => Promise<ApplicationResponse> & ApplicationClient
-  updateApplication: (args?: {
+  updateApplication: (args: {
     data: ApplicationUpdateInput
     where: ApplicationWhereUniqueInput
   }) => Promise<ApplicationResponse | null> & ApplicationClient
@@ -572,10 +572,10 @@ export interface MutationClient {
     create: ApplicationCreateInput
     update: ApplicationUpdateInput
   }) => Promise<ApplicationResponse> & ApplicationClient
-  deleteApplication: (args?: { where: ApplicationWhereUniqueInput }) => Promise<ApplicationResponse | null> & ApplicationClient
-  deleteManyApplications: (args: { where?: ApplicationWhereInput | null }) => Promise<BatchPayloadResponse> & BatchPayloadClient
+  deleteApplication: (args: { where: ApplicationWhereUniqueInput }) => Promise<ApplicationResponse | null> & ApplicationClient
+  deleteManyApplications: (args?: { where?: ApplicationWhereInput | null }) => Promise<BatchPayloadResponse> & BatchPayloadClient
   createCandidate: (args: { data: CandidateCreateInput }) => Promise<CandidateResponse> & CandidateClient
-  updateCandidate: (args?: {
+  updateCandidate: (args: {
     data: CandidateUpdateInput
     where: CandidateWhereUniqueInput
   }) => Promise<CandidateResponse | null> & CandidateClient
@@ -588,10 +588,10 @@ export interface MutationClient {
     create: CandidateCreateInput
     update: CandidateUpdateInput
   }) => Promise<CandidateResponse> & CandidateClient
-  deleteCandidate: (args?: { where: CandidateWhereUniqueInput }) => Promise<CandidateResponse | null> & CandidateClient
-  deleteManyCandidates: (args: { where?: CandidateWhereInput | null }) => Promise<BatchPayloadResponse> & BatchPayloadClient
+  deleteCandidate: (args: { where: CandidateWhereUniqueInput }) => Promise<CandidateResponse | null> & CandidateClient
+  deleteManyCandidates: (args?: { where?: CandidateWhereInput | null }) => Promise<BatchPayloadResponse> & BatchPayloadClient
   createJob: (args: { data: JobCreateInput }) => Promise<JobResponse> & JobClient
-  updateJob: (args?: {
+  updateJob: (args: {
     data: JobUpdateInput
     where: JobWhereUniqueInput
   }) => Promise<JobResponse | null> & JobClient
@@ -604,10 +604,10 @@ export interface MutationClient {
     create: JobCreateInput
     update: JobUpdateInput
   }) => Promise<JobResponse> & JobClient
-  deleteJob: (args?: { where: JobWhereUniqueInput }) => Promise<JobResponse | null> & JobClient
-  deleteManyJobs: (args: { where?: JobWhereInput | null }) => Promise<BatchPayloadResponse> & BatchPayloadClient
+  deleteJob: (args: { where: JobWhereUniqueInput }) => Promise<JobResponse | null> & JobClient
+  deleteManyJobs: (args?: { where?: JobWhereInput | null }) => Promise<BatchPayloadResponse> & BatchPayloadClient
   createSource: (args: { data: SourceCreateInput }) => Promise<SourceResponse> & SourceClient
-  updateSource: (args?: {
+  updateSource: (args: {
     data: SourceUpdateInput
     where: SourceWhereUniqueInput
   }) => Promise<SourceResponse | null> & SourceClient
@@ -620,10 +620,10 @@ export interface MutationClient {
     create: SourceCreateInput
     update: SourceUpdateInput
   }) => Promise<SourceResponse> & SourceClient
-  deleteSource: (args?: { where: SourceWhereUniqueInput }) => Promise<SourceResponse | null> & SourceClient
-  deleteManySources: (args: { where?: SourceWhereInput | null }) => Promise<BatchPayloadResponse> & BatchPayloadClient
+  deleteSource: (args: { where: SourceWhereUniqueInput }) => Promise<SourceResponse | null> & SourceClient
+  deleteManySources: (args?: { where?: SourceWhereInput | null }) => Promise<BatchPayloadResponse> & BatchPayloadClient
   createTag: (args: { data: TagCreateInput }) => Promise<TagResponse> & TagClient
-  updateTag: (args?: {
+  updateTag: (args: {
     data: TagUpdateInput
     where: TagWhereUniqueInput
   }) => Promise<TagResponse | null> & TagClient
@@ -636,10 +636,10 @@ export interface MutationClient {
     create: TagCreateInput
     update: TagUpdateInput
   }) => Promise<TagResponse> & TagClient
-  deleteTag: (args?: { where: TagWhereUniqueInput }) => Promise<TagResponse | null> & TagClient
-  deleteManyTags: (args: { where?: TagWhereInput | null }) => Promise<BatchPayloadResponse> & BatchPayloadClient
+  deleteTag: (args: { where: TagWhereUniqueInput }) => Promise<TagResponse | null> & TagClient
+  deleteManyTags: (args?: { where?: TagWhereInput | null }) => Promise<BatchPayloadResponse> & BatchPayloadClient
   createTask: (args: { data: TaskCreateInput }) => Promise<TaskResponse> & TaskClient
-  updateTask: (args?: {
+  updateTask: (args: {
     data: TaskUpdateInput
     where: TaskWhereUniqueInput
   }) => Promise<TaskResponse | null> & TaskClient
@@ -652,14 +652,14 @@ export interface MutationClient {
     create: TaskCreateInput
     update: TaskUpdateInput
   }) => Promise<TaskResponse> & TaskClient
-  deleteTask: (args?: { where: TaskWhereUniqueInput }) => Promise<TaskResponse | null> & TaskClient
-  deleteManyTasks: (args: { where?: TaskWhereInput | null }) => Promise<BatchPayloadResponse> & BatchPayloadClient
-  updateUser: (args?: {
+  deleteTask: (args: { where: TaskWhereUniqueInput }) => Promise<TaskResponse | null> & TaskClient
+  deleteManyTasks: (args?: { where?: TaskWhereInput | null }) => Promise<BatchPayloadResponse> & BatchPayloadClient
+  updateUser: (args: {
     data: UserUpdateInput
     where: UserWhereUniqueInput
   }) => Promise<UserResponse | null> & UserClient
   createWorkflow: (args: { data: WorkflowCreateInput }) => Promise<WorkflowResponse> & WorkflowClient
-  updateWorkflow: (args?: {
+  updateWorkflow: (args: {
     data: WorkflowUpdateInput
     where: WorkflowWhereUniqueInput
   }) => Promise<WorkflowResponse | null> & WorkflowClient
@@ -672,8 +672,8 @@ export interface MutationClient {
     create: WorkflowCreateInput
     update: WorkflowUpdateInput
   }) => Promise<WorkflowResponse> & WorkflowClient
-  deleteWorkflow: (args?: { where: WorkflowWhereUniqueInput }) => Promise<WorkflowResponse | null> & WorkflowClient
-  deleteManyWorkflows: (args: { where?: WorkflowWhereInput | null }) => Promise<BatchPayloadResponse> & BatchPayloadClient
+  deleteWorkflow: (args: { where: WorkflowWhereUniqueInput }) => Promise<WorkflowResponse | null> & WorkflowClient
+  deleteManyWorkflows: (args?: { where?: WorkflowWhereInput | null }) => Promise<BatchPayloadResponse> & BatchPayloadClient
 }
 
 /*

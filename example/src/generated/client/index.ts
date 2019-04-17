@@ -7,11 +7,13 @@
  *
  */
 
+import { createClient } from '@graphql-clientgen/client'
 import {
   QueryClient,
   MutationClient,
   SubscriptionClient
 } from './interfaces'
+import { TYPEDEFS } from './typedefs'
 
 export * from './interfaces'
 export * from './responses'
@@ -23,4 +25,6 @@ export interface ClientProxy {
   mutation: MutationClient
   subscription: SubscriptionClient
 }
+
+export const useClient = createClient<ClientProxy>({typedefs: TYPEDEFS})
 

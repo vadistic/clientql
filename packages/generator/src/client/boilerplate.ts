@@ -15,7 +15,20 @@ export const printClientBoilerplate = (props: GeneratorProps) => {
     props.naming.clientInterfaceName(typename),
   )
 
-  const importsTs = printTsImports(rootsNamesTs, props.paths.interfaces)
+  const importRootInterfaceTs = printTsImports(
+    rootsNamesTs,
+    props.paths.interfaces,
+  )
+
+  const importClientLibTs = printTsImports(
+    ['createClient'],
+    '@graphql-clientgen/client',
+  )
+
+  const importTypedefsTs = printTsImports(
+    [props.naming.typedefsConstName],
+    props.paths.typedefs,
+  )
 
   const exportsTs = [
     props.paths.interfaces,
@@ -30,16 +43,24 @@ export const printClientBoilerplate = (props: GeneratorProps) => {
     ([type], i) => type + ': ' + rootsNamesTs[i],
   )
 
-  const clientTs = printTsInterface(
+  const clientInterfaceTs = printTsInterface(
     props.naming.interfaceName('ClientProxy'),
     clientFieldsTs,
   )
 
+  const clientInitTs = `export const useClient = createClient<${props.naming.interfaceName(
+    'ClientProxy',
+  )}>({typedefs: ${props.naming.typedefsConstName}})`
+
   let resultTs = printYadaYada() + '\n\n'
 
-  resultTs += importsTs + '\n\n'
+  resultTs += importClientLibTs + '\n'
+  resultTs += importRootInterfaceTs + '\n'
+  resultTs += importTypedefsTs + '\n\n'
+
   resultTs += exportsTs + '\n\n'
-  resultTs += clientTs + '\n\n'
+  resultTs += clientInterfaceTs + '\n\n'
+  resultTs += clientInitTs + '\n\n'
 
   return resultTs
 }

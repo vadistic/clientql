@@ -23,53 +23,54 @@ import {
  *
  */
 
-export type BoardResponse = BoardFlat & {
-  admins?: UserFlat & {
-    posts?: PostFlat
+export type BoardResponse = BoardFlatPartial & {
+  admins?: UserFlatPartial & {
+    posts?: PostFlatPartial
   }
-  members?: UserFlat & {
-    posts?: PostFlat
+  members?: UserFlatPartial & {
+    posts?: PostFlatPartial
   }
-  threads?: ThreadFlat & {
-    author: UserFlat & {
-      posts?: PostFlat
+  threads?: ThreadFlatPartial & {
+    author: UserFlatPartial & {
+      posts?: PostFlatPartial
     }
-    entry: PostFlat & {
-      author: UserFlat
+    entry: PostFlatPartial & {
+      author: UserFlatPartial
     }
-    replies?: PostFlat & {
-      author: UserFlat
+    replies?: PostFlatPartial & {
+      author: UserFlatPartial
     }
   }
 }
 
-export type UserResponse = UserFlat & {
-  posts?: PostFlat
+export type UserResponse = UserFlatPartial & {
+  posts?: PostFlatPartial
 }
 
-export type PostResponse = PostFlat & {
-  author: UserFlat
+export type PostResponse = PostFlatPartial & {
+  author: UserFlatPartial
 }
 
-export type ThreadResponse = ThreadFlat & {
-  author: UserFlat & {
-    posts?: PostFlat
+export type ThreadResponse = ThreadFlatPartial & {
+  author: UserFlatPartial & {
+    posts?: PostFlatPartial
   }
-  entry: PostFlat & {
-    author: UserFlat
+  entry: PostFlatPartial & {
+    author: UserFlatPartial
   }
-  replies?: PostFlat & {
-    author: UserFlat
+  replies?: PostFlatPartial & {
+    author: UserFlatPartial
   }
 }
 
 export type BoardConnectionResponse = {
+  __typename: 'BoardConnection'
   pageInfo: PageInfoFlat
-  edges: BoardEdgeFlat & {
-    node: BoardFlat & {
-      admins?: UserFlat
-      members?: UserFlat
-      threads?: ThreadFlat
+  edges: BoardEdgeFlatPartial & {
+    node: BoardFlatPartial & {
+      admins?: UserFlatPartial
+      members?: UserFlatPartial
+      threads?: ThreadFlatPartial
     }
   }
   aggregate: AggregateBoardFlat
@@ -77,18 +78,18 @@ export type BoardConnectionResponse = {
 
 export type PageInfoResponse = PageInfoFlat
 
-export type BoardEdgeResponse = BoardEdgeFlat & {
-  node: BoardFlat & {
-    admins?: UserFlat & {
-      posts?: PostFlat
+export type BoardEdgeResponse = BoardEdgeFlatPartial & {
+  node: BoardFlatPartial & {
+    admins?: UserFlatPartial & {
+      posts?: PostFlatPartial
     }
-    members?: UserFlat & {
-      posts?: PostFlat
+    members?: UserFlatPartial & {
+      posts?: PostFlatPartial
     }
-    threads?: ThreadFlat & {
-      author: UserFlat
-      entry: PostFlat
-      replies?: PostFlat
+    threads?: ThreadFlatPartial & {
+      author: UserFlatPartial
+      entry: PostFlatPartial
+      replies?: PostFlatPartial
     }
   }
 }
@@ -96,27 +97,28 @@ export type BoardEdgeResponse = BoardEdgeFlat & {
 export type AggregateBoardResponse = AggregateBoardFlat
 
 export type ThreadConnectionResponse = {
+  __typename: 'ThreadConnection'
   pageInfo: PageInfoFlat
-  edges: ThreadEdgeFlat & {
-    node: ThreadFlat & {
-      author: UserFlat
-      entry: PostFlat
-      replies?: PostFlat
+  edges: ThreadEdgeFlatPartial & {
+    node: ThreadFlatPartial & {
+      author: UserFlatPartial
+      entry: PostFlatPartial
+      replies?: PostFlatPartial
     }
   }
   aggregate: AggregateThreadFlat
 }
 
-export type ThreadEdgeResponse = ThreadEdgeFlat & {
-  node: ThreadFlat & {
-    author: UserFlat & {
-      posts?: PostFlat
+export type ThreadEdgeResponse = ThreadEdgeFlatPartial & {
+  node: ThreadFlatPartial & {
+    author: UserFlatPartial & {
+      posts?: PostFlatPartial
     }
-    entry: PostFlat & {
-      author: UserFlat
+    entry: PostFlatPartial & {
+      author: UserFlatPartial
     }
-    replies?: PostFlat & {
-      author: UserFlat
+    replies?: PostFlatPartial & {
+      author: UserFlatPartial
     }
   }
 }
@@ -124,89 +126,91 @@ export type ThreadEdgeResponse = ThreadEdgeFlat & {
 export type AggregateThreadResponse = AggregateThreadFlat
 
 export type UserConnectionResponse = {
+  __typename: 'UserConnection'
   pageInfo: PageInfoFlat
-  edges: UserEdgeFlat & {
-    node: UserFlat & {
-      posts?: PostFlat
+  edges: UserEdgeFlatPartial & {
+    node: UserFlatPartial & {
+      posts?: PostFlatPartial
     }
   }
   aggregate: AggregateUserFlat
 }
 
-export type UserEdgeResponse = UserEdgeFlat & {
-  node: UserFlat & {
-    posts?: PostFlat
+export type UserEdgeResponse = UserEdgeFlatPartial & {
+  node: UserFlatPartial & {
+    posts?: PostFlatPartial
   }
 }
 
 export type AggregateUserResponse = AggregateUserFlat
 
 export type PostConnectionResponse = {
+  __typename: 'PostConnection'
   pageInfo: PageInfoFlat
-  edges: PostEdgeFlat & {
-    node: PostFlat & {
-      author: UserFlat
+  edges: PostEdgeFlatPartial & {
+    node: PostFlatPartial & {
+      author: UserFlatPartial
     }
   }
   aggregate: AggregatePostFlat
 }
 
-export type PostEdgeResponse = PostEdgeFlat & {
-  node: PostFlat & {
-    author: UserFlat
+export type PostEdgeResponse = PostEdgeFlatPartial & {
+  node: PostFlatPartial & {
+    author: UserFlatPartial
   }
 }
 
 export type AggregatePostResponse = AggregatePostFlat
 
-export type NodeResponse = NodeFlat & (BoardFlat & {
-  admins?: UserFlat & {
-    posts?: PostFlat
+export type NodeResponse = NodeFlatPartial & (BoardFlatPartial & {
+  admins?: UserFlatPartial & {
+    posts?: PostFlatPartial
   }
-  members?: UserFlat & {
-    posts?: PostFlat
+  members?: UserFlatPartial & {
+    posts?: PostFlatPartial
   }
-  threads?: ThreadFlat & {
-    author: UserFlat & {
-      posts?: PostFlat
+  threads?: ThreadFlatPartial & {
+    author: UserFlatPartial & {
+      posts?: PostFlatPartial
     }
-    entry: PostFlat & {
-      author: UserFlat
+    entry: PostFlatPartial & {
+      author: UserFlatPartial
     }
-    replies?: PostFlat & {
-      author: UserFlat
+    replies?: PostFlatPartial & {
+      author: UserFlatPartial
     }
   }
-} | PostFlat & {
-  author: UserFlat
-} | ThreadFlat & {
-  author: UserFlat & {
-    posts?: PostFlat
+} | PostFlatPartial & {
+  author: UserFlatPartial
+} | ThreadFlatPartial & {
+  author: UserFlatPartial & {
+    posts?: PostFlatPartial
   }
-  entry: PostFlat & {
-    author: UserFlat
+  entry: PostFlatPartial & {
+    author: UserFlatPartial
   }
-  replies?: PostFlat & {
-    author: UserFlat
+  replies?: PostFlatPartial & {
+    author: UserFlatPartial
   }
-} | UserFlat & {
-  posts?: PostFlat
+} | UserFlatPartial & {
+  posts?: PostFlatPartial
 })
 
 export type BatchPayloadResponse = BatchPayloadFlat
 
-export type BoardSubscriptionPayloadResponse = BoardSubscriptionPayloadFlat & {
-  node?: BoardFlat & {
-    admins?: UserFlat & {
-      posts?: PostFlat
+export type BoardSubscriptionPayloadResponse = BoardSubscriptionPayloadFlatPartial & {
+  node?: BoardFlatPartial & {
+    admins?: UserFlatPartial & {
+      posts?: PostFlatPartial
     }
-    members?: UserFlat & {
-      posts?: PostFlat
+    members?: UserFlatPartial & {
+      posts?: PostFlatPartial
     }
-    threads?: ThreadFlat & {
-      author: UserFlat
-      entry: PostFlat
-      replies?: PostFlat
+    threads?: ThreadFlatPartial & {
+      author: UserFlatPartial
+      entry: PostFlatPartial
+      replies?: PostFlatPartial
     }
   }
   previousValues?: BoardPreviousValuesFlat
@@ -214,16 +218,16 @@ export type BoardSubscriptionPayloadResponse = BoardSubscriptionPayloadFlat & {
 
 export type BoardPreviousValuesResponse = BoardPreviousValuesFlat
 
-export type ThreadSubscriptionPayloadResponse = ThreadSubscriptionPayloadFlat & {
-  node?: ThreadFlat & {
-    author: UserFlat & {
-      posts?: PostFlat
+export type ThreadSubscriptionPayloadResponse = ThreadSubscriptionPayloadFlatPartial & {
+  node?: ThreadFlatPartial & {
+    author: UserFlatPartial & {
+      posts?: PostFlatPartial
     }
-    entry: PostFlat & {
-      author: UserFlat
+    entry: PostFlatPartial & {
+      author: UserFlatPartial
     }
-    replies?: PostFlat & {
-      author: UserFlat
+    replies?: PostFlatPartial & {
+      author: UserFlatPartial
     }
   }
   previousValues?: ThreadPreviousValuesFlat
@@ -231,18 +235,18 @@ export type ThreadSubscriptionPayloadResponse = ThreadSubscriptionPayloadFlat & 
 
 export type ThreadPreviousValuesResponse = ThreadPreviousValuesFlat
 
-export type UserSubscriptionPayloadResponse = UserSubscriptionPayloadFlat & {
-  node?: UserFlat & {
-    posts?: PostFlat
+export type UserSubscriptionPayloadResponse = UserSubscriptionPayloadFlatPartial & {
+  node?: UserFlatPartial & {
+    posts?: PostFlatPartial
   }
   previousValues?: UserPreviousValuesFlat
 }
 
 export type UserPreviousValuesResponse = UserPreviousValuesFlat
 
-export type PostSubscriptionPayloadResponse = PostSubscriptionPayloadFlat & {
-  node?: PostFlat & {
-    author: UserFlat
+export type PostSubscriptionPayloadResponse = PostSubscriptionPayloadFlatPartial & {
+  node?: PostFlatPartial & {
+    author: UserFlatPartial
   }
   previousValues?: PostPreviousValuesFlat
 }
@@ -255,19 +259,22 @@ export type PostPreviousValuesResponse = PostPreviousValuesFlat
  *
  */
 
-export type BoardFlat = {
+export type BoardFlatPartial = {
+  __typename: 'Board'
   id: string
   createdAt: string
 }
 
-export type UserFlat = {
+export type UserFlatPartial = {
+  __typename: 'User'
   id: string
   nationality?: string | null
   email: string
   name?: string | null
 }
 
-export type PostFlat = {
+export type PostFlatPartial = {
+  __typename: 'Post'
   id: string
   content?: string | null
   createdAt: string
@@ -276,98 +283,117 @@ export type PostFlat = {
   updatedAt: string
 }
 
-export type ThreadFlat = {
+export type ThreadFlatPartial = {
+  __typename: 'Thread'
   id: string
   createdAt: string
   name: string
 }
 
 export type PageInfoFlat = {
+  __typename: 'PageInfo'
   hasNextPage: boolean
   hasPreviousPage: boolean
   startCursor?: string | null
   endCursor?: string | null
 }
 
-export type BoardEdgeFlat = {
+export type BoardEdgeFlatPartial = {
+  __typename: 'BoardEdge'
   cursor: string
 }
 
 export type AggregateBoardFlat = {
+  __typename: 'AggregateBoard'
   count: number
 }
 
-export type ThreadEdgeFlat = {
+export type ThreadEdgeFlatPartial = {
+  __typename: 'ThreadEdge'
   cursor: string
 }
 
 export type AggregateThreadFlat = {
+  __typename: 'AggregateThread'
   count: number
 }
 
-export type UserEdgeFlat = {
+export type UserEdgeFlatPartial = {
+  __typename: 'UserEdge'
   cursor: string
 }
 
 export type AggregateUserFlat = {
+  __typename: 'AggregateUser'
   count: number
 }
 
-export type PostEdgeFlat = {
+export type PostEdgeFlatPartial = {
+  __typename: 'PostEdge'
   cursor: string
 }
 
 export type AggregatePostFlat = {
+  __typename: 'AggregatePost'
   count: number
 }
 
-export type NodeFlat = {
+export type NodeFlatPartial = {
   id: string
 }
 
 export type BatchPayloadFlat = {
+  __typename: 'BatchPayload'
   count: number
 }
 
-export type BoardSubscriptionPayloadFlat = {
+export type BoardSubscriptionPayloadFlatPartial = {
+  __typename: 'BoardSubscriptionPayload'
   mutation: MutationType
   updatedFields?: string[] | null
 }
 
 export type BoardPreviousValuesFlat = {
+  __typename: 'BoardPreviousValues'
   id: string
   createdAt: string
 }
 
-export type ThreadSubscriptionPayloadFlat = {
+export type ThreadSubscriptionPayloadFlatPartial = {
+  __typename: 'ThreadSubscriptionPayload'
   mutation: MutationType
   updatedFields?: string[] | null
 }
 
 export type ThreadPreviousValuesFlat = {
+  __typename: 'ThreadPreviousValues'
   id: string
   createdAt: string
   name: string
 }
 
-export type UserSubscriptionPayloadFlat = {
+export type UserSubscriptionPayloadFlatPartial = {
+  __typename: 'UserSubscriptionPayload'
   mutation: MutationType
   updatedFields?: string[] | null
 }
 
 export type UserPreviousValuesFlat = {
+  __typename: 'UserPreviousValues'
   id: string
   nationality?: string | null
   email: string
   name?: string | null
 }
 
-export type PostSubscriptionPayloadFlat = {
+export type PostSubscriptionPayloadFlatPartial = {
+  __typename: 'PostSubscriptionPayload'
   mutation: MutationType
   updatedFields?: string[] | null
 }
 
 export type PostPreviousValuesFlat = {
+  __typename: 'PostPreviousValues'
   id: string
   content?: string | null
   createdAt: string

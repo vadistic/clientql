@@ -2,19 +2,19 @@
 
 exports[`printer > ObjectTypeDefinition useFieldArgumentsInterfaces: true 1`] = `
 "export interface Query {
-  board: (args?: QueryBoardArgs) => Board | null
-  boards: (args: QueryBoardsArgs) => Array<Board | null>
-  boardsConnection: (args: QueryBoardsConnectionArgs) => BoardConnection
-  post: (args?: QueryPostArgs) => Post | null
-  posts: (args: QueryPostsArgs) => Array<Post | null>
-  postsConnection: (args: QueryPostsConnectionArgs) => PostConnection
-  thread: (args?: QueryThreadArgs) => Thread | null
-  threads: (args: QueryThreadsArgs) => Array<Thread | null>
-  threadsConnection: (args: QueryThreadsConnectionArgs) => ThreadConnection
-  user: (args?: QueryUserArgs) => User | null
-  users: (args: QueryUsersArgs) => Array<User | null>
-  usersConnection: (args: QueryUsersConnectionArgs) => UserConnection
-  node: (args?: QueryNodeArgs) => Node | null
+  board: (args: QueryBoardArgs) => Board | null
+  boards: (args?: QueryBoardsArgs) => Array<Board | null>
+  boardsConnection: (args?: QueryBoardsConnectionArgs) => BoardConnection
+  post: (args: QueryPostArgs) => Post | null
+  posts: (args?: QueryPostsArgs) => Array<Post | null>
+  postsConnection: (args?: QueryPostsConnectionArgs) => PostConnection
+  thread: (args: QueryThreadArgs) => Thread | null
+  threads: (args?: QueryThreadsArgs) => Array<Thread | null>
+  threadsConnection: (args?: QueryThreadsConnectionArgs) => ThreadConnection
+  user: (args: QueryUserArgs) => User | null
+  users: (args?: QueryUsersArgs) => Array<User | null>
+  usersConnection: (args?: QueryUsersConnectionArgs) => UserConnection
+  node: (args: QueryNodeArgs) => Node | null
 }
 
 export interface QueryBoardArgs {

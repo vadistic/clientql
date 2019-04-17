@@ -122,8 +122,8 @@ export interface Fragmentable {
  */
 
 export interface QueryClient {
-  board: (args?: { where: BoardWhereUniqueInput }) => Promise<BoardResponse | null> & BoardClient
-  boards: (args: {
+  board: (args: { where: BoardWhereUniqueInput }) => Promise<BoardResponse | null> & BoardClient
+  boards: (args?: {
     where?: BoardWhereInput | null
     orderBy?: BoardOrderByInput | null
     skip?: number | null
@@ -132,7 +132,7 @@ export interface QueryClient {
     first?: number | null
     last?: number | null
   }) => Promise<Array<BoardResponse | null>> & BoardClient
-  boardsConnection: (args: {
+  boardsConnection: (args?: {
     where?: BoardWhereInput | null
     orderBy?: BoardOrderByInput | null
     skip?: number | null
@@ -141,8 +141,8 @@ export interface QueryClient {
     first?: number | null
     last?: number | null
   }) => Promise<BoardConnectionResponse> & BoardConnectionClient
-  post: (args?: { where: PostWhereUniqueInput }) => Promise<PostResponse | null> & PostClient
-  posts: (args: {
+  post: (args: { where: PostWhereUniqueInput }) => Promise<PostResponse | null> & PostClient
+  posts: (args?: {
     where?: PostWhereInput | null
     orderBy?: PostOrderByInput | null
     skip?: number | null
@@ -151,7 +151,7 @@ export interface QueryClient {
     first?: number | null
     last?: number | null
   }) => Promise<Array<PostResponse | null>> & PostClient
-  postsConnection: (args: {
+  postsConnection: (args?: {
     where?: PostWhereInput | null
     orderBy?: PostOrderByInput | null
     skip?: number | null
@@ -160,8 +160,8 @@ export interface QueryClient {
     first?: number | null
     last?: number | null
   }) => Promise<PostConnectionResponse> & PostConnectionClient
-  thread: (args?: { where: ThreadWhereUniqueInput }) => Promise<ThreadResponse | null> & ThreadClient
-  threads: (args: {
+  thread: (args: { where: ThreadWhereUniqueInput }) => Promise<ThreadResponse | null> & ThreadClient
+  threads: (args?: {
     where?: ThreadWhereInput | null
     orderBy?: ThreadOrderByInput | null
     skip?: number | null
@@ -170,7 +170,7 @@ export interface QueryClient {
     first?: number | null
     last?: number | null
   }) => Promise<Array<ThreadResponse | null>> & ThreadClient
-  threadsConnection: (args: {
+  threadsConnection: (args?: {
     where?: ThreadWhereInput | null
     orderBy?: ThreadOrderByInput | null
     skip?: number | null
@@ -179,8 +179,8 @@ export interface QueryClient {
     first?: number | null
     last?: number | null
   }) => Promise<ThreadConnectionResponse> & ThreadConnectionClient
-  user: (args?: { where: UserWhereUniqueInput }) => Promise<UserResponse | null> & UserClient
-  users: (args: {
+  user: (args: { where: UserWhereUniqueInput }) => Promise<UserResponse | null> & UserClient
+  users: (args?: {
     where?: UserWhereInput | null
     orderBy?: UserOrderByInput | null
     skip?: number | null
@@ -189,7 +189,7 @@ export interface QueryClient {
     first?: number | null
     last?: number | null
   }) => Promise<Array<UserResponse | null>> & UserClient
-  usersConnection: (args: {
+  usersConnection: (args?: {
     where?: UserWhereInput | null
     orderBy?: UserOrderByInput | null
     skip?: number | null
@@ -198,12 +198,12 @@ export interface QueryClient {
     first?: number | null
     last?: number | null
   }) => Promise<UserConnectionResponse> & UserConnectionClient
-  node: (args?: { id: string }) => Promise<NodeResponse | null> & NodeClient
+  node: (args: { id: string }) => Promise<NodeResponse | null> & NodeClient
 }
 
 export interface MutationClient {
   createBoard: (args: { data: BoardCreateInput }) => Promise<BoardResponse> & BoardClient
-  updateBoard: (args?: {
+  updateBoard: (args: {
     data: BoardUpdateInput
     where: BoardWhereUniqueInput
   }) => Promise<BoardResponse | null> & BoardClient
@@ -212,10 +212,10 @@ export interface MutationClient {
     create: BoardCreateInput
     update: BoardUpdateInput
   }) => Promise<BoardResponse> & BoardClient
-  deleteBoard: (args?: { where: BoardWhereUniqueInput }) => Promise<BoardResponse | null> & BoardClient
-  deleteManyBoards: (args: { where?: BoardWhereInput | null }) => Promise<BatchPayloadResponse> & BatchPayloadClient
+  deleteBoard: (args: { where: BoardWhereUniqueInput }) => Promise<BoardResponse | null> & BoardClient
+  deleteManyBoards: (args?: { where?: BoardWhereInput | null }) => Promise<BatchPayloadResponse> & BatchPayloadClient
   createPost: (args: { data: PostCreateInput }) => Promise<PostResponse> & PostClient
-  updatePost: (args?: {
+  updatePost: (args: {
     data: PostUpdateInput
     where: PostWhereUniqueInput
   }) => Promise<PostResponse | null> & PostClient
@@ -228,10 +228,10 @@ export interface MutationClient {
     create: PostCreateInput
     update: PostUpdateInput
   }) => Promise<PostResponse> & PostClient
-  deletePost: (args?: { where: PostWhereUniqueInput }) => Promise<PostResponse | null> & PostClient
-  deleteManyPosts: (args: { where?: PostWhereInput | null }) => Promise<BatchPayloadResponse> & BatchPayloadClient
+  deletePost: (args: { where: PostWhereUniqueInput }) => Promise<PostResponse | null> & PostClient
+  deleteManyPosts: (args?: { where?: PostWhereInput | null }) => Promise<BatchPayloadResponse> & BatchPayloadClient
   createThread: (args: { data: ThreadCreateInput }) => Promise<ThreadResponse> & ThreadClient
-  updateThread: (args?: {
+  updateThread: (args: {
     data: ThreadUpdateInput
     where: ThreadWhereUniqueInput
   }) => Promise<ThreadResponse | null> & ThreadClient
@@ -244,10 +244,10 @@ export interface MutationClient {
     create: ThreadCreateInput
     update: ThreadUpdateInput
   }) => Promise<ThreadResponse> & ThreadClient
-  deleteThread: (args?: { where: ThreadWhereUniqueInput }) => Promise<ThreadResponse | null> & ThreadClient
-  deleteManyThreads: (args: { where?: ThreadWhereInput | null }) => Promise<BatchPayloadResponse> & BatchPayloadClient
+  deleteThread: (args: { where: ThreadWhereUniqueInput }) => Promise<ThreadResponse | null> & ThreadClient
+  deleteManyThreads: (args?: { where?: ThreadWhereInput | null }) => Promise<BatchPayloadResponse> & BatchPayloadClient
   createUser: (args: { data: UserCreateInput }) => Promise<UserResponse> & UserClient
-  updateUser: (args?: {
+  updateUser: (args: {
     data: UserUpdateInput
     where: UserWhereUniqueInput
   }) => Promise<UserResponse | null> & UserClient
@@ -260,8 +260,8 @@ export interface MutationClient {
     create: UserCreateInput
     update: UserUpdateInput
   }) => Promise<UserResponse> & UserClient
-  deleteUser: (args?: { where: UserWhereUniqueInput }) => Promise<UserResponse | null> & UserClient
-  deleteManyUsers: (args: { where?: UserWhereInput | null }) => Promise<BatchPayloadResponse> & BatchPayloadClient
+  deleteUser: (args: { where: UserWhereUniqueInput }) => Promise<UserResponse | null> & UserClient
+  deleteManyUsers: (args?: { where?: UserWhereInput | null }) => Promise<BatchPayloadResponse> & BatchPayloadClient
 }
 
 export interface SubscriptionClient {

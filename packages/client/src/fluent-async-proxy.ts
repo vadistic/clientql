@@ -11,7 +11,7 @@ const $fluentAsyncProxy = () => ({})
 export const fluentAsyncProxy = <T = any>(
   asyncCb: FluenAsyncProxyCb,
   prev: Segments = idSegmenets,
-  level: number = -1
+  level: number = -1,
 ): T =>
   new Proxy($fluentAsyncProxy as any, {
     apply: (target, thisArg, argArray) => {
@@ -61,5 +61,5 @@ export const fluentAsyncProxy = <T = any>(
         const value = (target as any)[key]
         return typeof value === 'function' ? value.bind(target) : value
       }
-    }
+    },
   })

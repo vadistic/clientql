@@ -56,8 +56,10 @@ export const printFieldArguments = (props: CodegenProps) => (
   }
 
   // standard modifier
+  const allArgsNullable = node.arguments.every(arg => isNullable(arg.type))
+
   const modifierTs =
-    isNullable(node.type) && props.config.useOptionalModifier ? '?: ' : ': '
+    allArgsNullable && props.config.useOptionalModifier ? '?: ' : ': '
 
   let resultTs: TypescriptString = '(args' + modifierTs + '{'
 

@@ -231,18 +231,20 @@ const filerObjectInterfaceFields = (props: CodegenProps) => (
 
 const printInterfacedFieldArguments = (props: CodegenProps) => (
   parent: ObjectLikeNode,
-) => (field: FieldDefinitionNode): TypescriptString => {
-  if (!isNotEmpty(field.arguments)) {
+) => (node: FieldDefinitionNode): TypescriptString => {
+  if (!isNotEmpty(node.arguments)) {
     return `()`
   }
 
   const nameTs = props.naming.argumentsInterfaceName(
     parent.name.value,
-    field.name.value,
+    node.name.value,
   )
 
+  const allArgsNullable = node.arguments.every(arg => isNullable(arg.type))
+
   const modifierTs =
-    isNullable(field.type) && props.config.useOptionalModifier ? '?: ' : ': '
+    allArgsNullable && props.config.useOptionalModifier ? '?: ' : ': '
 
   return '(args' + modifierTs + nameTs + ')'
 }

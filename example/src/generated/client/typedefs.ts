@@ -129,11 +129,6 @@ export const TYPEDEFS = {
       fields: [
         {
           kind: "FieldDefinition",
-          description: {
-            kind: "StringValue",
-            value: "The number of nodes that have been affected by the Batch operation.",
-            block: true
-          },
           name: {
             kind: "Name",
             value: "count"
@@ -565,11 +560,6 @@ export const TYPEDEFS = {
     },
     {
       kind: "ObjectTypeDefinition",
-      description: {
-        kind: "StringValue",
-        value: "A connection to a list of items.",
-        block: true
-      },
       name: {
         kind: "Name",
         value: "BoardConnection"
@@ -577,11 +567,6 @@ export const TYPEDEFS = {
       fields: [
         {
           kind: "FieldDefinition",
-          description: {
-            kind: "StringValue",
-            value: "Information to aid in pagination.",
-            block: true
-          },
           name: {
             kind: "Name",
             value: "pageInfo"
@@ -599,11 +584,6 @@ export const TYPEDEFS = {
         },
         {
           kind: "FieldDefinition",
-          description: {
-            kind: "StringValue",
-            value: "A list of edges.",
-            block: true
-          },
           name: {
             kind: "Name",
             value: "edges"
@@ -643,11 +623,6 @@ export const TYPEDEFS = {
     },
     {
       kind: "ObjectTypeDefinition",
-      description: {
-        kind: "StringValue",
-        value: "An edge in a connection.",
-        block: true
-      },
       name: {
         kind: "Name",
         value: "BoardEdge"
@@ -655,11 +630,6 @@ export const TYPEDEFS = {
       fields: [
         {
           kind: "FieldDefinition",
-          description: {
-            kind: "StringValue",
-            value: "The item at the end of the edge.",
-            block: true
-          },
           name: {
             kind: "Name",
             value: "node"
@@ -677,11 +647,6 @@ export const TYPEDEFS = {
         },
         {
           kind: "FieldDefinition",
-          description: {
-            kind: "StringValue",
-            value: "A cursor for use in pagination.",
-            block: true
-          },
           name: {
             kind: "Name",
             value: "cursor"
@@ -1865,11 +1830,6 @@ export const TYPEDEFS = {
     },
     {
       kind: "InterfaceTypeDefinition",
-      description: {
-        kind: "StringValue",
-        value: "An object with an ID",
-        block: true
-      },
       name: {
         kind: "Name",
         value: "Node"
@@ -1877,11 +1837,6 @@ export const TYPEDEFS = {
       fields: [
         {
           kind: "FieldDefinition",
-          description: {
-            kind: "StringValue",
-            value: "The id of the object.",
-            block: true
-          },
           name: {
             kind: "Name",
             value: "id"
@@ -1901,11 +1856,6 @@ export const TYPEDEFS = {
     },
     {
       kind: "ObjectTypeDefinition",
-      description: {
-        kind: "StringValue",
-        value: "Information about pagination in a connection.",
-        block: true
-      },
       name: {
         kind: "Name",
         value: "PageInfo"
@@ -1913,11 +1863,6 @@ export const TYPEDEFS = {
       fields: [
         {
           kind: "FieldDefinition",
-          description: {
-            kind: "StringValue",
-            value: "When paginating forwards, are there more items?",
-            block: true
-          },
           name: {
             kind: "Name",
             value: "hasNextPage"
@@ -1935,11 +1880,6 @@ export const TYPEDEFS = {
         },
         {
           kind: "FieldDefinition",
-          description: {
-            kind: "StringValue",
-            value: "When paginating backwards, are there more items?",
-            block: true
-          },
           name: {
             kind: "Name",
             value: "hasPreviousPage"
@@ -1957,11 +1897,6 @@ export const TYPEDEFS = {
         },
         {
           kind: "FieldDefinition",
-          description: {
-            kind: "StringValue",
-            value: "When paginating backwards, the cursor to continue.",
-            block: true
-          },
           name: {
             kind: "Name",
             value: "startCursor"
@@ -1976,11 +1911,6 @@ export const TYPEDEFS = {
         },
         {
           kind: "FieldDefinition",
-          description: {
-            kind: "StringValue",
-            value: "When paginating forwards, the cursor to continue.",
-            block: true
-          },
           name: {
             kind: "Name",
             value: "endCursor"
@@ -2131,11 +2061,6 @@ export const TYPEDEFS = {
     },
     {
       kind: "ObjectTypeDefinition",
-      description: {
-        kind: "StringValue",
-        value: "A connection to a list of items.",
-        block: true
-      },
       name: {
         kind: "Name",
         value: "PostConnection"
@@ -2143,11 +2068,6 @@ export const TYPEDEFS = {
       fields: [
         {
           kind: "FieldDefinition",
-          description: {
-            kind: "StringValue",
-            value: "Information to aid in pagination.",
-            block: true
-          },
           name: {
             kind: "Name",
             value: "pageInfo"
@@ -2165,11 +2085,6 @@ export const TYPEDEFS = {
         },
         {
           kind: "FieldDefinition",
-          description: {
-            kind: "StringValue",
-            value: "A list of edges.",
-            block: true
-          },
           name: {
             kind: "Name",
             value: "edges"
@@ -2209,11 +2124,6 @@ export const TYPEDEFS = {
     },
     {
       kind: "ObjectTypeDefinition",
-      description: {
-        kind: "StringValue",
-        value: "An edge in a connection.",
-        block: true
-      },
       name: {
         kind: "Name",
         value: "PostEdge"
@@ -2221,11 +2131,6 @@ export const TYPEDEFS = {
       fields: [
         {
           kind: "FieldDefinition",
-          description: {
-            kind: "StringValue",
-            value: "The item at the end of the edge.",
-            block: true
-          },
           name: {
             kind: "Name",
             value: "node"
@@ -2243,11 +2148,6 @@ export const TYPEDEFS = {
         },
         {
           kind: "FieldDefinition",
-          description: {
-            kind: "StringValue",
-            value: "A cursor for use in pagination.",
-            block: true
-          },
           name: {
             kind: "Name",
             value: "cursor"
@@ -3536,11 +3436,6 @@ export const TYPEDEFS = {
         },
         {
           kind: "FieldDefinition",
-          description: {
-            kind: "StringValue",
-            value: "Fetches an object given its ID",
-            block: true
-          },
           name: {
             kind: "Name",
             value: "node"
@@ -3548,11 +3443,6 @@ export const TYPEDEFS = {
           arguments: [
             {
               kind: "InputValueDefinition",
-              description: {
-                kind: "StringValue",
-                value: "The ID of an object",
-                block: true
-              },
               name: {
                 kind: "Name",
                 value: "id"
@@ -3933,11 +3823,6 @@ export const TYPEDEFS = {
     },
     {
       kind: "ObjectTypeDefinition",
-      description: {
-        kind: "StringValue",
-        value: "A connection to a list of items.",
-        block: true
-      },
       name: {
         kind: "Name",
         value: "ThreadConnection"
@@ -3945,11 +3830,6 @@ export const TYPEDEFS = {
       fields: [
         {
           kind: "FieldDefinition",
-          description: {
-            kind: "StringValue",
-            value: "Information to aid in pagination.",
-            block: true
-          },
           name: {
             kind: "Name",
             value: "pageInfo"
@@ -3967,11 +3847,6 @@ export const TYPEDEFS = {
         },
         {
           kind: "FieldDefinition",
-          description: {
-            kind: "StringValue",
-            value: "A list of edges.",
-            block: true
-          },
           name: {
             kind: "Name",
             value: "edges"
@@ -4011,11 +3886,6 @@ export const TYPEDEFS = {
     },
     {
       kind: "ObjectTypeDefinition",
-      description: {
-        kind: "StringValue",
-        value: "An edge in a connection.",
-        block: true
-      },
       name: {
         kind: "Name",
         value: "ThreadEdge"
@@ -4023,11 +3893,6 @@ export const TYPEDEFS = {
       fields: [
         {
           kind: "FieldDefinition",
-          description: {
-            kind: "StringValue",
-            value: "The item at the end of the edge.",
-            block: true
-          },
           name: {
             kind: "Name",
             value: "node"
@@ -4045,11 +3910,6 @@ export const TYPEDEFS = {
         },
         {
           kind: "FieldDefinition",
-          description: {
-            kind: "StringValue",
-            value: "A cursor for use in pagination.",
-            block: true
-          },
           name: {
             kind: "Name",
             value: "cursor"
@@ -4403,11 +4263,6 @@ export const TYPEDEFS = {
     },
     {
       kind: "ObjectTypeDefinition",
-      description: {
-        kind: "StringValue",
-        value: "A connection to a list of items.",
-        block: true
-      },
       name: {
         kind: "Name",
         value: "UserConnection"
@@ -4415,11 +4270,6 @@ export const TYPEDEFS = {
       fields: [
         {
           kind: "FieldDefinition",
-          description: {
-            kind: "StringValue",
-            value: "Information to aid in pagination.",
-            block: true
-          },
           name: {
             kind: "Name",
             value: "pageInfo"
@@ -4437,11 +4287,6 @@ export const TYPEDEFS = {
         },
         {
           kind: "FieldDefinition",
-          description: {
-            kind: "StringValue",
-            value: "A list of edges.",
-            block: true
-          },
           name: {
             kind: "Name",
             value: "edges"
@@ -4481,11 +4326,6 @@ export const TYPEDEFS = {
     },
     {
       kind: "ObjectTypeDefinition",
-      description: {
-        kind: "StringValue",
-        value: "An edge in a connection.",
-        block: true
-      },
       name: {
         kind: "Name",
         value: "UserEdge"
@@ -4493,11 +4333,6 @@ export const TYPEDEFS = {
       fields: [
         {
           kind: "FieldDefinition",
-          description: {
-            kind: "StringValue",
-            value: "The item at the end of the edge.",
-            block: true
-          },
           name: {
             kind: "Name",
             value: "node"
@@ -4515,11 +4350,6 @@ export const TYPEDEFS = {
         },
         {
           kind: "FieldDefinition",
-          description: {
-            kind: "StringValue",
-            value: "A cursor for use in pagination.",
-            block: true
-          },
           name: {
             kind: "Name",
             value: "cursor"

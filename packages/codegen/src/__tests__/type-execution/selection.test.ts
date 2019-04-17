@@ -22,8 +22,8 @@ describe('executable codegen', () => {
 
     expect(res).toMatchInlineSnapshot(`
       "{
-        users: UserFlat & {
-          posts?: PostFlat
+        users: UserFlatPartial & {
+          posts?: PostFlatPartial
         }
       }"
     `)
@@ -44,21 +44,21 @@ describe('executable codegen', () => {
     )
 
     expect(res).toMatchInlineSnapshot(`
-      "{
-        findEventsAtVenue?: EventFlat & {
-          venue?: VenueFlat
-        } & (ConcertFlat & {
-          venue?: VenueFlat
-          previousVenues?: VenueFlat
-          performingBand?: PerformerFlat
-        } | FestivalFlat & {
-          venue?: VenueFlat
-          performers?: PerformerFlat
-        } | ConferenceFlat & {
-          venue?: VenueFlat
-          speakers?: SpeakerFlat
-        })
-      }"
-    `)
+            "{
+              findEventsAtVenue?: EventFlat & {
+                venue?: VenueFlat
+              } & (ConcertFlat & {
+                venue?: VenueFlat
+                previousVenues?: VenueFlat
+                performingBand?: PerformerFlat
+              } | FestivalFlat & {
+                venue?: VenueFlat
+                performers?: PerformerFlat
+              } | ConferenceFlat & {
+                venue?: VenueFlat
+                speakers?: SpeakerFlat
+              })
+            }"
+        `)
   })
 })
