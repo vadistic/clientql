@@ -1,7 +1,7 @@
-import { deepAssign } from '../../utils'
+import { deepAssign } from '../utils'
 
-describe('deep assign', () => {
-  it('will merge nested configs', () => {
+describe('utils', () => {
+  it('deep assign will merge nested configs', () => {
     const a = {
       flat: 'string',
       nested: {

@@ -9,7 +9,7 @@ import { OperationTypeNode } from 'graphql'
 import { Segments } from './fluent-async-proxy'
 
 /**
- * typinmgs should be a validation, eventually let's do it somewhere else
+ * typings should be enough validation, eventually let's do it somewhere else
  */
 export const parseSegments = (segments: Segments) => {
   const path: OperationEdge[] = []
