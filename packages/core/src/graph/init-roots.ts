@@ -1,19 +1,13 @@
 import { DocumentNode, OperationTypeNode, SchemaDefinitionNode } from 'graphql'
 import { Kind, Typename } from '../ast'
 
-export const operationTypes: OperationTypeNode[] = [
-  'query',
-  'mutation',
-  'subscription',
-]
-
 /**
  * map OperationType to ast node
  *
  * maybe should be put in graph to avoid second loop,
  * but I want those utils to be simple & single issue
  *
- * also, too verbose but does not matter
+ * also, too verbose but nvm
  */
 export const initRootsMap = (doc: DocumentNode) => {
   let schemaNode: SchemaDefinitionNode | undefined

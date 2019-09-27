@@ -1,38 +1,20 @@
-export type DigraphEdgeLinkEntry<Edge, Name> = [Edge, Name]
-export type DigraphEdgeWeigthEntry<Edge, Weigth> = [Edge, Weigth]
-
-export interface DigraphVertexEntry<Name, Value, Edge, Weigth> {
-  name: Name
-  value: Value
-  edgesArr?: Array<DigraphEdgeLinkEntry<Edge, Name>>
-  weigthsArr?: Array<DigraphEdgeWeigthEntry<Edge, Weigth>>
-  prototypes?: Name[]
-  implementations?: Name[]
-}
-
-export interface DigraphVertex<Name, Value, Edge, Weigth>
-  extends DigraphVertexEntry<Name, Value, Edge, Weigth> {
-  edgesMap?: Map<Edge, Name>
-  weightsMap?: Map<Edge, Weigth>
-}
+import { DigraphVertex, DigraphVertexEntry } from './types'
 
 /**
- *  some sort of read-only Directed Multigraph with verticle inheritance
+ *  Digraph is some sort of read-only Directed Multigraph with verticle inheritance
  *
- *   - it would be cool but to avoid bloat - no editing capabilities
+ *   - no editing capabilities (avoiding bloat)
  *
- *   - (it would be also cool) to have some helper class and
- *     (bidirectional) edge map for each vertex but I'm afraid of the cost
+ *   - no bidirectional maps for each vertex (also to avoid bloat)
  *
- *   ! note on inheritance: it's weird to handle semantically because:
- *      - object implements interface,
- *      - union allow some objects to be it's "prototype"
- *     so I'll just allow setting inheritance by proptype OR implementation and then resolve it
+ *   - inheritance follow graphQL semantics and is resolved on init:
+ *      - object type inherits (actualy implements) interface type
+ *      - union type allow some objects to be it's "prototype"
  */
 
-export class Digraph<Name, Value, Edge, Weigth> extends Map<
+export class Digraph<Name, Value, EdgeKey, Weigth> extends Map<
   Name,
-  DigraphVertex<Name, Value, Edge, Weigth>
+  DigraphVertex<Name, Value, EdgeKey, Weigth>
 > {
   public static from = <K, V, E, W>(
     entries: Array<DigraphVertexEntry<K, V, E, W>>,
@@ -41,7 +23,9 @@ export class Digraph<Name, Value, Edge, Weigth> extends Map<
   public prototypes = new Map<Name, Name[]>()
   public implementations = new Map<Name, Name[]>()
 
-  constructor(entries: Array<DigraphVertexEntry<Name, Value, Edge, Weigth>>) {
+  constructor(
+    entries: Array<DigraphVertexEntry<Name, Value, EdgeKey, Weigth>>,
+  ) {
     super()
 
     // calc inheritance
@@ -56,8 +40,8 @@ export class Digraph<Name, Value, Edge, Weigth> extends Map<
   }
 
   private _buildMaps = (
-    entry: DigraphVertexEntry<Name, Value, Edge, Weigth>,
-  ): DigraphVertex<Name, Value, Edge, Weigth> => ({
+    entry: DigraphVertexEntry<Name, Value, EdgeKey, Weigth>,
+  ): DigraphVertex<Name, Value, EdgeKey, Weigth> => ({
     ...entry,
     implementations: this.implementations.get(entry.name),
     prototypes: this.prototypes.get(entry.name),
@@ -72,7 +56,7 @@ export class Digraph<Name, Value, Edge, Weigth> extends Map<
   })
 
   private _buildInheritance = (
-    entry: DigraphVertexEntry<Name, Value, Edge, Weigth>,
+    entry: DigraphVertexEntry<Name, Value, EdgeKey, Weigth>,
   ) => {
     /*
      * this case is:
@@ -83,7 +67,7 @@ export class Digraph<Name, Value, Edge, Weigth> extends Map<
       const prevProto = this.prototypes.get(entry.name) || []
       this.prototypes.set(entry.name, [...prevProto, ...entry.prototypes])
 
-      // hate to nest loops but thay will be short (if any)
+      // hate to nest loops but that will be short (if any)
       entry.prototypes.forEach(proto => {
         const prevImpl = this.implementations.get(proto) || []
         this.implementations.set(proto, [...prevImpl, entry.name])

@@ -1,3 +1,3 @@
 export * from './digraph'
-export * from './graph'
-export * from './roots'
+export * from './init-graph'
+export * from './init-roots'
