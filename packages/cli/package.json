@@ -1,26 +1,24 @@
 {
-  "name": "@graphql-clientgen/cli",
-  "version": "0.1.0",
   "private": false,
-  "repository": "https://github.com/vadistic/graphql-client-generator",
-  "author": "Jakub Wadas <vadistic@gmail.com>",
+  "name": "@graphql-clientgen/cli",
   "license": "MIT",
+  "author": "Jakub Wadas <vadistic@gmail.com>",
+  "repository": "https://github.com/vadistic/graphql-client-generator",
+  "version": "0.1.0",
   "main": "dist/cjs/index.js",
-  "types": "dist/types/index.d.ts",
-  "source": "src/index.ts",
   "bin": {
     "clientgen": "./dist/cjs/cli.js"
   },
   "scripts": {
+    "build": "yarn build:cjs && yarn build:types",
     "build:cjs": "tsc -p tsconfig.build.json -m commonjs --outDir dist/cjs",
     "build:types": "tsc -p tsconfig.build.json --emitDeclarationOnly -d true --declarationMap --outDir dist/types",
-    "build": "yarn build:cjs && yarn build:types",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
     "clean": "rm -rf dist",
     "prepare": "yarn clean && yarn build",
-    "test": "jest",
-    "start": "ts-node src/cli.ts"
+    "start": "ts-node src/cli.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
   },
+  "types": "dist/types/index.d.ts",
   "dependencies": {
     "@graphql-clientgen/codegen": "^0.1.0",
     "@graphql-clientgen/core": "^0.1.0",
@@ -38,6 +36,7 @@
     "@types/meow": "^5.0.0",
     "@types/node": "11.13.4",
     "@types/node-fetch": "^2.3.2",
-    "typescript": "3.4.3"
-  }
+    "typescript": "3.6.3"
+  },
+  "source": "src/index.ts"
 }

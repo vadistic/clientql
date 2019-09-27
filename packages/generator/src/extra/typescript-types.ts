@@ -7,7 +7,7 @@ import { groupDefinitionsByKind } from '../utils'
 /**
  * this generate types for schema definition nodes
  */
-export const generateTsTypes = async (props: GeneratorProps) => {
+export const generateDefinitions = async (props: GeneratorProps) => {
   const print = codegen(props)
   const groups = groupDefinitionsByKind(unwrapDocument(props.doc))
 

@@ -12,7 +12,10 @@ export const complexProps: CoreProps = getCoreProps(COMPLEX_TYPEDEFS)
 
 export const vatsProps = getCoreProps(VATS_TYPEDEFS)
 
-export const fileSnapPath = (filename: string, ...dir: string[]) => [
+export const fileSnapPath = (
+  filename: string,
+  ...dir: string[]
+): [string, string] => [
   path.resolve(__dirname, '__file_snapshots__', ...dir, filename),
   filename,
 ]

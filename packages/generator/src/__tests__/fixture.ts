@@ -12,7 +12,10 @@ export const complexProps = getGeneratorProps(COMPLEX_TYPEDEFS)
 
 export const vatsProps = getGeneratorProps(VATS_TYPEDEFS)
 
-export const fileSnapPath = (filename: string, ...dir: string[]) => [
+export const fileSnapPath = (
+  filename: string,
+  ...dir: string[]
+): [string, string] => [
   path.resolve(__dirname, '__file_snapshots__', ...dir, filename),
   filename,
 ]

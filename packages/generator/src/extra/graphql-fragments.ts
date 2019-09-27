@@ -22,7 +22,7 @@ import { printTsGql } from '../print'
  * generate FragmentResult[] + dependencies FragmentResult[]
  */
 
-export const generateGraphqlFragments = (props: GeneratorProps) => {
+export const generateFragments = (props: GeneratorProps) => {
   const rootNames = Array.from(props.roots.values())
 
   type NestableTypeNode =
@@ -67,7 +67,7 @@ export const generateGraphqlFragments = (props: GeneratorProps) => {
  * separate because I may need those fragments for something else
  */
 export const generateGraphqlFragmentsFile = (props: GeneratorProps) => {
-  const { fragments, dependencies } = generateGraphqlFragments(props)
+  const { fragments, dependencies } = generateFragments(props)
 
   const resolvedDependencies = resolveFragmentDependencies([
     ...dependencies,

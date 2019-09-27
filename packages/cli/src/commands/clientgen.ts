@@ -1,4 +1,3 @@
-import { GeneratorMode } from '@graphql-clientgen/generator'
 import { Result } from 'meow'
 import { getConfig } from '../config'
 import { getSchemaDoc } from '../get-schema'
@@ -15,13 +14,13 @@ export const clientgenCmd = async (cli: Result) => {
 
   console.log('Generating client...')
 
-  const { generator, getGeneratorProps } = await import(
+  const { generateClient, getGeneratorProps } = await import(
     '@graphql-clientgen/generator'
   )
 
   const props = getGeneratorProps(doc, config)
 
-  const result = await generator(props)(GeneratorMode.CLIENT)
+  const result = await generateClient(props)
 
   const write = await writeFlatDir(cli.flags.output, {
     'index.ts': result.index,

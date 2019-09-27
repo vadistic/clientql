@@ -58,24 +58,3 @@ export const getGeneratorProps = (
 
   return props
 }
-
-export const createGenerator = (
-  doc: DocumentNode,
-  config?: Partial<GeneratorConfig>,
-  paths?: GeneratorPaths,
-) => {
-  const props = getGeneratorProps(doc, config, paths)
-
-  return generator(props)
-}
-
-export const generator = (props: GeneratorProps) => async <
-  M extends GeneratorMode
->(
-  mode: M,
-): Promise<GeneratorModeToResult[M]> => {
-  if (mode === GeneratorMode.CLIENT) {
-    const { generateClient } = await import('./client/generate')
-    return generateClient(props)
-  }
-}

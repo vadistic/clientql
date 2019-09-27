@@ -20,7 +20,7 @@ export interface GeneratorConfig extends CodegenConfig, CoreConfig {
    */
   clientResponseSuffix: string
   /**
-   * something that all clients will extend to hide soem common options
+   * something that all clients will extend (for custom methods)
    * @default 'Fragmentable'
    */
   clientExtend: string

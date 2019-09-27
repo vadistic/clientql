@@ -1,14 +1,11 @@
 import { wrapDocument } from '@graphql-clientgen/core'
 import { print } from 'graphql'
-import {
-  generateGraphqlFragments,
-  generateGraphqlFragmentsFile,
-} from '../../extra'
+import { generateFragments, generateGraphqlFragmentsFile } from '../../extra'
 import { complexProps, prismaProps } from '../fixture'
 
 describe('generate graphql fragments', () => {
   it('prisma > generate fragment definitions', () => {
-    const { fragments } = generateGraphqlFragments(prismaProps)
+    const { fragments } = generateFragments(prismaProps)
 
     const res = print(
       wrapDocument(...fragments.map(({ fragment }) => fragment)),
@@ -18,7 +15,7 @@ describe('generate graphql fragments', () => {
   })
 
   it('complex > generate fragment definitions', () => {
-    const { fragments } = generateGraphqlFragments(complexProps)
+    const { fragments } = generateFragments(complexProps)
 
     const res = print(
       wrapDocument(...fragments.map(({ fragment }) => fragment)),

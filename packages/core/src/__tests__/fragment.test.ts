@@ -1,11 +1,6 @@
 import { Kind, print } from 'graphql'
 import { toMatchFile } from 'jest-file-snapshot'
-import { createField, createFragment, wrapDocument } from '../ast'
-import {
-  buildFragmentDoc,
-  buildSelections,
-  retriveFragmentsFromCache,
-} from '../operation'
+import { buildFragmentDoc } from '../operation'
 import { complexProps, fileSnapPath, prismaProps, vatsProps } from './fixture'
 
 expect.extend({ toMatchFile })
