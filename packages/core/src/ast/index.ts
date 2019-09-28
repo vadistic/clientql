@@ -4,5 +4,5 @@ export * from './helpers-create'
 
 export * from './kind'
 export * from './merge-extensions'
-export * from './quards'
+export * from './guards'
 export * from './types'

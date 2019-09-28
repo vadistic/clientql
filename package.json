@@ -1,10 +1,11 @@
 {
-  "name": "@graphql-clientgen/generator",
-  "version": "0.1.0",
-  "private": true,
-  "repository": "https://github.com/vadistic/graphql-client-generator",
+  "name": "@clientql/generator",
+  "description": "Generate strongly typed, flexible & fast client SDK from any GraphQL API",
+  "repository": "https://github.com/vadistic/clientql",
   "author": "Jakub Wadas <vadistic@gmail.com>",
+  "version": "0.1.0",
   "license": "MIT",
+  "private": true,
   "workspaces": {
     "packages": [
       "packages/*"
@@ -18,6 +19,7 @@
     "@types/jest": "^24.0.18",
     "@types/node": "^12.7.8",
     "commitizen": "^4.0.3",
+    "conventional-changelog-cli": "^2.0.23",
     "cz-conventional-changelog": "^3.0.2",
     "husky": "^3.0.5",
     "jest": "^24.9.0",

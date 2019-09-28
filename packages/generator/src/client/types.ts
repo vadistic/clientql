@@ -1,9 +1,9 @@
-import { codegen, printCodeSection } from '@graphql-clientgen/codegen'
+import { codegen, printCodeSection } from '@clientql/codegen'
 import {
   truthy,
   TypescriptString,
   unwrapDocument,
-} from '@graphql-clientgen/core'
+} from '@clientql/core'
 import { DefinitionNode } from 'graphql'
 import { GeneratorConfig } from '../config'
 import { GeneratorProps } from '../generator'

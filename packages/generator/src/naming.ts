@@ -1,9 +1,9 @@
-import { initCodegenNaming } from '@graphql-clientgen/codegen'
+import { initCodegenNaming } from '@clientql/codegen'
 import {
   FragmentName,
   Typename,
   TypescriptString,
-} from '@graphql-clientgen/core'
+} from '@clientql/core'
 import changeCase from 'change-case'
 import { GeneratorConfig } from './config'
 

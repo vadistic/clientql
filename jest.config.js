@@ -5,7 +5,7 @@ module.exports = {
   testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)'],
   watchPathIgnorePatterns: ['<rootDir>/../__file_snapshots__'],
   moduleNameMapper: {
-    '^@graphql-clientgen\\/([^/]+)': '<rootDir>/../$1/src',
+    '^@clientql\\/([^/]+)': '<rootDir>/../$1/src',
   },
   globals: {
     'ts-jest': {

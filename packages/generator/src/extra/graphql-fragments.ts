@@ -8,7 +8,7 @@ import {
   nonNull,
   onlyUnique,
   wrapDocument,
-} from '@graphql-clientgen/core'
+} from '@clientql/core'
 import {
   InterfaceTypeDefinitionNode,
   ObjectTypeDefinitionNode,

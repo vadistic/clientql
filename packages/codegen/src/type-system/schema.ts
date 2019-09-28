@@ -1,4 +1,4 @@
-import { capitalise, TypescriptString } from '@graphql-clientgen/core'
+import { capitalise, TypescriptString } from '@clientql/core'
 import { SchemaDefinitionNode, SchemaExtensionNode } from 'graphql'
 import { CodegenProps } from '../codegen'
 

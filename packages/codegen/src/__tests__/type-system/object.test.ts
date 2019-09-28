@@ -1,5 +1,5 @@
-import { unwrapDocument } from '@graphql-clientgen/core'
-import { PRISMA_TYPEDEFS } from '@graphql-clientgen/testing'
+import { unwrapDocument } from '@clientql/core'
+import { PRISMA_TYPEDEFS } from '@clientql/testing'
 import { Kind } from 'graphql'
 import gql from 'graphql-tag'
 import { createCodegen, defaultCodegen } from '../../codegen'
@@ -77,12 +77,12 @@ describe('printer > ' + Kind.OBJECT_TYPE_DEFINITION, () => {
         sea?: boolean | null
         land?: boolean | null
       }
-      
+
       export interface Dog extends Animal {
         __typename: 'Dog'
         size?: Size | null
       }
-      
+
       export enum Size {
         SMALL = 'SMALL',
         MEDIUM = 'MEDIUM',

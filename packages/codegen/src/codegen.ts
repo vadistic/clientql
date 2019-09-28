@@ -3,7 +3,7 @@ import {
   getCoreProps,
   mergeExtensions,
   TypescriptString,
-} from '@graphql-clientgen/core'
+} from '@clientql/core'
 import { ASTNode, DocumentNode, Kind, parse } from 'graphql'
 import { CodegenConfig, defaultCodegenConfig } from './config'
 import { CodegenNaming, initCodegenNaming } from './naming'

@@ -2,7 +2,7 @@ import {
   buildOperationDoc,
   CoreConfig,
   getCoreProps,
-} from '@graphql-clientgen/core'
+} from '@clientql/core'
 import ApolloClient from 'apollo-client'
 import { fluentAsyncProxy, Segments } from './fluent-async-proxy'
 import { parseSegments } from './path'

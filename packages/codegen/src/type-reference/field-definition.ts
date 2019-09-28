@@ -4,7 +4,7 @@ import {
   isNotEmpty,
   isNullable,
   TypescriptString,
-} from '@graphql-clientgen/core'
+} from '@clientql/core'
 import { FieldDefinitionNode } from 'graphql'
 import { CodegenProps } from '../codegen'
 import { withDescription } from './description'

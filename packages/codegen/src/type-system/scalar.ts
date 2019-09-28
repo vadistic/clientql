@@ -1,4 +1,4 @@
-import { Typename, TypescriptString } from '@graphql-clientgen/core'
+import { Typename, TypescriptString } from '@clientql/core'
 import { ScalarTypeDefinitionNode, ScalarTypeExtensionNode } from 'graphql'
 import { CodegenProps } from '../codegen'
 import { printTsType } from '../print'

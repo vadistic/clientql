@@ -1,5 +1,5 @@
-import { CodegenConfig, defaultCodegenConfig } from '@graphql-clientgen/codegen'
-import { CoreConfig, defaultCoreConfig } from '@graphql-clientgen/core'
+import { CodegenConfig, defaultCodegenConfig } from '@clientql/codegen'
+import { CoreConfig, defaultCoreConfig } from '@clientql/core'
 import { StringCase } from './naming'
 
 /**

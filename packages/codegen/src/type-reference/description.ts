@@ -1,4 +1,4 @@
-import { TypescriptString } from '@graphql-clientgen/core'
+import { TypescriptString } from '@clientql/core'
 import {
   ASTNode,
   EnumValueDefinitionNode,

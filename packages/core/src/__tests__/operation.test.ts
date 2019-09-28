@@ -1,4 +1,4 @@
-import { COMPLEX_TYPEDEFS } from '@graphql-clientgen/testing'
+import { COMPLEX_TYPEDEFS } from '@clientql/testing'
 import { print } from 'graphql'
 import { toMatchFile } from 'jest-file-snapshot'
 import { FragmentType } from '../config'

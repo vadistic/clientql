@@ -1,5 +1,5 @@
-import { printBlockComment } from '@graphql-clientgen/codegen'
-import { indent, TypescriptString } from '@graphql-clientgen/core'
+import { printBlockComment } from '@clientql/codegen'
+import { indent, TypescriptString } from '@clientql/core'
 import { ASTNode, print } from 'graphql'
 
 /**

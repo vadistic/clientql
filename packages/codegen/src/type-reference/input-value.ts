@@ -1,4 +1,4 @@
-import { isNullable, Typename, TypescriptString } from '@graphql-clientgen/core'
+import { isNullable, Typename, TypescriptString } from '@clientql/core'
 import { InputValueDefinitionNode } from 'graphql'
 import { CodegenProps } from '../codegen'
 import { withDescription } from './description'

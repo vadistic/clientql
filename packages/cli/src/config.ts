@@ -1,7 +1,7 @@
 import {
   defaultGeneratorConfig,
   GeneratorConfig,
-} from '@graphql-clientgen/generator'
+} from '@clientql/generator'
 import { readFile } from './read-write'
 
 export const getConfig = async (

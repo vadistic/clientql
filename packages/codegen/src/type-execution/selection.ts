@@ -3,7 +3,7 @@ import {
   isNullable,
   Typename,
   TypescriptString,
-} from '@graphql-clientgen/core'
+} from '@clientql/core'
 import { Kind, SelectionNode } from 'graphql'
 import { CodegenProps } from '../codegen'
 import { printType } from '../type-reference'

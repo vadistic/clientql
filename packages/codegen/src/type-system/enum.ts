@@ -1,4 +1,4 @@
-import { indent, isNotEmpty, TypescriptString } from '@graphql-clientgen/core'
+import { indent, isNotEmpty, TypescriptString } from '@clientql/core'
 import { EnumTypeDefinitionNode, EnumTypeExtensionNode } from 'graphql'
 import { CodegenProps } from '../codegen'
 import { withDescription } from '../type-reference'

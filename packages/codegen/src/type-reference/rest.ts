@@ -1,4 +1,4 @@
-import { capitalise, indent, TypescriptString } from '@graphql-clientgen/core'
+import { capitalise, indent, TypescriptString } from '@clientql/core'
 import {
   ArgumentNode,
   Kind,

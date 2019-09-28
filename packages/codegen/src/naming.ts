@@ -4,7 +4,7 @@ import {
   FragmentName,
   Typename,
   TypescriptString,
-} from '@graphql-clientgen/core'
+} from '@clientql/core'
 import { CodegenConfig, defaultCodegenConfig } from './config'
 
 /**

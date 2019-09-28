@@ -4,7 +4,7 @@ import {
   printSelections,
   printTsImports,
   printTsType,
-} from '@graphql-clientgen/codegen'
+} from '@clientql/codegen'
 import {
   buildSelections,
   FragmentName,
@@ -13,7 +13,7 @@ import {
   isScalarTypeDefinitionNode,
   Typename,
   TypescriptString,
-} from '@graphql-clientgen/core'
+} from '@clientql/core'
 import { FragmentDefinitionNode, Kind, SelectionNode } from 'graphql'
 import { GeneratorProps } from '../generator'
 import { printYadaYada } from '../print'

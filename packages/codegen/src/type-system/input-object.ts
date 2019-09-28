@@ -2,7 +2,7 @@ import {
   isNotEmpty,
   isNullable,
   TypescriptString,
-} from '@graphql-clientgen/core'
+} from '@clientql/core'
 import {
   InputObjectTypeDefinitionNode,
   InputObjectTypeExtensionNode,

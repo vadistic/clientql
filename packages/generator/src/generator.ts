@@ -2,7 +2,7 @@ import {
   CoreProps,
   getCoreProps,
   mergeExtensions,
-} from '@graphql-clientgen/core'
+} from '@clientql/core'
 import { DocumentNode } from 'graphql'
 import { GenerateClientResult } from './client'
 import {

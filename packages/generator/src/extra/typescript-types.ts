@@ -1,5 +1,5 @@
-import { codegen, printCodeSection } from '@graphql-clientgen/codegen'
-import { truthy, unwrapDocument } from '@graphql-clientgen/core'
+import { codegen, printCodeSection } from '@clientql/codegen'
+import { truthy, unwrapDocument } from '@clientql/core'
 import { DefinitionNode } from 'graphql'
 import { GeneratorProps } from '../generator'
 import { groupDefinitionsByKind } from '../utils'

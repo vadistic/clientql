@@ -2,7 +2,7 @@ import {
   TypeModifier,
   TypescriptString,
   unwrapType,
-} from '@graphql-clientgen/core'
+} from '@clientql/core'
 import { Kind, TypeNode } from 'graphql'
 import { CodegenProps } from '../codegen'
 import { CodegenConfig } from '../config'

@@ -4,4 +4,4 @@ name: Hello world
 
 # Hello world
 
-Hello, I'm a mdx file!
+Hello, I'm a md file!

@@ -1,9 +1,9 @@
-import { printBlockComment } from '@graphql-clientgen/codegen'
+import { printBlockComment } from '@clientql/codegen'
 import {
   TypescriptString,
   unwrapDocument,
   wrapDocument,
-} from '@graphql-clientgen/core'
+} from '@clientql/core'
 import { Kind } from 'graphql'
 import { GeneratorProps } from '../generator'
 import { printTsGql, printYadaYada } from '../print'

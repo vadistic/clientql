@@ -15,7 +15,7 @@ export const clientgenCmd = async (cli: Result) => {
   console.log('Generating client...')
 
   const { generateClient, getGeneratorProps } = await import(
-    '@graphql-clientgen/generator'
+    '@clientql/generator'
   )
 
   const props = getGeneratorProps(doc, config)

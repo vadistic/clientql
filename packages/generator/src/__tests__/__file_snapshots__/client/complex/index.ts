@@ -7,7 +7,7 @@
  *
  */
 
-import { createClient } from '@graphql-clientgen/client'
+import { createClient } from '@clientql/client'
 import { MyQueryClient, MyMutationClient } from './interfaces'
 import { TYPEDEFS } from './typedefs'
 

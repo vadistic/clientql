@@ -4,8 +4,8 @@ import {
   TypeDefinitionNode,
   TypeExtensionNode,
 } from 'graphql'
+import { isTypeDefinitionNode, isTypeExtensionNode } from './guards'
 import { unwrapDocument, wrapDocument } from './helpers-document'
-import { isTypeDefinitionNode, isTypeExtensionNode } from './quards'
 
 /**
  * seriously no idea how to name it...
@@ -45,6 +45,37 @@ const concatOrTransformDuplicatesByWith = <T>(
 }
 
 /**
+ * merge single type extension node into type definition node
+ */
+const mergeSingleExtension = <T extends any>(type: T, ext: any): T => {
+  const result: any = {
+    ...type,
+  }
+
+  if ('description' in ext) {
+    // does extension can have top level description ?
+  }
+
+  if ('fields' in ext) {
+    result.fields = [...(type.fields || []), ...(ext.fields || [])]
+  }
+
+  if ('directives' in ext) {
+    result.directives = [...(type.directives || []), ...(ext.directives || [])]
+  }
+
+  if ('values' in ext) {
+    result.values = [...(type.values || []), ...(ext.values || [])]
+  }
+
+  if ('types' in ext) {
+    result.types = [...(type.types || []), ...(ext.types || [])]
+  }
+
+  return result
+}
+
+/**
  * merge type extension nodes into type definition nodes
  */
 export const mergeExtensions = (doc: DocumentNode) => {
@@ -73,35 +104,4 @@ export const mergeExtensions = (doc: DocumentNode) => {
   const res = concatOrMergeExtensions(defs, exts)
 
   return wrapDocument(...res, ...rest)
-}
-
-/**
- * merge single type extension node into type definition node
- */
-export const mergeSingleExtension = <T extends any>(type: T, ext: any): T => {
-  const result: any = {
-    ...type,
-  }
-
-  if ('description' in ext) {
-    // does extension can have top level description ?
-  }
-
-  if ('fields' in ext) {
-    result.fields = [...(type.fields || []), ...(ext.fields || [])]
-  }
-
-  if ('directives' in ext) {
-    result.directives = [...(type.directives || []), ...(ext.directives || [])]
-  }
-
-  if ('values' in ext) {
-    result.values = [...(type.values || []), ...(ext.values || [])]
-  }
-
-  if ('types' in ext) {
-    result.types = [...(type.types || []), ...(ext.types || [])]
-  }
-
-  return result
 }

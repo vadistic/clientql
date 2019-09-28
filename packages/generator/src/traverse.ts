@@ -5,7 +5,7 @@ import {
   replaceLastTypename,
   Typename,
   wrapDocument,
-} from '@graphql-clientgen/core'
+} from '@clientql/core'
 import { GeneratorProps } from './generator'
 
 export type TraverseCallback = (

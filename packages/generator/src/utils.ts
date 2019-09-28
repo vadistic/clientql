@@ -4,7 +4,7 @@ import {
   isUnionTypeDefinitionNode,
   Typename,
   wrapDocument,
-} from '@graphql-clientgen/core'
+} from '@clientql/core'
 import { ASTKindToNode, DefinitionNode, Kind } from 'graphql'
 import { GeneratorProps } from './generator'
 import { traverseGraph } from './traverse'

@@ -1,4 +1,4 @@
-import { printTsImports, printTsInterface } from '@graphql-clientgen/codegen'
+import { printTsImports, printTsInterface } from '@clientql/codegen'
 import { GeneratorProps } from '../generator'
 import { printYadaYada } from '../print'
 
@@ -22,7 +22,7 @@ export const printClientBoilerplate = (props: GeneratorProps) => {
 
   const importClientLibTs = printTsImports(
     ['createClient'],
-    '@graphql-clientgen/client',
+    '@clientql/client',
   )
 
   const importTypedefsTs = printTsImports(

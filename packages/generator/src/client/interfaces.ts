@@ -5,7 +5,7 @@ import {
   printTsImports,
   printTsInterface,
   printTypeModifiers,
-} from '@graphql-clientgen/codegen'
+} from '@clientql/codegen'
 import {
   GraphVertex,
   indent,
@@ -17,7 +17,7 @@ import {
   TypescriptString,
   unwrapDocument,
   unwrapType,
-} from '@graphql-clientgen/core'
+} from '@clientql/core'
 import { ObjectTypeDefinitionNode } from 'graphql'
 import { GeneratorProps } from '../generator'
 import { printYadaYada } from '../print'

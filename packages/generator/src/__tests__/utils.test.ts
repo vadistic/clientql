@@ -1,4 +1,4 @@
-import { unwrapDocument } from '@graphql-clientgen/core'
+import { unwrapDocument } from '@clientql/core'
 import gql from 'graphql-tag'
 import { getGeneratorProps } from '../generator'
 import { getMinimalTypedefs, stripLocationDescriptionAndEmpty } from '../utils'

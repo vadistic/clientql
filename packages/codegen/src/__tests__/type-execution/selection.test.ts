@@ -1,5 +1,5 @@
-import { buildOperationDoc, getDocDefinition } from '@graphql-clientgen/core'
-import { COMPLEX_TYPEDEFS, PRISMA_TYPEDEFS } from '@graphql-clientgen/testing'
+import { buildOperationDoc, getDocDefinition } from '@clientql/core'
+import { COMPLEX_TYPEDEFS, PRISMA_TYPEDEFS } from '@clientql/testing'
 import { Kind } from 'graphql'
 import { getCodegenProps } from '../../codegen'
 import { printSelections } from '../../type-execution'

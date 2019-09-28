@@ -4,7 +4,7 @@ import {
   operationTypes,
   StringMap,
   Typename,
-} from '@graphql-clientgen/core'
+} from '@clientql/core'
 import { OperationTypeNode } from 'graphql'
 import { Segments } from './fluent-async-proxy'
 

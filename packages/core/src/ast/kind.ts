@@ -2,7 +2,7 @@
 import { _Kind } from 'graphql/language/kinds'
 
 /*
- * Kind enum from graphql (used to remove `graphql` dependency in the client)
+ * kind enum from graphql (used to remove `graphql` dependency in the client)
  */
 export type KindMap = _Kind
 

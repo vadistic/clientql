@@ -1,4 +1,4 @@
-import { indent, isNotEmpty, TypescriptString } from '@graphql-clientgen/core'
+import { indent, isNotEmpty, TypescriptString } from '@clientql/core'
 
 /**
  * prints block comment with some content

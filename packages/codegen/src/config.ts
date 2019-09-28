@@ -3,7 +3,7 @@ import {
   defaultCoreConfig,
   ObjectLikeNode,
   TypescriptString,
-} from '@graphql-clientgen/core'
+} from '@clientql/core'
 import {
   FieldDefinitionNode,
   InputObjectTypeDefinitionNode,

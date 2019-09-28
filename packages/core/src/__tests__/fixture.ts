@@ -2,7 +2,7 @@ import {
   COMPLEX_TYPEDEFS,
   PRISMA_TYPEDEFS,
   VATS_TYPEDEFS,
-} from '@graphql-clientgen/testing'
+} from '@clientql/testing'
 import path from 'path'
 import { CoreProps, getCoreProps } from '../core'
 

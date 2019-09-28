@@ -22,7 +22,7 @@
       [
         "graphql",
         "graphql-tag",
-        "@graphql-clientgen/testing",
+        "@clientql/testing",
         "jest-file-snapshot"
       ]
     ]

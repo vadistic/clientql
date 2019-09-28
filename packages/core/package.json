@@ -1,12 +1,15 @@
 {
-  "private": false,
-  "name": "@graphql-clientgen/core",
-  "license": "MIT",
+  "name": "@clientql/core",
+  "description": "Generate strongly typed, flexible & fast client SDK from any GraphQL API",
+  "repository": "https://github.com/vadistic/clientql",
   "author": "Jakub Wadas <vadistic@gmail.com>",
-  "repository": "https://github.com/vadistic/graphql-client-generator",
+  "license": "MIT",
   "version": "0.1.0",
+  "private": false,
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
+  "source": "src/index.ts",
+  "types": "dist/types/index.d.ts",
   "scripts": {
     "build": "yarn build:esm && yarn build:cjs && yarn build:types",
     "build:cjs": "tsc -p tsconfig.build.json -m commonjs --outDir dist/cjs",
@@ -17,14 +20,12 @@
     "test": "jest",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
-  "types": "dist/types/index.d.ts",
   "dependencies": {},
   "devDependencies": {
-    "@graphql-clientgen/testing": "^0.1.0",
+    "@clientql/testing": "^0.1.0",
     "@types/jest": "24.0.11",
     "@types/node": "11.13.4",
     "graphql": "^14.5.8",
     "typescript": "3.6.3"
-  },
-  "source": "src/index.ts"
+  }
 }

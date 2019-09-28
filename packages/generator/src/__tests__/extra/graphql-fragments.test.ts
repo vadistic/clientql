@@ -1,4 +1,4 @@
-import { wrapDocument } from '@graphql-clientgen/core'
+import { wrapDocument } from '@clientql/core'
 import { print } from 'graphql'
 import { generateFragments, generateGraphqlFragmentsFile } from '../../extra'
 import { complexProps, prismaProps } from '../fixture'
