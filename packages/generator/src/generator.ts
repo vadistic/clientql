@@ -1,8 +1,4 @@
-import {
-  CoreProps,
-  getCoreProps,
-  mergeExtensions,
-} from '@clientql/core'
+import { CoreProps, getCoreProps, mergeExtensions } from '@clientql/core'
 import { DocumentNode } from 'graphql'
 import { GenerateClientResult } from './client'
 import {
@@ -18,12 +14,6 @@ export interface GeneratorProps extends CoreProps {
   doc: DocumentNode
   config: GeneratorConfig
   paths: GeneratorPaths
-}
-
-export enum GeneratorMode {
-  CLIENT = 'CLIENT',
-  TYPESCRIPT_TYPES = 'TYPESCRIPT_TYPES',
-  GRAPHQL_FRAGMENTS = 'GRAPHQL_FRAGMENTS',
 }
 
 export interface GeneratorModeToResult {

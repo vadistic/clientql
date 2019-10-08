@@ -1,2 +1,2 @@
-export * from './graphql-fragments'
-export * from './typescript-types'
+export * from './generate-fragments'
+export * from './generate-definitions'
