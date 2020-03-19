@@ -1,9 +1,5 @@
 import { initCodegenNaming } from '@clientql/codegen'
-import {
-  FragmentName,
-  Typename,
-  TypescriptString,
-} from '@clientql/core'
+import { FragmentName, Typename, TypescriptString } from '@clientql/core'
 import changeCase from 'change-case'
 import { GeneratorConfig } from './config'
 
@@ -57,20 +53,13 @@ const typedefsConstName = (config: GeneratorConfig): TypescriptString =>
 
 const fragmentConstantName = (config: GeneratorConfig) => (
   fragmentName: FragmentName,
-): TypescriptString =>
-  constantName(config)(fragmentName + ' ' + config.fragmentJsConstantSuffix)
+): TypescriptString => constantName(config)(fragmentName + ' ' + config.fragmentJsConstantSuffix)
 
-const clientResponseName = (config: GeneratorConfig) => (
-  typename: Typename,
-): TypescriptString =>
-  interfacePrefix(config.interfacePrefix) +
-  pascalCase(typename + ' ' + config.clientResponseSuffix)
+const clientResponseName = (config: GeneratorConfig) => (typename: Typename): TypescriptString =>
+  interfacePrefix(config.interfacePrefix) + pascalCase(typename + ' ' + config.clientResponseSuffix)
 
-const clientInterfaceName = (config: GeneratorConfig) => (
-  typename: Typename,
-): TypescriptString =>
-  interfacePrefix(config.interfacePrefix) +
-  pascalCase(typename + ' ' + config.clientSuffix)
+const clientInterfaceName = (config: GeneratorConfig) => (typename: Typename): TypescriptString =>
+  interfacePrefix(config.interfacePrefix) + pascalCase(typename + ' ' + config.clientSuffix)
 
 export type GeneratorNaming = ReturnType<typeof initGeneratorNaming>
 

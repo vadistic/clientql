@@ -41,10 +41,7 @@ export const printJSDoc = (content: string): TypescriptString => {
 /**
  * prints sections with header comments and uniform spacing
  */
-export const printCodeSection = (
-  comment: string,
-  content: TypescriptString,
-): TypescriptString =>
+export const printCodeSection = (comment: string, content: TypescriptString): TypescriptString =>
   printBlockComment(comment) + '\n\n' + content.trim() + '\n\n'
 
 /**
@@ -77,10 +74,8 @@ export const printTsInterface = (
   return resultTs
 }
 
-export const printTsType = (
-  name: string,
-  content: TypescriptString,
-): TypescriptString => `export type ${name} = ${content}`
+export const printTsType = (name: string, content: TypescriptString): TypescriptString =>
+  `export type ${name} = ${content}`
 
 export const printTsImports = (
   names: TypescriptString[],

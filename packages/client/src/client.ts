@@ -1,8 +1,4 @@
-import {
-  buildOperationDoc,
-  CoreConfig,
-  getCoreProps,
-} from '@clientql/core'
+import { buildOperationDoc, CoreConfig, getCoreProps } from '@clientql/core'
 import ApolloClient from 'apollo-client'
 import { fluentAsyncProxy, Segments } from './fluent-async-proxy'
 import { parseSegments } from './path'

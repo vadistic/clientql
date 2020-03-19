@@ -67,9 +67,7 @@ export const getMinimalTypedefs = (props: GeneratorProps) => {
     register.add(vtx.name)
   })
 
-  return wrapDocument(
-    ...Array.from(register).map(typename => props.graph.get(typename)!.value),
-  )
+  return wrapDocument(...Array.from(register).map(typename => props.graph.get(typename)!.value))
 }
 
 /**

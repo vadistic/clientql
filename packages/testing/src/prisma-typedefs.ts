@@ -7,7 +7,7 @@ import { typeDefs } from './generated/prisma-client/prisma-schema'
  */
 
 export const PRISMA_TYPEDEFS = gql`
-type AggregateBoard {
+  type AggregateBoard {
     count: Int!
   }
 
@@ -171,10 +171,7 @@ type AggregateBoard {
     deleteManyBoards(where: BoardWhereInput): BatchPayload!
     createPost(data: PostCreateInput!): Post!
     updatePost(data: PostUpdateInput!, where: PostWhereUniqueInput!): Post
-    updateManyPosts(
-      data: PostUpdateManyMutationInput!
-      where: PostWhereInput
-    ): BatchPayload!
+    updateManyPosts(data: PostUpdateManyMutationInput!, where: PostWhereInput): BatchPayload!
     upsertPost(
       where: PostWhereUniqueInput!
       create: PostCreateInput!
@@ -183,14 +180,8 @@ type AggregateBoard {
     deletePost(where: PostWhereUniqueInput!): Post
     deleteManyPosts(where: PostWhereInput): BatchPayload!
     createThread(data: ThreadCreateInput!): Thread!
-    updateThread(
-      data: ThreadUpdateInput!
-      where: ThreadWhereUniqueInput!
-    ): Thread
-    updateManyThreads(
-      data: ThreadUpdateManyMutationInput!
-      where: ThreadWhereInput
-    ): BatchPayload!
+    updateThread(data: ThreadUpdateInput!, where: ThreadWhereUniqueInput!): Thread
+    updateManyThreads(data: ThreadUpdateManyMutationInput!, where: ThreadWhereInput): BatchPayload!
     upsertThread(
       where: ThreadWhereUniqueInput!
       create: ThreadCreateInput!
@@ -200,10 +191,7 @@ type AggregateBoard {
     deleteManyThreads(where: ThreadWhereInput): BatchPayload!
     createUser(data: UserCreateInput!): User!
     updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
-    updateManyUsers(
-      data: UserUpdateManyMutationInput!
-      where: UserWhereInput
-    ): BatchPayload!
+    updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
     upsertUser(
       where: UserWhereUniqueInput!
       create: UserCreateInput!
@@ -1167,5 +1155,4 @@ type AggregateBoard {
   input UserWhereUniqueInput {
     id: ID
   }
-
 `

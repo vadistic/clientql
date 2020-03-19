@@ -1,11 +1,5 @@
 import fs from 'fs-extra'
-import {
-  buildClientSchema,
-  DocumentNode,
-  introspectionQuery,
-  parse,
-  printSchema,
-} from 'graphql'
+import { buildClientSchema, DocumentNode, introspectionQuery, parse, printSchema } from 'graphql'
 import fetch from 'node-fetch'
 
 /*
@@ -27,8 +21,7 @@ const opts: GetRemoteSchemaOptions = {
 export const remoteSchema = async (
   url: string,
 ): Promise<
-  | { status: 'ok'; typedefs: string; doc: DocumentNode }
-  | { status: 'err'; message: string }
+  { status: 'ok'; typedefs: string; doc: DocumentNode } | { status: 'err'; message: string }
 > => {
   try {
     const { data, errors } = await fetch(url, {
@@ -62,8 +55,7 @@ export const remoteSchema = async (
 export const localSchema = async (
   file: string,
 ): Promise<
-  | { status: 'ok'; typedefs: string; doc: DocumentNode }
-  | { status: 'err'; message: string }
+  { status: 'ok'; typedefs: string; doc: DocumentNode } | { status: 'err'; message: string }
 > => {
   let typedefs: string
 
@@ -93,9 +85,7 @@ export const getSchemaDoc = async (input: string) => {
 
   console.log(`Loading ${isRemote ? 'remote' : 'local'} schema...`)
 
-  const schemaRes = isRemote
-    ? await remoteSchema(input)
-    : await localSchema(input)
+  const schemaRes = isRemote ? await remoteSchema(input) : await localSchema(input)
 
   console.log(`Loaded!`)
 

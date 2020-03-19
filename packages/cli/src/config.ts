@@ -1,12 +1,7 @@
-import {
-  defaultGeneratorConfig,
-  GeneratorConfig,
-} from '@clientql/generator'
+import { defaultGeneratorConfig, GeneratorConfig } from '@clientql/generator'
 import { readFile } from './read-write'
 
-export const getConfig = async (
-  path?: string,
-): Promise<Partial<GeneratorConfig>> => {
+export const getConfig = async (path?: string): Promise<Partial<GeneratorConfig>> => {
   if (!path) {
     return {}
   }
@@ -32,9 +27,7 @@ export const getConfig = async (
   }
 }
 
-const validateConfig = (
-  config: any,
-): { status: 'ok' } | { status: 'err'; message: string } => {
+const validateConfig = (config: any): { status: 'ok' } | { status: 'err'; message: string } => {
   if (typeof config !== 'object') {
     return {
       status: 'err',

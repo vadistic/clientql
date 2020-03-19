@@ -8,14 +8,9 @@ import {
 } from '@clientql/core'
 import { GeneratorProps } from './generator'
 
-export type TraverseCallback = (
-  vtx: GraphVertex,
-  stack: Edge[],
-) => undefined | null | void
+export type TraverseCallback = (vtx: GraphVertex, stack: Edge[]) => undefined | null | void
 
-export const traverseGraph = (props: GeneratorProps) => (
-  cb: TraverseCallback,
-) => {
+export const traverseGraph = (props: GeneratorProps) => (cb: TraverseCallback) => {
   /**
    * kind of hard to avoid infinite loops in some weird cases of nested unions etc
    * also - lots of duplicate path traversals in deeper nesting
@@ -25,8 +20,7 @@ export const traverseGraph = (props: GeneratorProps) => (
    */
 
   const register = new Set<string>()
-  const serialise = (stack: Edge[]) =>
-    stack.map(tuple => tuple.join('/')).join('///')
+  const serialise = (stack: Edge[]) => stack.map(tuple => tuple.join('/')).join('///')
 
   const traverse = (vtx: GraphVertex | undefined, stack: Edge[]) => {
     if (!vtx) {
@@ -70,4 +64,3 @@ export const traverseGraph = (props: GeneratorProps) => (
     traverse(props.graph.get(root)!, [[operationType, root]]),
   )
 }
-

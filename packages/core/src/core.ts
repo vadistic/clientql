@@ -32,10 +32,7 @@ export interface CoreProps {
   cache: CoreCache
 }
 
-export const getCoreProps = (
-  doc: DocumentNode,
-  config?: Partial<CoreConfig>,
-): CoreProps => {
+export const getCoreProps = (doc: DocumentNode, config?: Partial<CoreConfig>): CoreProps => {
   const graph = initGraph(doc)
   const roots = initRootsMap(doc)
   const cache = initCoreCache()

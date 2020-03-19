@@ -15,6 +15,7 @@
     "build:cjs": "tsc -p tsconfig.build.json -m commonjs --outDir dist/cjs",
     "build:types": "tsc -p tsconfig.build.json --emitDeclarationOnly -d true --declarationMap --outDir dist/types",
     "clean": "rm -rf dist",
+    "format": "prettier --write src/*",
     "prepare": "yarn clean && yarn build",
     "start": "ts-node src/cli.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
@@ -22,6 +23,7 @@
   "types": "dist/types/index.d.ts",
   "dependencies": {
     "@clientql/codegen": "^0.1.0",
+    "@clientql/generator": "^0.1.0",
     "@clientql/core": "^0.1.0",
     "fs-extra": "^8.1.0",
     "graphql": "^14.5.8",

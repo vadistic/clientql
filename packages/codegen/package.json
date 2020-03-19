@@ -14,6 +14,7 @@
     "build:esm": "tsc -p tsconfig.build.json -m esnext --outDir dist/esm",
     "build:types": "tsc -p tsconfig.build.json --emitDeclarationOnly -d true --declarationMap --outDir dist/types",
     "clean": "rm -rf dist",
+    "format": "prettier --write src/*",
     "prepare": "yarn clean && yarn build",
     "test": "jest",
     "typecheck": "tsc -p tsconfig.json --noEmit"

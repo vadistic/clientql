@@ -4,9 +4,7 @@ import path from 'path'
 export const writeFile = async (
   dest: string,
   data: string,
-): Promise<
-  { status: 'ok'; path: string } | { status: 'err'; message: string }
-> => {
+): Promise<{ status: 'ok'; path: string } | { status: 'err'; message: string }> => {
   const output = path.resolve(process.cwd(), dest)
 
   try {
@@ -24,9 +22,7 @@ export const writeFlatDir = async (
   data: {
     [filename: string]: string
   },
-): Promise<
-  { status: 'ok'; dir: string } | { status: 'err'; message: string }
-> => {
+): Promise<{ status: 'ok'; dir: string } | { status: 'err'; message: string }> => {
   const base = path.resolve(process.cwd(), dir)
 
   try {
@@ -46,9 +42,7 @@ export const writeFlatDir = async (
 
 export const readFile = async (
   source: string,
-): Promise<
-  { status: 'ok'; file: string } | { status: 'err'; message: string }
-> => {
+): Promise<{ status: 'ok'; file: string } | { status: 'err'; message: string }> => {
   const input = path.resolve(process.cwd(), source)
   let file: string
 

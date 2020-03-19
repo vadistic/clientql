@@ -1,9 +1,4 @@
-import {
-  CoreProps,
-  getCoreProps,
-  mergeExtensions,
-  TypescriptString,
-} from '@clientql/core'
+import { CoreProps, getCoreProps, mergeExtensions, TypescriptString } from '@clientql/core'
 import { ASTNode, DocumentNode, Kind, parse } from 'graphql'
 import { CodegenConfig, defaultCodegenConfig } from './config'
 import { CodegenNaming, initCodegenNaming } from './naming'
@@ -55,10 +50,7 @@ export const getCodegenProps = (
  * can be noop otherwise
  */
 
-export const createCodegen = (
-  doc?: DocumentNode | string,
-  config?: Partial<CodegenConfig>,
-) => {
+export const createCodegen = (doc?: DocumentNode | string, config?: Partial<CodegenConfig>) => {
   const props = getCodegenProps(
     typeof doc === 'string'
       ? parse(doc)
@@ -84,17 +76,13 @@ export const createCodegen = (
 /**
  * printer with own body as schema
  */
-export const defaultCodegen = (
-  doc: DocumentNode,
-  overrides?: Partial<CodegenConfig>,
-) => createCodegen(doc)(doc, overrides)
+export const defaultCodegen = (doc: DocumentNode, overrides?: Partial<CodegenConfig>) =>
+  createCodegen(doc)(doc, overrides)
 
 /**
  * rescursive main reducer loop
  */
-export const codegen = (props: CodegenProps) => (
-  node: ASTNode,
-): TypescriptString => {
+export const codegen = (props: CodegenProps) => (node: ASTNode): TypescriptString => {
   switch (node.kind) {
     /**
      * enter recursion

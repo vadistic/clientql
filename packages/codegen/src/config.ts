@@ -1,9 +1,4 @@
-import {
-  CoreConfig,
-  defaultCoreConfig,
-  ObjectLikeNode,
-  TypescriptString,
-} from '@clientql/core'
+import { CoreConfig, defaultCoreConfig, ObjectLikeNode, TypescriptString } from '@clientql/core'
 import {
   FieldDefinitionNode,
   InputObjectTypeDefinitionNode,
@@ -111,10 +106,7 @@ export interface CodegenConfig extends CoreConfig {
    * - return `undefined` for unchanged
    * - return `null` for delete field
    */
-  transformFieldArguments?: <
-    Parent extends ObjectLikeNode,
-    Field extends FieldDefinitionNode
-  >(
+  transformFieldArguments?: <Parent extends ObjectLikeNode, Field extends FieldDefinitionNode>(
     parent: Parent,
     field: Field,
     prev: string | undefined,
@@ -128,10 +120,7 @@ export interface CodegenConfig extends CoreConfig {
    * - return `undefined` for unchanged
    * - return `null` for delete field
    */
-  transformFieldType?: <
-    Parent extends ObjectLikeNode,
-    Field extends FieldDefinitionNode
-  >(
+  transformFieldType?: <Parent extends ObjectLikeNode, Field extends FieldDefinitionNode>(
     parent: Parent,
     field: Field,
     prev: string | undefined,
