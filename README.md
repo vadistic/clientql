@@ -10,8 +10,8 @@ This project is in alpha stage. You can clone & build it locally.
 
 - **Strongly Typed**
 
-  - _Client typings_ - can replace `graphql-code-generator` or `apollo-cli` formsot cases
-  - _Configurable_ - supports common codegen options and expose transformer APIs for complete customisation
+  - _Client typings_ - replaces `graphql-code-generator` or `apollo-cli` for most cases
+  - _Configurable_ - many common codegen options and custom APIs for complete control
 
 - **Flexible**
 
@@ -21,13 +21,13 @@ This project is in alpha stage. You can clone & build it locally.
 
 - **Fast**
 
-  - _Lightweight_ - Client ships with absolutely no dependencies. Uses `graphql` package only for typs (can be devDep)
-  - _Efficient lazy runtime_ - Queries & fragments are generated efficiently (max few miliseconds) at runtime (to avoid shipping and evaluating graphql strings) with additional fragment and query level caching (to shave another miliseconds of huge queries)
+  - _Lightweight_ - client-side ships with absolutely no dependencies (`graphql` recommended as devDep for typings)
+  - _Efficient lazy runtime_ - queries & fragments are generated efficiently (max few ms) at runtime (to avoid shipping and evaluating graphql strings) with additional fragment and query level caching (to shave another miliseconds of huge queries)
 
 - **And also...**
 
-  - _Modular_ - project packages provide generic, reusable functionality
-  - _Mulit-build_ - ESM / CJS
+  - _Modular_ - most packages provide generic, reusable functionality
+  - _Multi-build_ - ESM / CJS
 
 ## TODO
 
