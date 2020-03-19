@@ -12,9 +12,11 @@ export interface ClientProps {
   config?: Partial<CoreConfig>
 }
 /**
- * Client proxy is path proxy with callback pointing to apollo
+ * This is not temporary factory fn with build-in apollo adapter.
+ *
+ * I need to come up with nice api for various client adapters
  */
-export const createClient = <ClientProxy>({ typedefs }: ClientBaseProps) => ({
+export const clientFactory = <ClientProxy>({ typedefs }: ClientBaseProps) => ({
   client,
   config,
 }: ClientProps): ClientProxy => {

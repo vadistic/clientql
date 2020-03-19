@@ -17,7 +17,7 @@ export const printClientBoilerplate = (props: GeneratorProps) => {
 
   const importRootInterfaceTs = printTsImports(rootsNamesTs, props.paths.interfaces)
 
-  const importClientLibTs = printTsImports(['createClient'], '@clientql/client')
+  const importClientLibTs = printTsImports(['clientFactory'], '@clientql/client')
 
   const importTypedefsTs = printTsImports([props.naming.typedefsConstName], props.paths.typedefs)
 
@@ -37,7 +37,7 @@ export const printClientBoilerplate = (props: GeneratorProps) => {
     clientFieldsTs,
   )
 
-  const clientInitTs = `export const useClient = createClient<${props.naming.interfaceName(
+  const clientInitTs = `export const createClient = clientFactory<${props.naming.interfaceName(
     'ClientProxy',
   )}>({typedefs: ${props.naming.typedefsConstName}})`
 

@@ -11,7 +11,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "generate": "clientgen -s https://eu1.prisma.sh/vadistic/graphql-clientgen/dev -o src/generated/client"
+    "generate": "clientql -s https://eu1.prisma.sh/vadistic/graphql-clientgen/dev -o src/generated/client"
   },
   "dependencies": {
     "@clientql/cli": "0.1.0",

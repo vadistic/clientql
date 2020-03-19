@@ -85,7 +85,3 @@ export const defaultGeneratorPaths: GeneratorPaths = {
   interfaces: './interfaces',
   typedefs: './typedefs',
 }
-
-/**
- * GeneratorMode = WHAT to generate
- */

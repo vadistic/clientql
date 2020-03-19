@@ -3,7 +3,7 @@ import ApolloClient from 'apollo-client'
 import { ApolloLink } from 'apollo-link'
 import { onError } from 'apollo-link-error'
 import { HttpLink } from 'apollo-link-http'
-import { useClient } from './generated/client'
+import { createClient } from './generated/client'
 
 const cache = new InMemoryCache()
 
@@ -33,4 +33,4 @@ const apolloClientOptions = {
 
 export const apolloClient = new ApolloClient(apolloClientOptions)
 
-export const client = useClient({ client: apolloClient })
+export const client = createClient({ client: apolloClient })
