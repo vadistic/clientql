@@ -3,7 +3,22 @@
 import meow from 'meow'
 import { clientgenCmd } from './commands'
 
-const cli = meow(
+export type Flags = {
+  schema: {
+    type: 'string'
+    alias: string
+  }
+  output: {
+    type: 'string'
+    alias: string
+  }
+  config: {
+    type: 'string'
+    alias: string
+  }
+} & meow.AnyFlags
+
+const cli = meow<Flags>(
   `
 	Usage
 	  $ clientgen -s src/schema.graphql -o src/generated/client

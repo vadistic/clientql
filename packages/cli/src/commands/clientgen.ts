@@ -2,8 +2,9 @@ import { Result } from 'meow'
 import { getConfig } from '../config'
 import { getSchemaDoc } from '../get-schema'
 import { writeFlatDir } from '../read-write'
+import { Flags } from '../cli'
 
-export const clientgenCmd = async (cli: Result) => {
+export const clientgenCmd = async (cli: Result<Flags>) => {
   if (!cli.flags.schema || !cli.flags.output) {
     console.warn('Invalid: missing --schema or --output flag!')
     cli.showHelp()

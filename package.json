@@ -8,13 +8,15 @@
   "private": true,
   "workspaces": {
     "packages": [
-      "packages/*"
+      "packages/*",
+      "examples/*",
+      "docs"
     ]
   },
   "scripts": {
     "commit": "git-cz",
-    "lint": "eslint --ext ts packages/*/src",
-    "format": "yarn prettier packages/*/src/* --write"
+    "lint": "eslint --ext .ts,.tsx packages/*/src examples/*/src",
+    "format": "yarn prettier {packages/*/src/**,examples/*/src/**,docs/src}.{ts,tsx,json,md} -l --write"
   },
   "devDependencies": {
     "@types/jest": "^25.1.4",

@@ -1,7 +1,2 @@
-dist
+build
 node_modules
-
-**/*.fixture.*
-**/__snapshots__
-**/__file_snapshots__
-**/generated/**

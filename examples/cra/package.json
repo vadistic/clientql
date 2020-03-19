@@ -1,0 +1,42 @@
+{
+  "name": "@clientql/example-cra",
+  "description": "Generate strongly typed, flexible & fast client SDK from any GraphQL API",
+  "repository": "https://github.com/vadistic/clientql",
+  "author": "Jakub Wadas <vadistic@gmail.com>",
+  "version": "0.1.0",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "generate": "clientgen -s https://eu1.prisma.sh/vadistic/graphql-clientgen/dev -o src/generated/client"
+  },
+  "dependencies": {
+    "@clientql/cli": "0.1.0",
+    "@clientql/client": "0.1.0",
+    "apollo-cache-inmemory": "^1.6.5",
+    "apollo-client": "^2.6.8",
+    "apollo-link": "^1.2.13",
+    "apollo-link-error": "^1.1.12",
+    "apollo-link-http": "^1.5.16",
+    "graphql": "^14.6.0",
+    "graphql-tag": "^2.10.3",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
+    "react-scripts": "^3.4.0"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.23",
+    "@types/react-dom": "^16.9.5",
+    "@vadistic/eslint-config-react": "^0.1.8",
+    "typescript": "^3.8.3"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
