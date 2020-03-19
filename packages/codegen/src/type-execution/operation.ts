@@ -18,10 +18,7 @@ export const printOperation = (props: CodegenProps) => (
   }
 
   const nameTs = props.naming.interfaceName(node.name.value)
-  const selectionTs = printSelections(props)(
-    parent,
-    node.selectionSet.selections,
-  )
+  const selectionTs = printSelections(props)(parent, node.selectionSet.selections)
 
   // cannot be printed as interface
   // since it can consist of inline fragment or fragment spread
@@ -33,10 +30,7 @@ export const printFragment = (props: CodegenProps) => (
 ): TypescriptString => {
   const parent: Typename = node.typeCondition.name.value
 
-  const selectionTs = printSelections(props)(
-    parent,
-    node.selectionSet.selections,
-  )
+  const selectionTs = printSelections(props)(parent, node.selectionSet.selections)
 
   const nameTs = props.naming.interfaceName(node.name.value)
 

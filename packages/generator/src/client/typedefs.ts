@@ -1,9 +1,5 @@
 import { printBlockComment } from '@clientql/codegen'
-import {
-  TypescriptString,
-  unwrapDocument,
-  wrapDocument,
-} from '@clientql/core'
+import { TypescriptString, unwrapDocument, wrapDocument } from '@clientql/core'
 import { Kind } from 'graphql'
 import { GeneratorProps } from '../generator'
 import { printTsGql, printYadaYada } from '../print'
@@ -15,9 +11,7 @@ import { stripLocationDescriptionAndEmpty } from '../utils'
  * cutting everything except object/unions/interface+schema
  */
 
-export const printClientTypedefs = (
-  props: GeneratorProps,
-): TypescriptString => {
+export const printClientTypedefs = (props: GeneratorProps): TypescriptString => {
   const constantName = props.naming.typedefsConstName
 
   const filtered = unwrapDocument(props.doc).filter(
@@ -41,13 +35,10 @@ export const printClientTypedefs = (
     resultTs += `import gql from 'graphql-tag'` + '\n\n'
     resultTs += typedefsTs + '\n\n'
   } else {
-    const typedefsJson = JSON.stringify(
-      stripLocationDescriptionAndEmpty(filteredDoc),
-      null,
-      2,
-    )
+    const typedefsJson = JSON.stringify(stripLocationDescriptionAndEmpty(filteredDoc), null, 2)
       // get rid of \\"name\\"
-      .replace(/\"([^(\")"]+)\":/g, '$1:')
+      // .replace(/\"([^(\")"]+)\":/g, '$1:')
+      .replace(/"([^(")"]+)":/g, '$1:')
       .replace(/\\/g, '')
 
     resultTs += `export const ${constantName} = ${typedefsJson}` + '\n\n'

@@ -15,10 +15,7 @@ export const generateDefinitions = async (props: GeneratorProps) => {
     .map(
       ([kind, nodes]) =>
         nodes &&
-        printCodeSection(
-          kind + 'Typings',
-          (nodes as DefinitionNode[]).map(print).join('\n\n'),
-        ),
+        printCodeSection(kind + 'Typings', (nodes as DefinitionNode[]).map(print).join('\n\n')),
     )
     .filter(truthy)
     .join('\n\n')

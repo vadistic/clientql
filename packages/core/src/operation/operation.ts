@@ -19,20 +19,14 @@ import { CoreProps } from '../core'
 import { operationTypes } from '../graph'
 import { capitalise } from '../utils'
 import { buildSelections } from './selections'
-import {
-  OperationEdge,
-  OperationResult,
-  OperationSelectionResult,
-} from './types'
+import { OperationEdge, OperationResult, OperationSelectionResult } from './types'
 import { retriveFragmentsFromCache } from './utils'
 
 /**
  * helper to build operation + retrive fragments
  *
  */
-export const buildOperationDoc = (props: CoreProps) => (
-  path: OperationEdge[],
-): DocumentNode => {
+export const buildOperationDoc = (props: CoreProps) => (path: OperationEdge[]): DocumentNode => {
   const { fragmentNames: dependencies, operation } = buildOperation(props)(path)
   const fragments = retriveFragmentsFromCache(props)(dependencies)
 
@@ -54,9 +48,7 @@ export const buildOperationDoc = (props: CoreProps) => (
  * ! first fieldname should be OperationType/ Root
  */
 
-export const buildOperation = (props: CoreProps) => (
-  path: OperationEdge[],
-): OperationResult => {
+export const buildOperation = (props: CoreProps) => (path: OperationEdge[]): OperationResult => {
   const [head] = path
   const operationType = head[0] as OperationTypeNode | undefined
 
@@ -86,8 +78,10 @@ export const buildOperation = (props: CoreProps) => (
       .join('') + capitalise(rootTypename)
 
   // read from cache
-  if (props.cache.operations.has(operationName)) {
-    return props.cache.operations.get(operationName)!
+  const cached = props.cache.operations.get(operationName)
+
+  if (cached) {
+    return cached
   }
 
   const { selections, variables, ...rest } = buildOperationSelection(props)(
@@ -130,16 +124,9 @@ const buildOperationSelection = (props: CoreProps) => (
    * entering union/interface inline, level stay the same
    */
   if (typename) {
-    const { selections, ...rest } = buildOperationSelection(props)(
-      typename,
-      tail,
-      level,
-    )
+    const { selections, ...rest } = buildOperationSelection(props)(typename, tail, level)
 
-    const inlineSelection: InlineFragmentNode = createInlineFragment(
-      typename,
-      selections,
-    )
+    const inlineSelection: InlineFragmentNode = createInlineFragment(typename, selections)
 
     return {
       ...rest,

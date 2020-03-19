@@ -14,9 +14,7 @@ export const clientgenCmd = async (cli: Result) => {
 
   console.log('Generating client...')
 
-  const { generateClient, getGeneratorProps } = await import(
-    '@clientql/generator'
-  )
+  const { generateClient, getGeneratorProps } = await import('@clientql/generator')
 
   const props = getGeneratorProps(doc, config)
 

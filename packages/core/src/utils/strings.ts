@@ -13,9 +13,7 @@ export const indent = <T extends string>(content: T, level = 1, trim = false) =>
           .replace(/^\s+/gm, '')
           .replace(/\n\s*/gm, '\n' + ' '.repeat(level * INDENT_WIDTH))
           .trim()
-      : content
-          .replace(/\n/gm, '\n' + ' '.repeat(level * INDENT_WIDTH))
-          .trim())) as T
+      : content.replace(/\n/gm, '\n' + ' '.repeat(level * INDENT_WIDTH)).trim())) as T
 
 export const capitalise = <T extends string>(input: T) =>
   (input[0].toUpperCase() + input.slice(1)) as T

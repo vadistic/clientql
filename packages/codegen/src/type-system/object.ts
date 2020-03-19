@@ -3,10 +3,7 @@ import { ObjectTypeDefinitionNode, ObjectTypeExtensionNode } from 'graphql'
 import { CodegenProps } from '../codegen'
 import { printTsInterface } from '../print'
 import { withDescription } from '../type-reference'
-import {
-  printFieldArgumentsInterfaces,
-  printObjectLikeFields,
-} from './object-like'
+import { printFieldArgumentsInterfaces, printObjectLikeFields } from './object-like'
 
 /**
  * prints ObjectTypeDefinitionNode | ObjectTypeExtensionNode

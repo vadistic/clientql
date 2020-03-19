@@ -17,10 +17,7 @@ export const initGraph = (doc: DocumentNode) => {
           getTypename(field.type),
         ])
 
-        const weigthsArr: EdgeField[] = (node.fields || []).map(field => [
-          field.name.value,
-          field,
-        ])
+        const weigthsArr: EdgeField[] = (node.fields || []).map(field => [field.name.value, field])
 
         const prototypes =
           node.kind === Kind.OBJECT_TYPE_DEFINITION && node.interfaces

@@ -1,5 +1,4 @@
 import gql from 'graphql-tag'
-import { typeDefs } from './generated/prisma-client/prisma-schema'
 
 /**
  * Standard prisma schema

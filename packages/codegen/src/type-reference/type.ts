@@ -1,8 +1,4 @@
-import {
-  TypeModifier,
-  TypescriptString,
-  unwrapType,
-} from '@clientql/core'
+import { TypeModifier, TypescriptString, unwrapType } from '@clientql/core'
 import { Kind, TypeNode } from 'graphql'
 import { CodegenProps } from '../codegen'
 import { CodegenConfig } from '../config'
@@ -12,15 +8,10 @@ import { printNamedType } from './named-type'
  * prints nullable/list/scalar etc. TypeNode
  */
 
-export const printType = (props: CodegenProps) => (
-  node: TypeNode,
-): TypescriptString => {
+export const printType = (props: CodegenProps) => (node: TypeNode): TypescriptString => {
   const { modifiers, type } = unwrapType(node)
 
-  return printTypeModifiers(props.config)(
-    printNamedType(props)(type),
-    modifiers,
-  )
+  return printTypeModifiers(props.config)(printNamedType(props)(type), modifiers)
 }
 
 /**
@@ -34,8 +25,7 @@ export const printTypeModifiers = (config: CodegenConfig) => (
   modifiers: TypeModifier[],
   useSimpleArray = true,
 ): TypescriptString => {
-  const addMaybe = (value: string) =>
-    config.useMaybeType ? `Maybe<${value}>` : `${value} | null`
+  const addMaybe = (value: string) => (config.useMaybeType ? `Maybe<${value}>` : `${value} | null`)
   const addArray = (value: string) => `Array<${value}>`
 
   let resultTs = content

@@ -1,5 +1,5 @@
 import { capitalise, Fieldname, FragmentName, Typename, TypescriptString } from '@clientql/core'
-import { CodegenConfig, defaultCodegenConfig } from './config'
+import { CodegenConfig } from './config'
 
 /**
  * TODO: some sort of spliting

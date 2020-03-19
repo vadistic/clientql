@@ -1,14 +1,11 @@
-import {
-  isNotEmpty,
-  isNullable,
-  TypescriptString,
-} from '@clientql/core'
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { isString } from 'util'
+import { isNotEmpty, isNullable, TypescriptString } from '@clientql/core'
 import {
   InputObjectTypeDefinitionNode,
   InputObjectTypeExtensionNode,
   InputValueDefinitionNode,
 } from 'graphql'
-import { isString } from 'util'
 import { CodegenProps } from '../codegen'
 import { printTsInterface } from '../print'
 import { printInputValue, printType, withDescription } from '../type-reference'
@@ -40,17 +37,13 @@ export const printInputObject = (props: CodegenProps) => (
   }
 
   // allow customisations
-  const inputValueTypePrinter = (field: InputValueDefinitionNode) =>
-    printType(props)(field.type)
+  const inputValueTypePrinter = (field: InputValueDefinitionNode) => printType(props)(field.type)
 
-  const modifiedInputValuesTs = node.fields
+  const modifiedInputValuesTs = (node.fields ?? [])
     // prebuild
     .map(field => ({
       fieldname: field.name.value,
-      modifier:
-        props.config.useOptionalModifier && isNullable(field.type)
-          ? '?: '
-          : ': ',
+      modifier: props.config.useOptionalModifier && isNullable(field.type) ? '?: ' : ': ',
       type: inputValueTypePrinter(field),
       field,
     }))

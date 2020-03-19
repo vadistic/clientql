@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Typename, TypescriptString } from '@clientql/core'
 import { Kind, NamedTypeNode } from 'graphql'
 import { CodegenProps } from '../codegen'
-import { initCodegenNaming } from '../naming'
 
 const mapExplicitScalar = (typename: Typename): TypescriptString => {
   switch (typename) {
@@ -18,8 +18,7 @@ const mapExplicitScalar = (typename: Typename): TypescriptString => {
   }
 }
 
-export const isExplicitScalar = (typename: Typename) =>
-  mapExplicitScalar(typename) !== typename
+export const isExplicitScalar = (typename: Typename) => mapExplicitScalar(typename) !== typename
 
 export const isPrefixedType = (props: CodegenProps) => (typename: Typename) => {
   // never prefix without schema/ not found
@@ -46,9 +45,7 @@ export const isPrefixedType = (props: CodegenProps) => (typename: Typename) => {
 /**
  * get only normalised type name without arr/null modifiers
  */
-export const printNamedType = (props: CodegenProps) => (
-  node: NamedTypeNode,
-): TypescriptString => {
+export const printNamedType = (props: CodegenProps) => (node: NamedTypeNode): TypescriptString => {
   const typename: Typename = node.name.value
 
   const customScalar = props.config.customScalars[typename]

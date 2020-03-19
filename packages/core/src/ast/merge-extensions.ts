@@ -1,9 +1,4 @@
-import {
-  DefinitionNode,
-  DocumentNode,
-  TypeDefinitionNode,
-  TypeExtensionNode,
-} from 'graphql'
+import { DefinitionNode, DocumentNode, TypeDefinitionNode, TypeExtensionNode } from 'graphql'
 import { isTypeDefinitionNode, isTypeExtensionNode } from './guards'
 import { unwrapDocument, wrapDocument } from './helpers-document'
 
@@ -15,12 +10,9 @@ import { unwrapDocument, wrapDocument } from './helpers-document'
  *
  * It would be more plain in some forEach.find but this is O(N) not O(N2)
  */
-const concatOrTransformDuplicatesByWith = <T>(
-  eq: (val: T) => string | number | symbol,
-) => (assign: (prevEl: T, nextEl: T) => T) => (
-  prevArr: T[],
-  nextArr: T[],
-): T[] => {
+const concatOrTransformDuplicatesByWith = <T>(eq: (val: T) => string | number | symbol) => (
+  assign: (prevEl: T, nextEl: T) => T,
+) => (prevArr: T[], nextArr: T[]): T[] => {
   const keyIndexMap = new Map<string | number | symbol, number>()
   const copy = [...prevArr]
   const unique = []

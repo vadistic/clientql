@@ -1,9 +1,5 @@
-import {
-  indent,
-  isNullable,
-  Typename,
-  TypescriptString,
-} from '@clientql/core'
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { indent, isNullable, Typename, TypescriptString } from '@clientql/core'
 import { Kind, SelectionNode } from 'graphql'
 import { CodegenProps } from '../codegen'
 import { printType } from '../type-reference'
@@ -42,8 +38,7 @@ export const printSelections = (props: CodegenProps) => (
        * I think that for operations it's a bit more semantic to just reflect provided selection
        */
       if (node.name.value === '__typename') {
-        const typenameTs =
-          props.config.addTypename === 'string' ? 'string' : `'${parent}'`
+        const typenameTs = props.config.addTypename === 'string' ? 'string' : `'${parent}'`
 
         lines.push(`__typename: ${typenameTs}`)
         continue
@@ -51,13 +46,9 @@ export const printSelections = (props: CodegenProps) => (
 
       const field = vtx.weightsMap!.get(node.name.value)!
 
-      const modifierTs =
-        isNullable(field.type) && props.config.useOptionalModifier
-          ? '?: '
-          : ': '
+      const modifierTs = isNullable(field.type) && props.config.useOptionalModifier ? '?: ' : ': '
 
-      const fieldTs =
-        field.name.value + modifierTs + printType(props)(field.type)
+      const fieldTs = field.name.value + modifierTs + printType(props)(field.type)
 
       lines.push(fieldTs)
       continue
@@ -71,15 +62,9 @@ export const printSelections = (props: CodegenProps) => (
         throw Error(`Missing target for field ${node.name.value} on ${parent}`)
       }
 
-      const nestedTs = printSelections(props)(
-        child,
-        node.selectionSet.selections,
-      )
+      const nestedTs = printSelections(props)(child, node.selectionSet.selections)
 
-      const modifierTs =
-        isNullable(field.type) && props.config.useOptionalModifier
-          ? '?: '
-          : ': '
+      const modifierTs = isNullable(field.type) && props.config.useOptionalModifier ? '?: ' : ': '
 
       const fieldTs = field.name.value + modifierTs + nestedTs
 
@@ -114,7 +99,7 @@ export const printSelections = (props: CodegenProps) => (
   }
 
   if (intersections.length !== 0) {
-    resultTs = [...intersections, ...(!!resultTs ? [resultTs] : [])].join(' & ')
+    resultTs = [...intersections, ...(resultTs ? [resultTs] : [])].join(' & ')
   }
 
   if (unions.length === 1) {

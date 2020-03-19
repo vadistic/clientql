@@ -1,4 +1,4 @@
-import { Fieldname, OperationEdge, operationTypes, StringMap, Typename } from '@clientql/core'
+import { Fieldname, OperationEdge, StringMap, Typename } from '@clientql/core'
 import { OperationTypeNode } from 'graphql'
 import { Segments } from './fluent-async-proxy'
 

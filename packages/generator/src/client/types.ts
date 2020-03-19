@@ -1,9 +1,5 @@
 import { codegen, printCodeSection } from '@clientql/codegen'
-import {
-  truthy,
-  TypescriptString,
-  unwrapDocument,
-} from '@clientql/core'
+import { truthy, TypescriptString, unwrapDocument } from '@clientql/core'
 import { DefinitionNode } from 'graphql'
 import { GeneratorConfig } from '../config'
 import { GeneratorProps } from '../generator'
@@ -31,10 +27,7 @@ export const printClientTypes = (props: GeneratorProps): TypescriptString => {
     .map(
       ([kind, nodes]) =>
         nodes &&
-        printCodeSection(
-          kind + ' Typings',
-          (nodes as DefinitionNode[]).map(print).join('\n\n'),
-        ),
+        printCodeSection(kind + ' Typings', (nodes as DefinitionNode[]).map(print).join('\n\n')),
     )
     .filter(truthy)
     .join('\n\n')

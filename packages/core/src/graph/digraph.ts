@@ -16,16 +16,13 @@ export class Digraph<Name, Value, EdgeKey, Weigth> extends Map<
   Name,
   DigraphVertex<Name, Value, EdgeKey, Weigth>
 > {
-  public static from = <K, V, E, W>(
-    entries: Array<DigraphVertexEntry<K, V, E, W>>,
-  ) => new Digraph<K, V, E, W>(entries)
+  public static from = <K, V, E, W>(entries: Array<DigraphVertexEntry<K, V, E, W>>) =>
+    new Digraph<K, V, E, W>(entries)
 
   public prototypes = new Map<Name, Name[]>()
   public implementations = new Map<Name, Name[]>()
 
-  constructor(
-    entries: Array<DigraphVertexEntry<Name, Value, EdgeKey, Weigth>>,
-  ) {
+  constructor(entries: Array<DigraphVertexEntry<Name, Value, EdgeKey, Weigth>>) {
     super()
 
     // calc inheritance
@@ -45,19 +42,12 @@ export class Digraph<Name, Value, EdgeKey, Weigth> extends Map<
     ...entry,
     implementations: this.implementations.get(entry.name),
     prototypes: this.prototypes.get(entry.name),
-    edgesMap:
-      entry.edgesArr && entry.edgesArr.length !== 0
-        ? new Map(entry.edgesArr)
-        : undefined,
+    edgesMap: entry.edgesArr && entry.edgesArr.length !== 0 ? new Map(entry.edgesArr) : undefined,
     weightsMap:
-      entry.weigthsArr && entry.weigthsArr.length !== 0
-        ? new Map(entry.weigthsArr)
-        : undefined,
+      entry.weigthsArr && entry.weigthsArr.length !== 0 ? new Map(entry.weigthsArr) : undefined,
   })
 
-  private _buildInheritance = (
-    entry: DigraphVertexEntry<Name, Value, EdgeKey, Weigth>,
-  ) => {
+  private _buildInheritance = (entry: DigraphVertexEntry<Name, Value, EdgeKey, Weigth>) => {
     /*
      * this case is:
      *  => prototype = some interface
@@ -82,10 +72,7 @@ export class Digraph<Name, Value, EdgeKey, Weigth> extends Map<
     if (entry.implementations) {
       // not possible, but nvm
       const prevImpl = this.implementations.get(entry.name) || []
-      this.implementations.set(entry.name, [
-        ...prevImpl,
-        ...entry.implementations,
-      ])
+      this.implementations.set(entry.name, [...prevImpl, ...entry.implementations])
 
       entry.implementations.forEach(impl => {
         const prevProto = this.prototypes.get(impl) || []

@@ -24,9 +24,7 @@ export interface GenerateClientResult {
  * - `client-boilerplate` => typed client factory
  */
 
-export const generateClient = async (
-  props: GeneratorProps,
-): Promise<GenerateClientResult> => {
+export const generateClient = async (props: GeneratorProps): Promise<GenerateClientResult> => {
   const targets = resolvePossibleTargets(props)
 
   const index = printClientBoilerplate(props)

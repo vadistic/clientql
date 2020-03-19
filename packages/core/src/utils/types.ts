@@ -2,9 +2,7 @@
  * guards
  */
 
-export type Truthy<T> = T extends boolean
-  ? NonNullable<T> & true
-  : NonNullable<T>
+export type Truthy<T> = T extends boolean ? NonNullable<T> & true : NonNullable<T>
 
 export const truthy = <T>(input: T): input is Truthy<T> => !!input
 
@@ -19,8 +17,7 @@ export const isNotEmpty = <T>(input: T): input is Truthy<T> =>
 export const nonNull = <T>(input: T): input is NonNullable<T> =>
   input !== null && input !== undefined
 
-export const isString = (input: any): input is string =>
-  typeof input === 'string'
+export const isString = (input: any): input is string => typeof input === 'string'
 
 /*
  * strict literals
@@ -71,9 +68,7 @@ export const indexed = <T>(input: T) => input as Indexed<T>
  */
 
 export type Mutable<T> = {
-  -readonly [P in keyof T]: T[P] extends ReadonlyArray<infer U>
-    ? Array<Mutable<U>>
-    : Mutable<T[P]>
+  -readonly [P in keyof T]: T[P] extends ReadonlyArray<infer U> ? Array<Mutable<U>> : Mutable<T[P]>
 }
 
 /*

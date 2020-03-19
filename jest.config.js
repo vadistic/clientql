@@ -1,15 +1,8 @@
 module.exports = {
   preset: 'ts-jest',
-  moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
-  roots: ['<rootDir>/src/'],
-  testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)'],
-  watchPathIgnorePatterns: ['<rootDir>/../__file_snapshots__'],
+  testEnvironment: 'node',
   moduleNameMapper: {
-    '^@clientql\\/([^/]+)': '<rootDir>/../$1/src',
+    '^@clientql\\/([^/]+)': '<rootDir>/packages/$1/src',
   },
-  globals: {
-    'ts-jest': {
-      tsConfig: 'tsconfig.test.json',
-    },
-  },
+  projects: ['<rootDir>/packages/*/jest.config.js'],
 }

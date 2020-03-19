@@ -113,9 +113,7 @@ export interface CreateOperationProps {
   selections: SelectionNode[]
 }
 
-export const createOperation = (
-  props: CreateOperationProps,
-): OperationDefinitionNode => ({
+export const createOperation = (props: CreateOperationProps): OperationDefinitionNode => ({
   kind: Kind.OPERATION_DEFINITION,
   name: createName(props.name),
   operation: props.type,

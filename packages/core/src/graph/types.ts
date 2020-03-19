@@ -1,8 +1,4 @@
-import {
-  FieldDefinitionNode,
-  OperationTypeNode,
-  TypeDefinitionNode,
-} from 'graphql'
+import { FieldDefinitionNode, OperationTypeNode, TypeDefinitionNode } from 'graphql'
 import { Fieldname, Typename } from '../ast'
 import { Digraph } from './digraph'
 
@@ -32,12 +28,7 @@ export interface DigraphVertex<Name, Value, EdgeKey, Weigth>
  * Graph => my specific digraph
  */
 
-export type Graph = Digraph<
-  Typename,
-  TypeDefinitionNode,
-  Fieldname,
-  FieldDefinitionNode
->
+export type Graph = Digraph<Typename, TypeDefinitionNode, Fieldname, FieldDefinitionNode>
 
 export type Edge = DigraphEdgeLinkEntry<Fieldname, Typename>
 export type EdgeField = DigraphEdgeWeigthEntry<Fieldname, FieldDefinitionNode>
@@ -60,8 +51,4 @@ export type GraphVertex = DigraphVertex<
  * misc
  */
 
-export const operationTypes: OperationTypeNode[] = [
-  'query',
-  'mutation',
-  'subscription',
-]
+export const operationTypes: OperationTypeNode[] = ['query', 'mutation', 'subscription']

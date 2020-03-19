@@ -2,7 +2,7 @@ import { DocumentNode } from 'graphql'
 import { createFragment, FragmentName, Typename, wrapDocument } from '../ast'
 import { CoreProps } from '../core'
 import { buildSelections } from './selections'
-import { FragmentResult, SelectionsResult } from './types'
+import { FragmentResult } from './types'
 import { retriveFragmentsFromCache } from './utils'
 
 /**
@@ -17,9 +17,7 @@ export const buildFragment = (props: CoreProps) => (
   typename: Typename,
   name?: FragmentName,
 ): FragmentResult | undefined => {
-  const { selections, complete, flat, fragmentNames } = buildSelections(props)(
-    typename,
-  )
+  const { selections, complete, flat, fragmentNames } = buildSelections(props)(typename)
 
   // invalid typename or empty with current config
   if (!selections) {
@@ -32,9 +30,11 @@ export const buildFragment = (props: CoreProps) => (
   // TODO: think how to name it
   const fragmentName = getFragmentName(props)({ typename, flat, complete })
 
-  // shortcircuit on cached result
-  if (!name && props.cache.fragments.has(fragmentName)) {
-    return props.cache.fragments.get(fragmentName)!
+  // shortcircuit on cached result (without custom name)
+  const cached = props.cache.fragments.get(fragmentName)
+
+  if (!name && cached) {
+    return cached
   }
 
   const fragment = createFragment({
@@ -92,11 +92,7 @@ export const getFragmentName = (props: CoreProps) => ({
 
   // or is only part of a type
   if (flat && !complete) {
-    return (
-      typename +
-      props.config.fragmentFlatSuffix +
-      props.config.fragmentPartialSuffix
-    )
+    return typename + props.config.fragmentFlatSuffix + props.config.fragmentPartialSuffix
   }
 
   // deep
@@ -105,9 +101,5 @@ export const getFragmentName = (props: CoreProps) => ({
   }
 
   // deep partial
-  return (
-    typename +
-    props.config.fragmentDeepSuffix +
-    props.config.fragmentPartialSuffix
-  )
+  return typename + props.config.fragmentDeepSuffix + props.config.fragmentPartialSuffix
 }

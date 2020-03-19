@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
   printBlockComment,
   printFragment,
@@ -14,7 +15,7 @@ import {
   Typename,
   TypescriptString,
 } from '@clientql/core'
-import { FragmentDefinitionNode, Kind, SelectionNode } from 'graphql'
+import { FragmentDefinitionNode, SelectionNode } from 'graphql'
 import { GeneratorProps } from '../generator'
 import { printYadaYada } from '../print'
 
@@ -61,9 +62,7 @@ export const printClientsResponses = (props: GeneratorProps) => (
 /**
  * needs to import scalars and enums from './types
  */
-const printClientResponsesImports = (
-  props: GeneratorProps,
-): TypescriptString | undefined => {
+const printClientResponsesImports = (props: GeneratorProps): TypescriptString | undefined => {
   const scalarNamesTs = props.doc.definitions
     .filter(isScalarTypeDefinitionNode)
     .map(node => node.name.value)
@@ -73,10 +72,7 @@ const printClientResponsesImports = (
     .map(node => node.name.value)
 
   // it would be better to import only those used but later
-  const typesImportsTs = printTsImports(
-    [...scalarNamesTs, ...enumNamesTs],
-    props.paths.types,
-  )
+  const typesImportsTs = printTsImports([...scalarNamesTs, ...enumNamesTs], props.paths.types)
 
   return typesImportsTs
 }
@@ -88,9 +84,7 @@ const printClientResponsesImports = (
  * this is crucial design consideration,
  * otherwise codegen will end up with 100k lines files
  */
-const buildClientSelections = (props: GeneratorProps) => (
-  targets: Set<Typename>,
-) => {
+const buildClientSelections = (props: GeneratorProps) => (targets: Set<Typename>) => {
   const selectionsMap = new Map<Typename, SelectionNode[]>()
   // resolve unique fragments
   const fragmentNamesSet = new Set<FragmentName>()

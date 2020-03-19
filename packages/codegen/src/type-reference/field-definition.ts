@@ -1,10 +1,4 @@
-import {
-  Fieldname,
-  indent,
-  isNotEmpty,
-  isNullable,
-  TypescriptString,
-} from '@clientql/core'
+import { Fieldname, indent, isNotEmpty, isNullable, TypescriptString } from '@clientql/core'
 import { FieldDefinitionNode } from 'graphql'
 import { CodegenProps } from '../codegen'
 import { withDescription } from './description'
@@ -26,20 +20,15 @@ export const printFieldDefinition = (props: CodegenProps) => (
   const addDescription = withDescription(props.config)
 
   // args empty when not printig them.... <== helpful, isn't it?
-  const argsTs =
-    props.config.addFieldAsFunction && printFieldArguments(props)(node)
+  const argsTs = props.config.addFieldAsFunction && printFieldArguments(props)(node)
 
   // modifier only when not using field arguments
   const modifierTs =
-    isNullable(node.type) &&
-    props.config.useOptionalModifier &&
-    !props.config.addFieldAsFunction
+    isNullable(node.type) && props.config.useOptionalModifier && !props.config.addFieldAsFunction
       ? '?: '
       : ': '
 
-  return addDescription(node)(
-    fieldname + modifierTs + (argsTs ? `${argsTs} => ${typeTs}` : typeTs),
-  )
+  return addDescription(node)(fieldname + modifierTs + (argsTs ? `${argsTs} => ${typeTs}` : typeTs))
 }
 
 /**
@@ -58,8 +47,7 @@ export const printFieldArguments = (props: CodegenProps) => (
   // standard modifier
   const allArgsNullable = node.arguments.every(arg => isNullable(arg.type))
 
-  const modifierTs =
-    allArgsNullable && props.config.useOptionalModifier ? '?: ' : ': '
+  const modifierTs = allArgsNullable && props.config.useOptionalModifier ? '?: ' : ': '
 
   let resultTs: TypescriptString = '(args' + modifierTs + '{'
 

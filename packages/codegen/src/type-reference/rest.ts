@@ -1,15 +1,5 @@
-import { capitalise, indent, TypescriptString } from '@clientql/core'
-import {
-  ArgumentNode,
-  Kind,
-  ObjectFieldNode,
-  SchemaDefinitionNode,
-  SchemaExtensionNode,
-  ValueNode,
-} from 'graphql'
-import { CodegenProps } from '../codegen'
-import { CodegenConfig } from '../config'
-import { initCodegenNaming } from '../naming'
+import { indent, TypescriptString } from '@clientql/core'
+import { ArgumentNode, Kind, ObjectFieldNode, ValueNode } from 'graphql'
 
 /**
  * This is all pointles but nvm...
@@ -33,6 +23,7 @@ export const printValue = (node: ValueNode): TypescriptString => {
         return '[]'
       }
 
+      // eslint-disable-next-line no-case-declarations
       const listValue = node.values.map(printValue)
 
       // arbitrary - up to 3 values inline
@@ -47,9 +38,7 @@ export const printValue = (node: ValueNode): TypescriptString => {
         return '{}'
       }
 
-      return (
-        '{\n' + indent(node.fields.map(printObjectField).join(',\n')) + '\n}'
-      )
+      return '{\n' + indent(node.fields.map(printObjectField).join(',\n')) + '\n}'
     case Kind.VARIABLE:
       return node.name.value
     /* noop */

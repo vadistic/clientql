@@ -13,8 +13,7 @@ export const printInputValue = (props: CodegenProps) => (
   const addDescription = withDescription(props.config)
 
   const name: Typename = node.name.value
-  const modifierTs =
-    isNullable(node.type) && props.config.useOptionalModifier ? '?: ' : ': '
+  const modifierTs = isNullable(node.type) && props.config.useOptionalModifier ? '?: ' : ': '
   const typeTs = printType(props)(node.type)
 
   return addDescription(node)(name + modifierTs + typeTs)

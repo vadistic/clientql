@@ -1,6 +1,6 @@
 import { initCodegenNaming } from '@clientql/codegen'
 import { FragmentName, Typename, TypescriptString } from '@clientql/core'
-import changeCase from 'change-case'
+import * as changeCase from 'change-case'
 import { GeneratorConfig } from './config'
 
 export enum StringCase {
@@ -34,10 +34,10 @@ export const toCase = <T extends string>(type: StringCase, ...inputs: T[]) => {
 
 const constantName = (config: GeneratorConfig) => (name: string) => {
   switch (config.constantCase) {
-    case StringCase.CONSTANT:
-      return constantCase(name)
     case StringCase.PASCAL:
       return pascalCase(name)
+    case StringCase.CONSTANT:
+      return constantCase(name)
     case StringCase.CAMEL:
       return camelCase(name)
   }

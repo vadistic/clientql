@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
   CodegenConfig,
   printBlockComment,
@@ -83,9 +84,9 @@ export const printClientInterfaces = (props: GeneratorProps) => (
 /**
  * recursively print client fields for a given target
  */
-const printClientFields = (props: GeneratorProps) => (
-  printer: ClientFieldPrinter,
-) => (vtx: GraphVertex): TypescriptString[] => {
+const printClientFields = (props: GeneratorProps) => (printer: ClientFieldPrinter) => (
+  vtx: GraphVertex,
+): TypescriptString[] => {
   // basically base for this
   if (isObjectTypeDefinitionNode(vtx.value)) {
     return printer(vtx.value)
@@ -133,9 +134,7 @@ const printClientFields = (props: GeneratorProps) => (
  */
 type ClientFieldPrinter = (node: ObjectLikeNode) => TypescriptString[]
 
-const printClientObjectFields = (props: GeneratorProps) => (
-  targets: Set<Typename>,
-) => {
+const printClientObjectFields = (props: GeneratorProps) => (targets: Set<Typename>) => {
   // modify codegen config for field as function + transform result
   const codegenOverrides: Partial<CodegenConfig> = {
     addFieldAsFunction: true,
@@ -148,11 +147,7 @@ const printClientObjectFields = (props: GeneratorProps) => (
           modifiers,
         )
 
-        return (
-          `Promise<${resultTypeTs}>` +
-          ' & ' +
-          props.naming.clientInterfaceName(typename)
-        )
+        return `Promise<${resultTypeTs}>` + ' & ' + props.naming.clientInterfaceName(typename)
       }
 
       return `Promise<${prev}>`
@@ -182,10 +177,7 @@ const printImportsForClientInterfaces = (props: GeneratorProps) => (
     props.naming.clientResponseName(typename),
   )
 
-  const repsonsesImportsTs = printTsImports(
-    responsesNamesTs,
-    props.paths.responses,
-  )
+  const repsonsesImportsTs = printTsImports(responsesNamesTs, props.paths.responses)
 
   const groups = groupDefinitionsByKind(unwrapDocument(props.doc))
 
@@ -216,9 +208,7 @@ const printImportsForClientInterfaces = (props: GeneratorProps) => (
   return importsTs
 }
 
-const printClientInterfacesBoilerplate = (
-  props: GeneratorProps,
-): TypescriptString => {
+const printClientInterfacesBoilerplate = (props: GeneratorProps): TypescriptString => {
   const clientExtendsTs = props.naming.interfaceName(props.config.clientExtend)
 
   // TODO: later think about how to make some cool customizations api

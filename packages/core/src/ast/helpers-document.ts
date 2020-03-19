@@ -1,10 +1,4 @@
-import {
-  ASTKindToNode,
-  DefinitionNode,
-  DocumentNode,
-  KindEnum,
-  SelectionNode,
-} from 'graphql'
+import { ASTKindToNode, DefinitionNode, DocumentNode, KindEnum, SelectionNode } from 'graphql'
 import { truthy } from '../utils/types'
 import { Kind } from './kind'
 
@@ -23,9 +17,7 @@ export const wrapDocument = (
  * get mutable arr of definitions from doc node
  */
 
-export const unwrapDocument = (doc: DocumentNode): DefinitionNode[] => [
-  ...doc.definitions,
-]
+export const unwrapDocument = (doc: DocumentNode): DefinitionNode[] => [...doc.definitions]
 
 /**
  * get first/firstOfKind definition from docuemnt
@@ -39,11 +31,7 @@ export const getDocDefinition: GetDocDefinition = <K extends KindEnum>(
   doc: DocumentNode,
   kind?: K,
 ) => {
-  if (
-    !doc.kind ||
-    doc.kind !== Kind.DOCUMENT ||
-    !Array.isArray(doc.definitions)
-  ) {
+  if (!doc.kind || doc.kind !== Kind.DOCUMENT || !Array.isArray(doc.definitions)) {
     throw Error('getDocDefinition: Invalid Document (like no document at all')
   }
 
@@ -63,7 +51,5 @@ export const getDocDefinition: GetDocDefinition = <K extends KindEnum>(
 
 // for interfaces/unions that need it flat
 export const unwrapSelectionSet = (node?: SelectionNode) =>
-  (node &&
-    node.kind === Kind.FIELD &&
-    node.selectionSet && [...node.selectionSet.selections]) ||
+  (node && node.kind === Kind.FIELD && node.selectionSet && [...node.selectionSet.selections]) ||
   undefined

@@ -13,10 +13,7 @@ export interface UnwrapType {
   modifiers: TypeModifier[]
 }
 
-export const unwrapType = (
-  node: TypeNode,
-  modifiers: TypeModifier[] = [],
-): UnwrapType => {
+export const unwrapType = (node: TypeNode, modifiers: TypeModifier[] = []): UnwrapType => {
   if (node.kind === Kind.NON_NULL_TYPE) {
     return unwrapType(node.type, [...modifiers, Kind.NON_NULL_TYPE])
   }
@@ -43,17 +40,12 @@ export const getTypename = (node: TypeNode): string =>
 /**
  * means top level value is nullable
  */
-export const isNullable = (
-  node: TypeNode,
-): node is ListTypeNode | NamedTypeNode => node.kind !== Kind.NON_NULL_TYPE
+export const isNullable = (node: TypeNode): node is ListTypeNode | NamedTypeNode =>
+  node.kind !== Kind.NON_NULL_TYPE
 
 /**
  * recursively check if field type will be a list
  */
 
 export const isList = (node: TypeNode): boolean =>
-  node.kind === Kind.LIST_TYPE
-    ? true
-    : node.kind === Kind.NAMED_TYPE
-    ? false
-    : isList(node.type)
+  node.kind === Kind.LIST_TYPE ? true : node.kind === Kind.NAMED_TYPE ? false : isList(node.type)

@@ -25,8 +25,7 @@ export const printEnum = (props: CodegenProps) => (
       node.values.forEach(enumValue => {
         const value = enumValue.name.value
 
-        interTs +=
-          indent(addDescription(enumValue)(`${value}: '${value}'`), 1) + '\n'
+        interTs += indent(addDescription(enumValue)(`${value}: '${value}'`), 1) + '\n'
         mapTs += `  ${value}: '${value}',\n`
       })
     }
@@ -41,9 +40,7 @@ export const printEnum = (props: CodegenProps) => (
     if (isNotEmpty(node.values)) {
       node.values.forEach(enumValue => {
         const valueTs = enumValue.name.value
-        resultTs +=
-          indent(addDescription(enumValue)(`${valueTs} = '${valueTs}',`), 1) +
-          '\n'
+        resultTs += indent(addDescription(enumValue)(`${valueTs} = '${valueTs}',`), 1) + '\n'
       })
     }
 

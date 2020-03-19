@@ -1,11 +1,5 @@
-import {
-  Edge,
-  GraphVertex,
-  isStackCircural,
-  replaceLastTypename,
-  Typename,
-  wrapDocument,
-} from '@clientql/core'
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { Edge, GraphVertex, isStackCircural, replaceLastTypename } from '@clientql/core'
 import { GeneratorProps } from './generator'
 
 export type TraverseCallback = (vtx: GraphVertex, stack: Edge[]) => undefined | null | void

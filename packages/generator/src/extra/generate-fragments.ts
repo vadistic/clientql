@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
   buildSelections,
   createFragment,
@@ -32,8 +33,7 @@ export const generateFragments = (props: GeneratorProps) => {
 
   const nestableTypes = props.doc.definitions.filter(
     (node): node is NestableTypeNode =>
-      (isObjectTypeDefinitionNode(node) &&
-        !rootNames.includes(node.name.value)) ||
+      (isObjectTypeDefinitionNode(node) && !rootNames.includes(node.name.value)) ||
       isInterfaceTypeDefinitonNode(node) ||
       isUnionTypeDefinitionNode(node),
   )
@@ -54,10 +54,7 @@ export const generateFragments = (props: GeneratorProps) => {
     .filter(nonNull)
 
   const fragmentDependencies = onlyUnique(
-    fragmentResults.reduce(
-      (acc, { fragmentNames }) => [...acc, ...fragmentNames],
-      [] as string[],
-    ),
+    fragmentResults.reduce((acc, { fragmentNames }) => [...acc, ...fragmentNames], [] as string[]),
   ).map(name => props.cache.fragments.get(name)!)
 
   return { fragments: fragmentResults, dependencies: fragmentDependencies }
@@ -69,15 +66,10 @@ export const generateFragments = (props: GeneratorProps) => {
 export const generateGraphqlFragmentsFile = (props: GeneratorProps) => {
   const { fragments, dependencies } = generateFragments(props)
 
-  const resolvedDependencies = resolveFragmentDependencies([
-    ...dependencies,
-    ...fragments,
-  ])
+  const resolvedDependencies = resolveFragmentDependencies([...dependencies, ...fragments])
 
   if (!props.config.printGraphqlToJs) {
-    return print(
-      wrapDocument(...resolvedDependencies.map(({ fragment }) => fragment)),
-    )
+    return print(wrapDocument(...resolvedDependencies.map(({ fragment }) => fragment)))
   }
 
   return resolvedDependencies
@@ -121,11 +113,7 @@ const resolveFragmentDependencies = (fragments: FragmentResult[]) => {
     unresolvedNames.forEach(name => {
       const fragmentResult = fragmentsMap.get(name)!
 
-      if (
-        fragmentResult.fragmentNames.every(fragName =>
-          resolvedNames.has(fragName),
-        )
-      ) {
+      if (fragmentResult.fragmentNames.every(fragName => resolvedNames.has(fragName))) {
         resolvedNames.add(name)
         unresolvedNames.delete(name)
       }

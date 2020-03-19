@@ -1,3 +1,4 @@
-const config = require('../../jest.config')
-
-module.exports = config
+module.exports = {
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+}

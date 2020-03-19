@@ -17,8 +17,7 @@ export const printScalar = (props: CodegenProps) => (
   const addDescription = withDescription(props.config)
 
   const valueTs: TypescriptString =
-    (props.config.customScalars && props.config.customScalars[typename]) ||
-    'any'
+    (props.config.customScalars && props.config.customScalars[typename]) || 'any'
 
   return addDescription(node)(printTsType(typename, valueTs))
 }

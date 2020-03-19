@@ -1,4 +1,4 @@
-import { FieldDefinitionNode, Kind, SelectionNode } from 'graphql'
+import { Kind, SelectionNode } from 'graphql'
 import {
   createField,
   createFragment,
@@ -18,11 +18,7 @@ import { CoreProps } from '../core'
 import { Edge } from '../graph'
 import { isNotEmpty } from '../utils'
 import { getFragmentName } from './fragment'
-import {
-  FragmentResult,
-  NestableSelectionResult,
-  SelectionsResult,
-} from './types'
+import { FragmentResult, NestableSelectionResult, SelectionsResult } from './types'
 import {
   isStackCircural,
   lastFieldname,
@@ -62,9 +58,7 @@ const noopResult: SelectionsResult = {
  * - build flat selection
  * - build/retrive cached nested selections
  */
-const buildRecursiveSelections = (props: CoreProps) => (
-  stack: Edge[],
-): SelectionsResult => {
+const buildRecursiveSelections = (props: CoreProps) => (stack: Edge[]): SelectionsResult => {
   const typename = lastTypename(stack)
   const fieldname = lastFieldname(stack)
 
@@ -90,9 +84,8 @@ const buildRecursiveSelections = (props: CoreProps) => (
   }
 
   // load from cache or build
-  const nestedSelection = props.cache.selections.has(typename)
-    ? props.cache.selections.get(typename)!
-    : buildNestedSelections(props)(stack)
+  const nestedSelection =
+    props.cache.selections.get(typename) ?? buildNestedSelections(props)(stack)
 
   // another noop
   if (!isNotEmpty(nestedSelection.selections)) {
@@ -140,10 +133,11 @@ const wrapNestedSelections = (
 /**
  * build selection for nested types
  */
-const buildNestedSelections = (props: CoreProps) => (
-  stack: Edge[],
-): SelectionsResult => {
+const buildNestedSelections = (props: CoreProps) => (stack: Edge[]): SelectionsResult => {
   const typename = lastTypename(stack)
+
+  // ! validated in buildRecursiveSelections
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const vtx = props.graph.get(typename)!
 
   let complete = true
@@ -195,9 +189,7 @@ const buildNestedSelections = (props: CoreProps) => (
     for (const implem of vtx.implementations) {
       // replacing last stack entry when resolving union
       // not wrapping result since inlines should be on the same level as the rest
-      const recursive = buildRecursiveSelections(props)(
-        replaceLastTypename(stack, implem),
-      )
+      const recursive = buildRecursiveSelections(props)(replaceLastTypename(stack, implem))
 
       if (!isNotEmpty(recursive.selections)) {
         complete = complete && recursive.complete
@@ -238,9 +230,7 @@ const buildNestedSelections = (props: CoreProps) => (
 
     // handle possible implementations
     for (const implem of vtx.implementations || []) {
-      const recursive = buildRecursiveSelections(props)(
-        replaceLastTypename(stack, implem),
-      )
+      const recursive = buildRecursiveSelections(props)(replaceLastTypename(stack, implem))
 
       if (!isNotEmpty(recursive.selections)) {
         complete = complete && recursive.complete

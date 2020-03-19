@@ -1,4 +1,4 @@
-import { Typename, TypescriptString } from '@clientql/core'
+import { TypescriptString } from '@clientql/core'
 import { UnionTypeDefinitionNode, UnionTypeExtensionNode } from 'graphql'
 import { CodegenProps } from '../codegen'
 import { printTsType } from '../print'
@@ -20,9 +20,7 @@ export const printUnion = (props: CodegenProps) => (
   const addDescription = withDescription(props.config)
   const namedTypePrinter = printNamedType(props)
 
-  const typesTs = node.types
-    ? node.types.map(type => namedTypePrinter(type))
-    : []
+  const typesTs = node.types ? node.types.map(type => namedTypePrinter(type)) : []
 
   let contentTs = ``
 
