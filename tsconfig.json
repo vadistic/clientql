@@ -1,17 +1,19 @@
 {
   "compilerOptions": {
     "target": "es2018",
-    "lib": ["esnext"],
+    "lib": ["ESNext"],
+    "moduleResolution": "Node",
+    "module": "ESNext",
+
     "allowJs": false,
-    "moduleResolution": "node",
-    "module": "commonjs",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
     "strict": true,
-    "declaration": true
-  },
-  "exclude": ["**/__snapshots__/**", "**/__file_snapshots__/**"]
+
+    "skipLibCheck": true,
+    "declaration": true,
+    "composite": true
+  }
 }

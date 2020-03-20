@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import { printTsGql } from '../print'
+import { printTsGql } from './print'
 
 describe('print utils', () => {
   it('print graphql to gql tagged const with deps', () => {
@@ -22,7 +22,7 @@ describe('print utils', () => {
           ...SomeFragment
           ...SomeOtherFragment
         }
-      
+
         \${SOME_FRAGMENT}
         \${SOME_OTHER_FRAGMENT}
       \`"

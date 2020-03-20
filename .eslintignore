@@ -1,4 +1,5 @@
 **/*.fixture.*
 **/__snapshots__
 **/__file_snapshots__
-**/generated/**
+**/generated
+**/dist

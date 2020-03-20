@@ -1,4 +1,4 @@
-import { fluentAsyncProxy, Segments } from '..'
+import { fluentAsyncProxy, Segments } from '../dist/types'
 
 describe('fluent async proxy > promises', () => {
   const OK_RES = 100

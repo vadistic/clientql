@@ -13,9 +13,7 @@
     "clientql": "./dist/cjs/cli.js"
   },
   "scripts": {
-    "build": "yarn build:cjs && yarn build:types",
-    "build:cjs": "tsc -p tsconfig.build.json -m commonjs --outDir dist/cjs",
-    "build:types": "tsc -p tsconfig.build.json --emitDeclarationOnly -d true --declarationMap --outDir dist/types",
+    "build": "tsc -b -v tsconfig.build.json",
     "clean": "rm -rf dist",
     "format": "prettier --write src/*",
     "lint": "eslint --ext ts src",

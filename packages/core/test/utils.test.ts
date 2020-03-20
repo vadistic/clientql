@@ -1,4 +1,4 @@
-import { deepAssign } from '../utils'
+import { deepAssign } from './utils'
 
 describe('utils', () => {
   it('deep assign will merge nested configs', () => {

@@ -1,12 +1,9 @@
 {
   "extends": "./tsconfig.json",
-  "exclude": [
-    "node_modules",
-    "dist",
-    "**/test/**",
-    "**/__test__/**",
-    "**/*.test.ts",
-    "**/__snapshots__/**",
-    "**/__file_snapshots__/**"
-  ]
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist/esm"
+  },
+  "include": ["src"],
+  "references": [{ "path": "../testing/tsconfig.build.json" }]
 }

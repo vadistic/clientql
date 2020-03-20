@@ -1,4 +1,6 @@
 {
   "extends": "../../tsconfig.json",
-  "exclude": ["node_modules", "dist", "__snapshots__", "__file_snapshots__"]
+  "compilerOptions": {
+    "rootDirs": ["src", "test"]
+  }
 }

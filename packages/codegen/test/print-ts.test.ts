@@ -1,4 +1,4 @@
-import { printBlockComment, printCodeSection, printTsInterface } from '../print'
+import { printBlockComment, printCodeSection, printTsInterface } from '../src/print'
 
 describe('print typescript utils', () => {
   it('print block comment', () => {
@@ -27,21 +27,21 @@ describe('print typescript utils', () => {
        * FIRST
        *
        */
-      
+
       HELLO
       HELLO
       HELLO
-      
+
       /*
        *
        * SECOND
        *
        */
-      
+
       HELLO
       HELLO
       HELLO
-      
+
       "
     `)
   })

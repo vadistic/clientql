@@ -3,7 +3,7 @@
 
 import { Kind, print } from 'graphql'
 import { toMatchFile } from 'jest-file-snapshot'
-import { buildFragmentDoc } from '../operation'
+import { buildFragmentDoc } from './operation'
 import { complexProps, fileSnapPath, prismaProps, vatsProps } from './fixture'
 
 expect.extend({ toMatchFile })

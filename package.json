@@ -15,8 +15,9 @@
   },
   "scripts": {
     "commit": "git-cz",
-    "lint": "eslint --ext .ts,.tsx packages/*/src examples/*/src",
-    "format": "yarn prettier {packages/*/src/**,examples/*/src/**,docs/src}.{ts,tsx,json,md} -l --write"
+    "build": "tsc -b -v tsconfig.build.json",
+    "lint": "eslint --ext .ts,.tsx packages/*/{src,test} examples/*/src",
+    "format": "yarn prettier {packages/*/src/**,packages/*/test/**examples/*/src/**,docs/src}.{ts,tsx,json,md} -l --write"
   },
   "devDependencies": {
     "@types/jest": "^25.1.4",

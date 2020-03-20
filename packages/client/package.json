@@ -11,10 +11,7 @@
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "scripts": {
-    "build": "yarn build:esm && yarn build:cjs && yarn build:types",
-    "build:cjs": "tsc -p tsconfig.build.json -m commonjs --outDir dist/cjs",
-    "build:esm": "tsc -p tsconfig.build.json -m esnext --outDir dist/esm",
-    "build:types": "tsc -p tsconfig.build.json --emitDeclarationOnly -d true --declarationMap --outDir dist/types",
+    "build": "tsc -b -v tsconfig.build.json ",
     "clean": "rm -rf dist",
     "format": "prettier --write src/*",
     "lint": "eslint --ext ts src",

@@ -1,7 +1,7 @@
 import { unwrapDocument } from '@clientql/core'
 import gql from 'graphql-tag'
-import { getGeneratorProps } from '../generator'
-import { getMinimalTypedefs, stripLocationDescriptionAndEmpty } from '../utils'
+import { getGeneratorProps } from './generator'
+import { getMinimalTypedefs, stripLocationDescriptionAndEmpty } from './utils'
 
 describe('generator utils', () => {
   it('traverse tree to purge unused typedefs', () => {

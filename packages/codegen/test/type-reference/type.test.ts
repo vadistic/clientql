@@ -1,6 +1,6 @@
 import { Kind } from 'graphql'
 import gql from 'graphql-tag'
-import { defaultCodegen } from '../../codegen'
+import { defaultCodegen } from '../../src'
 
 describe(`printer > ${Kind.NON_NULL_TYPE} | ${Kind.LIST_TYPE}`, () => {
   it('transpile scalar nullable lists', () => {

@@ -1,7 +1,7 @@
 import { wrapDocument } from '@clientql/core'
 import { print } from 'graphql'
-import { generateFragments, generateGraphqlFragmentsFile } from '../../extra'
 import { complexProps, prismaProps } from '../fixture'
+import { generateFragments, generateGraphqlFragmentsFile } from '.'
 
 describe('generate graphql fragments', () => {
   it('prisma > generate fragment definitions', () => {

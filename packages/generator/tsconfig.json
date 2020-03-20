@@ -1,4 +1,16 @@
 {
   "extends": "../../tsconfig.json",
-  "exclude": ["node_modules", "dist", "**/__snapshots__/**", "**/__file_snapshots__/**"]
+  "compilerOptions": {
+    "rootDirs": ["src", "test"],
+
+    "baseUrl": ".",
+    "paths": {
+      "@clientql/core": ["../core/src"],
+      "@clientql/core/*": ["../core/src/*"],
+      "@clientql/codegen": ["../codegen/src"],
+      "@clientql/codegen/*": ["../codegen/src/*"],
+      "@clientql/testing": ["../core/testing"],
+      "@clientql/testing/*": ["../core/testing/*"]
+    }
+  }
 }
