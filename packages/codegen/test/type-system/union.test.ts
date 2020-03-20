@@ -1,6 +1,6 @@
 import { Kind } from 'graphql'
 import gql from 'graphql-tag'
-import { createCodegen, defaultCodegen } from '../../codegen'
+import { createCodegen, defaultCodegen } from '../../src'
 
 describe('printer > ' + Kind.UNION_TYPE_DEFINITION, () => {
   it('prints union inline with one value', () => {
@@ -25,11 +25,11 @@ describe('printer > ' + Kind.UNION_TYPE_DEFINITION, () => {
     `
 
     expect(defaultCodegen(fixture)).toMatchInlineSnapshot(`
-      "export type MyUnion = 
-        | Value
-        | AnotherValue
-        | EvenAnotherValue"
-    `)
+"export type MyUnion = 
+  | Value
+  | AnotherValue
+  | EvenAnotherValue"
+`)
   })
 
   it('useInterfacePrefixForUnion: true', () => {
@@ -42,10 +42,10 @@ describe('printer > ' + Kind.UNION_TYPE_DEFINITION, () => {
     })(fixture)
 
     expect(res).toMatchInlineSnapshot(`
-      "export type IIIMyUnion = 
-        | Value
-        | AnotherValue
-        | EvenAnotherValue"
-    `)
+"export type IIIMyUnion = 
+  | Value
+  | AnotherValue
+  | EvenAnotherValue"
+`)
   })
 })

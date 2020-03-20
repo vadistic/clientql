@@ -3,7 +3,12 @@ import { unwrapDocument } from '@clientql/core'
 import { PRISMA_TYPEDEFS } from '@clientql/testing'
 import { Kind } from 'graphql'
 import gql from 'graphql-tag'
-import { createCodegen, defaultCodegen } from '../../codegen'
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { toMatchFile } from 'jest-file-snapshot'
+import { createCodegen, defaultCodegen } from '../../src'
+import { fileSnapPath } from '../fixture'
+
+expect.extend({ toMatchFile })
 
 describe('printer > ' + Kind.OBJECT_TYPE_DEFINITION, () => {
   it('addFieldsAsFunction: true', () => {
@@ -102,6 +107,6 @@ describe('printer > ' + Kind.OBJECT_TYPE_DEFINITION, () => {
       node => node.kind === 'ObjectTypeDefinition' && node.name.value === 'Query',
     )!
 
-    expect(print(fixture)).toMatchSnapshot()
+    expect(print(fixture)).toMatchFile(...fileSnapPath('object.prisma.ts'))
   })
 })

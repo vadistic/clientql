@@ -1,5 +1,5 @@
 import { Kind, parse } from 'graphql'
-import { defaultCodegen } from '../../codegen'
+import { defaultCodegen } from '../../src'
 
 describe('printer > ' + Kind.ENUM_TYPE_DEFINITION, () => {
   it('codegens enum', () => {
@@ -20,7 +20,7 @@ describe('printer > ' + Kind.ENUM_TYPE_DEFINITION, () => {
               /**  my description  */
               ANOTHER: 'ANOTHER'
             }
-            
+
             export const MyEnum: MyEnum = {
               ABC: 'ABC',
               Value: 'Value',

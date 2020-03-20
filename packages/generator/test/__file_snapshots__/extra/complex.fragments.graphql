@@ -1,0 +1,176 @@
+fragment Stakeholder on Stakeholder {
+  ...StakeholderFlat
+}
+
+fragment Client on Client {
+  ...ClientFlat
+  events {
+    ...EventFlat
+    venue {
+      ...VenueFlat
+    }
+    ... on Concert {
+      ...ConcertFlat
+      venue {
+        ...VenueFlat
+      }
+      previousVenues {
+        ...VenueFlat
+      }
+      performingBand {
+        ...PerformerFlat
+      }
+    }
+    ... on Festival {
+      ...FestivalFlat
+      venue {
+        ...VenueFlat
+      }
+      performers {
+        ...PerformerFlat
+      }
+    }
+    ... on Conference {
+      ...ConferenceFlat
+      venue {
+        ...VenueFlat
+      }
+      speakers {
+        ...SpeakerFlat
+      }
+    }
+  }
+}
+
+fragment Performer on Performer {
+  ...PerformerFlat
+}
+
+fragment Speaker on Speaker {
+  ...SpeakerFlat
+}
+
+fragment Person on Person {
+  ... on Client {
+    ...ClientFlat
+    events {
+      ...EventFlat
+      venue {
+        ...VenueFlat
+      }
+      ... on Concert {
+        ...ConcertFlat
+        venue {
+          ...VenueFlat
+        }
+        previousVenues {
+          ...VenueFlat
+        }
+        performingBand {
+          ...PerformerFlat
+        }
+      }
+      ... on Festival {
+        ...FestivalFlat
+        venue {
+          ...VenueFlat
+        }
+        performers {
+          ...PerformerFlat
+        }
+      }
+      ... on Conference {
+        ...ConferenceFlat
+        venue {
+          ...VenueFlat
+        }
+        speakers {
+          ...SpeakerFlat
+        }
+      }
+    }
+  }
+  ... on Stakeholder {
+    ...StakeholderFlat
+  }
+  ... on Speaker {
+    ...SpeakerFlat
+  }
+  ... on Performer {
+    ...PerformerFlat
+  }
+}
+
+fragment Venue on Venue {
+  ...VenueFlat
+}
+
+fragment Event on Event {
+  ...EventFlat
+  venue {
+    ...VenueFlat
+  }
+  ... on Concert {
+    ...ConcertFlat
+    venue {
+      ...VenueFlat
+    }
+    previousVenues {
+      ...VenueFlat
+    }
+    performingBand {
+      ...PerformerFlat
+    }
+  }
+  ... on Festival {
+    ...FestivalFlat
+    venue {
+      ...VenueFlat
+    }
+    performers {
+      ...PerformerFlat
+    }
+  }
+  ... on Conference {
+    ...ConferenceFlat
+    venue {
+      ...VenueFlat
+    }
+    speakers {
+      ...SpeakerFlat
+    }
+  }
+}
+
+fragment Concert on Concert {
+  ...ConcertFlat
+  venue {
+    ...VenueFlat
+  }
+  previousVenues {
+    ...VenueFlat
+  }
+  performingBand {
+    ...PerformerFlat
+  }
+}
+
+fragment Festival on Festival {
+  ...FestivalFlat
+  venue {
+    ...VenueFlat
+  }
+  performers {
+    ...PerformerFlat
+  }
+}
+
+fragment Conference on Conference {
+  ...ConferenceFlat
+  venue {
+    ...VenueFlat
+  }
+  speakers {
+    ...SpeakerFlat
+  }
+}

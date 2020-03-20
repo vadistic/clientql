@@ -1,5 +1,5 @@
 import { fluentAsyncProxy } from '../src/fluent-async-proxy'
-import { parseSegments } from '../src/path'
+import { parseSegments } from '../src'
 
 describe('path parser', () => {
   it('parses proxy segments into operation path and variables', async () => {

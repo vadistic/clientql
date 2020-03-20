@@ -1,0 +1,23 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./packages/cli/tsconfig.cjs.json"
+    },
+    {
+      "path": "./packages/client/tsconfig.cjs.json"
+    },
+    {
+      "path": "./packages/codegen/tsconfig.cjs.json"
+    },
+    {
+      "path": "./packages/core/tsconfig.cjs.json"
+    },
+    {
+      "path": "./packages/generator/tsconfig.cjs.json"
+    },
+    {
+      "path": "./packages/testing/tsconfig.cjs.json"
+    }
+  ]
+}

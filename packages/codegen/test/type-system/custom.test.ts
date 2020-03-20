@@ -1,6 +1,5 @@
 import gql from 'graphql-tag'
-import { defaultCodegen } from '../../codegen'
-import { CodegenConfig } from '../../config'
+import { defaultCodegen, CodegenConfig } from '../../src'
 
 describe('printer > custom transformations', () => {
   it('transformFieldArguments', () => {

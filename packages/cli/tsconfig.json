@@ -1,18 +1,30 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "rootDirs": ["src", "test"],
-
     "baseUrl": ".",
     "paths": {
       "@clientql/codegen": ["../codegen/src"],
       "@clientql/codegen/*": ["../codegen/src/*"],
-      "@clientql/core": ["../core/src"],
-      "@clientql/core/*": ["../core/src/*"],
       "@clientql/generator": ["../generator/src"],
       "@clientql/generator/*": ["../generator/src/*"],
-      "@clientql/testing": ["../core/testing"],
-      "@clientql/testing/*": ["../core/testing/*"]
+      "@clientql/core": ["../core/src"],
+      "@clientql/core/*": ["../core/src/*"],
+      "@clientql/testing": ["../testing/src"],
+      "@clientql/testing/*": ["../testing/src/*"]
     }
-  }
+  },
+  "references": [
+    {
+      "path": "../codegen/tsconfig.json"
+    },
+    {
+      "path": "../generator/tsconfig.json"
+    },
+    {
+      "path": "../core/tsconfig.json"
+    },
+    {
+      "path": "../testing/tsconfig.json"
+    }
+  ]
 }

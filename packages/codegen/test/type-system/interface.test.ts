@@ -1,6 +1,6 @@
 import { Kind } from 'graphql'
 import gql from 'graphql-tag'
-import { createCodegen, defaultCodegen } from '../../codegen'
+import { createCodegen, defaultCodegen } from '../../src'
 
 describe('printer > ' + Kind.INTERFACE_TYPE_DEFINITION, () => {
   it('works', () => {

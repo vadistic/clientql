@@ -4,9 +4,7 @@
 import { COMPLEX_TYPEDEFS } from '@clientql/testing'
 import { print } from 'graphql'
 import { toMatchFile } from 'jest-file-snapshot'
-import { FragmentType } from './config'
-import { getCoreProps } from './core'
-import { buildOperationDoc } from './operation'
+import { FragmentType, getCoreProps, buildOperationDoc } from '../src'
 import { complexProps, fileSnapPath, prismaProps } from './fixture'
 
 expect.extend({ toMatchFile })

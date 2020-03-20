@@ -1,0 +1,368 @@
+fragment AggregateBoard on AggregateBoard {
+  ...AggregateBoardFlat
+}
+
+fragment AggregatePost on AggregatePost {
+  ...AggregatePostFlat
+}
+
+fragment AggregateThread on AggregateThread {
+  ...AggregateThreadFlat
+}
+
+fragment AggregateUser on AggregateUser {
+  ...AggregateUserFlat
+}
+
+fragment BatchPayload on BatchPayload {
+  ...BatchPayloadFlat
+}
+
+fragment Board on Board {
+  ...BoardFlatPartial
+  admins {
+    ...UserFlatPartial
+    posts {
+      ...PostFlatPartial
+    }
+  }
+  members {
+    ...UserFlatPartial
+    posts {
+      ...PostFlatPartial
+    }
+  }
+  threads {
+    ...ThreadFlatPartial
+    author {
+      ...UserFlatPartial
+      posts {
+        ...PostFlatPartial
+      }
+    }
+    entry {
+      ...PostFlatPartial
+      author {
+        ...UserFlatPartial
+      }
+    }
+    replies {
+      ...PostFlatPartial
+      author {
+        ...UserFlatPartial
+      }
+    }
+  }
+}
+
+fragment BoardConnection on BoardConnection {
+  __typename
+  pageInfo {
+    ...PageInfoFlat
+  }
+  edges {
+    ...BoardEdgeFlatPartial
+    node {
+      ...BoardFlatPartial
+      admins {
+        ...UserFlatPartial
+      }
+      members {
+        ...UserFlatPartial
+      }
+      threads {
+        ...ThreadFlatPartial
+      }
+    }
+  }
+  aggregate {
+    ...AggregateBoardFlat
+  }
+}
+
+fragment BoardEdge on BoardEdge {
+  ...BoardEdgeFlatPartial
+  node {
+    ...BoardFlatPartial
+    admins {
+      ...UserFlatPartial
+      posts {
+        ...PostFlatPartial
+      }
+    }
+    members {
+      ...UserFlatPartial
+      posts {
+        ...PostFlatPartial
+      }
+    }
+    threads {
+      ...ThreadFlatPartial
+      author {
+        ...UserFlatPartial
+      }
+      entry {
+        ...PostFlatPartial
+      }
+      replies {
+        ...PostFlatPartial
+      }
+    }
+  }
+}
+
+fragment BoardPreviousValues on BoardPreviousValues {
+  ...BoardPreviousValuesFlat
+}
+
+fragment BoardSubscriptionPayload on BoardSubscriptionPayload {
+  ...BoardSubscriptionPayloadFlatPartial
+  node {
+    ...BoardFlatPartial
+    admins {
+      ...UserFlatPartial
+      posts {
+        ...PostFlatPartial
+      }
+    }
+    members {
+      ...UserFlatPartial
+      posts {
+        ...PostFlatPartial
+      }
+    }
+    threads {
+      ...ThreadFlatPartial
+      author {
+        ...UserFlatPartial
+      }
+      entry {
+        ...PostFlatPartial
+      }
+      replies {
+        ...PostFlatPartial
+      }
+    }
+  }
+  previousValues {
+    ...BoardPreviousValuesFlat
+  }
+}
+
+fragment Node on Node {
+  ...NodeFlat
+}
+
+fragment PageInfo on PageInfo {
+  ...PageInfoFlat
+}
+
+fragment Post on Post {
+  ...PostFlatPartial
+  author {
+    ...UserFlatPartial
+  }
+}
+
+fragment PostConnection on PostConnection {
+  __typename
+  pageInfo {
+    ...PageInfoFlat
+  }
+  edges {
+    ...PostEdgeFlatPartial
+    node {
+      ...PostFlatPartial
+      author {
+        ...UserFlatPartial
+      }
+    }
+  }
+  aggregate {
+    ...AggregatePostFlat
+  }
+}
+
+fragment PostEdge on PostEdge {
+  ...PostEdgeFlatPartial
+  node {
+    ...PostFlatPartial
+    author {
+      ...UserFlatPartial
+    }
+  }
+}
+
+fragment PostPreviousValues on PostPreviousValues {
+  ...PostPreviousValuesFlat
+}
+
+fragment PostSubscriptionPayload on PostSubscriptionPayload {
+  ...PostSubscriptionPayloadFlatPartial
+  node {
+    ...PostFlatPartial
+    author {
+      ...UserFlatPartial
+    }
+  }
+  previousValues {
+    ...PostPreviousValuesFlat
+  }
+}
+
+fragment Thread on Thread {
+  ...ThreadFlatPartial
+  author {
+    ...UserFlatPartial
+    posts {
+      ...PostFlatPartial
+    }
+  }
+  entry {
+    ...PostFlatPartial
+    author {
+      ...UserFlatPartial
+    }
+  }
+  replies {
+    ...PostFlatPartial
+    author {
+      ...UserFlatPartial
+    }
+  }
+}
+
+fragment ThreadConnection on ThreadConnection {
+  __typename
+  pageInfo {
+    ...PageInfoFlat
+  }
+  edges {
+    ...ThreadEdgeFlatPartial
+    node {
+      ...ThreadFlatPartial
+      author {
+        ...UserFlatPartial
+      }
+      entry {
+        ...PostFlatPartial
+      }
+      replies {
+        ...PostFlatPartial
+      }
+    }
+  }
+  aggregate {
+    ...AggregateThreadFlat
+  }
+}
+
+fragment ThreadEdge on ThreadEdge {
+  ...ThreadEdgeFlatPartial
+  node {
+    ...ThreadFlatPartial
+    author {
+      ...UserFlatPartial
+      posts {
+        ...PostFlatPartial
+      }
+    }
+    entry {
+      ...PostFlatPartial
+      author {
+        ...UserFlatPartial
+      }
+    }
+    replies {
+      ...PostFlatPartial
+      author {
+        ...UserFlatPartial
+      }
+    }
+  }
+}
+
+fragment ThreadPreviousValues on ThreadPreviousValues {
+  ...ThreadPreviousValuesFlat
+}
+
+fragment ThreadSubscriptionPayload on ThreadSubscriptionPayload {
+  ...ThreadSubscriptionPayloadFlatPartial
+  node {
+    ...ThreadFlatPartial
+    author {
+      ...UserFlatPartial
+      posts {
+        ...PostFlatPartial
+      }
+    }
+    entry {
+      ...PostFlatPartial
+      author {
+        ...UserFlatPartial
+      }
+    }
+    replies {
+      ...PostFlatPartial
+      author {
+        ...UserFlatPartial
+      }
+    }
+  }
+  previousValues {
+    ...ThreadPreviousValuesFlat
+  }
+}
+
+fragment User on User {
+  ...UserFlatPartial
+  posts {
+    ...PostFlatPartial
+  }
+}
+
+fragment UserConnection on UserConnection {
+  __typename
+  pageInfo {
+    ...PageInfoFlat
+  }
+  edges {
+    ...UserEdgeFlatPartial
+    node {
+      ...UserFlatPartial
+      posts {
+        ...PostFlatPartial
+      }
+    }
+  }
+  aggregate {
+    ...AggregateUserFlat
+  }
+}
+
+fragment UserEdge on UserEdge {
+  ...UserEdgeFlatPartial
+  node {
+    ...UserFlatPartial
+    posts {
+      ...PostFlatPartial
+    }
+  }
+}
+
+fragment UserPreviousValues on UserPreviousValues {
+  ...UserPreviousValuesFlat
+}
+
+fragment UserSubscriptionPayload on UserSubscriptionPayload {
+  ...UserSubscriptionPayloadFlatPartial
+  node {
+    ...UserFlatPartial
+    posts {
+      ...PostFlatPartial
+    }
+  }
+  previousValues {
+    ...UserPreviousValuesFlat
+  }
+}

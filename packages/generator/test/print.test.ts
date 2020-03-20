@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import { printTsGql } from './print'
+import { printTsGql } from '../src'
 
 describe('print utils', () => {
   it('print graphql to gql tagged const with deps', () => {

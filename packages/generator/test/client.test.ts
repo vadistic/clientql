@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { toMatchFile } from 'jest-file-snapshot'
-import { generateClient } from './client'
+import { generateClient } from '../src'
 import { complexProps, fileSnapPath, prismaProps, vatsProps } from './fixture'
 
 expect.extend({ toMatchFile })

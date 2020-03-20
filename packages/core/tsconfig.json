@@ -1,12 +1,15 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "rootDirs": ["src", "test"],
-
     "baseUrl": ".",
     "paths": {
-      "@clientql/testing": ["../core/testing"],
-      "@clientql/testing/*": ["../core/testing/*"]
+      "@clientql/testing": ["../testing/src"],
+      "@clientql/testing/*": ["../testing/src/*"]
     }
-  }
+  },
+  "references": [
+    {
+      "path": "../testing/tsconfig.json"
+    }
+  ]
 }

@@ -1,4 +1,4 @@
-import { printBlockComment, printCodeSection, printTsInterface } from '../src/print'
+import { printBlockComment, printCodeSection, printTsInterface } from '../src'
 
 describe('print typescript utils', () => {
   it('print block comment', () => {

@@ -2,8 +2,7 @@
 import { buildOperationDoc, getDocDefinition } from '@clientql/core'
 import { COMPLEX_TYPEDEFS, PRISMA_TYPEDEFS } from '@clientql/testing'
 import { Kind } from 'graphql'
-import { getCodegenProps } from '../../codegen'
-import { printSelections } from '../../type-execution'
+import { getCodegenProps, printSelections } from '../../src'
 
 const prismaProps = getCodegenProps(PRISMA_TYPEDEFS)
 

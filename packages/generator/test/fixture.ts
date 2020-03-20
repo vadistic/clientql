@@ -1,6 +1,6 @@
 import path from 'path'
 import { COMPLEX_TYPEDEFS, PRISMA_TYPEDEFS, VATS_TYPEDEFS } from '@clientql/testing'
-import { getGeneratorProps } from './generator'
+import { getGeneratorProps } from '../src'
 
 export const prismaProps = getGeneratorProps(PRISMA_TYPEDEFS)
 

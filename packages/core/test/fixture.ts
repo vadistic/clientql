@@ -1,6 +1,6 @@
 import path from 'path'
 import { COMPLEX_TYPEDEFS, PRISMA_TYPEDEFS, VATS_TYPEDEFS } from '@clientql/testing'
-import { CoreProps, getCoreProps } from './core'
+import { CoreProps, getCoreProps } from '../src'
 
 export const prismaProps: CoreProps = getCoreProps(PRISMA_TYPEDEFS)
 

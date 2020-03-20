@@ -14,7 +14,9 @@
     "gql-clientgen": "./dist/cjs/cli.js"
   },
   "scripts": {
-    "build": "tsc -b -v tsconfig.build.json",
+    "build:esm": "tsc -b -v tsconfig.esm.json",
+    "build:cjs": "tsc -b -v tsconfig.cjs.json",
+    "build": "yarn build:esm && yarn build:cjs",
     "clean": "rm -rf dist",
     "format": "prettier --write src/*",
     "lint": "eslint --ext ts src",

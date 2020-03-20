@@ -10,14 +10,19 @@
     "packages": [
       "packages/*",
       "examples/*",
+      "scripts",
       "docs"
     ]
   },
   "scripts": {
+    "script:multibuild": "ts-node --project scripts/tsconfig.json scripts/multibuild",
     "commit": "git-cz",
-    "build": "tsc -b -v tsconfig.build.json",
+    "build:esm": "tsc -b -v tsconfig.esm.json",
+    "build:cjs": "tsc -b -v tsconfig.cjs.json",
+    "build": "yarn build:esm && yarn build:cjs",
     "lint": "eslint --ext .ts,.tsx packages/*/{src,test} examples/*/src",
-    "format": "yarn prettier {packages/*/src/**,packages/*/test/**examples/*/src/**,docs/src}.{ts,tsx,json,md} -l --write"
+    "format": "yarn prettier {packages/*/src/**,packages/*/test/**examples/*/src/**,docs/src}.{ts,tsx,json,md} -l --write",
+    "test": "jest"
   },
   "devDependencies": {
     "@types/jest": "^25.1.4",
@@ -28,14 +33,14 @@
     "eslint": "^6.8.0",
     "husky": "^4.2.3",
     "jest": "^25.1.0",
-    "jest-file-snapshot": "^0.3.7",
-    "lerna": "^3.16.5",
+    "jest-file-snapshot": "^0.3.8",
+    "lerna": "^3.20.2",
     "lint-staged": "^10.0.8",
-    "prettier": "^1.18.2",
+    "prettier": "^1.19.1",
     "pretty-quick": "^2.0.1",
     "ts-jest": "^25.2.1",
-    "ts-node": "^8.4.1",
-    "typescript": "^3.6.3"
+    "ts-node": "^8.7.0",
+    "typescript": "^3.8.3"
   },
   "config": {
     "commitizen": {

@@ -1,5 +1,5 @@
 import { Kind, ObjectValueNode } from 'graphql'
-import { createCodegen } from '../codegen'
+import { createCodegen } from '../src'
 
 describe('printer > AST nodes', () => {
   it(Kind.OBJECT, () => {

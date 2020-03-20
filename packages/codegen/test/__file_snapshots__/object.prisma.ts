@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`printer > ObjectTypeDefinition useFieldArgumentsInterfaces: true 1`] = `
-"export interface Query {
+export interface Query {
   board: (args: QueryBoardArgs) => Board | null
   boards: (args?: QueryBoardsArgs) => Array<Board | null>
   boardsConnection: (args?: QueryBoardsConnectionArgs) => BoardConnection
@@ -115,5 +112,4 @@ export interface QueryUsersConnectionArgs {
 
 export interface QueryNodeArgs {
   id: string
-}"
-`;
+}

@@ -1,0 +1,13 @@
+{
+  "name": "@clientql/scripts",
+  "description": "Generate strongly typed, flexible & fast client SDK from any GraphQL API",
+  "repository": "https://github.com/vadistic/clientql",
+  "author": "Jakub Wadas <vadistic@gmail.com>",
+  "version": "0.1.0",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "fs-extra": "^9.0.0",
+    "globby": "^11.0.0"
+  }
+}

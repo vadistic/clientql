@@ -1,5 +1,5 @@
 import { prismaProps } from '../fixture'
-import { generateDefinitions } from '.'
+import { generateDefinitions } from '../../src'
 
 describe('generate typings > definitions', () => {
   it('match snapshot', async () => {
