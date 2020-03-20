@@ -31,9 +31,4 @@ This project is in alpha stage. You can clone & build it locally.
 
 ## TODO
 
-- finish `@clientql/client`
-- improve error handling
-- finish/improve fragment caching
-- use extrenal fluent-async-proxy
-- add support for Observables
-- document
+https://github.com/vadistic/clientql/projects/1
